@@ -10,18 +10,41 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use King\Frontend\Http\Controllers\FrontController;
 use Validator;
+use App\Model\User;
 class AuthController extends FrontController {
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
+    
     /**
+     * Where to redirect users after login / registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/home';
+    
+    /**
+     * Where to redirect users after logout.
+     *
+     * @var string
+     */
+    protected $redirectAfterLogout = '/';
+    
+    /**
+     * User model
+     *
+     * @var App\Model\User 
+     */
+    protected $user; 
+
+
+/**
      * Create a new authentication controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct(User $user) {
         $this->middleware('guest', ['except' => 'logout']);
+        $this->user = $user;
     }
 
     /**
@@ -53,7 +76,21 @@ class AuthController extends FrontController {
     public function showRegistrationForm() {
         return view('frontend::auth.register');
     }
-
+    
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return User
+     */
+    protected function create(array $data) {
+        return User::create([
+            'email'    => $data['email'],
+            'username' => $data['username'],
+            'password' => bcrypt($data['password']),
+        ]);
+    }
+    
     /**
      * Get a validator for an incoming registration request.
      *
@@ -61,7 +98,7 @@ class AuthController extends FrontController {
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data) {
-        return Validator::make($data, $this->getRegisterRules(), $this->getRegisterMessages());
+        return Validator::make($data, $this->user->getRegisterRules(), $this->user->getRegisterMessages());
     }
 
     /**
@@ -85,34 +122,6 @@ class AuthController extends FrontController {
         return [
             'email.required'    => _t('auth.email.required'),
             'password.required' => _t('auth.pass.required'),
-        ];
-    }
-
-    /**
-     * Get register error rules
-     *
-     * @return type
-     */
-    protected function getRegisterRules() {
-        return [
-            'email'    => 'required|email|max:128|unique:users',
-            'username' => 'required|min:6:|max:64|unique:users',
-            'password' => 'required|min:6',
-        ];
-    }
-
-    public function getRegisterMessages() {
-        return [
-            'email.required'    => _t('front.register.email.req'),
-            'email.email'       => _t('front.register.email.email'),
-            'email.max'         => _t('front.register.email.max'),
-            'email.unique'      => _t('front.register.email.uni'),
-            'username.required' => _t('front.register.uname.req'),
-            'username.min'      => _t('front.register.uname.min'),
-            'username.max'      => _t('front.register.uname.max'),
-            'username.unique'   => _t('front.register.uname.uni'),
-            'password.required' => _t('front.register.pass.req'),
-            'password.min'      => _t('front.register.pass.min'),
         ];
     }
 

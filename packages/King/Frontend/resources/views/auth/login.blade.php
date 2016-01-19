@@ -1,17 +1,17 @@
 @extends('frontend::layouts._auth')
 
 @section('title')
-    {{ _t('front.signin.title') }}
+    {{ _t('signin.title') }}
 @stop
 
 @section('button')
-    <a href="{{ route('front_register') }}" class="_fr btn _btn _btn-white-link signup-btn">{{ _t('front.signup') }}</a>
+    <a href="{{ route('front_register') }}" class="_fr btn _btn _btn-white-link signup-btn">{{ _t('signup') }}</a>
 @stop
 
 @section('body')
     <div class="auth-box login-box">
         {!! Form::open(['route' => 'front_login_post', 'method' => 'POST', 'class' => '_fwfl auth-form', 'data-required' => 'email|password']) !!}
-            <h1 class="_fwfl _m0 _p0 auth-form-title">{{ _t('front.signin.form.title') }}</h1>
+            <h1 class="_fwfl _m0 _p0 auth-form-title">{{ _t('signin.form.title') }}</h1>
             <div class="_fwfl auth-field-group first-field-group">
                 <label class="_fwfl _fs14 _fwn _tg5" for="email">
                     @if ($errors->has('email'))
@@ -40,14 +40,14 @@
             <div class="_fwfl auth-field-group">
                 <label>
                     {!! Form::checkbox('remember', '1', true, ['class' => '_fl _mr5']) !!}
-                    <span class="_fl _ml5 _fwn">{{ _t('front.signin.remember') }}</span>
+                    <span class="_fl _ml5 _fwn">{{ _t('signin.remember') }}</span>
                 </label>
             </div>
             <div class="_fwfl auth-field-group">
                 <button class="_fwfl btn _btn _btn-blue auth-btn"><i class="fa fa-arrow-right"></i></button>
             </div>
             <div class="_fwfl">
-                <a href="#" class="_fr _tb">{{ _t('front.signin.lostpass') }}</a>
+                <a href="#" class="_fr _tb">{{ _t('signin.lostpass') }}</a>
             </div>
         {!! Form::close() !!}
     </div>
