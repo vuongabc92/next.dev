@@ -19,5 +19,6 @@ Route::group(['middleware' => 'web'], function () {
 //    $this->post('password/reset', 'Auth\PasswordController@reset');
 
     Route::get('/', ['as' => 'front_home', 'uses' => 'HomeController@index']);
+    Route::get('/profile', ['as' => 'front_profile', 'uses' => 'ProfileController@index']);
 });
 

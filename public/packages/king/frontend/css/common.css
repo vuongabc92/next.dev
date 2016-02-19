@@ -385,6 +385,8 @@ button._btn-sm{height: 30px;line-height:17px;}
 -ms-border-radius: 50%;
 -o-border-radius: 50%;}
 
+._tc{text-align:center;}
+
 /* Overide bootstap */
 
 /* Tooltip */

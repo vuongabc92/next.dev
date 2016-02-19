@@ -1,0 +1,14 @@
+body{background-color:#f5f8fa;}
+.wrapper{margin:20px 0;}
+.setting-left{width:70%;padding:30px 20px;background-color:#fff;border:solid 1px #eee;}
+.setting-header{height:50px;border-bottom:solid 2px #eee;}
+.setting-group{padding:20px 10px;border-bottom:solid 1px #eee;}
+.last-setting-group{border-bottom:none;}
+.setting-field-left{width:28%;}
+.setting-field-right{width:72%;}
+.setting-avatar{width:96px;height:96px;}
+.setting-avatar-note{height:52px;margin-top:22px;}
+.setting-edit-expand{padding:6px 12px;border:solid 1px #ddd;}
+.setting-edit-expand:hover{border-color:#d3d3d3;}
+.setting-edit-expand:active{border-color:#ccc;}
+.setting-field-content{width:90%;}
