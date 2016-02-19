@@ -14,9 +14,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('register', ['as' => 'front_register_post', 'uses' => 'Auth\AuthController@register']);
 
     // Password Reset Routes.
-    //$this->get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
-    //$this->post('password/email', ['as' => 'front_password_email', 'uses' => 'Auth\PasswordController@sendResetLinkEmail']);
-//    $this->post('password/reset', 'Auth\PasswordController@reset');
+    Route::get('password/reset/{token?}', ['as' => 'front_password_reset_token', 'uses' => 'Auth\PasswordController@showResetForm']);
+    Route::post('password/email', ['as' => 'front_password_email', 'uses' => 'Auth\PasswordController@sendResetLinkEmail']);
+    Route::post('password/reset', ['as' => 'front_password_reset', 'uses' => 'Auth\PasswordController@reset']);
 
     Route::get('/', ['as' => 'front_home', 'uses' => 'HomeController@index']);
 });
