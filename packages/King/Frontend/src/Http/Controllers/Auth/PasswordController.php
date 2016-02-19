@@ -5,8 +5,8 @@ namespace King\Frontend\Http\Controllers\Auth;
 use King\Frontend\Http\Controllers\FrontController;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
-class PasswordController extends FrontController
-{
+class PasswordController extends FrontController {
+
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
@@ -25,8 +25,22 @@ class PasswordController extends FrontController
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
+
         $this->middleware('guest');
+    }
+
+    /**
+     * Display the form to request a password reset link.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLinkRequestForm() {
+
+        if (view()->exists('frontend::auth.passwords.email')) {
+            return view('frontend::auth.passwords.email');
+        }
+
+        return view('frontend::auth.password');
     }
 }
