@@ -10,7 +10,7 @@
 
 @section('body')
     <div class="auth-box register-box">
-        {!! Form::open(['route' => 'front_register_post', 'method' => 'POST', 'class' => '_fwfl auth-form', 'data-required' => 'email|password']) !!}
+        {!! Form::open(['route' => 'front_register_post', 'method' => 'POST', 'class' => '_fwfl auth-form']) !!}
             <h1 class="_fwfl _m0 _p0 auth-form-title">{{ _t('signup.form.title') }}</h1>
             <div class="_fwfl auth-field-group first-field-group">
                 <label class="_fwfl _fs14 _fwn _tg5" for="email">
@@ -21,7 +21,7 @@
                     @endif
                 </label>
                 <div class="_fwfl">
-                    {!! Form::text('email', '', ['class' => '_fwfl  _ff0 _r2 auth-field', 'id' => 'email', 'maxlength' => '128']) !!}
+                    {!! Form::text('email', '', ['class' => '_fwfl  _ff0 _r2 auth-field', 'id' => 'email', 'maxlength' => '128', 'autocomplete' => 'off']) !!}
                 </div>
             </div>
             <div class="_fwfl auth-field-group">
@@ -33,7 +33,7 @@
                     @endif
                 </label>
                 <div class="_fwfl">
-                    {!! Form::text('username', '', ['class' => '_fwfl  _ff0 _r2 auth-field', 'id' => 'username', 'maxlength' => '64']) !!}
+                    {!! Form::text('username', '', ['class' => '_fwfl  _ff0 _r2 auth-field', 'id' => 'username', 'maxlength' => '64', 'autocomplete' => 'off']) !!}
                 </div>
             </div>
             <div class="_fwfl auth-field-group">
@@ -46,7 +46,7 @@
 
                 </label>
                 <div class="_fwfl">
-                    {!! Form::password('password', ['class' => '_ff0 _r2 _fwfl auth-field', 'id' => 'password', 'maxlength' => '60']) !!}
+                    {!! Form::password('password', ['class' => '_ff0 _r2 _fwfl auth-field', 'id' => 'password', 'maxlength' => '60', 'autocomplete' => 'off']) !!}
                 </div>
             </div>
             <div class="_fwfl _tg5 auth-field-group">

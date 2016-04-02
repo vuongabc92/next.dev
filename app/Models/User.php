@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -12,7 +12,7 @@ class User extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'email', 'password',
     ];
 
     /**
@@ -23,6 +23,13 @@ class User extends Authenticatable {
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    /**
+     * Get the user profile record associated with the user.
+     */
+    public function userProfile() {
+        return $this->hasOne('App\Models\UserProfile');
+    }
     
     /**
      * Get register error rules

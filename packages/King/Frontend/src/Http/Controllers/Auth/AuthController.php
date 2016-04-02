@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use King\Frontend\Http\Controllers\FrontController;
 use Validator;
-use App\Model\User;
+use App\Models\User;
 class AuthController extends FrontController {
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
@@ -143,5 +143,4 @@ class AuthController extends FrontController {
     protected function getFailedLoginMessage() {
         return _t('auth.login.failed');
     }
-
 }

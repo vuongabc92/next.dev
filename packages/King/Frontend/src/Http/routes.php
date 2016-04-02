@@ -19,6 +19,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('password/reset', ['as' => 'front_password_reset', 'uses' => 'Auth\PasswordController@reset']);
 
     Route::get('/', ['as' => 'front_home', 'uses' => 'HomeController@index']);
-    Route::get('/profile', ['as' => 'front_profile', 'uses' => 'ProfileController@index']);
 });
 
+Route::group(['middleware' => ['web', 'auth:web']], function () {
+    Route::get('settings', ['as' => 'front_setting', 'uses' => 'SettingsController@index']);
+    Route::post('settings/publish_profile', ['as' => 'front_setting_publish_profile', 'uses' => 'SettingsController@publishProfile']);
+    Route::post('settings/upload_avatar', ['as' => 'front_settings_upload_avatar', 'uses' => 'SettingsController@uploadAvatar']);
+    Route::post('settings/upload_cover', ['as' => 'front_settings_upload_cover', 'uses' => 'SettingsController@uploadCover']);
+});

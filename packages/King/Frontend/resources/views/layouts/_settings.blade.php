@@ -7,18 +7,32 @@
         <meta name="msapplication-tap-highlight" content="no"/>
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <!--[if lt IE 9]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/font-awesome.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/common.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/style.css') }}">
     </head>
     <body>
-        <div class="_ma _mw970">
-            <div class="_fwfl wrapper">
+        <main>
+            <div class="_mt20 _mb20 container settings">
                 @yield('body')
             </div>
-        </div>
-        
+            <div class="setting-messages _dn">
+                <div class="container">
+                    <div class="_fl col-md-9 col-xs-12">
+                        <b class="_fl _fs13 message" id="message"></b>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery_v1.11.1.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery-ui-1.11.4.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/webtoolkit.aim.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/script.js') }}"></script>
         <script>
             SETTINGS = {
                 AJAX_OK: 'OK',
@@ -27,13 +41,5 @@
                 AJAX_PUBLISH_PROFILE_URL: '{{ route('front_setting_publish_profile') }}',
             }
         </script>
-        <!--[if lt IE 9]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery_v1.11.1.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery-ui-1.11.4.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/webtoolkit.aim.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/script.js') }}"></script>
     </body>
 </html>
