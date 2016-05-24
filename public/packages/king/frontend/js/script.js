@@ -1,3 +1,8 @@
+$.ajaxSetup({
+    headers: {
+       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+});
 
 /**
  * AJAX upload file
@@ -48,6 +53,37 @@ AIM = {
     }
 }
 
+/* Publish profile switcher */
+$("[name='publish_profile']").bootstrapSwitch({
+    size: 'mini',
+    handleWidth: 3,
+    labelWidth: 3,
+    onText: '',
+    offText: '',
+    inverse: true,
+    onSwitchChange: function (event, state) {
+        
+        var form = $(this).closest('form');
+        
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: {publish_state: state},
+            success: function() {
+                $('.inline-notification.success').addClass('show-animation');
+                setTimeout(function(){
+                    $('.inline-notification.success').removeClass('show-animation');
+                }, 2000);
+            },
+            error: function(){
+                $('.inline-notification.error').addClass('show-animation');
+                setTimeout(function(){
+                    $('.inline-notification.error').removeClass('show-animation');
+                }, 2000);
+            }
+        });
+    }
+});
 
 /**
  *  @name Required
@@ -232,11 +268,11 @@ AIM = {
                     success: function(response) {
                         if (response.status === SETTINGS.AJAX_OK) {
                             if (response.publish) {
-                                current.addClass('_btn-blue1').removeClass('_btn-orange');
+                                current.addClass('_btn-green').removeClass('_btn-orange');
                                 checkIcon.removeClass('_dn').addClass('_dlb');
                                 checkText.html(response.publishText);
                             } else {
-                                current.removeClass('_btn-blue1').addClass('_btn-orange');
+                                current.removeClass('_btn-green').addClass('_btn-orange');
                                 checkIcon.removeClass('_dlb').addClass('_dn');
                                 checkText.html(response.publishText);
                             }
@@ -548,6 +584,84 @@ AIM = {
                     settingsDisplaying.show();
                 });
             
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Save info
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'save-info';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current  = this.element,
+                requires = current.data('requires').split('|');
+                
+            current.on('submit', function(e){
+                e.preventDefault();
+                $.each(requires, function(k, v){
+                    var field = $('[name=' + v + ']');
+                    if (field.val() === '') {
+                        field.addClass('error');
+                    } else {
+                        field.removeClass('error');
+                    }
+                });
+                $.ajax({
+                    type: current.attr('method'),
+                    url: current.attr('action'),
+                    data: current.serialize(),
+                    success: function(response){
+                        
+                    }
+                });
+                
+                return false;
+            });
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

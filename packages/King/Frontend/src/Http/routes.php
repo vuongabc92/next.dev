@@ -26,4 +26,5 @@ Route::group(['middleware' => ['web', 'auth:web']], function () {
     Route::post('settings/publish_profile', ['as' => 'front_setting_publish_profile', 'uses' => 'SettingsController@publishProfile']);
     Route::post('settings/upload_avatar', ['as' => 'front_settings_upload_avatar', 'uses' => 'SettingsController@uploadAvatar']);
     Route::post('settings/upload_cover', ['as' => 'front_settings_upload_cover', 'uses' => 'SettingsController@uploadCover']);
+    Route::post('settings/save_info', ['as' => 'front_settings_save_info', 'uses' => 'SettingsController@saveInfo']);
 });
