@@ -184,11 +184,46 @@ class SettingsController extends FrontController {
 
     public function saveInfo(Request $request) {
         if ($request->ajax() && $request->isMethod('POST')) {
-            $type     = $request->get('save_info_type');
-            $password = $request->get('password');
-            $email    = $request->get('email');
-            var_dump('<pre>', $password, $email, $type);
-            die('^^!');
+            $type = $request->get('type');
+            
+            switch ($type) {
+                case '_EMAIL':
+                    $password = $request->get('password');
+                    $email    = $request->get('email');
+                    if (Hash::check($password, user()->password)) {
+                        user()->email = $email;
+                        user()->save();
+                        return pong(['message' => _t('good_job')]);
+                    } else {
+                        return pong(['message' => _t('auth.login.pass_wrong')], _error(), 403);
+                    }
+
+                    break;
+                    
+                case '_SLUG':
+                    $userProfile = user()->userProfile;
+                    $slug        = $request->get('slug');
+                    
+                    if (is_null($userProfile)) {
+                        $userProfile          = new UserProfile();
+                        $userProfile->user_id = user()->id;
+                    }
+                    
+                    $profileBySlug = $userProfile->where('slug', $slug)->where('slug', '!=', $userProfile->slug)->first();
+                    
+                    if ($profileBySlug !== null) {
+                        return pong(['message' => _t('setting.profile.slugexist')], _error(), 403);
+                    }
+                    
+                    $userProfile->slug = $slug;
+                    $userProfile->save();
+                    
+                    return pong(['message' => _t('good_job')]);
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 

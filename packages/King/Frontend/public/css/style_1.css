@@ -124,11 +124,7 @@ body{background-color:#f5f8fa;}
     margin: auto;
     z-index: 10;
 }
-.settings-form {
-    width: 85%;
-    display: none;
-}
-.settings-row {
+.settings-row{
     padding: 20px 0;
     border-bottom: solid 1px #eee;
 }
@@ -191,13 +187,8 @@ body{background-color:#f5f8fa;}
     bottom: 0;
     left: 0;
     right:0;
-    opacity: 0.9;
-}
-.setting-messages.error{
     background-color: #f66;
-}
-.setting-messages.success{
-    background-color: #20863A;
+    opacity: 0.9;
 }
 .message {
     height: 100%;
@@ -221,7 +212,7 @@ body{background-color:#f5f8fa;}
 .bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-on, .bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-off, .bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-label {
     font-size: 13px;
     padding: 0 4px;
-    height: 14px;
+    height: 15px;
     border-radius: 7px;
 }
 .bootstrap-switch-off {
@@ -243,13 +234,6 @@ body{background-color:#f5f8fa;}
 }
 .bootstrap-switch-on .bootstrap-switch-label {
     background-color: #337ab7;
-}
-.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
-    width: 14px !important;
-}
-.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-label {
-    width: 10px !important;
 }
 .inline-notification {
     height: 23px;
@@ -304,10 +288,5 @@ body{background-color:#f5f8fa;}
     }
     .row>.col-md-9, .row>.col-xs-12 {
         padding-right: 0;
-    }
-    
-    .settings-form {
-        width: 100%;
-        display: none;
     }
 }

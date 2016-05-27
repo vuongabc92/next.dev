@@ -85,32 +85,6 @@ $("[name='publish_profile']").bootstrapSwitch({
     }
 });
 
-function showMessage(message, error) {
-
-    var msgBlock = $('.setting-messages'),
-        msgText  = $('#message');
-    
-    if (error === 'success') {
-        msgBlock.removeClass('error').addClass('success');
-    } else {
-        msgBlock.removeClass('success').addClass('error');
-    }
-    
-    msgText.html(message);
-    msgBlock.show();
-
-    var showErrorMsg = setTimeout(function(){
-        msgBlock.hide();
-    }, 4000);
-
-    msgBlock.on('click', function(){
-       $(this).hide();
-       clearTimeout(showErrorMsg);
-    });
-    
-    return showErrorMsg;
-}
-
 /**
  *  @name Required
  *  @description
@@ -225,6 +199,86 @@ function showMessage(message, error) {
                         target.submit();
                         break;
                 }
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Publish Profile
+ *  @description Create an AJAX request to publish or unpublish user CV
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'publish-profile';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current   = this.element,
+                checkIcon = current.children('i'),
+                checkText = current.children('span');
+            
+            current.on('click', function(){
+                $.ajax({
+                    type: 'POST',
+                    url: SETTINGS.AJAX_PUBLISH_PROFILE_URL,
+                    data: {_token: SETTINGS.TOKEN},
+                    beforeSend: function(){},
+                    error: function() {},
+                    success: function(response) {
+                        if (response.status === SETTINGS.AJAX_OK) {
+                            if (response.publish) {
+                                current.addClass('_btn-green').removeClass('_btn-orange');
+                                checkIcon.removeClass('_dn').addClass('_dlb');
+                                checkText.html(response.publishText);
+                            } else {
+                                current.removeClass('_btn-green').addClass('_btn-orange');
+                                checkIcon.removeClass('_dlb').addClass('_dn');
+                                checkText.html(response.publishText);
+                            }
+                        }
+                    }
+                });
             });
         },
         destroy: function() {
@@ -456,14 +510,14 @@ function showMessage(message, error) {
 
     Plugin.prototype = {
         init: function() {
-            var current = this.element;
+            var current            = this.element,
+                parent             = current.closest('.settings-row'),
+                form               = parent.find('.settings-group-wrapper'),
+                settingsDisplaying = parent.find('.settings-displaying');
+                
                 current.on('click', function(){
-                    var section = current.closest('section');
-                    
-                    $('.settings section').addClass('_disable');
-                    section.removeClass('_disable');
-                    section.find('.settings-show').hide();
-                    section.find('form').show();
+                    form.show();
+                    settingsDisplaying.hide();
                 });
             
         },
@@ -520,22 +574,14 @@ function showMessage(message, error) {
 
     Plugin.prototype = {
         init: function() {
-            var current = this.element;
+            var current            = this.element,
+                parent             = current.closest('.settings-row'),
+                form               = parent.find('.settings-group-wrapper'),
+                settingsDisplaying = parent.find('.settings-displaying');
                 
                 current.on('click', function(){
-                    var section      = current.closest('section'),
-                        settingsForm = section.find('form'),
-                        requires     = settingsForm.data('requires').split('|');
-                    
-                    $('.settings section').removeClass('_disable');
-                    section.find('.settings-show').show();
-                    settingsForm.hide();
-                    
-                    if ($.isArray(requires) && requires.length) {
-                        $.each(requires, function(k, v){
-                            $('[name=' + v + ']').removeClass('error');
-                        });
-                    }
+                    form.hide();
+                    settingsDisplaying.show();
                 });
             
         },
@@ -582,7 +628,7 @@ function showMessage(message, error) {
  */
 ;
 (function($, window, undefined) {
-    var pluginName = 'save-form';
+    var pluginName = 'save-info';
 
     function Plugin(element, options) {
         this.element = $(element);
@@ -597,46 +643,19 @@ function showMessage(message, error) {
                 
             current.on('submit', function(e){
                 e.preventDefault();
-                var everythingOk = true;
-                if ($.isArray(requires) && requires.length) {
-                    $.each(requires, function(k, v){
-                        var field = $('[name=' + v + ']');
-                        if (field.val() === '') {
-                            field.addClass('error');
-                            everythingOk = false;
-                        } else {
-                            field.removeClass('error');
-                        }
-                    });
-                }
-                
-                if ( ! everythingOk) {
-                    return false;
-                }
-                
+                $.each(requires, function(k, v){
+                    var field = $('[name=' + v + ']');
+                    if (field.val() === '') {
+                        field.addClass('error');
+                    } else {
+                        field.removeClass('error');
+                    }
+                });
                 $.ajax({
                     type: current.attr('method'),
                     url: current.attr('action'),
                     data: current.serialize(),
-                    dataType: 'json',
-                    error: function(xhr, status, error) {
-                        var response = $.parseJSON(xhr.responseText);
-                        showMessage(response.message, 'error');
-                    },
                     success: function(response){
-                        if (current.find('[name="type"]').val() === '_SLUG') {
-                            var slugSplit   = $('.current-slug').html().trim().split('/'),
-                                currentSlug = $('.current-slug');
-                            
-                            currentSlug.html(slugSplit[0] + '/' + current.find('[name="slug"]').val());
-                            
-                            currentSlug.attr('href', 'http://' + slugSplit[0] + '/' + current.find('[name="slug"]').val());
-                        }
-                        
-                        showMessage(response.message, 'success');
-                        setTimeout(function(){
-                            current.find('button[type=reset]').click();
-                        }, 300);
                         
                     }
                 });

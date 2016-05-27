@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use King\Frontend\Http\Controllers\FrontController;
 use Validator;
 use App\Models\User;
+use App\Models\UserProfile;
 class AuthController extends FrontController {
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
@@ -84,11 +85,26 @@ class AuthController extends FrontController {
      * @return User
      */
     protected function create(array $data) {
-        return User::create([
+        $user = User::create([
             'email'    => $data['email'],
             'username' => $data['username'],
             'password' => bcrypt($data['password']),
         ]);
+        
+        $slug = $data['username'];
+        $i    = 0;
+        
+        while(UserProfile::where('slug', $slug)->first() !== null) {
+            $i++;
+            $slug .= $i;
+        }
+        
+        $userProfile = new UserProfile();
+        $userProfile->user_id = $user->id;
+        $userProfile->slug    = $slug;
+        $userProfile->save();
+        
+        return $user;
     }
     
     /**

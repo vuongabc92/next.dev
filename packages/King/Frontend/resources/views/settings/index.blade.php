@@ -30,7 +30,10 @@
                         </div>
                         <div class="_fwfl _mt15">
                             <h3 class="_p0 _m0 _tg6">Bui Thanh Vuong</h3>
-                            <p class="_m0"><strong class="_fs12 _tg8">Visit:</strong> <a href="#" class="_tb _fs12">next.com/vuongabc92</a></p>
+                            <p class="_m0">
+                                <strong class="_fs12 _tg8">Visit:</strong> 
+                                <a href="{{ url($userProfile->slug) }}" class="_tb _fs12 current-slug">{{ preg_replace('/^http:\/\//', '', url($userProfile->slug)) }}</a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -42,11 +45,12 @@
                     </div>
                     <div class="_fr col-md-9 col-xs-12">
                         <form action="{{ route('front_setting_publish_profile') }}" method="POST" class="_fwfl">
-                            <input type="checkbox" name="publish_profile" {{ ($userProfile->publish) ? 'checked' : '' }}> 
+                            <span class="_fl"><input type="checkbox" name="publish_profile" id="publish-cv-swicher" {{ ($userProfile->publish) ? 'checked' : '' }}></span>
+                            <label class="_fl _m0 _ml10 _mt3 _fs13 _tg7" for="publish-cv-swicher">{{ _t('setting.profile.publishcs_msg') }}</label>
                             <span class="inline-notification success">{{ _t('saved') }}</span>
                             <span class="inline-notification error">{{ _t('opps') }}</span>
                         </form>
-                        <span class="_mt10 settings-help-text">{{ _t('setting.profile.publish_note') }}</span>
+                        <span class="_mt5 settings-help-text">{{ _t('setting.profile.publish_note') }}</span>
                     </div>
                 </div>
             </section>
@@ -57,24 +61,24 @@
                         <b class="settings-row-title">{{ _t('setting.profile.email') }}</b>
                     </div>
                     <div class="_fl col-md-9 col-xs-12">
-                        {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'data-save-info' => '', 'data-requires' => 'email|password']) !!}
-                            <div class="_fl col-no-padding col-md-11 col-xs-11 settings-displaying">
+                        <div class="settings-show">
+                            <div class="_fl col-no-padding col-md-11 col-xs-11 ">
                                 <b class="_fwfl _tb _fs13">{{ user()->email }}</b>
                             </div>
-                            <div class="_fr col-no-padding col-md-1 col-xs-1 settings-displaying">
+                            <div class="_fr col-no-padding col-md-1 col-xs-1">
                                 <button type="button" class="settings-expand-btn" data-show-form><i class="fa fa-pencil"></i></button>
                             </div>
-                            <div class="_fwfl settings-group-wrapper">
-                                <div class="settings-field-wrapper">
-                                    {!! Form::text('email', user()->email, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.emailaddress')]) !!}
-                                </div>
-                                <div class="settings-field-wrapper">
-                                    {!! Form::password('password', ['class' => 'settings-field', 'placeholder' => _t('setting.profile.repass')]) !!}
-                                </div>
-                                <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
-                                <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
-                                <input type="hidden" name="save_info_type" value="email"/>
+                        </div>
+                        {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form', 'data-save-form' => '', 'data-requires' => 'email|password']) !!}
+                            <div class="settings-field-wrapper">
+                                {!! Form::text('email', user()->email, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.emailaddress')]) !!}
                             </div>
+                            <div class="settings-field-wrapper">
+                                {!! Form::password('password', ['class' => 'settings-field', 'placeholder' => _t('setting.profile.repass')]) !!}
+                            </div>
+                            <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
+                            <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
+                            <input type="hidden" name="type" value="_EMAIL"/>
                         {!! Form::close() !!}
                     </div>
                 </div>
@@ -85,23 +89,26 @@
                         <b class="settings-row-title">{{ _t('setting.profile.url') }}</b>
                     </div>
                     <div class="_fl col-md-9 col-xs-12">
-                        <div class="_fl col-no-padding col-md-11 col-xs-11 settings-displaying">
-                            <b class="_fwfl"><a href="#" class="_tg6 _fs13 _tdn">next.com/vuongabc92</a></b>
+                        <div class="settings-show">
+                            <div class="_fl col-no-padding col-md-11 col-xs-11 ">
+                                <b class="_fwfl"><a href="{{ url($userProfile->slug) }}" class="_tg6 _fs13 _tdn current-slug">{{ preg_replace('/^http:\/\//', '', url($userProfile->slug)) }}</a></b>
+                            </div>
+                            <div class="_fr col-no-padding col-md-1 col-xs-1">
+                                <button type="button" class="settings-expand-btn" data-show-form><i class="fa fa-pencil"></i></button>
+                            </div>
                         </div>
-                        <div class="_fr col-no-padding col-md-1 col-xs-1 settings-displaying">
-                            <button type="button" class="settings-expand-btn" data-show-form><i class="fa fa-pencil"></i></button>
-                        </div>
-                        <div class="_fwfl settings-group-wrapper">
+                        {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form', 'data-save-form' => '', 'data-requires' => 'slug']) !!}
                             <div class="settings-field-wrapper">
-                                {!! Form::text('slug', 'vuongabc92', ['class' => 'settings-field', 'placeholder' => 'Your page URL']) !!}
+                                {!! Form::text('slug', $userProfile->slug, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.slug')]) !!}
                             </div>
                             <span class="_fwfl settings-help-text _mb10">
-                                Current URL: <strong class="_tg7">next.com/vuongabc92</strong>
+                                {{ _t('setting.profile.currurl') }} <strong class="_tg7 current-slug">{{ preg_replace('/^http:\/\//', '', url($userProfile->slug)) }}</strong>
                                 <p>The must be unique. It's should be short, easy to read and when some one look at the URL they're impressed.</p>
                             </span>
-                            <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">Save</button>
-                            <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>Cancel</button>
-                        </div>
+                            <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
+                            <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
+                            <input type="hidden" name="type" value="_SLUG"/>
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </section>
