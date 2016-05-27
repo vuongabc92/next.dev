@@ -46,22 +46,18 @@ class SettingsController extends FrontController {
     public function publishProfile(Request $request) {
         if ($request->ajax() && $request->isMethod('POST')) {
             
-            $userProfile = user()->userProfile;
+            $userProfile     = user()->userProfile;
+            $publish_request = ($request->get('publish_state') === 'true') ? true : false;
             
             if (is_null($userProfile)) {
                 $userProfile          = new UserProfile();
                 $userProfile->user_id = user()->id;
-                $userProfile->publish = 1;
-            } elseif ($userProfile->publish) {
-                $userProfile->publish = 0;
-            } else {
-                $userProfile->publish = 1;
             }
-
+            
+            $userProfile->publish = $publish_request;
             $userProfile->save();
-            $publishText = ($userProfile->publish) ? _t('setting.profile.published_btn') : _t('setting.profile.publish_btn');
-
-            return pong(['publish' => $userProfile->publish, 'publishText' => $publishText]);
+            
+            return pong(['publish' => $userProfile->publish]);
         }
     }
     
@@ -118,7 +114,7 @@ class SettingsController extends FrontController {
                 return file_pong(['avatar_medium' => $storagePath . '/' . $mediumName]);
             }
             
-            return file_pong(['messages' => _t('opp')], _error(), 403);
+            return file_pong(['messages' => _t('opps')], _error(), 403);
         }
     }
     
@@ -176,7 +172,7 @@ class SettingsController extends FrontController {
                 return file_pong(['cover_medium' => $storagePath . '/' . $mediumName]);
             }
             
-            return file_pong(['messages' => _t('opp')], _error(), 403);
+            return file_pong(['messages' => _t('opps')], _error(), 403);
         }
     }
     
@@ -185,6 +181,16 @@ class SettingsController extends FrontController {
 //            return pong(['password' => $this->_generateStrongPassword()]);
 //        }
 //    }
+
+    public function saveInfo(Request $request) {
+        if ($request->ajax() && $request->isMethod('POST')) {
+            $type     = $request->get('save_info_type');
+            $password = $request->get('password');
+            $email    = $request->get('email');
+            var_dump('<pre>', $password, $email, $type);
+            die('^^!');
+        }
+    }
 
     /**
      * Get avatar validation rules

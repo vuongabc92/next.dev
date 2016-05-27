@@ -198,6 +198,67 @@ body{background-color:#f5f8fa;}
 .setting-messages .close {
     position: relative;
 }
+.settings-field-wrapper .settings-field.error {
+    border-color: #de5d3d;
+}
+
+/* Bootstrap switcher */
+.bootstrap-switch {
+    outline: none;
+    border: none;
+    border-radius: 7px;
+}
+
+.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-on, .bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-off, .bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-label {
+    font-size: 13px;
+    padding: 0 4px;
+    height: 15px;
+    border-radius: 7px;
+}
+.bootstrap-switch-off {
+    background-color: #9da6af;
+}
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default {
+    background-color: #fff;
+    border: solid 2px #9da6af;
+}
+.bootstrap-switch-off .bootstrap-switch-label {
+    background-color: #9da6af;
+}
+.bootstrap-switch-on {
+    background-color: #337ab7;
+}
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
+    background-color: #fff;
+    border: solid 2px #337ab7;
+}
+.bootstrap-switch-on .bootstrap-switch-label {
+    background-color: #337ab7;
+}
+.inline-notification {
+    height: 23px;
+    line-height: 23px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 2px;
+    position: absolute;
+    right: 0;
+    visibility: hidden;
+    opacity: 0;
+}
+.inline-notification.success {
+    background-color: #56bc8a; 
+}
+.inline-notification.error {
+    background-color: #f66; 
+}
+.inline-notification.show-animation {
+    transition: opacity .2s linear;
+    opacity: 1;
+    visibility: visible;
+}
 @media (min-width: 1200px) {
     .container {
         width: 970px;

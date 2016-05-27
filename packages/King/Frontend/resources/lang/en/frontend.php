@@ -1,8 +1,10 @@
 <?php
 
 return [
-    'saved' => 'saved info.',
-    'opp' => 'Opp! Something went wrong.',
+    'saved' => 'saved',
+    'opps' => 'Opps :(',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
     'signin' => 'Sign in',
     'signin.title' => 'Next - Sign in',
     'signin.form.title' => 'Sign In To Next',
@@ -47,6 +49,8 @@ return [
     'setting.profile.pass_btn' => 'Change password',
     'setting.profile.personal' => 'Personal information',
     'setting.profile.contact' => 'Contact',
+    'setting.profile.emailaddress' => 'Email address',
+    'setting.profile.repass' => 'Confirm password',
     'setting.nav.profile' => 'Profile',
     'setting.nav.profile_help' => 'The most basic informations',
     'setting.nav.skills' => 'Skills',
