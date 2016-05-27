@@ -192,37 +192,91 @@ if ( ! function_exists('generate_filename')) :
      * @return string
      */
     function generate_filename($directory, $extension, $options = []) {
-
-        $microtime = microtime(true);
-        $randStr   = str_random(10);
-        
-        // A specify key, default is zero.
-        if (isset($options['key'])) {
-            $key = $options['key'];
-        } elseif(auth()->check()) {
-            $key = user()->id;
-        } else {
-            $key = 0;
-        }
-
-        $prefix = isset($options['prefix']) ? $options['prefix']  : '';
-        $suffix = isset($options['suffix']) ? $options['suffix']  : '';
-        $limit  = isset($options['limit'])  ? (int) $options['limit'] : 16;
-        $md5Str = md5($key . $microtime . $randStr);
-        
-        if ($limit) {
-            $md5Str = str_limit($md5Str, $limit, '');
-        }
-        
-        $fileName = $prefix . $md5Str . $suffix . '.' . $extension;
+        $prefix    = isset($options['prefix']) ? $options['prefix']  : '';
+        $suffix    = isset($options['suffix']) ? $options['suffix']  : '';
+        $limit     = isset($options['limit'])  ? (int) $options['limit'] : 16;
+        $randomStr = random_string($limit, $available_sets = 'lud');
+        $fileName  = $prefix . $randomStr . $suffix . '.' . $extension;
 
         while (check_file($directory . $fileName)) {
-            $fileName = generate_filename($directory, $extension . $prefix);
+            $fileName = generate_filename($directory, $extension, $options);
         }
 
         return $fileName;
     }
 endif;
+
+if ( ! function_exists('random_string')) {
+    /**
+     * <code>https://gist.github.com/tylerhall/521810</code>
+     * 
+     * Generates a string of N length containing at least one lower case letter,
+     * one uppercase letter, one digit, and one special character. The remaining characters
+     * in the string are chosen at random from those four sets.
+     * The available characters in each set are user friendly - there are no ambiguous
+     * characters such as i, l, 1, o, 0, etc.
+     * 
+     * @param int    $length         Length of the password will be generated
+     * @param string $available_sets dedaults sets include letter (l), uppercase (u), digit (d), special character (s)
+     * 
+     * @return string
+     */
+    function random_string($length = 8, $available_sets = 'luds') {
+        $sets     = array();
+        $all      = '';
+        $password = '';
+        
+        if(strpos($available_sets, 'l') !== false) {
+            $sets[] = 'abcdefghjkmnpqrstuvwxyz';
+        }
+        if(strpos($available_sets, 'u') !== false) {
+            $sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
+        }
+        if(strpos($available_sets, 'd') !== false) {
+            $sets[] = '23456789';
+        }
+        if(strpos($available_sets, 's') !== false) {
+            $sets[] = '!@#$%&*?';
+        }
+        
+        foreach($sets as $set) {
+            $password .= $set[array_rand(str_split($set))];
+            $all      .= $set;
+        }
+        
+        $all = str_split($all);
+        for($i = 0; $i < $length - count($sets); $i++) {
+            $password .= $all[array_rand($all)];
+        }
+        
+        return str_shuffle($password);
+    }
+}
+
+if ( ! function_exists('random_string_with_dashes')) {
+    /**
+     * Add dashes to the random string.
+     * 
+     * @param int    $length         Length of the password will be generated
+     * @param string $available_sets dedaults sets include letter (l), uppercase (u), digit (d), special character (s)
+     * 
+     * @return string
+     */
+    function random_string_with_dashes($length = 8, $available_sets = 'luds') {
+        $randomString = random_string($length, $available_sets);
+        $dash_len     = floor(sqrt($length));
+        $dash_str     = '';
+        
+        while(strlen($randomString) > $dash_len) {
+            $dash_str    .= substr($randomString, 0, $dash_len) . '-';
+            $randomString = substr($randomString, $dash_len);
+        }
+        
+        $dash_str .= $randomString;
+        
+        return $dash_str;
+    }
+}
 
 if ( ! function_exists('check_file')) :
     /**
@@ -275,21 +329,3 @@ if ( ! function_exists('delete_file')) :
     }
 endif;
 
-if ( ! function_exists('make_random_string') ) :
-    /**
-     * Make a random string
-     * 
-     * @param string $id     A unique string
-     * @param string $prefix String prefix
-     * @param string $suffix String suffix
-     * @param string $limit  Max length of string
-     * 
-     * @return string A random string
-     */
-    function make_random_string($id, $prefix = '', $suffix = '', $limit = 16) {
-        $md5String   = md5($id . microtime(true) . str_random());
-        $limitString = str_limit($md5String, $limit, '');
-        
-        return $prefix . $limitString . $suffix;
-    }
-endif;

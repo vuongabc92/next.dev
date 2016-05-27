@@ -23,10 +23,16 @@
             <span class="nav-link-help">{{ _t('setting.nav.employment_help') }}</span>
         </a>
     </li>
-    <li class="nav-link-last">
+    <li>
         <a href="#">
             <strong>{{ _t('setting.nav.references') }}</strong>
             <span class="nav-link-help">{{ _t('setting.nav.references_help') }}</span>
+        </a>
+    </li>
+    <li class="nav-link-last">
+        <a href="#">
+            <strong>{{ _t('setting.nav.theme') }}</strong>
+            <span class="nav-link-help">{{ _t('setting.nav.theme_help') }}</span>
         </a>
     </li>
 </ul>

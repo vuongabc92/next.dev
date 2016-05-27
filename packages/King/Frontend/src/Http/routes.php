@@ -19,6 +19,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('password/reset', ['as' => 'front_password_reset', 'uses' => 'Auth\PasswordController@reset']);
 
     Route::get('/', ['as' => 'front_home', 'uses' => 'HomeController@index']);
+    Route::get('/strong_password', ['as' => 'front_strong_pass', 'uses' => 'SettingsController@strongPassword']);
 });
 
 Route::group(['middleware' => ['web', 'auth:web']], function () {

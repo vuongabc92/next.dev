@@ -8,6 +8,7 @@ namespace King\Frontend\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\UserProfile;
 use Validator;
+use Hash;
 use Intervention\Image\Facades\Image as ImageIntervention;
 
 class SettingsController extends FrontController {
@@ -102,8 +103,8 @@ class SettingsController extends FrontController {
                 $userProfile = user()->userProfile;
                 
                 if (is_null($userProfile)) {
-                    $userProfile               = new UserProfile();
-                    $userProfile->user_id      = user()->id;
+                    $userProfile          = new UserProfile();
+                    $userProfile->user_id = user()->id;
                 } else {
                     $avatarImg = unserialize($userProfile->avatar_image);
                     if (isset($avatarImg[$mediumSize])) {
@@ -139,12 +140,12 @@ class SettingsController extends FrontController {
             }
             
             if ($request->file('__file')->isValid()) {
-                $avatar       = $request->file('__file');
-                $storagePath  = config('frontend.coversFolder');
-                $mediumSizeW  = (int) config('frontend.coverMediumW');
-                $mediumSizeH  = (int) config('frontend.coverMediumH');
-                $mediumName   = generate_filename($storagePath, $avatar->getClientOriginalExtension(), [
-                    'prefix' => 'avatar_', 
+                $avatar      = $request->file('__file');
+                $storagePath = config('frontend.coversFolder');
+                $mediumSizeW = (int) config('frontend.coverMediumW');
+                $mediumSizeH = (int) config('frontend.coverMediumH');
+                $mediumName  = generate_filename($storagePath, $avatar->getClientOriginalExtension(), [
+                    'prefix' => 'cover_', 
                     'suffix' => "_{$mediumSizeW}x{$mediumSizeH}"
                 ]);
                 
@@ -160,8 +161,8 @@ class SettingsController extends FrontController {
                 $userProfile = user()->userProfile;
                 
                 if (is_null($userProfile)) {
-                    $userProfile           = new UserProfile();
-                    $userProfile->user_id  = user()->id;
+                    $userProfile          = new UserProfile();
+                    $userProfile->user_id = user()->id;
                 } else {
                     $avatarImg = unserialize($userProfile->cover_image);
                     if (isset($avatarImg[$mediumSizeW])) {
@@ -179,6 +180,12 @@ class SettingsController extends FrontController {
         }
     }
     
+//    public function strongPassword(Request $request) {
+//        if ($request->ajax() && $request->isMethod('GET')) {
+//            return pong(['password' => $this->_generateStrongPassword()]);
+//        }
+//    }
+
     /**
      * Get avatar validation rules
      *
