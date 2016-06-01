@@ -706,7 +706,7 @@ function showMessage(message, error) {
                 label   = current.find('label');
                 
             select.on('change', function(e){
-                label.html($(this).val());
+                label.html($(this).find('option[value="' + $(this).val() + '"]').text());
             });
         },
         destroy: function() {

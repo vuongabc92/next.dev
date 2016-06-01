@@ -162,7 +162,7 @@
                                     {!! Form::text('last_name', $userProfile->last_name, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.lname')]) !!}
                                 </span>
                             </div>
-                            <div class="settings-field-wrapper">
+                            <div class="settings-field-wrapper settings-birthday">
                                 @set $birthdate = birthdate()
                                 {!! Form::kingSelect('date', $birthdate['date'], null, ['id' => 'settings-birthdate', 'class' => 'settings-field'], _t('setting.profile.birthdate')) !!}
                                 {!! Form::kingSelect('month', $birthdate['month'], null, ['id' => 'settings-birthmonth', 'class' => 'settings-field'], _t('setting.profile.birthmonth')) !!}
@@ -170,10 +170,10 @@
                             </div>
                             <div class="settings-field-wrapper">
                                 {!! Form::kingSelect('gender', [
-                                    _t('setting.profile.sextell') => _t('setting.profile.sextell'), 
-                                    _t('setting.profile.male') => _t('setting.profile.male'), 
-                                    _t('setting.profile.female') => _t('setting.profile.female'), 
-                                    _t('setting.profile.other') => _t('setting.profile.other')
+                                    0 => _t('setting.profile.sextell'), 
+                                    1 => _t('setting.profile.male'), 
+                                    2 => _t('setting.profile.female'), 
+                                    3 => _t('setting.profile.other')
                                 ], null, ['id' => 'settings-gender', 'class' => 'settings-field'], _t('setting.profile.sextell')) !!}
                             </div>
                             <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>

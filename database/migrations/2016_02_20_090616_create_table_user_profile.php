@@ -18,7 +18,8 @@ class CreateTableUserProfile extends Migration
            $table->string('slug', 128);
            $table->text('avatar_image');
            $table->text('cover_image');
-           $table->string('full_name', 50);
+           $table->string('first_name', 32);
+           $table->string('last_name', 32);
            $table->date('day_of_birth')->nullable();
            $table->string('marital_status');
            $table->integer('country_id')->unsigned()->nullable();

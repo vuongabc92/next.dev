@@ -347,22 +347,19 @@ if ( ! function_exists('birthdate')) {
      * @return array
      */
     function birthdate() {
-        $date = [_t('setting.profile.birthdate') => _t('setting.profile.birthdate')];
+        $date = [0 => _t('setting.profile.birthdate')];
         for ($d = 1; $d <= 31; $d++) {
-            $fullDate        = ($d < 10) ? '0' . $d : $d;
-            $date[$fullDate] = $fullDate;
+            $date[$d] = ($d < 10) ? '0' . $d : $d;
         }
         
-        $month = [_t('setting.profile.birthmonth') => _t('setting.profile.birthmonth')];
+        $month = [0 => _t('setting.profile.birthmonth')];
         for ($m = 1; $m <= 12; $m++) {
-            $fullMonth         = ($m < 10) ? '0' . $m : $m;
-            $month[$fullMonth] = $fullMonth;
+            $month[$m] = ($m < 10) ? '0' . $m : $m;;
         }
         
-        $year = [_t('setting.profile.birthyear') => _t('setting.profile.birthyear')];
+        $year = [0 => _t('setting.profile.birthyear')];
         for ($y = (((int) date('Y')) - 15); $y >= ((int) date('Y') - 85); $y--) {
-            $fullYear        = ($y < 10) ? '0' . $y : $y;
-            $year[$fullYear] = $fullYear;
+            $year[$y] = ($y < 10) ? '0' . $y : $y;
         }
         
         return array('date' => $date, 'month' => $month, 'year' => $year);

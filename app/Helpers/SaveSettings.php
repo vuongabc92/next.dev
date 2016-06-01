@@ -86,14 +86,48 @@ trait SaveSettings {
      * @return boolean|JSON
      */
     public function savePassword(Request $request) {
-        $validator = validator($request->all(), $this->_savePasswordValidateRules(), $this->_savePasswordValidateMessages());
         
+        $validator = validator($request->all(), $this->_savePasswordValidateRules(), $this->_savePasswordValidateMessages());
         $validator->after(function($validator) use($request) {
             if ( ! Hash::check($request->get('old_password'), user()->password)) {
                 $validator->errors()->add('old_password', _t('auth.login.pass_wrong'));
             }
         });
         
+        if ($validator->fails()) {
+            return $validator;
+        }
+        
+        $userProfile = user()->userProfile;
+        if (is_null($userProfile)) {
+            $userProfile          = new UserProfile();
+            $userProfile->user_id = user_id();
+        }
+        
+        $d = (int) $request->get('date');
+        $m = (int) $request->get('month');
+        $y = (int) $request->get('year');
+        
+        if ($d && $m && $y) {
+            $userProfile->day_of_birth = new DateTime("{$d}/{$m}/{$y}");
+        }
+        
+        $userProfile->first_name = $request->get('first_name');
+        $userProfile->last_name  = $request->get('last_name');
+        
+        return true;
+    }
+    
+    /**
+     * Save settings password.
+     * 
+     * @param Request $request
+     * 
+     * @return boolean|JSON
+     */
+    public function savePersonalInfo(Request $request) {
+        
+        $validator = validator($request->all(), $this->_savePersonalInfoRules(), $this->_savePersonalInfoMessages());
         if ($validator->fails()) {
             return $validator;
         }
@@ -105,7 +139,7 @@ trait SaveSettings {
     }
 
     /**
-     * Save email validate rules
+     * Save email validate rules.
      * 
      * @return array
      */
@@ -117,7 +151,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save slug validate rules
+     * Save slug validate rules.
      * 
      * @return array
      */
@@ -126,7 +160,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save slug validate messages
+     * Save slug validate messages.
      * 
      * @return array
      */
@@ -140,7 +174,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save slug validate rules
+     * Save slug validate rules.
      * 
      * @return array
      */
@@ -153,7 +187,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save slug validate messages
+     * Save slug validate messages.
      * 
      * @return array
      */
@@ -171,5 +205,36 @@ trait SaveSettings {
             'new_password_confirmation.max'      => _t('setting.profile.renewpass_max'),
         ];
     }
-     
+    
+    /**
+     * Save personal information rules.
+     * 
+     * @return array
+     */
+    protected function _savePersonalInfoRules() {
+        return [
+            'first_name' => 'required_with:last_name|max:32',
+            'last_name'  => 'required_with:first_name|max:32',
+            'date'       => 'required_with:month,year',
+            'month'      => 'required_with:date,year',
+            'year'       => 'required_with:date,month',
+        ];
+    }
+    
+    /**
+     * Save personal information messages.
+     * 
+     * @return array
+     */
+    protected function _savePersonalInfoMessages() {
+        return [
+            'first_name.required_with' => _t('setting.profile.fname_req'),
+            'first_name.max'           => _t('setting.profile.fname_max'),
+            'last_name.required_with'  => _t('setting.profile.lname_req'),
+            'last_name.max'            => _t('setting.profile.lname_max'),
+            'date.required_with'       => _t('setting.profile.date_req'),
+            'month.required_with'      => _t('setting.profile.month_req'),
+            'year.required_with'       => _t('setting.profile.year_req'),
+        ];
+    }
 }
