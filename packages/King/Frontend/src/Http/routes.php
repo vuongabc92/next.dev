@@ -8,6 +8,7 @@ Route::group(['middleware' => 'web'], function () {
     // Authentication Routes.
     Route::get('login', ['as' => 'front_login', 'uses' => 'Auth\AuthController@showLoginForm']);
     Route::post('login', ['as' => 'front_login_post', 'uses' => 'Auth\AuthController@postLogin']);
+    Route::get('logout', ['as' => 'front_login', 'uses' => 'Auth\AuthController@logout']);
 
     // Registration Routes.
     Route::get('register', ['as' => 'front_register', 'uses' => 'Auth\AuthController@showRegistrationForm']);

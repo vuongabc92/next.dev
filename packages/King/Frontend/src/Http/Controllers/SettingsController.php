@@ -8,10 +8,12 @@ namespace King\Frontend\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\UserProfile;
 use Validator;
-use Hash;
 use Intervention\Image\Facades\Image as ImageIntervention;
+use App\Helpers\SaveSettings;
 
 class SettingsController extends FrontController {
+    
+    use SaveSettings;
     
     /**
      * Display settings page
@@ -184,41 +186,38 @@ class SettingsController extends FrontController {
 
     public function saveInfo(Request $request) {
         if ($request->ajax() && $request->isMethod('POST')) {
-            $type = $request->get('type');
             
-            switch ($type) {
+            switch ($request->get('type')) {
                 case '_EMAIL':
-                    $password = $request->get('password');
-                    $email    = $request->get('email');
-                    if (Hash::check($password, user()->password)) {
-                        user()->email = $email;
-                        user()->save();
+                    $saveEmail = $this->saveEmail($request);
+                    if (true === $saveEmail) {
                         return pong(['message' => _t('good_job')]);
                     } else {
-                        return pong(['message' => _t('auth.login.pass_wrong')], _error(), 403);
+                        return pong(['message' => $saveEmail->errors()->first()], _error(), 403);
                     }
 
                     break;
                     
                 case '_SLUG':
-                    $userProfile = user()->userProfile;
-                    $slug        = $request->get('slug');
                     
-                    if (is_null($userProfile)) {
-                        $userProfile          = new UserProfile();
-                        $userProfile->user_id = user()->id;
+                    $saveSlug = $this->saveSlug($request);
+                    if (true === $saveSlug) {
+                        return pong(['message' => _t('good_job')]);
+                    } else {
+                        return pong(['message' => $saveSlug->errors()->first()], _error(), 403);
                     }
                     
-                    $profileBySlug = $userProfile->where('slug', $slug)->where('slug', '!=', $userProfile->slug)->first();
+                    break;
+                
+                case '_PASS':
                     
-                    if ($profileBySlug !== null) {
-                        return pong(['message' => _t('setting.profile.slugexist')], _error(), 403);
+                    $savePass = $this->savePassword($request);
+                    if (true === $savePass) {
+                        return pong(['message' => _t('good_job')]);
+                    } else {
+                        return pong(['message' => $savePass->errors()->first()], _error(), 403);
                     }
                     
-                    $userProfile->slug = $slug;
-                    $userProfile->save();
-                    
-                    return pong(['message' => _t('good_job')]);
                     break;
 
                 default:

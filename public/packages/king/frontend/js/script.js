@@ -522,10 +522,14 @@ function showMessage(message, error) {
         init: function() {
             var current = this.element;
                 
-                current.on('click', function(){
+                current.on('click', function(e){
                     var section      = current.closest('section'),
                         settingsForm = section.find('form'),
                         requires     = settingsForm.data('requires').split('|');
+                    
+                    if (settingsForm.find('[name="type"]').val() !== '_PASS') {
+                        e.preventDefault();
+                    }
                     
                     $('.settings section').removeClass('_disable');
                     section.find('.settings-show').show();
@@ -625,12 +629,12 @@ function showMessage(message, error) {
                     },
                     success: function(response){
                         if (current.find('[name="type"]').val() === '_SLUG') {
-                            var slugSplit   = $('.current-slug').html().trim().split('/'),
-                                currentSlug = $('.current-slug');
+                            var currentSlug = $('.current-slug'),
+                                slugSplit   = currentSlug.html().trim().split('/');
                             
                             currentSlug.html(slugSplit[0] + '/' + current.find('[name="slug"]').val());
                             
-                            currentSlug.attr('href', 'http://' + slugSplit[0] + '/' + current.find('[name="slug"]').val());
+                            $('a.current-slug').attr('href', 'http://' + slugSplit[0] + '/' + current.find('[name="slug"]').val());
                         }
                         
                         showMessage(response.message, 'success');
@@ -642,6 +646,67 @@ function showMessage(message, error) {
                 });
                 
                 return false;
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Selecter
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'selecter';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current = this.element,
+                select  = current.find('select'),
+                label   = current.find('label');
+                
+            select.on('change', function(e){
+                label.html($(this).val());
             });
         },
         destroy: function() {

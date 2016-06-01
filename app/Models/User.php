@@ -38,9 +38,9 @@ class User extends Authenticatable {
      */
     public function getRegisterRules() {
         return [
-            'email'    => 'required|email|max:128|unique:users',
-            'username' => 'required|min:6:|max:64|unique:users',
-            'password' => 'required|min:6',
+            'email'    => 'required|email|max:128|unique:users,email',
+            'username' => 'required|min:6:|max:64|unique:users,username',
+            'password' => 'required|min:6|max:60',
         ];
     }
     
@@ -61,6 +61,7 @@ class User extends Authenticatable {
             'username.unique'   => _t('register.uname.uni'),
             'password.required' => _t('register.pass.req'),
             'password.min'      => _t('register.pass.min'),
+            'password.max'      => _t('register.pass.max'),
         ];
     }
     

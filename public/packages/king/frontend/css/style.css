@@ -210,6 +210,39 @@ body{background-color:#f5f8fa;}
 .settings-field-wrapper .settings-field.error {
     border-color: #de5d3d;
 }
+.selecter {
+    display: inline-block;
+    position: relative;
+    padding-right: 10px;
+}
+.selecter select{
+    border: 0;
+    background: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+.selecter label {
+    float: left;
+    font-size: 13px;
+    color: #777;
+}
+.selecter i.fa-angle-down {
+    float: left;
+    font-size: 17px;
+    font-weight: bold;
+    color: #777;
+    margin-left: 5px;
+    line-height: 18px;
+}
 
 /* Bootstrap switcher */
 .bootstrap-switch {

@@ -104,6 +104,17 @@ if ( ! function_exists('user')) :
     }
 endif; // Function user.
 
+if ( ! function_exists('user_id')) :
+    /**
+     * Current authenticated user id
+     *
+     * @return int User id
+     */
+    function user_id() {
+        return user()->id;
+    }
+endif; // Function user_id.
+
 if ( ! function_exists('str_equal')) :
     /**
      * Compares two strings using a constant-time algorithm.
@@ -329,3 +340,31 @@ if ( ! function_exists('delete_file')) :
     }
 endif;
 
+if ( ! function_exists('birthdate')) {
+    /**
+     * Get date for birthday selecter generation.
+     * 
+     * @return array
+     */
+    function birthdate() {
+        $date = [_t('setting.profile.birthdate') => _t('setting.profile.birthdate')];
+        for ($d = 1; $d <= 31; $d++) {
+            $fullDate        = ($d < 10) ? '0' . $d : $d;
+            $date[$fullDate] = $fullDate;
+        }
+        
+        $month = [_t('setting.profile.birthmonth') => _t('setting.profile.birthmonth')];
+        for ($m = 1; $m <= 12; $m++) {
+            $fullMonth         = ($m < 10) ? '0' . $m : $m;
+            $month[$fullMonth] = $fullMonth;
+        }
+        
+        $year = [_t('setting.profile.birthyear') => _t('setting.profile.birthyear')];
+        for ($y = (((int) date('Y')) - 15); $y >= ((int) date('Y') - 85); $y--) {
+            $fullYear        = ($y < 10) ? '0' . $y : $y;
+            $year[$fullYear] = $fullYear;
+        }
+        
+        return array('date' => $date, 'month' => $month, 'year' => $year);
+    }
+}// End birthdate.
