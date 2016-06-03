@@ -347,21 +347,37 @@ if ( ! function_exists('birthdate')) {
      * @return array
      */
     function birthdate() {
-        $date = [0 => _t('setting.profile.birthdate')];
+        $date = ['' => _t('setting.profile.birthdate')];
         for ($d = 1; $d <= 31; $d++) {
             $date[$d] = ($d < 10) ? '0' . $d : $d;
         }
         
-        $month = [0 => _t('setting.profile.birthmonth')];
+        $month = ['' => _t('setting.profile.birthmonth')];
         for ($m = 1; $m <= 12; $m++) {
             $month[$m] = ($m < 10) ? '0' . $m : $m;;
         }
         
-        $year = [0 => _t('setting.profile.birthyear')];
+        $year = ['' => _t('setting.profile.birthyear')];
         for ($y = (((int) date('Y')) - 15); $y >= ((int) date('Y') - 85); $y--) {
             $year[$y] = ($y < 10) ? '0' . $y : $y;
         }
         
-        return array('date' => $date, 'month' => $month, 'year' => $year);
+        $userProfile = user()->userProfile;
+        if (is_null($userProfile)) {
+            $userProfile = new UserProfile();
+        }
+        
+        if (null === $userProfile->day_of_birth) {
+            $birthday = ['d' => null, 'm' => null, 'y' => null];
+        } else {
+            $dateObj  = new \DateTime($userProfile->day_of_birth);
+            $birthday = [
+                'd' => (strlen($dateObj->format('d')) < 2) ? '0' . $dateObj->format('d') : $dateObj->format('d'), 
+                'm' => (strlen($dateObj->format('m')) < 2) ? '0' . $dateObj->format('m') : $dateObj->format('m'), 
+                'y' => $dateObj->format('Y')
+            ];
+        }
+        
+        return array('date' => $date, 'month' => $month, 'year' => $year, 'birthday' => $birthday);
     }
 }// End birthdate.

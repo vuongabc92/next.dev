@@ -98,7 +98,7 @@ function showMessage(message, error) {
     
     msgText.html(message);
     msgBlock.show();
-
+    
     var showErrorMsg = setTimeout(function(){
         msgBlock.hide();
     }, 4000);
@@ -525,7 +525,7 @@ function showMessage(message, error) {
                 current.on('click', function(e){
                     var section      = current.closest('section'),
                         settingsForm = section.find('form'),
-                        requires     = settingsForm.data('requires').split('|');
+                        requires     = (settingsForm.data('requires').trim() !== '') ? settingsForm.data('requires').split('|') : [];
                     
                     if (settingsForm.find('[name="type"]').val() !== '_PASS') {
                         e.preventDefault();
@@ -596,12 +596,14 @@ function showMessage(message, error) {
 
     Plugin.prototype = {
         init: function() {
-            var current  = this.element,
-                requires = current.data('requires').split('|');
-                
+            var current     = this.element,
+                requires    = (current.data('requires').trim() !== '') ? current.data('requires').split('|') : [];   
             current.on('submit', function(e){
                 e.preventDefault();
-                var everythingOk = true;
+                var everythingOk = true,
+                    submitBtn    = current.find(':submit'),
+                    submitLabel  = submitBtn.html(),
+                    loadingImg   = '<img class="loading-inbtn" src="' + SETTINGS.LOADING_BLUE_NAVY_24 + '" />';
                 if ($.isArray(requires) && requires.length) {
                     $.each(requires, function(k, v){
                         var field = $('[name=' + v + ']');
@@ -627,6 +629,9 @@ function showMessage(message, error) {
                         var response = $.parseJSON(xhr.responseText);
                         showMessage(response.message, 'error');
                     },
+                    beforeSend: function(){
+                        submitBtn.html(loadingImg);
+                    },
                     success: function(response){
                         if (current.find('[name="type"]').val() === '_SLUG') {
                             var currentSlug = $('.current-slug'),
@@ -638,9 +643,14 @@ function showMessage(message, error) {
                         }
                         
                         showMessage(response.message, 'success');
+                        submitBtn.html('<i class="fa fa-check"></i>');
                         setTimeout(function(){
+                            submitBtn.html(submitLabel);
                             current.find('button[type=reset]').click();
-                        }, 300);
+                        }, 1000);
+                        
+                    },
+                    complete: function() {
                         
                     }
                 });

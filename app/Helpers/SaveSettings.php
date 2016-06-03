@@ -98,22 +98,8 @@ trait SaveSettings {
             return $validator;
         }
         
-        $userProfile = user()->userProfile;
-        if (is_null($userProfile)) {
-            $userProfile          = new UserProfile();
-            $userProfile->user_id = user_id();
-        }
-        
-        $d = (int) $request->get('date');
-        $m = (int) $request->get('month');
-        $y = (int) $request->get('year');
-        
-        if ($d && $m && $y) {
-            $userProfile->day_of_birth = new DateTime("{$d}/{$m}/{$y}");
-        }
-        
-        $userProfile->first_name = $request->get('first_name');
-        $userProfile->last_name  = $request->get('last_name');
+        user()->password = bcrypt($request->get('new_password'));
+        user()->save();
         
         return true;
     }
@@ -132,8 +118,32 @@ trait SaveSettings {
             return $validator;
         }
         
-        user()->password = bcrypt($request->get('new_password'));
-        user()->save();
+        $userProfile = user()->userProfile;
+        if (is_null($userProfile)) {
+            $userProfile          = new UserProfile();
+            $userProfile->user_id = user_id();
+        }
+        
+        $d      = (int) $request->get('date');
+        $m      = (int) $request->get('month');
+        $y      = (int) $request->get('year');
+        $gender = (int) $request->get('gender');
+        
+        if ($d && $m && $y) {
+            $userProfile->day_of_birth = new \DateTime("{$m}/{$d}/{$y}");
+        } else {
+            $userProfile->day_of_birth = null;
+        }
+        
+        if ($gender) {
+            $userProfile->gender_id = $gender;
+        } else {
+            $userProfile->gender_id = null;
+        }
+        
+        $userProfile->first_name = $request->get('first_name');
+        $userProfile->last_name  = $request->get('last_name');
+        $userProfile->save();
         
         return true;
     }

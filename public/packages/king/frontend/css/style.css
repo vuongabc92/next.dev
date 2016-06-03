@@ -184,6 +184,10 @@ body{background-color:#f5f8fa;}
 .settings-field:focus {
     border-color: #007aff;
 }
+.settings-textarea {
+    height: auto;
+    resize: vertical;
+}
 .setting-messages {
     width: 100%;
     min-height: 55px;
@@ -197,7 +201,7 @@ body{background-color:#f5f8fa;}
     background-color: #f66;
 }
 .setting-messages.success{
-    background-color: #20863A;
+    background-color: #41B584;
 }
 .message {
     height: 100%;
@@ -261,6 +265,67 @@ body{background-color:#f5f8fa;}
 }
 .settings-birthday .selecter:last-child {
     margin-right:0;
+}
+
+/* Timeline */
+.employment {
+    background-color: #f5f8fa;
+}
+.timeline-container {
+    position: relative;
+}
+.timeline:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #f66;
+    left: 50%;
+    margin-left: -2px;
+}
+.timeline-section {
+    margin-bottom: 20px;
+}
+.timeline-point {
+    width: 50px;
+    height: 50px;
+    background-color: #f66;
+    border-radius: 50%;
+    position: absolute;
+    border: solid 3px #fff;
+    left: 50%;
+    margin-left: -25px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    box-shadow: 0 0 0 1px white, inset 0 2px 0 rgba(0, 0, 0, 0.09), 0 3px 0 1px rgba(0, 0, 0, 0.07);
+}
+.timeline-content {
+    position: relative;
+    margin-left: 0;
+    width: 43%;
+    background: white;
+    border-radius: 0.25em;
+    padding: 1em;
+    box-shadow: 0 3px 0 #d7e4ed;
+}
+.timeline-content:before {
+    top: 24px;
+    left: 100%;
+    border-color: transparent;
+    border-left-color: white;
+    content: '';
+    position: absolute;
+    right: 100%;
+    height: 0;
+    width: 0;
+    border: 7px solid transparent;
+    border-right: 7px solid red;
+}
+.timeline-section:nth-child(even) .timeline-content {
+    float: right;
 }
 /* Bootstrap switcher */
 .bootstrap-switch {

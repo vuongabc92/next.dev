@@ -7,6 +7,7 @@ namespace King\Frontend\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserProfile;
+use App\Models\Gender;
 use Validator;
 use Intervention\Image\Facades\Image as ImageIntervention;
 use App\Helpers\SaveSettings;
@@ -30,11 +31,21 @@ class SettingsController extends FrontController {
         $coverStoragePath  = config('frontend.coversFolder');
         $avatarMedium      = isset($avatar[$avatarMediumSize]) ? $avatarStoragePath . '/' . $avatar[$avatarMediumSize] : '';
         $coverMedium       = isset($cover[$coverMediumSize])   ? $coverStoragePath . '/' . $cover[$coverMediumSize]    : '';
+        $genders           = ['' => _t('setting.profile.sextell')];
+        $genderName        = Gender::find($userProfile->gender_id);
         
+        if (Gender::all()) {
+            foreach (Gender::all() as $gender) {
+                $genders[$gender->id] = $gender->gender_name;
+            }
+        }
+
         return view('frontend::settings.index', [
             'userProfile'  => $userProfile,
             'avatarMedium' => $avatarMedium,
             'coverMedium'  => $coverMedium,
+            'genders'      => $genders,
+            'gender'       => $genderName->gender_name
         ]);
     }
     
@@ -189,39 +200,33 @@ class SettingsController extends FrontController {
             
             switch ($request->get('type')) {
                 case '_EMAIL':
-                    $saveEmail = $this->saveEmail($request);
-                    if (true === $saveEmail) {
-                        return pong(['message' => _t('good_job')]);
-                    } else {
-                        return pong(['message' => $saveEmail->errors()->first()], _error(), 403);
-                    }
-
+                    $save = $this->saveEmail($request);
                     break;
                     
                 case '_SLUG':
-                    
-                    $saveSlug = $this->saveSlug($request);
-                    if (true === $saveSlug) {
-                        return pong(['message' => _t('good_job')]);
-                    } else {
-                        return pong(['message' => $saveSlug->errors()->first()], _error(), 403);
-                    }
-                    
+                    $save = $this->saveSlug($request);
                     break;
                 
                 case '_PASS':
-                    
-                    $savePass = $this->savePassword($request);
-                    if (true === $savePass) {
-                        return pong(['message' => _t('good_job')]);
-                    } else {
-                        return pong(['message' => $savePass->errors()->first()], _error(), 403);
-                    }
-                    
+                    $save = $this->savePassword($request);
+                    break;
+                
+                case '_PASS':
+                    $save = $this->savePassword($request);
+                    break;
+                
+                case '_PERSONAL':
+                    $save = $this->savePersonalInfo($request);
                     break;
 
                 default:
                     break;
+            }
+            
+            if (true === $save) {
+                return pong(['message' => _t('good_job')]);
+            } else {
+                return pong(['message' => $save->errors()->first()], _error(), 403);
             }
         }
     }
