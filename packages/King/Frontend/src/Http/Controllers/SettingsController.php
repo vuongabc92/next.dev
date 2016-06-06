@@ -8,6 +8,11 @@ namespace King\Frontend\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\UserProfile;
 use App\Models\Gender;
+use App\Models\Country;
+use App\Models\City;
+use App\Models\District;
+use App\Models\Ward;
+use DB;
 use Validator;
 use Intervention\Image\Facades\Image as ImageIntervention;
 use App\Helpers\SaveSettings;
@@ -45,7 +50,7 @@ class SettingsController extends FrontController {
             'avatarMedium' => $avatarMedium,
             'coverMedium'  => $coverMedium,
             'genders'      => $genders,
-            'gender'       => $genderName->gender_name
+            'gender'       => ( ! is_null($genderName)) ? $genderName->gender_name : null
         ]);
     }
     
@@ -230,6 +235,74 @@ class SettingsController extends FrontController {
             }
         }
     }
+    
+    public function selectPlace(Request $request) {
+        if ($request->ajax() && $request->isMethod('POST')) {
+            
+            $target  = $request->get('target');
+            $find_id = $request->get('find_id');
+            
+            if (0 == $find_id) {
+                return pong(['options' => []]);
+            }
+            
+            switch ($target) {
+                case 'city':
+                    $country = Country::find($find_id);
+                    
+                    if (null === $country ) {
+                        $options = pong(['options' => []]);
+                    } else {
+                        $options = $country->cities->pluck('name', 'id')->toArray();
+                        $options = array_merge([0 => _t('setting.profile.city')], $options);
+                    }
+                    
+                    break;
+                    
+                case 'district':
+                    
+                    $city = City::find($find_id);
+                    if (null === $city) {
+                        return pong(['options' => []]);
+                    } else {
+                        $options = DB::table('districts')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
+                                                         ->where('city_id', $find_id)
+                                                         ->orderBy('name')
+                                                         ->get();
+                                                 
+                        $default = new \stdClass();
+                        $default->id   = 0;
+                        $default->name = _t('setting.profile.district');
+                        array_unshift($options, $default);
+                    }
+                    break;
+                
+                case 'ward':
+                    
+                    $district = District::find($find_id);
+                    if (null === $district) {
+                        return pong(['options' => []]);
+                    } else {
+                        $options = DB::table('wards')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
+                                                         ->where('district_id', $find_id)
+                                                         ->orderBy('name')
+                                                         ->get();
+                        $default = new \stdClass();
+                        $default->id   = 0;
+                        $default->name = _t('setting.profile.ward');
+                        array_unshift($options, $default);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+            
+            return pong(['options' => $options]);
+            
+        }
+    }
+
 
     /**
      * Get avatar validation rules

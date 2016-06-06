@@ -259,6 +259,16 @@ body{background-color:#f5f8fa;}
     font-weight: bold;
     color: #777;
 }
+.selecter img {
+    position: absolute;
+    top: 50%;
+    opacity: 0.6;
+    left: 50%;
+    margin-left: -12px;
+    margin-top: -12px;
+    display: none;
+}
+
 .settings-birthday .selecter {
     width: 32.65%;
     margin-right: 4px;

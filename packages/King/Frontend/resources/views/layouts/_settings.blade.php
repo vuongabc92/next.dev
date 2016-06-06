@@ -37,6 +37,7 @@
                 AJAX_ERROR: 'ERROR',
                 TOKEN: '{{ csrf_token() }}',
                 AJAX_PUBLISH_PROFILE_URL: '{{ route('front_setting_publish_profile') }}',
+                AJAX_SELECT_PLACE_URL: '{{ route('front_settings_select_place') }}',
                 LOADING_BLUE_NAVY_24: '{{ asset('packages/king/frontend/images/loading_blue_navy_24x24.gif') }}'
             }
         </script>

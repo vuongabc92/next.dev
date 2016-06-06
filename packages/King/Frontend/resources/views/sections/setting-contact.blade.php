@@ -14,21 +14,21 @@
             </div>
             {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form', 'data-save-form' => '', 'data-requires' => '']) !!}
             <div class="settings-field-wrapper">
-                {!! Form::text('street', '', ['class' => 'settings-field', 'placeholder' => 'Street name']) !!}
+                {!! Form::text('street', '', ['class' => 'settings-field', 'placeholder' => _t('setting.profile.street')]) !!}
             </div>
             <div class="settings-field-wrapper">
-                <span class="_fl _w50 _pr3">
-                    {!! Form::kingSelect('ward', ['Hiep Thanh', 'Ben Nghe'], null, ['id' => 'settings-ward', 'class' => 'settings-field'], 'Pick your ward') !!}
+                {!! Form::kingSelect('country', countries(), null, ['id' => 'settings-country', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'city']) !!}
+            </div>
+            <div class="settings-field-wrapper">
+                {!! Form::kingSelect('city', ['' => _t('setting.profile.city')], null, ['id' => 'settings-city', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'district']) !!}
+            </div>
+            <div class="settings-field-wrapper">
+                 <span class="_fl _w50 _pr3">
+                    {!! Form::kingSelect('district', ['' => _t('setting.profile.district')], null, ['id' => 'settings-district', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'ward']) !!}
                 </span>
-                <span class="_fl _w50  _pl3">
-                    {!! Form::kingSelect('district', ['Binh Thanh', 'Quan 12'], null, ['id' => 'settings-ward', 'class' => 'settings-field'], 'Pick your district') !!}
+                <span class="_fl _w50 _pl3">
+                    {!! Form::kingSelect('ward', ['' => _t('setting.profile.ward')], null, ['id' => 'settings-ward', 'class' => 'settings-field']) !!}
                 </span>
-            </div>
-            <div class="settings-field-wrapper">
-                {!! Form::kingSelect('city', ['Ho Chi Minh', 'Quang Ngai'], null, ['id' => 'settings-ward', 'class' => 'settings-field'], 'Pick your city') !!}
-            </div>
-            <div class="settings-field-wrapper">
-                {!! Form::kingSelect('country', ['VietNam', 'US', 'UK'], null, ['id' => 'settings-ward', 'class' => 'settings-field'], 'Pick your country') !!}
             </div>
             <div class="settings-field-wrapper">
                 {!! Form::text('phone', '', ['class' => 'settings-field', 'placeholder' => 'Phone number']) !!}

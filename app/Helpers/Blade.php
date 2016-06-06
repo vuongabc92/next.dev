@@ -13,6 +13,6 @@ class Blade {
             return preg_replace('/\@set(.+)/', '<?php ${1}; ?>', $value);
         });
         
-        Form::component('kingSelect', 'frontend::components.form.select', ['name', 'value', 'default', 'attributes', 'present']); 
+        Form::component('kingSelect', 'frontend::components.form.select', ['name', 'value', 'default', 'attributes']); 
     }
 }

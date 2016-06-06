@@ -746,3 +746,104 @@ function showMessage(message, error) {
     });
 
 }(jQuery, window));
+
+/**
+ *  @name Select Place
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'select-place';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current = this.element;
+                
+            current.on('change', function(e){
+                var target   = current.data('target'),
+                    select   = $('.settings-field-wrapper').find('[name="' + target + '"]'),
+                    selecter = select.parent('.selecter');
+                    
+                $.ajax({
+                    type: 'POST',
+                    url: SETTINGS.AJAX_SELECT_PLACE_URL,
+                    data: {find_id: current.val(), target: target},
+                    dataType: 'json',
+                    error: function(xhr, status, error) {
+                        
+                    },
+                    beforeSend: function(){
+                        selecter.find('img').show();
+                        selecter.find('label').css({opacity: '0.3'});
+                    },
+                    success: function(response){
+                        var options = response.options;
+                        
+                        select.find('option').remove();
+                        
+                        if (target === 'city') {
+                            $.map(options, function(v, k) {
+                                select.append($('<option>', { 
+                                    value: (k == '0') ? '' : k,
+                                    text : v 
+                                }));
+                            });
+                        } else {
+                            $.map(options, function(v, k) {
+                                select.append($('<option>', { 
+                                    value: (v.id== '0') ? '' : v.id,
+                                    text : v.name 
+                                }));
+                            });
+                        }
+                        selecter.find('img').hide();
+                        selecter.find('label').css({opacity: '1'});
+                    },
+                    complete: function() {
+                        
+                    }
+                });
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));

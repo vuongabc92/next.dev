@@ -32,4 +32,11 @@ class City extends Base
     {
         return $this->hasMany('App\Models\Store');
     }
+    
+    /**
+     * Get the user profile record associated with the user.
+     */
+    public function country() {
+        return $this->hasOne('App\Models\Country');
+    }
 }

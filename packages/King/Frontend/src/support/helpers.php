@@ -1,7 +1,8 @@
 <?php
-/**
- * Help functions.
- */
+use App\Models\Country;
+use App\Models\City;
+use App\Models\District;
+use App\Models\Ward;
 
 if ( ! function_exists('_t')) :
 
@@ -349,12 +350,14 @@ if ( ! function_exists('birthdate')) {
     function birthdate() {
         $date = ['' => _t('setting.profile.birthdate')];
         for ($d = 1; $d <= 31; $d++) {
-            $date[$d] = ($d < 10) ? '0' . $d : $d;
+            $fullDate        = ($d < 10) ? '0' . $d : $d;
+            $date[$fullDate] = $fullDate;
         }
         
         $month = ['' => _t('setting.profile.birthmonth')];
         for ($m = 1; $m <= 12; $m++) {
-            $month[$m] = ($m < 10) ? '0' . $m : $m;;
+            $FullMonth         = ($m < 10) ? '0' . $m : $m;
+            $month[$FullMonth] = $FullMonth;
         }
         
         $year = ['' => _t('setting.profile.birthyear')];
@@ -381,3 +384,12 @@ if ( ! function_exists('birthdate')) {
         return array('date' => $date, 'month' => $month, 'year' => $year, 'birthday' => $birthday);
     }
 }// End birthdate.
+
+if ( ! function_exists('countries')) {
+    function countries() {
+        
+        $countries = app(Country::class)->where('id', 237)->pluck('country_name', 'id')->toArray();
+        
+        return ['' => _t('setting.profile.country')] + ((count($countries)) ? $countries : []);
+    }
+}

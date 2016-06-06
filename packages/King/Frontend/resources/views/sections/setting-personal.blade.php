@@ -23,12 +23,12 @@
             </div>
             <div class="settings-field-wrapper settings-birthday">
                 @set $birthdate = birthdate()
-                {!! Form::kingSelect('date', $birthdate['date'], $birthdate['birthday']['d'], ['id' => 'settings-birthdate', 'class' => 'settings-field'], (is_null($birthdate['birthday']['d'])) ? _t('setting.profile.birthdate') : $birthdate['birthday']['d']) !!}                          
-                {!! Form::kingSelect('month', $birthdate['month'], $birthdate['birthday']['m'], ['id' => 'settings-birthmonth', 'class' => 'settings-field'], (is_null($birthdate['birthday']['m'])) ? _t('setting.profile.birthmonth') : $birthdate['birthday']['m']) !!}
-                {!! Form::kingSelect('year', $birthdate['year'], $birthdate['birthday']['y'], ['id' => 'settings-birthyear', 'class' => 'settings-field'], (is_null($birthdate['birthday']['y'])) ? _t('setting.profile.birthyear') : $birthdate['birthday']['y']) !!}
+                {!! Form::kingSelect('date', $birthdate['date'], $birthdate['birthday']['d'], ['id' => 'settings-birthdate', 'class' => 'settings-field']) !!}                          
+                {!! Form::kingSelect('month', $birthdate['month'], $birthdate['birthday']['m'], ['id' => 'settings-birthmonth', 'class' => 'settings-field']) !!}
+                {!! Form::kingSelect('year', $birthdate['year'], $birthdate['birthday']['y'], ['id' => 'settings-birthyear', 'class' => 'settings-field']) !!}
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::kingSelect('gender', $genders, $userProfile->gender_id, ['id' => 'settings-gender', 'class' => 'settings-field'], (is_null($userProfile->gender_id)) ? _t('setting.profile.sextell') : $gender) !!}
+                {!! Form::kingSelect('gender', $genders, $userProfile->gender_id, ['id' => 'settings-gender', 'class' => 'settings-field']) !!}
             </div>
             <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
             <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
