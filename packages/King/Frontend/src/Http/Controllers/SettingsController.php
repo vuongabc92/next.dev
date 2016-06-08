@@ -236,71 +236,132 @@ class SettingsController extends FrontController {
         }
     }
     
-    public function selectPlace(Request $request) {
+    public function createAddressSelectData(Request $request) {
         if ($request->ajax() && $request->isMethod('POST')) {
             
-            $target  = $request->get('target');
-            $find_id = $request->get('find_id');
-            
-            if (0 == $find_id) {
-                return pong(['options' => []]);
-            }
+            $target   = $request->get('target');
+            $findId   = (int) $request->get('find_id');
+            $city     = [$this->_getDefaultAddress('city')];
+            $district = [$this->_getDefaultAddress('district')];
+            $ward     = [$this->_getDefaultAddress('ward')];
             
             switch ($target) {
                 case 'city':
-                    $country = Country::find($find_id);
-                    
-                    if (null === $country ) {
-                        $options = pong(['options' => []]);
-                    } else {
-                        $options = $country->cities->pluck('name', 'id')->toArray();
-                        $options = array_merge([0 => _t('setting.profile.city')], $options);
-                    }
-                    
+                    $city = $this->_getCityByCountryId($findId);
                     break;
                     
                 case 'district':
-                    
-                    $city = City::find($find_id);
-                    if (null === $city) {
-                        return pong(['options' => []]);
-                    } else {
-                        $options = DB::table('districts')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
-                                                         ->where('city_id', $find_id)
-                                                         ->orderBy('name')
-                                                         ->get();
-                                                 
-                        $default = new \stdClass();
-                        $default->id   = 0;
-                        $default->name = _t('setting.profile.district');
-                        array_unshift($options, $default);
-                    }
+                    $district = $this->_getDistrictByCityId($findId);
                     break;
                 
                 case 'ward':
-                    
-                    $district = District::find($find_id);
-                    if (null === $district) {
-                        return pong(['options' => []]);
-                    } else {
-                        $options = DB::table('wards')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
-                                                         ->where('district_id', $find_id)
-                                                         ->orderBy('name')
-                                                         ->get();
-                        $default = new \stdClass();
-                        $default->id   = 0;
-                        $default->name = _t('setting.profile.ward');
-                        array_unshift($options, $default);
-                    }
-                    break;
-
-                default:
+                    $ward = $this->_getWardByDistrictId($findId);
                     break;
             }
             
+            $options = ['city' => $city, 'district' => $district, 'ward' => $ward];
+           
             return pong(['options' => $options]);
-            
         }
+    }
+
+    /**
+     * Get cities by country id.
+     * 
+     * @param int $countryId Country id
+     * 
+     * @return array|\stdClass
+     */
+    protected function _getCityByCountryId($countryId = 0) {
+        
+        $default = $this->_getDefaultAddress('city');
+        $cities  = DB::table('cities')->select('id', 'name')
+                                        ->where('country_id', $countryId)
+                                        ->get();
+        
+        if (count($cities)) {
+            array_unshift($cities, $default);
+            
+            return $cities;
+        } else {
+            return [$default];
+        }
+    }
+    
+    /**
+     * Get districts by city id.
+     * 
+     * @param int $cityId City id
+     * 
+     * @return array|\stdClass
+     */
+    protected function _getDistrictByCityId($cityId = 0) {
+        
+        $default   = $this->_getDefaultAddress('district');
+        $districts = DB::table('districts')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
+                                           ->where('city_id', $cityId)
+                                           ->orderBy('name')
+                                           ->get();
+        
+        if (count($districts)) {
+            array_unshift($districts, $default);
+            
+            return $districts;
+        } else {
+            return [$default];
+        }
+    }
+    
+    /**
+     * Get Wards by district id.
+     * 
+     * @param int $districtId District id
+     * 
+     * @return array|\stdClass
+     */
+    protected function _getWardByDistrictId($districtId = 0) {
+        
+        $default = $this->_getDefaultAddress('ward');
+        $wards   = DB::table('wards')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
+                                     ->where('district_id', $districtId)
+                                     ->orderBy('name')
+                                     ->get();
+        
+        if (count($wards)) {
+            array_unshift($wards, $default);
+            
+            return $wards;
+        } else {
+            return [$default];
+        }
+    }
+    
+    /**
+     * Get default text for selection address.
+     * 
+     * @param string $type address type
+     * 
+     * @return \stdClass
+     */
+    protected function _getDefaultAddress($type) {
+        $default     = new \stdClass();
+        $default->id = 0;
+        
+        switch ($type) {
+            case 'city':
+                $default->name = _t('setting.profile.city');
+                break;
+            case 'district':
+                $default->name = _t('setting.profile.district');
+                break;
+            case 'ward':
+                $default->name = _t('setting.profile.ward');
+                break;
+            default:
+                break;
+        }
+        
+        return $default;
     }
 
 

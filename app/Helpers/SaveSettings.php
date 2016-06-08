@@ -247,4 +247,19 @@ trait SaveSettings {
             'year.required_with'       => _t('setting.profile.year_req'),
         ];
     }
+    
+    /**
+     * Save personal information rules.
+     * 
+     * @return array
+     */
+    protected function _saveContactRules() {
+        return [
+            'first_name' => 'required_with:last_name|max:32',
+            'last_name'  => 'required_with:first_name|max:32',
+            'date'       => 'required_with:month,year',
+            'month'      => 'required_with:date,year',
+            'year'       => 'required_with:date,month',
+        ];
+    }
 }

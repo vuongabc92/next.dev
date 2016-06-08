@@ -26,6 +26,7 @@ class CreateTableUserProfile extends Migration
            $table->integer('city_id')->unsigned()->nullable();
            $table->integer('district_id')->unsigned()->nullable();
            $table->integer('ward_id')->unsigned()->nullable();
+           $table->string('street_name', 250);
            $table->integer('gender_id')->unsigned()->nullable();
            $table->string('phone_number', 16);
            $table->boolean('publish');

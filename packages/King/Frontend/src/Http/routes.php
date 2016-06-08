@@ -29,5 +29,5 @@ Route::group(['middleware' => ['web', 'auth:web']], function () {
     Route::post('settings/upload_avatar', ['as' => 'front_settings_upload_avatar', 'uses' => 'SettingsController@uploadAvatar']);
     Route::post('settings/upload_cover', ['as' => 'front_settings_upload_cover', 'uses' => 'SettingsController@uploadCover']);
     Route::post('settings/save_info', ['as' => 'front_settings_save_info', 'uses' => 'SettingsController@saveInfo']);
-    Route::post('settings/select_place', ['as' => 'front_settings_select_place', 'uses' => 'SettingsController@selectPlace']);
+    Route::post('settings/select_place', ['as' => 'front_settings_select_place', 'uses' => 'SettingsController@createAddressSelectData']);
 });

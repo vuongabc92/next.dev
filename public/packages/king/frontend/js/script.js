@@ -778,7 +778,7 @@ function showMessage(message, error) {
                 var target   = current.data('target'),
                     select   = $('.settings-field-wrapper').find('[name="' + target + '"]'),
                     selecter = select.parent('.selecter');
-                    
+                                     
                 $.ajax({
                     type: 'POST',
                     url: SETTINGS.AJAX_SELECT_PLACE_URL,
@@ -792,25 +792,35 @@ function showMessage(message, error) {
                         selecter.find('label').css({opacity: '0.3'});
                     },
                     success: function(response){
-                        var options = response.options;
-                        
-                        select.find('option').remove();
-                        
+                        var citySelect     = $('.settings-field-wrapper').find('[name="city"]'),
+                            districtSelect = $('.settings-field-wrapper').find('[name="district"]'),
+                            wardSelect     = $('.settings-field-wrapper').find('[name="ward"]');
+                            
                         if (target === 'city') {
-                            $.map(options, function(v, k) {
-                                select.append($('<option>', { 
-                                    value: (k == '0') ? '' : k,
-                                    text : v 
-                                }));
-                            });
-                        } else {
-                            $.map(options, function(v, k) {
-                                select.append($('<option>', { 
-                                    value: (v.id== '0') ? '' : v.id,
-                                    text : v.name 
-                                }));
-                            });
+                            var options = [[citySelect, response.options.city], [districtSelect, response.options.district], [wardSelect, response.options.ward]];
                         }
+                        if (target === 'district') {
+                            var options = [[districtSelect, response.options.district], [wardSelect, response.options.ward]];
+                        }
+                        if (target === 'ward') {
+                            var options = [[wardSelect, response.options.ward]];
+                        }
+                        
+                        $.each(options, function(k, valueArr){
+                            var selectHtml = valueArr[0],
+                                selectObj  = valueArr[1];
+                            
+                            selectHtml.find('option').remove();
+                            selectHtml.parent('.selecter').find('label').html(selectObj[Object.keys(selectObj)[0]].name);
+                            
+                            $.map(selectObj, function(object, k) {
+                                selectHtml.append($('<option>', { 
+                                    value: (object.id === 0) ? '' : object.id,
+                                    text : object.name 
+                                }));
+                            });
+                        });                       
+                        
                         selecter.find('img').hide();
                         selecter.find('label').css({opacity: '1'});
                     },
