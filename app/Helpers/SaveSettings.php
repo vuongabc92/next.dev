@@ -105,7 +105,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save settings password.
+     * Save settings personal info.
      * 
      * @param Request $request
      * 
@@ -143,6 +143,32 @@ trait SaveSettings {
         
         $userProfile->first_name = $request->get('first_name');
         $userProfile->last_name  = $request->get('last_name');
+        $userProfile->save();
+        
+        return true;
+    }
+    
+    /**
+     * Save settings contact.
+     * 
+     * @param Request $request
+     * 
+     * @return boolean|JSON
+     */
+    public function saveContactInfo(Request $request) {
+        
+        $validator = validator($request->all(), $this->_saveContactRules(), $this->_saveContactMessages());
+        if ($validator->fails()) {
+            return $validator;
+        }
+        
+        $userProfile = user()->userProfile;
+        if (is_null($userProfile)) {
+            $userProfile          = new UserProfile();
+            $userProfile->user_id = user_id();
+        }
+        
+        
         $userProfile->save();
         
         return true;
@@ -249,17 +275,32 @@ trait SaveSettings {
     }
     
     /**
-     * Save personal information rules.
+     * Save contact rules.
      * 
      * @return array
      */
     protected function _saveContactRules() {
         return [
-            'first_name' => 'required_with:last_name|max:32',
-            'last_name'  => 'required_with:first_name|max:32',
-            'date'       => 'required_with:month,year',
-            'month'      => 'required_with:date,year',
-            'year'       => 'required_with:date,month',
+            'street_name' => 'max:250',
+            'city'        => 'required_with:country',
+            'district'    => 'required_with:city',
+            'ward'        => 'required_with:district',
+            'phone'       => 'max:32',
+        ];
+    }
+    
+    /**
+     * Save personal information messages.
+     * 
+     * @return array
+     */
+    protected function _saveContactMessages() {
+        return [
+            'street_name.max'             => 'Street name is too long.', //setting.profile.sname_max
+            'required_with.required_with' => 'Opp! Forgot to pick your country?' , //setting.profile.city_rwith
+            'district.required_with'      => 'Ahh! Your city is empty.', //setting.profile.district_rwith
+            'ward.required_with'          => 'Please select your district first.', //setting.profile.district_rwith
+            'phone.max'                   => 'Phone number is too long.', //setting.profile.phone_max
         ];
     }
 }
