@@ -8,7 +8,7 @@
                 <span class="_fl"><input type="checkbox" name="publish_profile" id="publish-cv-swicher" {{ ($userProfile->publish) ? 'checked' : '' }}></span>
                 <label class="_fl _m0 _ml10 _mt3 _fs13 _tg7" for="publish-cv-swicher">{{ _t('setting.profile.publishcs_msg') }}</label>
                 <span class="inline-notification success">{{ _t('saved') }}</span>
-                <span class="inline-notification error">{{ _t('opps') }}</span>
+                <span class="inline-notification error">{{ _t('oops') }}</span>
             </form>
             <span class="_mt5 settings-help-text">{{ _t('setting.profile.publish_note') }}</span>
         </div>

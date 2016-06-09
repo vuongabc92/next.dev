@@ -8,7 +8,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta name="csrf-token" content="{{ csrf_token() }}" />
-        <meta name="ajax-error" content="{{ _t('opps') }}" />
+        <meta name="ajax-error" content="{{ _t('oops') }}" />
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->

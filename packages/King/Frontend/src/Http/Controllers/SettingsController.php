@@ -132,7 +132,7 @@ class SettingsController extends FrontController {
                 return file_pong(['avatar_medium' => $storagePath . '/' . $mediumName]);
             }
             
-            return file_pong(['messages' => _t('opps')], _error(), 403);
+            return file_pong(['messages' => _t('oops')], _error(), 403);
         }
     }
     
@@ -190,7 +190,7 @@ class SettingsController extends FrontController {
                 return file_pong(['cover_medium' => $storagePath . '/' . $mediumName]);
             }
             
-            return file_pong(['messages' => _t('opps')], _error(), 403);
+            return file_pong(['messages' => _t('oops')], _error(), 403);
         }
     }
     
@@ -223,15 +223,22 @@ class SettingsController extends FrontController {
                 case '_PERSONAL':
                     $save = $this->savePersonalInfo($request);
                     break;
+                
+                case '_CONTACT':
+                    $save = $this->saveContactInfo($request);
+                    break;
 
                 default:
+                    $save = false;
                     break;
             }
             
             if (true === $save) {
                 return pong(['message' => _t('good_job')]);
-            } else {
+            } elseif(false !== $save) {
                 return pong(['message' => $save->errors()->first()], _error(), 403);
+            } else {
+                return pong(['message' => _t('good_job')]);
             }
         }
     }

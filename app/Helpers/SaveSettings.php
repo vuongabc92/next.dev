@@ -64,16 +64,8 @@ trait SaveSettings {
             return $validator;
         }
         
-        $userProfile = user()->userProfile;
-        $slug        = $request->get('slug');
-
-        if (is_null($userProfile)) {
-            $userProfile          = new UserProfile();
-            $userProfile->user_id = user_id();
-        }
-        
-        $userProfile->slug = $slug;
-        $userProfile->save();
+        user()->userProfile->slug = $request->get('slug');
+        user()->userProfile->save();
         
         return true;
     }
@@ -118,31 +110,16 @@ trait SaveSettings {
             return $validator;
         }
         
-        $userProfile = user()->userProfile;
-        if (is_null($userProfile)) {
-            $userProfile          = new UserProfile();
-            $userProfile->user_id = user_id();
-        }
+        $d                         = (int) $request->get('date');
+        $m                         = (int) $request->get('month');
+        $y                         = (int) $request->get('year');
+        $gender                    = (int) $request->get('gender');
         
-        $d      = (int) $request->get('date');
-        $m      = (int) $request->get('month');
-        $y      = (int) $request->get('year');
-        $gender = (int) $request->get('gender');
-        
-        if ($d && $m && $y) {
-            $userProfile->day_of_birth = new \DateTime("{$m}/{$d}/{$y}");
-        } else {
-            $userProfile->day_of_birth = null;
-        }
-        
-        if ($gender) {
-            $userProfile->gender_id = $gender;
-        } else {
-            $userProfile->gender_id = null;
-        }
-        
-        $userProfile->first_name = $request->get('first_name');
-        $userProfile->last_name  = $request->get('last_name');
+        $userProfile               = user()->userProfile;
+        $userProfile->day_of_birth = ($d && $m && $y) ? new \DateTime("{$m}/{$d}/{$y}") : null;
+        $userProfile->gender_id    = ($gender) ? $gender : null;
+        $userProfile->first_name   = $request->get('first_name');
+        $userProfile->last_name    = $request->get('last_name');
         $userProfile->save();
         
         return true;
@@ -157,18 +134,32 @@ trait SaveSettings {
      */
     public function saveContactInfo(Request $request) {
         
+        $validateRules = $this->_saveContactRules();
+        
+        if (empty($request->get('city'))) {
+            $validateRules['city'] = 'required_with:country';
+        }
+        
+        if (empty($request->get('district'))) {
+            $validateRules['district'] = 'required_with:city';
+        }
+        
+        if (empty($request->get('city'))) {
+            $validateRules['district'] = 'required_with:city';
+        }
+        
         $validator = validator($request->all(), $this->_saveContactRules(), $this->_saveContactMessages());
         if ($validator->fails()) {
             return $validator;
         }
         
-        $userProfile = user()->userProfile;
-        if (is_null($userProfile)) {
-            $userProfile          = new UserProfile();
-            $userProfile->user_id = user_id();
-        }
-        
-        
+        $userProfile               = user()->userProfile;
+        $userProfile->street_name  = $request->get('street_name');
+        $userProfile->country_id   = (empty($request->get('country')))  ? null : $request->get('country');
+        $userProfile->city_id      = (empty($request->get('city')))     ? null : $request->get('city');
+        $userProfile->district_id  = (empty($request->get('district'))) ? null : $request->get('district');
+        $userProfile->ward_id      = (empty($request->get('ward')))     ? null : $request->get('ward');
+        $userProfile->phone_number = (empty($request->get('ward')))     ? null : $request->get('ward');
         $userProfile->save();
         
         return true;
@@ -216,9 +207,8 @@ trait SaveSettings {
      */
     protected function _savePasswordValidateRules() {
         return [
-            'old_password'              => 'required',
-            'new_password'              => 'required|min:6|max:60|confirmed',
-            'new_password_confirmation' => 'required|min:6|max:60',
+            'old_password' => 'required',
+            'new_password' => 'required|min:6|max:60|confirmed',
         ];
     }
     
@@ -281,11 +271,12 @@ trait SaveSettings {
      */
     protected function _saveContactRules() {
         return [
-            'street_name' => 'max:250',
-            'city'        => 'required_with:country',
-            'district'    => 'required_with:city',
-            'ward'        => 'required_with:district',
-            'phone'       => 'max:32',
+            'street_name'  => 'max:250',
+            'country'      => 'exists:countries,id',
+            'city'         => 'required_with:country|exists:cities,id',
+            'district'     => 'required_with:city|exists:districts,id',
+            'ward'         => 'required_with:district|exists:wards,id',
+            'phone_number' => 'max:32',
         ];
     }
     
@@ -296,11 +287,15 @@ trait SaveSettings {
      */
     protected function _saveContactMessages() {
         return [
-            'street_name.max'             => 'Street name is too long.', //setting.profile.sname_max
-            'required_with.required_with' => 'Opp! Forgot to pick your country?' , //setting.profile.city_rwith
-            'district.required_with'      => 'Ahh! Your city is empty.', //setting.profile.district_rwith
-            'ward.required_with'          => 'Please select your district first.', //setting.profile.district_rwith
-            'phone.max'                   => 'Phone number is too long.', //setting.profile.phone_max
+            'street_name.max'        => _t('setting.profile.sname_max'),
+            'country.exists'         => _t('setting.profile.country_exi'),
+            'city.required_with'     => _t('setting.profile.city_rwith'),
+            'city.exists'            => _t('setting.profile.city_exi') ,
+            'district.required_with' => _t('setting.profile.district_rwith'),
+            'district.exists'        => _t('setting.profile.district_exi'),
+            'ward.required_with'     => _t('setting.profile.ward_rwith'),
+            'ward.exists'            => _t('setting.profile.ward_exi'),
+            'phone.max'              => _t('setting.profile.phone_max')
         ];
     }
 }

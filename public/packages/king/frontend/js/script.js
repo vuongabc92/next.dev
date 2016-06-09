@@ -626,11 +626,18 @@ function showMessage(message, error) {
                     data: current.serialize(),
                     dataType: 'json',
                     error: function(xhr, status, error) {
+                        if (xhr.status === 500) {
+                            submitBtn.attr('disabled', false);
+                            submitBtn.html(submitLabel);
+                        }
                         var response = $.parseJSON(xhr.responseText);
                         showMessage(response.message, 'error');
+                        submitBtn.attr('disabled', false);
+                        submitBtn.html(submitLabel);
                     },
                     beforeSend: function(){
                         submitBtn.html(loadingImg);
+                        submitBtn.attr('disabled', true);
                     },
                     success: function(response){
                         if (current.find('[name="type"]').val() === '_SLUG') {
@@ -643,12 +650,12 @@ function showMessage(message, error) {
                         }
                         
                         showMessage(response.message, 'success');
+                        submitBtn.attr('disabled', false);
                         submitBtn.html('<i class="fa fa-check"></i>');
                         setTimeout(function(){
                             submitBtn.html(submitLabel);
                             current.find('button[type=reset]').click();
                         }, 1000);
-                        
                     },
                     complete: function() {
                         

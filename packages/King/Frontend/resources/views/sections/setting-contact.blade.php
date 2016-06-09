@@ -14,10 +14,10 @@
             </div>
             {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form', 'data-save-form' => '', 'data-requires' => '']) !!}
             <div class="settings-field-wrapper">
-                {!! Form::text('street', '', ['class' => 'settings-field', 'placeholder' => _t('setting.profile.street')]) !!}
+                {!! Form::text('street_name', $userProfile->street_name, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.street')]) !!}
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::kingSelect('country', countries(), null, ['id' => 'settings-country', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'city']) !!}
+                {!! Form::kingSelect('country', countries(), $userProfile->country_id, ['id' => 'settings-country', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'city']) !!}
             </div>
             <div class="settings-field-wrapper">
                 {!! Form::kingSelect('city', ['' => _t('setting.profile.city')], null, ['id' => 'settings-city', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'district']) !!}
@@ -31,7 +31,7 @@
                 </span>
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::text('phone', '', ['class' => 'settings-field', 'placeholder' => 'Phone number']) !!}
+                {!! Form::text('phone_number', $userProfile->phone_number, ['class' => 'settings-field', 'placeholder' => 'Phone number']) !!}
             </div>
             <div class="settings-field-wrapper">
                 {!! Form::textarea('social', '', ['class' => 'settings-field settings-textarea', 'placeholder' => 'Social network', 'rows' => 3]) !!}

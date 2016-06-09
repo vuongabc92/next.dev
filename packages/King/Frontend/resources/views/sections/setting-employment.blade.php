@@ -4,72 +4,42 @@
             <div class="_fwfl timeline-section">
                 <div class="timeline-point"></div>
                 <div class="timeline-content">
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
+                    A tool created for the THINKLab with the purpose of giving people running client engagements all the resources and information they needed to do so. It needed to be flexible in the way that we could distribute to all global labs.
                 </div>
             </div>
             
             <div class="_fwfl timeline-section">
                 <div class="timeline-point"></div>
                 <div class="timeline-content">
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    asdasd 
-                    asd asd
-                    ad asd as
-                    asd asd<br />
-                    
+                    A tool created for the THINKLab with the purpose of giving people running client engagements all the resources and information they needed to do so. It needed to be flexible in the way that we could distribute to all global labs.
+                </div>
+            </div>
+            
+            <div class="_fwfl timeline-section">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    A tool created for the THINKLab with the purpose of giving people running client engagements all the resources and information they needed to do so. It needed to be flexible in the way that we could distribute to all global labs.
+                </div>
+            </div>
+            
+            <div class="_fwfl timeline-section">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    A tool created for the THINKLab with the purpose of giving people running client engagements all the resources and information they needed to do so. It needed to be flexible in the way that we could distribute to all global labs.
+                </div>
+            </div>
+            
+            <div class="_fwfl timeline-section">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    A tool created for the THINKLab with the purpose of giving people running client engagements all the resources and information they needed to do so. It needed to be flexible in the way that we could distribute to all global labs.
+                </div>
+            </div>
+            
+            <div class="_fwfl timeline-section">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    A tool created for the THINKLab with the purpose of giving people running client engagements all the resources and information they needed to do so. It needed to be flexible in the way that we could distribute to all global labs.
                 </div>
             </div>
         </div>

@@ -94,7 +94,7 @@ class AuthController extends FrontController {
         $slug = $data['username'];
         $i    = 0;
         
-        while(UserProfile::where('slug', $slug)->first() !== null) {
+        while(null !== UserProfile::where('slug', $slug)->first()) {
             $i++;
             $slug .= $i;
         }
