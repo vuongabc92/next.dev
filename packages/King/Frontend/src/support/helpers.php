@@ -393,3 +393,22 @@ if ( ! function_exists('countries')) {
         return ['' => _t('setting.profile.country')] + ((count($countries)) ? $countries : []);
     }
 }
+
+if ( ! function_exists('employment_date')) {
+    function employment_date($type = 'start') {
+        
+        $month = ('start' === $type) ? ['' => _t('setting.employment.startdate1')] : ['' => _t('setting.employment.enddate1')];
+        $year  = ('start' === $type) ? ['' => _t('setting.employment.startdate2')] : ['' => _t('setting.employment.enddate2')];
+        
+        for ($m = 1; $m <= 12; $m++) {
+            $FullMonth         = ($m < 10) ? '0' . $m : $m;
+            $month[$FullMonth] = $FullMonth;
+        }
+        
+        for ($y = ((int) date('Y')); $y >= ((int) date('Y') - 30); $y--) {
+            $year[$y] = ($y < 10) ? '0' . $y : $y;
+        }
+        
+        return array('m' => $month, 'y' => $year);
+    }
+}

@@ -85,6 +85,20 @@ $("[name='publish_profile']").bootstrapSwitch({
     }
 });
 
+// Enable or disable employment history end day
+$('#employment-current').on('change', function(){
+    var endMonth = $('.settings-field-wrapper').find('[name="end_month"]'),
+        endYear  = $('.settings-field-wrapper').find('[name="end_year"]');
+        
+    if ($(this).is(':checked')) {
+        endMonth.attr('disabled', true).parent('.selecter').css({opacity: '0.5'});
+        endYear.attr('disabled', true).parent('.selecter').css({opacity: '0.5'});
+    } else {
+        endMonth.attr('disabled', false).parent('.selecter').css({opacity: '1'});
+        endYear.attr('disabled', false).parent('.selecter').css({opacity: '1'});
+    }
+});
+
 function showMessage(message, error) {
 
     var msgBlock = $('.setting-messages'),

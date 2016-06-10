@@ -221,7 +221,8 @@ body{background-color:#f5f8fa;}
     display: inline-block;
     position: relative;
     line-height: 34px;
-    border: solid 1px #ccc;
+    border: solid 1px #d5d5d5;
+    background: #fff;
     padding: 0 10px;
     border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -314,12 +315,14 @@ body {
     -o-border-radius: 50%;
 }
 .timeline-content {
+    float: left;
     position: relative;
     margin-left: 50px;
     width: 80%;
     background: #eee;
     border-radius: 3px;
     padding: 15px;
+    color: #777;
 }
 .timeline-content:before {
     top: 20px;
@@ -330,6 +333,28 @@ body {
     border: 9px solid transparent;
     border-right: 9px solid #eee;
     position: absolute;
+}
+.timeline-content h4 {
+    width: 100%;
+    float: left;
+    text-transform: capitalize;
+    margin-bottom: 9px;
+    color: #555;
+}
+.timeline-content span {
+    width: 100%;
+    float: left;
+    margin-bottom: 2px;
+    color: #888;
+}
+.timeline-content a {
+    width: 100%;
+    float: left;
+    color: #007aff;
+    text-decoration: underline;
+}
+.timeline-content .settings-form {
+    width: 100%;
 }
 
 /* Bootstrap switcher */
@@ -410,7 +435,7 @@ body {
     }
     .timeline-content {
         margin-left: 0;
-        width: 43%;
+        width: 45%;
     }
     .timeline-content:before {
         top: 20px;
