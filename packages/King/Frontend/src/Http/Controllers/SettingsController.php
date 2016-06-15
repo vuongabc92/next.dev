@@ -12,6 +12,7 @@ use App\Models\Country;
 use App\Models\City;
 use App\Models\District;
 use App\Models\Ward;
+use App\Models\EmploymentHistory;
 use DB;
 use Validator;
 use Intervention\Image\Facades\Image as ImageIntervention;
@@ -38,19 +39,27 @@ class SettingsController extends FrontController {
         $coverMedium       = isset($cover[$coverMediumSize])   ? $coverStoragePath . '/' . $cover[$coverMediumSize]    : '';
         $genders           = ['' => _t('setting.profile.sextell')];
         $genderName        = Gender::find($userProfile->gender_id);
+        $countries         = Country::where('id', 237)->pluck('country_name', 'id')->toArray();
+        $cities            = $this->_getCityByCountryId(((is_null($userProfile->country_id)) ? 0 : $userProfile->country_id), 'array');
+        $districts         = $this->_getDistrictByCityId(((is_null($userProfile->city_id)) ? 0 : $userProfile->city_id), 'array');
+        $wards             = $this->_getWardByDistrictId(((is_null($userProfile->district_id)) ? 0 : $userProfile->district_id), 'array');
         
         if (Gender::all()) {
             foreach (Gender::all() as $gender) {
                 $genders[$gender->id] = $gender->gender_name;
             }
         }
-
+        
         return view('frontend::settings.index', [
             'userProfile'  => $userProfile,
             'avatarMedium' => $avatarMedium,
             'coverMedium'  => $coverMedium,
             'genders'      => $genders,
-            'gender'       => ( ! is_null($genderName)) ? $genderName->gender_name : null
+            'gender'       => ( ! is_null($genderName)) ? $genderName->gender_name : null,
+            'countries'    => ['' => _t('setting.profile.country')] + ((count($countries)) ? $countries : []),
+            'cities'       => $cities,
+            'districts'    => $districts,
+            'wards'        => $wards
         ]);
     }
     
@@ -216,10 +225,6 @@ class SettingsController extends FrontController {
                     $save = $this->savePassword($request);
                     break;
                 
-                case '_PASS':
-                    $save = $this->savePassword($request);
-                    break;
-                
                 case '_PERSONAL':
                     $save = $this->savePersonalInfo($request);
                     break;
@@ -227,13 +232,38 @@ class SettingsController extends FrontController {
                 case '_CONTACT':
                     $save = $this->saveContactInfo($request);
                     break;
+                
+                case '_EMPLOYMENT':
+                    $save = $this->saveEmployment($request);
+                    break;
 
                 default:
                     $save = false;
                     break;
             }
             
-            if (true === $save) {
+            if ($save instanceof EmploymentHistory) {
+                
+                if (empty($save->company_website)) {
+                    $websiteText = '';
+                } elseif (str_contains($save->company_website, 'https')) {
+                    $websiteText = str_replace('https://', '', $save->company_website);
+                }else if (str_contains($save->company_website, 'http')) {
+                    $websiteText = str_replace('http://', '', $save->company_website);
+                }
+                
+                $workedDate = ($save->is_current) ? $save->start_date->format('m/Y') . ' - Current' : $save->start_date->format('m/Y') . ' - ' . $save->end_date->format('m/Y');
+                
+                return pong([
+                    'message' => _t('good_job'), 
+                    'data'    => [
+                        'name'         => $save->company_name,
+                        'position'     => $save->position,
+                        'date'         => $workedDate,
+                        'website_text' => $websiteText,
+                        'website_href' => $save->company_website
+                ]]);
+            } elseif (true === $save) {
                 return pong(['message' => _t('good_job')]);
             } elseif(false !== $save) {
                 return pong(['message' => $save->errors()->first()], _error(), 403);
@@ -271,38 +301,61 @@ class SettingsController extends FrontController {
             return pong(['options' => $options]);
         }
     }
+    
+    /**
+     * Convert array of object to normal array [0 => '...', 1 => '...']
+     * 
+     * @param array  $places   List of cities or districts or wards
+     * @param string $dataType Data type include object|aray
+     * 
+     * @return aray
+     */
+    protected function _placeObjectToArray($places, $dataType = 'array') {
+        if ($dataType === 'array') {
+            $placesArr = [];
+            foreach ($places as $place) {
+                $placesArr[($place->id === 0) ? '' : $place->id] = $place->name;
+            }
+            
+            return $placesArr;
+        }
+        
+        return $places;
+    }
 
     /**
      * Get cities by country id.
      * 
-     * @param int $countryId Country id
+     * @param int    $countryId Country id
+     * @param string $dataType  Data type include object|array
      * 
      * @return array|\stdClass
      */
-    protected function _getCityByCountryId($countryId = 0) {
+    protected function _getCityByCountryId($countryId = 0, $dataType = 'object') {
         
         $default = $this->_getDefaultAddress('city');
         $cities  = DB::table('cities')->select('id', 'name')
-                                        ->where('country_id', $countryId)
-                                        ->get();
+                                      ->where('country_id', $countryId)
+                                      ->get();
         
         if (count($cities)) {
             array_unshift($cities, $default);
-            
-            return $cities;
         } else {
-            return [$default];
+            $cities = [$default];
         }
+        
+        return $this->_placeObjectToArray($cities, $dataType);
     }
     
     /**
      * Get districts by city id.
      * 
-     * @param int $cityId City id
+     * @param int    $cityId   City id
+     * @param string $dataType Data type include object|array
      * 
      * @return array|\stdClass
      */
-    protected function _getDistrictByCityId($cityId = 0) {
+    protected function _getDistrictByCityId($cityId = 0, $dataType = 'object') {
         
         $default   = $this->_getDefaultAddress('district');
         $districts = DB::table('districts')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
@@ -312,35 +365,36 @@ class SettingsController extends FrontController {
         
         if (count($districts)) {
             array_unshift($districts, $default);
-            
-            return $districts;
         } else {
-            return [$default];
+            $districts = [$default];
         }
+        
+        return $this->_placeObjectToArray($districts, $dataType);
     }
     
     /**
      * Get Wards by district id.
      * 
-     * @param int $districtId District id
+     * @param int    $districtId District id
+     * @param string $dataType   Data type include object|array
      * 
      * @return array|\stdClass
      */
-    protected function _getWardByDistrictId($districtId = 0) {
+    protected function _getWardByDistrictId($districtId = 0, $dataType = 'object') {
         
         $default = $this->_getDefaultAddress('ward');
         $wards   = DB::table('wards')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
                                      ->where('district_id', $districtId)
                                      ->orderBy('name')
                                      ->get();
-        
+                             
         if (count($wards)) {
             array_unshift($wards, $default);
-            
-            return $wards;
         } else {
-            return [$default];
+            $wards = [$default];
         }
+        
+        return $this->_placeObjectToArray($wards, $dataType);
     }
     
     /**

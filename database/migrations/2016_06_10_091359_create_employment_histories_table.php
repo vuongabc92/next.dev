@@ -18,7 +18,8 @@ class CreateEmploymentHistoriesTable extends Migration
             $table->string('company_name', 250);
             $table->string('position', 250);
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
+            $table->boolean('is_current')->default(0);
             $table->string('company_website', 250);
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -11,4 +11,5 @@ return [
     'avatarMaxFileSizeMessage' => 10,
     'coverMaxFileSize'         => 10000,
     'coverMaxFileSizeMessage'  => 10,
+    'socialNetWorks'           => ['facebook', 'twitter', 'instagram']
 ];

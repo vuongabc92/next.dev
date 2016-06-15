@@ -6,7 +6,7 @@
         <div class="_fl col-md-9 col-xs-12">
             <div class="settings-show">
                 <div class="_fl col-no-padding col-md-11 col-xs-11">
-                    <b class="_fl _tg8 _fs13">12 Le Van Khuong, ..., Ho Chi Minh city</b>
+                    <b class="_fl _tg7 _fs13">{{ _t('setting.contact.default_txt') }}</b>
                 </div>
                 <div class="_fr col-no-padding col-md-1 col-xs-1">
                     <button class="settings-expand-btn" data-show-form><i class="fa fa-pencil"></i></button>
@@ -17,29 +17,26 @@
                 {!! Form::text('street_name', $userProfile->street_name, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.street')]) !!}
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::kingSelect('country', countries(), $userProfile->country_id, ['id' => 'settings-country', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'city']) !!}
+                {!! Form::kingSelect('country', $countries, $userProfile->country_id, ['id' => 'settings-country', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'city']) !!}
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::kingSelect('city', ['' => _t('setting.profile.city')], null, ['id' => 'settings-city', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'district']) !!}
+                {!! Form::kingSelect('city', $cities, $userProfile->city_id, ['id' => 'settings-city', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'district']) !!}
             </div>
             <div class="settings-field-wrapper">
-                 <span class="_fl _w50 _pr3">
-                    {!! Form::kingSelect('district', ['' => _t('setting.profile.district')], null, ['id' => 'settings-district', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'ward']) !!}
+                <span class="_fl _w50 _pr3">
+                    {!! Form::kingSelect('district', $districts, $userProfile->district_id, ['id' => 'settings-district', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'ward']) !!}
                 </span>
                 <span class="_fl _w50 _pl3">
-                    {!! Form::kingSelect('ward', ['' => _t('setting.profile.ward')], null, ['id' => 'settings-ward', 'class' => 'settings-field']) !!}
+                    {!! Form::kingSelect('ward', $wards, $userProfile->ward_id, ['id' => 'settings-ward', 'class' => 'settings-field']) !!}
                 </span>
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::text('phone_number', $userProfile->phone_number, ['class' => 'settings-field', 'placeholder' => 'Phone number']) !!}
+                {!! Form::text('phone_number', $userProfile->phone_number, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.phone')]) !!}
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::textarea('social', '', ['class' => 'settings-field settings-textarea', 'placeholder' => 'Social network', 'rows' => 3]) !!}
+                {!! Form::textarea('social_network', '', ['class' => 'settings-field settings-textarea', 'placeholder' => _t('setting.profile.social'), 'rows' => 3]) !!}
                 <span class="_mt5 settings-help-text">
-                    Put your social network links line by line, such as:<br />
-                    &nbsp;facebook.com/abc <br />
-                    &nbsp;twitter.com/abc <br />
-                    &nbsp;instagram.com/abc
+                    {!! _t('setting.profile.social_help') !!}
                 </span>
             </div>
             <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>

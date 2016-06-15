@@ -3,6 +3,7 @@ namespace App\Helpers;
 
 use Illuminate\Http\Request;
 use Hash;
+use App\Models\EmploymentHistory;
 
 trait SaveSettings {
     
@@ -144,25 +145,84 @@ trait SaveSettings {
             $validateRules['district'] = 'required_with:city';
         }
         
-        if (empty($request->get('city'))) {
-            $validateRules['district'] = 'required_with:city';
+        if (empty($request->get('ward'))) {
+            $validateRules['ward'] = 'required_with:district';
         }
         
-        $validator = validator($request->all(), $this->_saveContactRules(), $this->_saveContactMessages());
+        $validator = validator($request->all(), $validateRules, $this->_saveContactMessages());
         if ($validator->fails()) {
             return $validator;
         }
         
-        $userProfile               = user()->userProfile;
-        $userProfile->street_name  = $request->get('street_name');
-        $userProfile->country_id   = (empty($request->get('country')))  ? null : $request->get('country');
-        $userProfile->city_id      = (empty($request->get('city')))     ? null : $request->get('city');
-        $userProfile->district_id  = (empty($request->get('district'))) ? null : $request->get('district');
-        $userProfile->ward_id      = (empty($request->get('ward')))     ? null : $request->get('ward');
-        $userProfile->phone_number = (empty($request->get('ward')))     ? null : $request->get('ward');
+        $userProfile                 = user()->userProfile;
+        $userProfile->street_name    = $request->get('street_name');
+        $userProfile->country_id     = (empty($request->get('country')))      ? null : $request->get('country');
+        $userProfile->city_id        = (empty($request->get('city')))         ? null : $request->get('city');
+        $userProfile->district_id    = (empty($request->get('district')))     ? null : $request->get('district');
+        $userProfile->ward_id        = (empty($request->get('ward')))         ? null : $request->get('ward');
+        $userProfile->phone_number   = (empty($request->get('phone_number'))) ? null : $request->get('phone_number');
+        $userProfile->social_network = $this->_generateSocialLinks($request->get('social_network'));
         $userProfile->save();
         
         return true;
+    }
+    
+    /**
+     * Save settings contact.
+     * 
+     * @param Request $request
+     * 
+     * @return boolean|JSON
+     */
+    public function saveEmployment(Request $request) {
+       // return true;
+        $validator = validator($request->all(), $this->_saveEmploymentRules(), $this->_saveEmploymentMessages());
+        if ($validator->fails()) {
+            return $validator;
+        }
+        
+        $startMonth = $request->get('start_month');
+        $startYear  = $request->get('start_year');
+        $endMonth   = ( ! empty($request->get('end_month'))) ? $request->get('end_month') : 0;
+        $endYear    = ( ! empty($request->get('end_year')))  ? $request->get('end_year') : 0;
+        $current    = ($request->has('current_company'))     ? (bool) $request->get('current_company') : false;
+        $website    = $request->get('website');
+        
+        if ($current) {
+            EmploymentHistory::all()->each(function($item, $key){
+                $item->is_current = null;
+                $item->save();
+            });
+        }
+        
+        $employmentHistory                  = new EmploymentHistory();
+        $employmentHistory->user_id         = user_id();
+        $employmentHistory->company_name    = $request->get('company_name');
+        $employmentHistory->position        = $request->get('position');
+        $employmentHistory->start_date      = new \DateTime("{$startMonth}/{$startMonth}/{$startYear}");
+        $employmentHistory->end_date        = ( ! $endMonth || ! $endYear || $current) ? null : new \DateTime("{$endMonth}/{$endMonth}/{$endYear}");
+        $employmentHistory->is_current      = $current;
+        $employmentHistory->company_website = trim((strpos($website, 'http') === false) ? 'http://' . $website : $website);
+        //$employmentHistory->save();
+        
+        return $employmentHistory;
+    }
+    
+    protected function _generateSocialLinks($linkRaw) {
+        $link    = trim($linkRaw);
+        $linkArr = explode("\n", $link);
+        $linkArr = array_filter($linkArr, 'trim');
+        
+        if (count($linkArr)) {
+            foreach ($linkArr as $link) {
+                
+                $url = parse_url(trim((strpos($link, 'http') === false) ? 'http://' . $link : $link));
+                
+                if (preg_match('/(www\.)?facebook\.com/', $url['host'])) {
+                    
+                }
+            }
+        }
     }
 
     /**
@@ -272,10 +332,10 @@ trait SaveSettings {
     protected function _saveContactRules() {
         return [
             'street_name'  => 'max:250',
-            'country'      => 'exists:countries,id',
-            'city'         => 'required_with:country|exists:cities,id',
-            'district'     => 'required_with:city|exists:districts,id',
-            'ward'         => 'required_with:district|exists:wards,id',
+            'country'      => 'required_with:city|exists:countries,id',
+            'city'         => 'required_with:district|exists:cities,id',
+            'district'     => 'required_with:ward|exists:districts,id',
+            'ward'         => 'exists:wards,id',
             'phone_number' => 'max:32',
         ];
     }
@@ -288,14 +348,48 @@ trait SaveSettings {
     protected function _saveContactMessages() {
         return [
             'street_name.max'        => _t('setting.profile.sname_max'),
+            'country.required_with'  => _t('setting.profile.country_rwith'),
             'country.exists'         => _t('setting.profile.country_exi'),
             'city.required_with'     => _t('setting.profile.city_rwith'),
             'city.exists'            => _t('setting.profile.city_exi') ,
             'district.required_with' => _t('setting.profile.district_rwith'),
             'district.exists'        => _t('setting.profile.district_exi'),
-            'ward.required_with'     => _t('setting.profile.ward_rwith'),
             'ward.exists'            => _t('setting.profile.ward_exi'),
             'phone.max'              => _t('setting.profile.phone_max')
+        ];
+    }
+    
+    /**
+     * Save employment information rules
+     * 
+     * @return array
+     */
+    protected function _saveEmploymentRules() {
+        return [
+            'company_name' => 'required|max:250',
+            'position'     => 'required|max:250',
+            'start_month'  => 'required',
+            'start_year'   => 'required',
+            'end_month'    => 'required_without:current_company',
+            'end_year'     => 'required_without:current_company',
+        ];
+    }
+    
+    /**
+     * Save employment information messages
+     * 
+     * @return array
+     */
+    protected function _saveEmploymentMessages() {
+        return [
+            'company_name.required'        => _t('setting.employment.comname_req'),
+            'company_name.max'             => _t('setting.employment.comname_max'),
+            'position.required'            => _t('setting.employment.position_req'),
+            'position.max'                 => _t('setting.employment.position_max'),
+            'start_month.required_without' => _t('setting.employment.startmonth_req'),
+            'start_year.required_without'  => _t('setting.employment.startyear_req'),
+            'end_month.required_without'   => _t('setting.employment.endmonth_req'),
+            'end_year.required_without'    => _t('setting.employment.endyear_req'),
         ];
     }
 }

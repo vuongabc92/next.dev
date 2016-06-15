@@ -385,15 +385,6 @@ if ( ! function_exists('birthdate')) {
     }
 }// End birthdate.
 
-if ( ! function_exists('countries')) {
-    function countries() {
-        
-        $countries = app(Country::class)->where('id', 237)->pluck('country_name', 'id')->toArray();
-        
-        return ['' => _t('setting.profile.country')] + ((count($countries)) ? $countries : []);
-    }
-}
-
 if ( ! function_exists('employment_date')) {
     function employment_date($type = 'start') {
         

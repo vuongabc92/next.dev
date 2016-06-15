@@ -29,6 +29,7 @@ class CreateTableUserProfile extends Migration
            $table->string('street_name', 250);
            $table->integer('gender_id')->unsigned()->nullable();
            $table->string('phone_number', 32);
+           $table->text('social_network', 1000);
            $table->boolean('publish');
            $table->timestamps();
            

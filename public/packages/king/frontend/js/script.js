@@ -86,14 +86,26 @@ $("[name='publish_profile']").bootstrapSwitch({
 });
 
 // Enable or disable employment history end day
-$('#employment-current').on('change', function(){
+$('#current-company').on('change', function(){
     var endMonth = $('.settings-field-wrapper').find('[name="end_month"]'),
-        endYear  = $('.settings-field-wrapper').find('[name="end_year"]');
+        endYear  = $('.settings-field-wrapper').find('[name="end_year"]'),
+        form     = $(this).closest('form'),
+        requires = form.data('requires').split('|');
         
     if ($(this).is(':checked')) {
+        requires = jQuery.grep(requires, function(value){
+            return value !== 'end_month' && value !== 'end_year';
+        }); 
+        
+        form.attr('data-requires', requires.join('|'));
+        form.data('requires', requires.join('|'));
+        endMonth.parent('.selecter').removeClass('error');
+        endYear.parent('.selecter').removeClass('error');
         endMonth.attr('disabled', true).parent('.selecter').css({opacity: '0.5'});
         endYear.attr('disabled', true).parent('.selecter').css({opacity: '0.5'});
     } else {
+        form.attr('data-requires', requires.join('|') + '|end_month|end_year');
+        form.data('requires', requires.join('|') + '|end_month|end_year');
         endMonth.attr('disabled', false).parent('.selecter').css({opacity: '1'});
         endYear.attr('disabled', false).parent('.selecter').css({opacity: '1'});
     }
@@ -539,10 +551,18 @@ function showMessage(message, error) {
                 current.on('click', function(e){
                     var section      = current.closest('section'),
                         settingsForm = section.find('form'),
-                        requires     = (settingsForm.data('requires').trim() !== '') ? settingsForm.data('requires').split('|') : [];
+                        requires     = (settingsForm.data('requires').trim() !== '') ? settingsForm.data('requires').split('|') : [],
+                        saveFormType = settingsForm.find('[name="type"]').val();
                     
-                    if (settingsForm.find('[name="type"]').val() !== '_PASS') {
+                    if ('_PASS' !== saveFormType && '_EMPLOYMENT' !== saveFormType) {
                         e.preventDefault();
+                    }
+                    
+                    if ('_EMPLOYMENT' === saveFormType) {
+                        $.each(settingsForm.find('select'), function(k, field){
+                            $(field).next('label').html($(field).find('option:first').html());
+                            $(field).attr('disabled', false).parent('.selecter').css({opacity: '1'});
+                        });
                     }
                     
                     $('.settings section').removeClass('_disable');
@@ -551,7 +571,15 @@ function showMessage(message, error) {
                     
                     if ($.isArray(requires) && requires.length) {
                         $.each(requires, function(k, v){
-                            $('[name=' + v + ']').removeClass('error');
+                            var field = $('[name=' + v + ']');
+                            
+                            if (field.is('select')) {
+                                field.parent('.selecter').removeClass('error');
+                            } else if(field.is(':checkbox')) {
+                                field.next('.settings-label').removeClass('error');
+                            } else {
+                                field.removeClass('error');
+                            }
                         });
                     }
                 });
@@ -610,22 +638,35 @@ function showMessage(message, error) {
 
     Plugin.prototype = {
         init: function() {
-            var current     = this.element,
-                requires    = (current.data('requires').trim() !== '') ? current.data('requires').split('|') : [];   
+            var current  = this.element;   
             current.on('submit', function(e){
                 e.preventDefault();
                 var everythingOk = true,
                     submitBtn    = current.find(':submit'),
                     submitLabel  = submitBtn.html(),
-                    loadingImg   = '<img class="loading-inbtn" src="' + SETTINGS.LOADING_BLUE_NAVY_24 + '" />';
+                    loadingImg   = '<img class="loading-inbtn" src="' + SETTINGS.LOADING_BLUE_NAVY_24 + '" />',
+                    requires     = (current.data('requires').trim() !== '') ? current.data('requires').split('|') : [];
                 if ($.isArray(requires) && requires.length) {
                     $.each(requires, function(k, v){
                         var field = $('[name=' + v + ']');
+                        
                         if (field.val() === '') {
-                            field.addClass('error');
+                            if (field.is('select')) {
+                                field.parent('.selecter').addClass('error');
+                            } else if(field.is(':checkbox')) {
+                                field.next('.settings-label').addClass('error');
+                            } else {
+                                field.addClass('error');
+                            }
                             everythingOk = false;
                         } else {
-                            field.removeClass('error');
+                            if (field.is('select')) {
+                                field.parent('.selecter').removeClass('error');
+                            } else if(field.is(':checkbox')) {
+                                field.next('.settings-label').removeClass('error');
+                            } else {
+                                field.removeClass('error');
+                            }
                         }
                     });
                 }
@@ -654,7 +695,9 @@ function showMessage(message, error) {
                         submitBtn.attr('disabled', true);
                     },
                     success: function(response){
-                        if (current.find('[name="type"]').val() === '_SLUG') {
+                        var formType = current.find('[name="type"]').val();
+                        
+                        if (formType === '_SLUG') {
                             var currentSlug = $('.current-slug'),
                                 slugSplit   = currentSlug.html().trim().split('/');
                             
@@ -663,13 +706,32 @@ function showMessage(message, error) {
                             $('a.current-slug').attr('href', 'http://' + slugSplit[0] + '/' + current.find('[name="slug"]').val());
                         }
                         
+                        if (formType === '_EMPLOYMENT') {
+                            var employment = response.data,
+                                timeline   = $('.timeline'),
+                                section    = '<div class="_fwfl timeline-section"><div class="timeline-point"></div><div class="timeline-content">',
+                                name       = '<h4>' + employment.name + '</h4>',
+                                position   = '<span>' + employment.position + '</span>',
+                                time       = '<span>' + employment.date + '</span>',
+                                link       = ('' !== employment.website_text) ? '<a href="' + employment.website_href + '" target="_blank">' + employment.website_text + '</a>' : '';
+                        
+                                section = section + name + position + time + link + '</div></div>'
+                                timeline.prepend(section);
+                        }
+                        
                         showMessage(response.message, 'success');
                         submitBtn.attr('disabled', false);
                         submitBtn.html('<i class="fa fa-check"></i>');
                         setTimeout(function(){
                             submitBtn.html(submitLabel);
-                            current.find('button[type=reset]').click();
+                            if (formType !== '_EMPLOYMENT') { 
+                                current.find('button[type=reset]').click();
+                            }
                         }, 1000);
+                        
+                        if (formType === '_EMPLOYMENT') { 
+                            current.find('button[type=reset]').click();
+                        }
                     },
                     complete: function() {
                         

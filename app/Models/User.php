@@ -32,6 +32,13 @@ class User extends Authenticatable {
     }
     
     /**
+     * Get the employment history record associated with the user.
+     */
+    public function employmentHistory() {
+        return $this->hasOne('App\Models\EmploymentHistory');
+    }
+    
+    /**
      * Get register error rules
      *
      * @return type

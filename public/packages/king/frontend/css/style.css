@@ -185,8 +185,10 @@ body{background-color:#f5f8fa;}
     border-color: #007aff;
 }
 .settings-textarea {
-    height: auto;
+    height: 100px;
+    line-height: normal;
     resize: vertical;
+    padding: 10px;
 }
 .setting-messages {
     width: 100%;
@@ -214,6 +216,9 @@ body{background-color:#f5f8fa;}
 .settings-field-wrapper .settings-field.error {
     border-color: #de5d3d;
 }
+.settings-label.error {
+    color: #de5d3d;
+}
 .selecter {
     width: 100%;
     height: 34px;
@@ -229,6 +234,9 @@ body{background-color:#f5f8fa;}
     -moz-border-radius: 2px;
     -ms-border-radius: 2px;
     -o-border-radius: 2px;
+}
+.selecter.error {
+    border-color: #de5d3d;
 }
 .selecter select{
     width: 100%;
