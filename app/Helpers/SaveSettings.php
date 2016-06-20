@@ -190,20 +190,29 @@ trait SaveSettings {
         
         if ($current) {
             EmploymentHistory::all()->each(function($item, $key){
-                $item->is_current = null;
+                if ($item->is_current) {
+                    $item->is_current = false;
+                    $item->end_date   = $item->start_date;
+                }
+                
                 $item->save();
             });
         }
         
-        $employmentHistory                  = new EmploymentHistory();
+        if ($request->has('id') && (int) $request->get('id') > 0 && EmploymentHistory::find($request->get('id'))) {
+            $employmentHistory = EmploymentHistory::find($request->get('id'));
+        } else {
+            $employmentHistory = new EmploymentHistory();
+        }
+        
         $employmentHistory->user_id         = user_id();
         $employmentHistory->company_name    = $request->get('company_name');
         $employmentHistory->position        = $request->get('position');
         $employmentHistory->start_date      = new \DateTime("{$startMonth}/{$startMonth}/{$startYear}");
-        $employmentHistory->end_date        = ( ! $endMonth || ! $endYear || $current) ? null : new \DateTime("{$endMonth}/{$endMonth}/{$endYear}");
+        $employmentHistory->end_date        = ( ! $endMonth || ! $endYear || $current) ? $employmentHistory->start_date : new \DateTime("{$endMonth}/{$endMonth}/{$endYear}");
         $employmentHistory->is_current      = $current;
         $employmentHistory->company_website = trim((strpos($website, 'http') === false) ? 'http://' . $website : $website);
-        //$employmentHistory->save();
+        $employmentHistory->save();
         
         return $employmentHistory;
     }

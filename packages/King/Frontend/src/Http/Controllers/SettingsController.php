@@ -28,21 +28,22 @@ class SettingsController extends FrontController {
      * @return Response
      */
     public function index() {
-        $userProfile       = is_null(user()->userProfile) ? new UserProfile() : user()->userProfile;
-        $avatarMediumSize  = (int) config('frontend.avatarMedium');
-        $coverMediumSize   = (int) config('frontend.coverMediumW');
-        $avatar            = unserialize($userProfile->avatar_image);
-        $cover             = unserialize($userProfile->cover_image);
-        $avatarStoragePath = config('frontend.avatarsFolder');
-        $coverStoragePath  = config('frontend.coversFolder');
-        $avatarMedium      = isset($avatar[$avatarMediumSize]) ? $avatarStoragePath . '/' . $avatar[$avatarMediumSize] : '';
-        $coverMedium       = isset($cover[$coverMediumSize])   ? $coverStoragePath . '/' . $cover[$coverMediumSize]    : '';
-        $genders           = ['' => _t('setting.profile.sextell')];
-        $genderName        = Gender::find($userProfile->gender_id);
-        $countries         = Country::where('id', 237)->pluck('country_name', 'id')->toArray();
-        $cities            = $this->_getCityByCountryId(((is_null($userProfile->country_id)) ? 0 : $userProfile->country_id), 'array');
-        $districts         = $this->_getDistrictByCityId(((is_null($userProfile->city_id)) ? 0 : $userProfile->city_id), 'array');
-        $wards             = $this->_getWardByDistrictId(((is_null($userProfile->district_id)) ? 0 : $userProfile->district_id), 'array');
+        $userProfile         = is_null(user()->userProfile) ? new UserProfile() : user()->userProfile;
+        $avatarMediumSize    = (int) config('frontend.avatarMedium');
+        $coverMediumSize     = (int) config('frontend.coverMediumW');
+        $avatar              = unserialize($userProfile->avatar_image);
+        $cover               = unserialize($userProfile->cover_image);
+        $avatarStoragePath   = config('frontend.avatarsFolder');
+        $coverStoragePath    = config('frontend.coversFolder');
+        $avatarMedium        = isset($avatar[$avatarMediumSize]) ? $avatarStoragePath . '/' . $avatar[$avatarMediumSize] : '';
+        $coverMedium         = isset($cover[$coverMediumSize])   ? $coverStoragePath . '/' . $cover[$coverMediumSize]    : '';
+        $genders             = ['' => _t('setting.profile.sextell')];
+        $genderName          = Gender::find($userProfile->gender_id);
+        $countries           = Country::where('id', 237)->pluck('country_name', 'id')->toArray();
+        $cities              = $this->_getCityByCountryId(((is_null($userProfile->country_id)) ? 0 : $userProfile->country_id), 'array');
+        $districts           = $this->_getDistrictByCityId(((is_null($userProfile->city_id)) ? 0 : $userProfile->city_id), 'array');
+        $wards               = $this->_getWardByDistrictId(((is_null($userProfile->district_id)) ? 0 : $userProfile->district_id), 'array');
+        $employmentHistories = EmploymentHistory::orderBy('is_current', 'DESC')->orderBy('start_date', 'DESC')->get();
         
         if (Gender::all()) {
             foreach (Gender::all() as $gender) {
@@ -51,15 +52,16 @@ class SettingsController extends FrontController {
         }
         
         return view('frontend::settings.index', [
-            'userProfile'  => $userProfile,
-            'avatarMedium' => $avatarMedium,
-            'coverMedium'  => $coverMedium,
-            'genders'      => $genders,
-            'gender'       => ( ! is_null($genderName)) ? $genderName->gender_name : null,
-            'countries'    => ['' => _t('setting.profile.country')] + ((count($countries)) ? $countries : []),
-            'cities'       => $cities,
-            'districts'    => $districts,
-            'wards'        => $wards
+            'userProfile'         => $userProfile,
+            'avatarMedium'        => $avatarMedium,
+            'coverMedium'         => $coverMedium,
+            'genders'             => $genders,
+            'gender'              => ( ! is_null($genderName)) ? $genderName->gender_name : null,
+            'countries'           => ['' => _t('setting.profile.country')] + ((count($countries)) ? $countries : []),
+            'cities'              => $cities,
+            'districts'           => $districts,
+            'wards'               => $wards,
+            'employmentHistories' => $employmentHistories
         ]);
     }
     
@@ -252,11 +254,12 @@ class SettingsController extends FrontController {
                     $websiteText = str_replace('http://', '', $save->company_website);
                 }
                 
-                $workedDate = ($save->is_current) ? $save->start_date->format('m/Y') . ' - Current' : $save->start_date->format('m/Y') . ' - ' . $save->end_date->format('m/Y');
+                $workedDate = ($save->is_current) ? $save->start_date->format('m/Y') . ' - ' . _t('setting.employment.current') : $save->start_date->format('m/Y') . ' - ' . $save->end_date->format('m/Y');
                 
                 return pong([
                     'message' => _t('good_job'), 
                     'data'    => [
+                        'id'           => $save->id,
                         'name'         => $save->company_name,
                         'position'     => $save->position,
                         'date'         => $workedDate,
@@ -302,6 +305,33 @@ class SettingsController extends FrontController {
         }
     }
     
+    public function getEmploymentHistoryById(Request $request, $id) {
+        if ($request->ajax() && $request->isMethod('GET')) {
+           
+            $employment = EmploymentHistory::find($id);
+            if (is_null($employment)) {
+                return pong(['message' => _t('oops')]);
+            }
+            
+            $isCurrent = $employment->is_current;
+            $startDate = new \DateTime($employment->start_date);
+            $endDate   = ($isCurrent) ? false : new \DateTime($employment->end_date);
+            
+            return ['data' => [
+                'id'          => $employment->id,
+                'name'        => $employment->company_name,
+                'position'    => $employment->position,
+                'start_month' => (strlen($sm = $startDate->format('d')) === 2) ? $sm : '0' . $sm,
+                'start_year'  => $startDate->format('Y'),
+                'end_month'   => ($isCurrent) ? null : ((strlen($em = $endDate->format('d')) === 2) ? $em : '0' . $em),
+                'end_year'    => ($isCurrent) ? null : $endDate->format('Y'),
+                'website'     => $employment->company_website,
+                'is_current'  => $employment->is_current
+            ]];
+        }
+    }
+
+
     /**
      * Convert array of object to normal array [0 => '...', 1 => '...']
      * 

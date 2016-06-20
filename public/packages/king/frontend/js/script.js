@@ -562,6 +562,7 @@ function showMessage(message, error) {
                         $.each(settingsForm.find('select'), function(k, field){
                             $(field).next('label').html($(field).find('option:first').html());
                             $(field).attr('disabled', false).parent('.selecter').css({opacity: '1'});
+                            settingsForm.find('[name="id"]').remove();
                         });
                     }
                     
@@ -638,7 +639,7 @@ function showMessage(message, error) {
 
     Plugin.prototype = {
         init: function() {
-            var current  = this.element;   
+            var current = this.element;   
             current.on('submit', function(e){
                 e.preventDefault();
                 var everythingOk = true,
@@ -708,15 +709,24 @@ function showMessage(message, error) {
                         
                         if (formType === '_EMPLOYMENT') {
                             var employment = response.data,
-                                timeline   = $('.timeline'),
-                                section    = '<div class="_fwfl timeline-section"><div class="timeline-point"></div><div class="timeline-content">',
+                                section    = '<div class="_fwfl timeline-section" id="timeline-section-' + employment.id + '"><div class="timeline-point"></div><div class="timeline-content">',
                                 name       = '<h4>' + employment.name + '</h4>',
-                                position   = '<span>' + employment.position + '</span>',
-                                time       = '<span>' + employment.date + '</span>',
+                                position   = '<span class="position">' + employment.position + '</span>',
+                                time       = '<span class="time">' + employment.date + '</span>',
+                                button     = '<button class="btn _btn timeline-edit" data-update-employment-id="' + employment.id + '"><i class="fa fa-pencil"></i></button>',
                                 link       = ('' !== employment.website_text) ? '<a href="' + employment.website_href + '" target="_blank">' + employment.website_text + '</a>' : '';
-                        
-                                section = section + name + position + time + link + '</div></div>'
-                                timeline.prepend(section);
+                                
+                                if(current.find('[name="id"]').length) {
+                                    var editSection = $('#timeline-section-' + employment.id);
+                                    editSection.find('h4').html(employment.name);
+                                    editSection.find('span.position').html(employment.position);
+                                    editSection.find('span.time').html(employment.date);
+                                    editSection.find('a').html(employment.website_text).attr('href', employment.website_href);
+                                } else {
+                                    var timelineSection = section + name + position + time + link + button + '</div></div>';
+                                    
+                                    $(timelineSection).insertBefore('.default-timeline');
+                                }
                         }
                         
                         showMessage(response.message, 'success');
@@ -909,6 +919,93 @@ function showMessage(message, error) {
                     },
                     complete: function() {
                         
+                    }
+                });
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Update employment
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'update-employment';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current = this.element;
+                
+            current.on('click', '.timeline-edit', function(){
+                
+                $.ajax({
+                    type: 'GET',
+                    url: SETTINGS.AJAX_GET_EMPLOYMENTBYID + '/' + $(this).attr('data-update-employment-id'),
+                    dataType: 'json',
+                    success: function(response){
+                        var data = response.data,
+                            form = $('.timeline-content').find('form');
+                    
+                        form.find('[name="company_name"]').val(data.name);
+                        form.find('[name="position"]').val(data.position);
+                        form.find('[name="start_month"]').val(data.start_month).parent('.selecter').find('label').html(data.start_month);
+                        form.find('[name="start_year"]').val(data.start_year).parent('.selecter').find('label').html(data.start_year);
+                        form.find('[name="website"]').val(data.website);
+                        
+                        if (data.is_current) {
+                            form.find('[name="current_company"]').click();
+                        } else {
+                            form.find('[name="end_month"]').val(data.end_month).parent('.selecter').find('label').html(data.end_month);
+                            form.find('[name="end_year"]').val(data.end_year).parent('.selecter').find('label').html(data.end_year);
+                        }
+                        form.append('<input type="hidden" name="id" value="' + data.id +'" />');
+                        form.prev('div.settings-show').hide();
+                        form.show();
+                        $('html, body').animate({
+                            scrollTop: $('.default-timeline').offset().top
+                        }, 2000);
                     }
                 });
             });

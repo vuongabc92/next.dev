@@ -12,7 +12,7 @@ class EmploymentHistory extends Base {
     protected $table = 'employment_histories';
     
     public $timestamps = false;
-    
+     
     /**
      * Get the user record associated with the employment.
      */

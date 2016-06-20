@@ -1,7 +1,6 @@
 @extends('frontend::layouts._settings')
 
 @section('body')
-
 <div class="row">
     <div class="_fl col-md-9 col-xs-12">
         <div class="_fwfl profile">

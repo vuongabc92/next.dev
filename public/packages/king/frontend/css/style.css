@@ -330,6 +330,7 @@ body {
     background: #eee;
     border-radius: 3px;
     padding: 15px;
+    padding-right: 37px;
     color: #777;
 }
 .timeline-content:before {
@@ -346,8 +347,9 @@ body {
     width: 100%;
     float: left;
     text-transform: capitalize;
-    margin-bottom: 9px;
+    margin:8px 0 9px 0;
     color: #555;
+    line-height: 24px;
 }
 .timeline-content span {
     width: 100%;
@@ -364,7 +366,22 @@ body {
 .timeline-content .settings-form {
     width: 100%;
 }
-
+.timeline-section .timeline-content .timeline-edit {
+    height: 30px;
+    position: absolute;
+    line-height: 16px;
+    font-size: 16px;
+    padding: 6px 9px;
+    border-radius: 0;
+    top: -1px;
+    right: -1px;
+    border-left: solid 1px #fff;
+    border-bottom: solid 1px #fff;
+    color: #888;
+}
+.timeline-section .timeline-content .timeline-edit:hover{
+    color: #666;
+}
 /* Bootstrap switcher */
 .bootstrap-switch {
     outline: none;
@@ -459,6 +476,12 @@ body {
     }
     .timeline-section:nth-child(even) .timeline-content {
         float: right;
+    }
+    .timeline-section:nth-child(odd) .timeline-content .timeline-edit {
+        top: auto;
+        bottom: -1px;
+        border-top: solid 1px #fff;
+        border-bottom: none;
     }
 }
 @media (max-width: 768px) {
