@@ -1,4 +1,4 @@
-body{background-color:#f5f8fa;}
+body {background-color:#f5f8fa;}
 .wrapper{margin:20px 0;}
 
 /* Settings Page */
@@ -285,10 +285,13 @@ body{background-color:#f5f8fa;}
 .settings-birthday .selecter:last-child {
     margin-right:0;
 }
+.social-network {
+    line-height: 22px !important;
+}
 
 /* Timeline */
-body {
-    background-color: #fff;
+.employment {
+    display: none;
 }
 .timeline-container {
     position: relative;
@@ -366,21 +369,29 @@ body {
 .timeline-content .settings-form {
     width: 100%;
 }
-.timeline-section .timeline-content .timeline-edit {
-    height: 30px;
+.timeline-section .timeline-content .timeline-btn {
+    height: 28px;
     position: absolute;
     line-height: 16px;
     font-size: 16px;
-    padding: 6px 9px;
+    padding: 6px 8px;
     border-radius: 0;
-    top: -1px;
-    right: -1px;
     border-left: solid 1px #fff;
     border-bottom: solid 1px #fff;
     color: #888;
+    top: -1px;
+}
+.timeline-section .timeline-content .timeline-edit {
+    right: -1px;
 }
 .timeline-section .timeline-content .timeline-edit:hover{
     color: #666;
+}
+.timeline-section .timeline-content .timeline-remove {
+    right: 28px;
+}
+.timeline-section .timeline-content .timeline-remove:hover{
+    color: #f66;
 }
 /* Bootstrap switcher */
 .bootstrap-switch {
@@ -477,7 +488,7 @@ body {
     .timeline-section:nth-child(even) .timeline-content {
         float: right;
     }
-    .timeline-section:nth-child(odd) .timeline-content .timeline-edit {
+    .timeline-section:nth-child(odd) .timeline-content .timeline-btn {
         top: auto;
         bottom: -1px;
         border-top: solid 1px #fff;

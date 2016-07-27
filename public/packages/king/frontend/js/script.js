@@ -318,6 +318,8 @@ function showMessage(message, error) {
                         editBtn.addClass('show-edit-btn');
                         editBtn.children('i').hide();
                         editBtn.children('img').show();
+                        editBtn.attr('disabled', true);
+                        editBtn.css("background-color", "rgba(0, 0, 0, 0.7)");
                     },
                     onComplete: function(response){
                         response = $.parseJSON(response);
@@ -337,6 +339,8 @@ function showMessage(message, error) {
                         editBtn.children('i').show();
                         editBtn.children('img').hide();
                         fileInput.val('');
+                        editBtn.attr('disabled', false);
+                        editBtn.css("background-color", "rgba(0, 0, 0, 0.5)");
                     }
                 });
             });
@@ -406,6 +410,8 @@ function showMessage(message, error) {
                         editBtn.addClass('show-edit-btn');
                         editBtn.children('i').hide();
                         editBtn.children('img').show();
+                        editBtn.attr('disabled', true);
+                        editBtn.css("background-color", "rgba(0, 0, 0, 0.7)");
                     },
                     onComplete: function(response){
                         response = $.parseJSON(response);
@@ -425,6 +431,8 @@ function showMessage(message, error) {
                         editBtn.children('i').show();
                         editBtn.children('img').hide();
                         fileInput.val('');
+                        editBtn.attr('disabled', false);
+                        editBtn.css("background-color", "rgba(0, 0, 0, 0.5)");
                     }
                 });
             });
@@ -707,13 +715,29 @@ function showMessage(message, error) {
                             $('a.current-slug').attr('href', 'http://' + slugSplit[0] + '/' + current.find('[name="slug"]').val());
                         }
                         
+                        if (formType === '_PERSONAL') {
+                            var personalText = current.data('personalintro-text'),
+                                personalYear = current.data('persioninfo-year'),
+                                firstName    = current.find('[name="first_name"]').val().trim(),
+                                lastName     = current.find('[name="last_name"]').val(),
+                                year         = current.find('[name="year"]').val().trim(),
+                                currentYear  = new Date().getFullYear();
+                        
+                                if (firstName !== '' && year !== '') {
+                                    $('.personal-intro').html(lastName + ' ' + firstName + ', ' + (parseInt(currentYear) - parseInt(year)) + ' ' + personalYear);
+                                } else {
+                                    $('.personal-intro').html(personalText);
+                                }
+                        }
+                        
                         if (formType === '_EMPLOYMENT') {
                             var employment = response.data,
                                 section    = '<div class="_fwfl timeline-section" id="timeline-section-' + employment.id + '"><div class="timeline-point"></div><div class="timeline-content">',
                                 name       = '<h4>' + employment.name + '</h4>',
                                 position   = '<span class="position">' + employment.position + '</span>',
                                 time       = '<span class="time">' + employment.date + '</span>',
-                                button     = '<button class="btn _btn timeline-edit" data-update-employment-id="' + employment.id + '"><i class="fa fa-pencil"></i></button>',
+                                button     = '<button class="btn _btn timeline-btn timeline-edit" data-update-employment-id="' + employment.id + '"><i class="fa fa-pencil"></i></button>',
+                                button     = button + '<button class="btn _btn timeline-btn timeline-remove" data-remove-employment-id="' + employment.id + '"><i class="fa fa-remove"></i></button>',
                                 link       = ('' !== employment.website_text) ? '<a href="' + employment.website_href + '" target="_blank">' + employment.website_text + '</a>' : '';
                                 
                                 if(current.find('[name="id"]').length) {
@@ -1009,6 +1033,209 @@ function showMessage(message, error) {
                     }
                 });
             });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Remove employment
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'remove-employment';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current = this.element;
+                
+            current.on('click', '.timeline-remove', function(){
+                var employmentId = $(this).attr('data-remove-employment-id');
+                
+                if ( ! confirm($(this).attr('data-confirm-msg'))) {
+                    return false;
+                }
+                
+                $.ajax({
+                    type: 'POST',
+                    url: SETTINGS.AJAX_GET_EMPLOYMENTREMOVEBYID + '/' + employmentId,
+                    dataType: 'json',
+                    success: function(){
+                        $('#timeline-section-' + employmentId).remove();
+                    }
+                });
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Nav Settings
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'nav-settings';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current   = this.element,
+                target    = current.data('nav-settings'),
+                targetObj = $('#' + target);
+                
+            current.on('click', function(){
+                $('.settings section').removeClass('_disable');
+                $('.settings-page').hide();
+                if ('employment' === target || 'education' === target) {
+                    $('body').css('background-color', '#ffffff');
+                } else {
+                    $('body').css('background-color', '#f5f8fa');
+                }
+                targetObj.show();
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Nav Settings
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'settings-page-view';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var settingsPages   = ['#profile', '#employment'],
+                hashPage        = (settingsPages.indexOf(window.location.hash) === -1) ? settingsPages[0] : settingsPages[settingsPages.indexOf(window.location.hash)],
+                settingsPageObj = $(hashPage);
+                
+            $('.settings-page').hide();
+            if ('#employment' === hashPage) {
+                $('body').css('background-color', '#ffffff');
+            }
+            settingsPageObj.show();
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

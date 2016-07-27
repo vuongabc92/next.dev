@@ -31,5 +31,5 @@ Route::group(['middleware' => ['web', 'auth:web']], function () {
     Route::post('settings/save_info', ['as' => 'front_settings_save_info', 'uses' => 'SettingsController@saveInfo']);
     Route::post('settings/select_place', ['as' => 'front_settings_select_place', 'uses' => 'SettingsController@createAddressSelectData']);
     Route::get('settings/employment_history/{id?}', ['as' => 'front_settings_employmentbyid', 'uses' => 'SettingsController@getEmploymentHistoryById'])->where('id', '[0-9]+');
-;
+    Route::post('settings/employment_history_remove/{id?}', ['as' => 'front_settings_employmentremovebyid', 'uses' => 'SettingsController@removeEmploymentHistoryById'])->where('id', '[0-9]+');
 });

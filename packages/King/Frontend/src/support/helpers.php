@@ -3,6 +3,7 @@ use App\Models\Country;
 use App\Models\City;
 use App\Models\District;
 use App\Models\Ward;
+use App\Models\Gender;
 
 if ( ! function_exists('_t')) :
 

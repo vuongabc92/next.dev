@@ -154,6 +154,8 @@ trait SaveSettings {
             return $validator;
         }
         
+        
+        
         $userProfile                 = user()->userProfile;
         $userProfile->street_name    = $request->get('street_name');
         $userProfile->country_id     = (empty($request->get('country')))      ? null : $request->get('country');
@@ -218,20 +220,30 @@ trait SaveSettings {
     }
     
     protected function _generateSocialLinks($linkRaw) {
-        $link    = trim($linkRaw);
-        $linkArr = explode("\n", $link);
-        $linkArr = array_filter($linkArr, 'trim');
+        $link        = trim($linkRaw);
+        $linkExplore = explode("\n", $link);
+        $linkArray   = array_filter($linkExplore, 'trim');
+        $socials     = [];
         
-        if (count($linkArr)) {
-            foreach ($linkArr as $link) {
+        if (count($linkArray)) {
+            foreach ($linkArray as $link) {
                 
-                $url = parse_url(trim((strpos($link, 'http') === false) ? 'http://' . $link : $link));
+                $url           = parse_url(trim((strpos($link, 'http') === false) ? 'http://' . $link : $link));
+                $fullUrl       = $url['host'] . $url['path'];
+                $socialAllowed = config('frontend.socialNetWorks');
                 
-                if (preg_match('/(www\.)?facebook\.com/', $url['host'])) {
-                    
+                if (count($socialAllowed)) {
+                    foreach ($socialAllowed as $type => $social) {
+                        $social = str_replace('.', '\.', $social);
+                        if (preg_match('/(www\.)?' . $social . '/', $url['host'])) {
+                            $socials[$type] = $fullUrl;
+                        }
+                    }
                 }
             }
         }
+        
+        return count($socials) ? serialize($socials) : null;
     }
 
     /**

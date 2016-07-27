@@ -6,7 +6,9 @@
         <div class="_fl col-md-9 col-xs-12">
             <div class="settings-show">
                 <div class="_fl col-no-padding col-md-11 col-xs-11">
-                    <b class="_fl _tg7 _fs13">{{ _t('setting.contact.default_txt') }}</b>
+                    <span class="settings-help-text">
+                        {{ _t('setting.contact.default_txt') }}
+                    </span>
                 </div>
                 <div class="_fr col-no-padding col-md-1 col-xs-1">
                     <button class="settings-expand-btn" data-show-form><i class="fa fa-pencil"></i></button>
@@ -34,7 +36,7 @@
                 {!! Form::text('phone_number', $userProfile->phone_number, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.phone')]) !!}
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::textarea('social_network', '', ['class' => 'settings-field settings-textarea', 'placeholder' => _t('setting.profile.social'), 'rows' => 3]) !!}
+                {!! Form::textarea('social_network', implode("\n", unserialize($userProfile->social_network)), ['class' => 'settings-field settings-textarea social-network', 'placeholder' => _t('setting.profile.social'), 'rows' => 3]) !!}
                 <span class="_mt5 settings-help-text">
                     {!! _t('setting.profile.social_help') !!}
                 </span>

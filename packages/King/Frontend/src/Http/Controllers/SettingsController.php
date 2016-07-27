@@ -204,12 +204,6 @@ class SettingsController extends FrontController {
             return file_pong(['messages' => _t('oops')], _error(), 403);
         }
     }
-    
-//    public function strongPassword(Request $request) {
-//        if ($request->ajax() && $request->isMethod('GET')) {
-//            return pong(['password' => $this->_generateStrongPassword()]);
-//        }
-//    }
 
     public function saveInfo(Request $request) {
         if ($request->ajax() && $request->isMethod('POST')) {
@@ -305,6 +299,14 @@ class SettingsController extends FrontController {
         }
     }
     
+    /**
+     * Get employment history by id
+     * 
+     * @param Request $request
+     * @param int     $id
+     * 
+     * @return JSON
+     */
     public function getEmploymentHistoryById(Request $request, $id) {
         if ($request->ajax() && $request->isMethod('GET')) {
            
@@ -317,7 +319,7 @@ class SettingsController extends FrontController {
             $startDate = new \DateTime($employment->start_date);
             $endDate   = ($isCurrent) ? false : new \DateTime($employment->end_date);
             
-            return ['data' => [
+            return pong(['data' => [
                 'id'          => $employment->id,
                 'name'        => $employment->company_name,
                 'position'    => $employment->position,
@@ -327,7 +329,29 @@ class SettingsController extends FrontController {
                 'end_year'    => ($isCurrent) ? null : $endDate->format('Y'),
                 'website'     => $employment->company_website,
                 'is_current'  => $employment->is_current
-            ]];
+            ]]);
+        }
+    }
+    
+    /**
+     * Remove employment history by id
+     * 
+     * @param Request $request
+     * @param int     $id
+     * 
+     * @return JSON
+     */
+    public function removeEmploymentHistoryById(Request $request, $id) {
+        if ($request->ajax() && $request->isMethod('POST')) {
+           
+            $employment = EmploymentHistory::find($id);
+            if (is_null($employment)) {
+                return pong(['message' => _t('oops')]);
+            }
+            
+            $employment->delete();
+            
+            return pong(['message' => _t('saved')]);
         }
     }
 
@@ -363,10 +387,19 @@ class SettingsController extends FrontController {
      */
     protected function _getCityByCountryId($countryId = 0, $dataType = 'object') {
         
+        $country = Country::find($countryId);
         $default = $this->_getDefaultAddress('city');
         $cities  = DB::table('cities')->select('id', 'name')
                                       ->where('country_id', $countryId)
+                                      ->orderBy('type')
+                                      ->orderBy('name')
                                       ->get();
+        
+        if ('VN' === $country->country_code) {
+            $cities    = collect($cities)->splice(5);
+            $bigCities = DB::table('cities')->select('id', 'name')->where('country_id', $countryId)->skip(0)->take(5)->get();
+            $cities    = collect($bigCities)->merge($cities)->toArray();
+        }
         
         if (count($cities)) {
             array_unshift($cities, $default);
