@@ -20,7 +20,7 @@
                 {{ _t('setting.profile.currurl') }} <strong class="_tg7 current-slug">{{ preg_replace('/^http:\/\//', '', url($userProfile->slug)) }}</strong>
                 <p>{{ _t('setting.profile.slug_note') }}</p>
             </span>
-            <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
+            <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
             <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
             <input type="hidden" name="type" value="_SLUG"/>
             {!! Form::close() !!}

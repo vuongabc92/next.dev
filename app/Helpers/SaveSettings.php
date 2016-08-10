@@ -4,6 +4,8 @@ namespace App\Helpers;
 use Illuminate\Http\Request;
 use Hash;
 use App\Models\EmploymentHistory;
+use App\Models\Education;
+use App\Models\Skill;
 
 trait SaveSettings {
     
@@ -170,7 +172,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save settings contact.
+     * Save settings employment.
      * 
      * @param Request $request
      * 
@@ -201,7 +203,7 @@ trait SaveSettings {
             });
         }
         
-        if ($request->has('id') && (int) $request->get('id') > 0 && EmploymentHistory::find($request->get('id'))) {
+        if ($request->has('id') && EmploymentHistory::find($request->get('id'))) {
             $employmentHistory = EmploymentHistory::find($request->get('id'));
         } else {
             $employmentHistory = new EmploymentHistory();
@@ -219,6 +221,64 @@ trait SaveSettings {
         return $employmentHistory;
     }
     
+    /**
+     * Save settings education.
+     * 
+     * @param Request $request
+     * 
+     * @return boolean|JSON
+     */
+    public function saveEducation(Request $request) {
+        
+        $validator = validator($request->all(), $this->_saveEducationRules(), $this->_saveEducationMessages());
+        if ($validator->fails()) {
+            return $validator;
+        }
+        
+        $startMonth    = $request->get('start_month');
+        $startYear     = $request->get('start_year');
+        $endMonth      = $request->get('end_month');
+        $endYear       = $request->get('end_year');
+        
+        
+        if ($request->has('id') && Education::find($request->get('id'))) {
+            $education = Education::find($request->get('id'));
+        } else {
+            $education = new Education();
+        }
+        
+        $education->user_id          = user_id();
+        $education->college_name     = $request->get('college_name');
+        $education->subject          = $request->get('subject');
+        $education->start_date       = new \DateTime("{$startMonth}/{$startMonth}/{$startYear}");
+        $education->end_date         = new \DateTime("{$endMonth}/{$endMonth}/{$endYear}");
+        $education->qualification_id = $request->get('qualification');
+        $education->save();
+        
+        return $education;
+    }
+    
+    public function saveSkill(Request $request) {
+        
+        $validator = validator($request->all(), $this->_saveSkillRule(), $this->_saveSkillMessages());
+        if ($validator->fails()) {
+            return $validator;
+        }
+        
+        $skill       = new Skill();
+        $skill->name = $request->get('skill');
+        return $skill;
+        $skill->save();
+    }
+
+
+    /**
+     * Generate social links
+     * 
+     * @param string $linkRaw
+     * 
+     * @return string
+     */
     protected function _generateSocialLinks($linkRaw) {
         $link        = trim($linkRaw);
         $linkExplore = explode("\n", $link);
@@ -314,7 +374,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save personal information rules.
+     * Save personal validate rules.
      * 
      * @return array
      */
@@ -329,7 +389,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save personal information messages.
+     * Save personal validate messages.
      * 
      * @return array
      */
@@ -346,7 +406,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save contact rules.
+     * Save contact validate rules.
      * 
      * @return array
      */
@@ -362,7 +422,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save personal information messages.
+     * Save personal validate messages.
      * 
      * @return array
      */
@@ -381,7 +441,7 @@ trait SaveSettings {
     }
     
     /**
-     * Save employment information rules
+     * Save employment validate rules
      * 
      * @return array
      */
@@ -397,20 +457,80 @@ trait SaveSettings {
     }
     
     /**
-     * Save employment information messages
+     * Save employment validate messages
      * 
      * @return array
      */
     protected function _saveEmploymentMessages() {
         return [
-            'company_name.required'        => _t('setting.employment.comname_req'),
-            'company_name.max'             => _t('setting.employment.comname_max'),
-            'position.required'            => _t('setting.employment.position_req'),
-            'position.max'                 => _t('setting.employment.position_max'),
-            'start_month.required_without' => _t('setting.employment.startmonth_req'),
-            'start_year.required_without'  => _t('setting.employment.startyear_req'),
-            'end_month.required_without'   => _t('setting.employment.endmonth_req'),
-            'end_year.required_without'    => _t('setting.employment.endyear_req'),
+            'company_name.required'      => _t('setting.employment.comname_req'),
+            'company_name.max'           => _t('setting.employment.comname_max'),
+            'position.required'          => _t('setting.employment.position_req'),
+            'position.max'               => _t('setting.employment.position_max'),
+            'start_month.required'       => _t('setting.employment.startmonth_req'),
+            'start_year.required'        => _t('setting.employment.startyear_req'),
+            'end_month.required_without' => _t('setting.employment.endmonth_req'),
+            'end_year.required_without'  => _t('setting.employment.endyear_req'),
+        ];
+    }
+    
+    /**
+     * Save employment validate rules
+     * 
+     * @return array
+     */
+    protected function _saveEducationRules() {
+        return [
+            'college_name'  => 'required|max:250',
+            'subject'       => 'required|max:250',
+            'start_month'   => 'required',
+            'start_year'    => 'required',
+            'end_month'     => 'required',
+            'end_year'      => 'required',
+            'qualification' => 'required|exists:qualification,id',
+        ];
+    }
+    
+    /**
+     * Save employment valdiate messages
+     * 
+     * @return array
+     */
+    protected function _saveEducationMessages() {
+        return [
+            'college_name.required'  => _t('setting.education.colname_req'),
+            'college_name.max'       => _t('setting.education.colname_max'),
+            'subject.required'       => _t('setting.education.subject_req'),
+            'subject.max'            => _t('setting.education.subject_max'),
+            'start_month.required'   => _t('setting.education.startmonth_req'),
+            'start_year.required'    => _t('setting.education.startyear_req'),
+            'end_month.required'     => _t('setting.education.endmonth_req'),
+            'end_year.required'      => _t('setting.education.endyear_req'),
+            'qualification.required' => _t('setting.education.qualif_req'),
+            'qualification.exists'   => _t('setting.education.qualif_exi'),
+        ];
+    }
+    
+    /**
+     * Save skill validate rules
+     * 
+     * @return array
+     */
+    protected function _saveSkillRule() {
+        return [
+            'skill' => 'required|max:250'
+        ];
+    }
+    
+    /**
+     * Save skill validate messages
+     * 
+     * @return array
+     */
+    protected function _saveSkillMessages() {
+        return [
+            'skill.required' => _t('setting.skill.req'),
+            'skill.max' => _t('setting.skill.max')
         ];
     }
 }

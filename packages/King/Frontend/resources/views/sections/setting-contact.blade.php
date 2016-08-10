@@ -1,5 +1,5 @@
 <section>
-    <div class="_fwfl settings-row">
+    <div class="_fwfl settings-row settings-last-row">
         <div class="_fl col-md-3 col-xs-12">
             <b class="settings-row-title">{{ _t('setting.profile.contact') }}</b>
         </div>
@@ -41,7 +41,7 @@
                     {!! _t('setting.profile.social_help') !!}
                 </span>
             </div>
-            <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
+            <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
             <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
             <input type="hidden" name="type" value="_CONTACT"/>
             {!! Form::close() !!}

@@ -9,10 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\UserProfile;
 use App\Models\Gender;
 use App\Models\Country;
-use App\Models\City;
-use App\Models\District;
-use App\Models\Ward;
 use App\Models\EmploymentHistory;
+use App\Models\Education;
+use App\Models\Skill;
 use DB;
 use Validator;
 use Intervention\Image\Facades\Image as ImageIntervention;
@@ -44,6 +43,7 @@ class SettingsController extends FrontController {
         $districts           = $this->_getDistrictByCityId(((is_null($userProfile->city_id)) ? 0 : $userProfile->city_id), 'array');
         $wards               = $this->_getWardByDistrictId(((is_null($userProfile->district_id)) ? 0 : $userProfile->district_id), 'array');
         $employmentHistories = EmploymentHistory::orderBy('is_current', 'DESC')->orderBy('start_date', 'DESC')->get();
+        $educations          = Education::orderBy('start_date', 'DESC')->get();
         
         if (Gender::all()) {
             foreach (Gender::all() as $gender) {
@@ -61,7 +61,8 @@ class SettingsController extends FrontController {
             'cities'              => $cities,
             'districts'           => $districts,
             'wards'               => $wards,
-            'employmentHistories' => $employmentHistories
+            'employmentHistories' => $employmentHistories,
+            'educations'          => $educations
         ]);
     }
     
@@ -205,6 +206,13 @@ class SettingsController extends FrontController {
         }
     }
 
+    /**
+     * Save settings
+     * 
+     * @param Request $request
+     * 
+     * @return JSON
+     */
     public function saveInfo(Request $request) {
         if ($request->ajax() && $request->isMethod('POST')) {
             
@@ -232,41 +240,27 @@ class SettingsController extends FrontController {
                 case '_EMPLOYMENT':
                     $save = $this->saveEmployment($request);
                     break;
+                
+                case '_EDUCATION':
+                    $save = $this->saveEducation($request);
+                    break;
+                
+                case '_SKILL':
+                    $save = $this->saveSkill($request);
+                    break;
 
                 default:
                     $save = false;
                     break;
             }
             
-            if ($save instanceof EmploymentHistory) {
-                
-                if (empty($save->company_website)) {
-                    $websiteText = '';
-                } elseif (str_contains($save->company_website, 'https')) {
-                    $websiteText = str_replace('https://', '', $save->company_website);
-                }else if (str_contains($save->company_website, 'http')) {
-                    $websiteText = str_replace('http://', '', $save->company_website);
-                }
-                
-                $workedDate = ($save->is_current) ? $save->start_date->format('m/Y') . ' - ' . _t('setting.employment.current') : $save->start_date->format('m/Y') . ' - ' . $save->end_date->format('m/Y');
-                
-                return pong([
-                    'message' => _t('good_job'), 
-                    'data'    => [
-                        'id'           => $save->id,
-                        'name'         => $save->company_name,
-                        'position'     => $save->position,
-                        'date'         => $workedDate,
-                        'website_text' => $websiteText,
-                        'website_href' => $save->company_website
-                ]]);
-            } elseif (true === $save) {
-                return pong(['message' => _t('good_job')]);
-            } elseif(false !== $save) {
-                return pong(['message' => $save->errors()->first()], _error(), 403);
-            } else {
-                return pong(['message' => _t('good_job')]);
+            $result = $this->_saveInfoResult($save);
+            
+            if (in_array(_error(), $result)) {
+                return pong(['message' => $result['message']], _error(), $result['code']);
             }
+            
+            return pong($result);
         }
     }
     
@@ -312,7 +306,7 @@ class SettingsController extends FrontController {
            
             $employment = EmploymentHistory::find($id);
             if (is_null($employment)) {
-                return pong(['message' => _t('oops')]);
+                return pong(['message' => _t('oops')], 403);
             }
             
             $isCurrent = $employment->is_current;
@@ -337,16 +331,15 @@ class SettingsController extends FrontController {
      * Remove employment history by id
      * 
      * @param Request $request
-     * @param int     $id
      * 
      * @return JSON
      */
-    public function removeEmploymentHistoryById(Request $request, $id) {
-        if ($request->ajax() && $request->isMethod('POST')) {
+    public function removeEmploymentHistoryById(Request $request) {
+        if ($request->ajax() && $request->isMethod('DELETE')) {
            
-            $employment = EmploymentHistory::find($id);
+            $employment = EmploymentHistory::find((int) $request->get('id'));
             if (is_null($employment)) {
-                return pong(['message' => _t('oops')]);
+                return pong(['message' => _t('oops')], 403);
             }
             
             $employment->delete();
@@ -354,8 +347,120 @@ class SettingsController extends FrontController {
             return pong(['message' => _t('saved')]);
         }
     }
+    
+    /**
+     * Remove education history by id
+     * 
+     * @param Request $request
+     * 
+     * @return JSON
+     */
+    public function removeEducationHistoryById(Request $request) {
+        if ($request->ajax() && $request->isMethod('DELETE')) {
 
+            $education = Education::find((int) $request->get('id'));
+            if (is_null($education)) {
+                return pong(['message' => _t('oops')], 403);
+            }
+            
+            $education->delete();
+            
+            return pong(['message' => _t('saved')]);
+        }
+    }
+    
+    /**
+     * Get education history by id
+     * 
+     * @param Request $request
+     * @param int     $id
+     * 
+     * @return JSON
+     */
+    public function getEducationHistoryById(Request $request, $id) {
+        if ($request->ajax() && $request->isMethod('GET')) {
+           
+            $education = Education::find($id);
+            if (is_null($education)) {
+                return pong(['message' => _t('oops')], 403);
+            }
+            
+            $startDate = new \DateTime($education->start_date);
+            $endDate   = new \DateTime($education->end_date);
+            
+            return pong(['data' => [
+                'id'                 => $education->id,
+                'name'               => $education->college_name,
+                'subject'            => $education->subject,
+                'qualification_id'   => $education->qualification_id,
+                'qualification_name' => $education->qualification->name,
+                'start_month'        => (strlen($sm = $startDate->format('d')) === 2) ? $sm : '0' . $sm,
+                'start_year'         => $startDate->format('Y'),
+                'end_month'          => (strlen($em = $endDate->format('d')) === 2) ? $em : '0' . $em,
+                'end_year'           => $endDate->format('Y')
+            ]]);
+        }
+    }
 
+    /**
+     * Get save info result
+     * 
+     * @param array|object $save
+     * 
+     * @return array
+     */
+    protected function _saveInfoResult($save) {
+        if ($save instanceof EmploymentHistory) {
+                
+            if (empty($save->company_website)) {
+                $websiteText = '';
+            } elseif (str_contains($save->company_website, 'https')) {
+                $websiteText = str_replace('https://', '', $save->company_website);
+            }else if (str_contains($save->company_website, 'http')) {
+                $websiteText = str_replace('http://', '', $save->company_website);
+            }
+
+            $workedDate = ($save->is_current) ? $save->start_date->format('m/Y') . ' - ' . _t('setting.employment.current') : $save->start_date->format('m/Y') . ' - ' . $save->end_date->format('m/Y');
+
+            return [
+                'message' => _t('good_job'), 
+                'data'    => [
+                    'id'           => $save->id,
+                    'name'         => $save->company_name,
+                    'position'     => $save->position,
+                    'date'         => $workedDate,
+                    'website_text' => $websiteText,
+                    'website_href' => $save->company_website
+            ]];
+        } elseif($save instanceof Education){
+
+            return [
+                'message' => _t('good_job'), 
+                'data'    => [
+                    'id'            => $save->id,
+                    'name'          => $save->college_name,
+                    'subject'       => $save->subject,
+                    'date'          => $save->start_date->format('m/Y') . ' - ' . $save->end_date->format('m/Y'),
+                    'qualification' => $save->qualification->name,
+                    'achievements'  => $save->achievements
+            ]];
+        } elseif($save instanceof Skill){
+            return [
+                'message' => _t('good_job'), 
+                'data'    => [
+                    'id'    => $save->id,
+                    'name'  => $save->name,
+                    'votes' => $save->votes
+            ]];
+        }elseif (true === $save) {
+            return ['message' => _t('good_job')];
+        } elseif(false !== $save) {
+            return ['message' => $save->errors()->first(), _error(), 'code' => 403];
+        } else {
+            return ['message' => _t('good_job')];
+        }
+    }
+    
     /**
      * Convert array of object to normal array [0 => '...', 1 => '...']
      * 

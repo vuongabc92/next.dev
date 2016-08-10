@@ -18,7 +18,7 @@
             <div class="settings-field-wrapper">
                 {!! Form::password('new_password_confirmation', ['class' => 'settings-field', 'placeholder' => _t('setting.profile.renewpass')]) !!}
             </div>
-            <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
+            <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
             <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
             <input type="hidden" name="type" value="_PASS"/>
             {!! Form::close() !!}

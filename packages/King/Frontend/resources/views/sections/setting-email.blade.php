@@ -19,7 +19,7 @@
             <div class="settings-field-wrapper">
                 {!! Form::password('password', ['class' => 'settings-field', 'placeholder' => _t('setting.profile.repass')]) !!}
             </div>
-            <button type=submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
+            <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
             <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
             <input type="hidden" name="type" value="_EMAIL"/>
             {!! Form::close() !!}

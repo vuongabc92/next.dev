@@ -386,8 +386,8 @@ if ( ! function_exists('birthdate')) {
     }
 }// End birthdate.
 
-if ( ! function_exists('employment_date')) {
-    function employment_date($type = 'start') {
+if ( ! function_exists('selector_date')) {
+    function selector_date($type = 'start', $year_limit = 30, $extra_end = 0) {
         
         $month = ('start' === $type) ? ['' => _t('setting.employment.startdate1')] : ['' => _t('setting.employment.enddate1')];
         $year  = ('start' === $type) ? ['' => _t('setting.employment.startdate2')] : ['' => _t('setting.employment.enddate2')];
@@ -397,10 +397,22 @@ if ( ! function_exists('employment_date')) {
             $month[$FullMonth] = $FullMonth;
         }
         
-        for ($y = ((int) date('Y')); $y >= ((int) date('Y') - 30); $y--) {
-            $year[$y] = ($y < 10) ? '0' . $y : $y;
+        for ($y = ((int) date('Y') + $extra_end); $y >= ((int) date('Y') - $year_limit); $y--) {
+            $year[$y] = $y;
         }
         
         return array('m' => $month, 'y' => $year);
+    }
+}
+
+
+if ( ! function_exists('qualification')) {
+    function qualification() {
+        $quaArr        = ['' => _t('setting.education.selectdefault')]; 
+        App\Models\Qualification::all()->each(function($v, $k) use(&$quaArr) {
+            $quaArr[$v->id] = $v->name;
+        });
+        
+        return $quaArr;
     }
 }

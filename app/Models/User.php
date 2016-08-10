@@ -39,6 +39,13 @@ class User extends Authenticatable {
     }
     
     /**
+     * Get the education record associated with the user.
+     */
+    public function education() {
+        return $this->hasOne('App\Models\Education');
+    }
+    
+    /**
      * Get register error rules
      *
      * @return type

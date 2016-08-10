@@ -20,9 +20,50 @@
     </head>
     <body>
         <main>
-            <div class="_mt20 _mb20 container settings">
-                @yield('body')
+            <div class="header">
+                <div class="container">
+                    <nav class="navbar navbar-default navbar-master">
+                        <div class="container-fluid">
+                            <!-- Brand and toggle get grouped for better mobile display -->
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="#">
+                                    <span class="logo"></span>
+                                </a>
+                            </div>
+
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="#">Explode</a></li>
+                                    <li><a href="#">Wtf</a></li>
+                                    <li><a href="#">Develop</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="header-login">{{ user()->username }}</span> <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Settings</a></li>
+                                            <li><a href="#">Help</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="#">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div><!-- /.navbar-collapse -->
+                        </div><!-- /.container-fluid -->
+                    </nav>
+                </div>
             </div>
+            
+            <div class="container">
+                <div class="settings">
+                    @yield('body')
+                </div>
+            </div>
+            
             <div class="setting-messages _dn">
                 <div class="container">
                     <div class="_fl col-md-9 col-xs-12">
@@ -39,8 +80,11 @@
                 AJAX_PUBLISH_PROFILE_URL: '{{ route('front_setting_publish_profile') }}',
                 AJAX_SELECT_PLACE_URL: '{{ route('front_settings_select_place') }}',
                 AJAX_GET_EMPLOYMENTBYID: '{{ route('front_settings_employmentbyid') }}',
+                AJAX_GET_EDUCATIONBYID: '{{ route('front_settings_educationbyid') }}',
                 AJAX_GET_EMPLOYMENTREMOVEBYID: '{{ route('front_settings_employmentremovebyid') }}',
-                LOADING_BLUE_NAVY_24: '{{ asset('packages/king/frontend/images/loading_blue_navy_24x24.gif') }}'
+                AJAX_GET_EDUCATIONREMOVEBYID: '{{ route('front_settings_educationremovebyid') }}',
+                LOADING_BLUE_NAVY_24: '{{ asset('packages/king/frontend/images/loading_blue_navy_24x24.gif') }}',
+                LOADING_GRAY_24: '{{ asset('packages/king/frontend/images/loading_gray_24x24.gif') }}'
             }
         </script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery_v1.11.1.js') }}"></script>
@@ -48,6 +92,7 @@
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap-switch.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/webtoolkit.aim.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/masonry.pkgd.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/script.js') }}"></script>
     </body>
 </html>

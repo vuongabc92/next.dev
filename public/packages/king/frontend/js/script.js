@@ -167,13 +167,15 @@ function showMessage(message, error) {
                 fieldArray = fields.split('|'),
                 empty      = false;
 
-            current.on('submit', function() {
+            current.on('submit', function() {    
                 $.each(fieldArray, function(k, v) {
-                    if ($('#' + v).val().trim() === '') {
-                        $('#' + v).focus();
+                    var field = current.find('[name=' + v + ']');
+                    
+                    if (field.val().trim() === '') {
+                        field.addClass('error');
+                        field.focus();
+                        
                         empty = true;
-
-                        return false;
                     }
                 });
 
@@ -562,11 +564,11 @@ function showMessage(message, error) {
                         requires     = (settingsForm.data('requires').trim() !== '') ? settingsForm.data('requires').split('|') : [],
                         saveFormType = settingsForm.find('[name="type"]').val();
                     
-                    if ('_PASS' !== saveFormType && '_EMPLOYMENT' !== saveFormType) {
+                    if ('_PASS' !== saveFormType && '_EMPLOYMENT' !== saveFormType && '_EDUCATION' !== saveFormType) {
                         e.preventDefault();
                     }
                     
-                    if ('_EMPLOYMENT' === saveFormType) {
+                    if ('_EMPLOYMENT' === saveFormType || '_EDUCATION' === saveFormType) {
                         $.each(settingsForm.find('select'), function(k, field){
                             $(field).next('label').html($(field).find('option:first').html());
                             $(field).attr('disabled', false).parent('.selecter').css({opacity: '1'});
@@ -647,61 +649,32 @@ function showMessage(message, error) {
 
     Plugin.prototype = {
         init: function() {
-            var current = this.element;   
+            var current = this.element,
+                that    = this;
+            
             current.on('submit', function(e){
-                e.preventDefault();
-                var everythingOk = true,
-                    submitBtn    = current.find(':submit'),
-                    submitLabel  = submitBtn.html(),
-                    loadingImg   = '<img class="loading-inbtn" src="' + SETTINGS.LOADING_BLUE_NAVY_24 + '" />',
-                    requires     = (current.data('requires').trim() !== '') ? current.data('requires').split('|') : [];
-                if ($.isArray(requires) && requires.length) {
-                    $.each(requires, function(k, v){
-                        var field = $('[name=' + v + ']');
-                        
-                        if (field.val() === '') {
-                            if (field.is('select')) {
-                                field.parent('.selecter').addClass('error');
-                            } else if(field.is(':checkbox')) {
-                                field.next('.settings-label').addClass('error');
-                            } else {
-                                field.addClass('error');
-                            }
-                            everythingOk = false;
-                        } else {
-                            if (field.is('select')) {
-                                field.parent('.selecter').removeClass('error');
-                            } else if(field.is(':checkbox')) {
-                                field.next('.settings-label').removeClass('error');
-                            } else {
-                                field.removeClass('error');
-                            }
-                        }
-                    });
-                }
                 
-                if ( ! everythingOk) {
+                e.preventDefault();
+                
+                var submitBtn   = current.find(':submit'),
+                    submitLabel = submitBtn.html(),
+                    require     = that.require(),
+                    loadSrc     = (submitBtn.hasClass('_btn-blue-navy')) ? SETTINGS.LOADING_BLUE_NAVY_24 : SETTINGS.LOADING_GRAY_24,
+                    loadingImg  = '<img class="loading-inbtn" src="' + loadSrc + '" />';
+                    
+                if ( ! require) {
                     return false;
                 }
+                
+                submitBtn.attr('disabled', true);
                 
                 $.ajax({
                     type: current.attr('method'),
                     url: current.attr('action'),
                     data: current.serialize(),
                     dataType: 'json',
-                    error: function(xhr, status, error) {
-                        if (xhr.status === 500) {
-                            submitBtn.attr('disabled', false);
-                            submitBtn.html(submitLabel);
-                        }
-                        var response = $.parseJSON(xhr.responseText);
-                        showMessage(response.message, 'error');
-                        submitBtn.attr('disabled', false);
-                        submitBtn.html(submitLabel);
-                    },
                     beforeSend: function(){
                         submitBtn.html(loadingImg);
-                        submitBtn.attr('disabled', true);
                     },
                     success: function(response){
                         var formType = current.find('[name="type"]').val();
@@ -735,21 +708,45 @@ function showMessage(message, error) {
                                 section    = '<div class="_fwfl timeline-section" id="timeline-section-' + employment.id + '"><div class="timeline-point"></div><div class="timeline-content">',
                                 name       = '<h4>' + employment.name + '</h4>',
                                 position   = '<span class="position">' + employment.position + '</span>',
-                                time       = '<span class="time">' + employment.date + '</span>',
+                                time       = '<div class="time"><b><i class="fa fa-calendar"></i></b><span>' + employment.date + '</span></div>',
                                 button     = '<button class="btn _btn timeline-btn timeline-edit" data-update-employment-id="' + employment.id + '"><i class="fa fa-pencil"></i></button>',
                                 button     = button + '<button class="btn _btn timeline-btn timeline-remove" data-remove-employment-id="' + employment.id + '"><i class="fa fa-remove"></i></button>',
                                 link       = ('' !== employment.website_text) ? '<a href="' + employment.website_href + '" target="_blank">' + employment.website_text + '</a>' : '';
                                 
                                 if(current.find('[name="id"]').length) {
-                                    var editSection = $('#timeline-section-' + employment.id);
+                                    var editSection = $('.employment-timeline #timeline-section-' + employment.id);
                                     editSection.find('h4').html(employment.name);
-                                    editSection.find('span.position').html(employment.position);
-                                    editSection.find('span.time').html(employment.date);
+                                    editSection.find('.position').html(employment.position);
+                                    editSection.find('.time span').html(employment.date);
                                     editSection.find('a').html(employment.website_text).attr('href', employment.website_href);
                                 } else {
                                     var timelineSection = section + name + position + time + link + button + '</div></div>';
                                     
-                                    $(timelineSection).insertBefore('.default-timeline');
+                                    $(timelineSection).insertBefore('.employment-timeline .default-timeline');
+                                }
+                        }
+                        
+                        if (formType === '_EDUCATION') {
+                            var education     = response.data,
+                                section       = '<div class="_fwfl timeline-section" id="timeline-section-' + education.id + '"><div class="timeline-point"></div><div class="timeline-content">',
+                                name          = '<h4>' + education.name + '</h4>',
+                                subject       = '<span class="subject">' + education.subject + '</span>',
+                                qualification = '<span class="qualification">' + education.qualification + '</span>',
+                                time          = '<div class="time"><b><i class="fa fa-calendar"></i></b><span>' + education.date + '</span></div>',
+                                button        = '<button class="btn _btn timeline-btn timeline-edit" data-update-education-id="' + education.id + '"><i class="fa fa-pencil"></i></button>',
+                                button        = button + '<button class="btn _btn timeline-btn timeline-remove" data-remove-education-id="' + education.id + '"><i class="fa fa-remove"></i></button>';
+                                
+                                
+                                if(current.find('[name="id"]').length) {
+                                    var editSection = $('.education-timeline #timeline-section-' + education.id);
+                                    editSection.find('h4').html(education.name);
+                                    editSection.find('.subject').html(education.subject);
+                                    editSection.find('.qualification').html(education.qualification);
+                                    editSection.find('.time span').html(education.date);
+                                } else {
+                                    var timelineSection = section + name + subject + qualification + time + button + '</div></div>';
+                                    
+                                    $(timelineSection).insertBefore('.education-timeline .default-timeline');
                                 }
                         }
                         
@@ -758,22 +755,61 @@ function showMessage(message, error) {
                         submitBtn.html('<i class="fa fa-check"></i>');
                         setTimeout(function(){
                             submitBtn.html(submitLabel);
-                            if (formType !== '_EMPLOYMENT') { 
+                            if (formType !== '_EMPLOYMENT' || formType === '_EDUCATION') { 
                                 current.find('button[type=reset]').click();
                             }
                         }, 1000);
                         
-                        if (formType === '_EMPLOYMENT') { 
+                        if (formType === '_EMPLOYMENT' || formType === '_EDUCATION') { 
                             current.find('button[type=reset]').click();
                         }
                     },
-                    complete: function() {
-                        
+                    error: function(xhr, status, error) {
+                        if (xhr.status === 500) {
+                            submitBtn.attr('disabled', false);
+                            submitBtn.html(submitLabel);
+                        }
+                        var response = $.parseJSON(xhr.responseText);
+                        showMessage(response.message, 'error');
+                        submitBtn.attr('disabled', false);
+                        submitBtn.html(submitLabel);
                     }
                 });
                 
                 return false;
             });
+        },
+        require: function() {
+            var current      = this.element,
+                requires     = (current.data('requires').trim() !== '') ? current.data('requires').split('|') : [],
+                everythingOk = true;
+        
+            if ($.isArray(requires) && requires.length) {
+                $.each(requires, function(k, v){
+                    var field = current.find('[name=' + v + ']');
+
+                    if (field.val() === '') {
+                        if (field.is('select')) {
+                            field.parent('.selecter').addClass('error');
+                        } else if(field.is(':checkbox')) {
+                            field.next('.settings-label').addClass('error');
+                        } else {
+                            field.addClass('error');
+                        }
+                        everythingOk = false;
+                    } else {
+                        if (field.is('select')) {
+                            field.parent('.selecter').removeClass('error');
+                        } else if(field.is(':checkbox')) {
+                            field.next('.settings-label').removeClass('error');
+                        } else {
+                            field.removeClass('error');
+                        }
+                    }
+                });
+            }
+            
+            return everythingOk;
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);
@@ -1010,7 +1046,7 @@ function showMessage(message, error) {
                     dataType: 'json',
                     success: function(response){
                         var data = response.data,
-                            form = $('.timeline-content').find('form');
+                            form = current.find('form');
                     
                         form.find('[name="company_name"]').val(data.name);
                         form.find('[name="position"]').val(data.position);
@@ -1027,9 +1063,10 @@ function showMessage(message, error) {
                         form.append('<input type="hidden" name="id" value="' + data.id +'" />');
                         form.prev('div.settings-show').hide();
                         form.show();
+                        
                         $('html, body').animate({
-                            scrollTop: $('.default-timeline').offset().top
-                        }, 2000);
+                            scrollTop: current.find('.default-timeline').offset().top
+                        }, 1000);
                     }
                 });
             });
@@ -1097,11 +1134,168 @@ function showMessage(message, error) {
                 }
                 
                 $.ajax({
-                    type: 'POST',
-                    url: SETTINGS.AJAX_GET_EMPLOYMENTREMOVEBYID + '/' + employmentId,
+                    type: 'DELETE',
+                    url: SETTINGS.AJAX_GET_EMPLOYMENTREMOVEBYID,
+                    data: {id: employmentId},
                     dataType: 'json',
                     success: function(){
-                        $('#timeline-section-' + employmentId).remove();
+                        current.find('#timeline-section-' + employmentId).remove();
+                    }
+                });
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Remove education
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'remove-education';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current = this.element;
+                
+            current.on('click', '.timeline-remove', function(){
+                var educationId = $(this).attr('data-remove-education-id');
+                
+                if ( ! confirm($(this).attr('data-confirm-msg'))) {
+                    return false;
+                }
+                
+                $.ajax({
+                    type: 'DELETE',
+                    url: SETTINGS.AJAX_GET_EDUCATIONREMOVEBYID,
+                    data: {id: educationId},
+                    dataType: 'json',
+                    success: function(){
+                        current.find('#timeline-section-' + educationId).remove();
+                    }
+                });
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Update education
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'update-education';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current = this.element;
+                
+            current.on('click', '.timeline-edit', function(){
+                
+                $.ajax({
+                    type: 'GET',
+                    url: SETTINGS.AJAX_GET_EDUCATIONBYID + '/' + $(this).attr('data-update-education-id'),
+                    dataType: 'json',
+                    success: function(response){
+                        var data = response.data,
+                            form = current.find('form');
+                            
+                        form.find('[name="college_name"]').val(data.name);
+                        form.find('[name="subject"]').val(data.subject);
+                        form.find('[name="start_month"]').val(data.start_month).parent('.selecter').find('label').html(data.start_month);
+                        form.find('[name="start_year"]').val(data.start_year).parent('.selecter').find('label').html(data.start_year);
+                        form.find('[name="qualification"]').val(data.qualification_id).parent('.selecter').find('label').html(data.qualification_name);
+                        form.find('[name="end_month"]').val(data.end_month).parent('.selecter').find('label').html(data.end_month);
+                        form.find('[name="end_year"]').val(data.end_year).parent('.selecter').find('label').html(data.end_year);
+                        form.append('<input type="hidden" name="id" value="' + data.id +'" />');
+                        form.prev('div.settings-show').hide();
+                        form.show();
+                        
+                        $('html, body').animate({
+                            scrollTop: current.find('.default-timeline').offset().top
+                        }, 1000);
                     }
                 });
             });
@@ -1227,15 +1421,214 @@ function showMessage(message, error) {
 
     Plugin.prototype = {
         init: function() {
-            var settingsPages   = ['#profile', '#employment'],
+            var settingsPages   = ['#profile', '#skills', '#employment', '#education'],
                 hashPage        = (settingsPages.indexOf(window.location.hash) === -1) ? settingsPages[0] : settingsPages[settingsPages.indexOf(window.location.hash)],
                 settingsPageObj = $(hashPage);
-                
-            $('.settings-page').hide();
-            if ('#employment' === hashPage) {
+               
+            $.each(settingsPages, function(k, page){
+                $(page).hide();
+            });
+            
+            if ('#employment' === hashPage || '#education' === hashPage) {
                 $('body').css('background-color', '#ffffff');
             }
             settingsPageObj.show();
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+
+/**
+ *  @name Rating
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'rating';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.maxStar = this.element.data('rating');
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            this.select();
+            this.rate();
+        },
+        rate: function() {
+            var item = '.' + this.element.attr('class') + ' i.fa';
+            
+            $(document).on('click', item, function(){
+                var rating = $(item).parents('.rating');
+                
+                rating.find('.current-rating').val($(this).index() + 1);
+                for (var i = ($(this).index() + 2); i <= this.maxStar; i++) {
+                    rating.find('i:nth-child(' + i + ')').addClass('fa-star-o').removeClass('fa-star');
+                }
+            });
+        },
+        select: function() {
+            var thiz = this,
+                item = '.' + this.element.attr('class') + ' i.fa';
+            
+            $(document).on({
+                mouseenter: function () {
+                    thiz.mouseIn($(this));
+                },
+                mouseleave: function () {
+                    thiz.mouseOut($(this));
+                }
+            }, item);
+        },
+        mouseIn: function(element) {
+            element.addClass('fa-star').removeClass('fa-star-o');
+            
+            for (var i = 1; i <= element.index(); i++) {
+                element.parents('.rating').find('i:nth-child(' + i + ')').addClass('fa-star').removeClass('fa-star-o');
+            }
+        },
+        mouseOut: function(element) {
+            var rateScore = parseInt(this.element.find('.current-rating').val()),
+                index     = element.index();
+            
+            if ((index + 1) > rateScore) { 
+                element.addClass('fa-star-o').removeClass('fa-star');
+
+                for (var i = 1; i <= index; i++) {
+                    if (rateScore < i) {
+                        element.parents('.rating').find('i:nth-child(' + i + ')').addClass('fa-star-o').removeClass('fa-star');
+                    }
+                }
+            }
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Add Skill
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'add-skill';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            this.submit();
+        },
+        submit: function() {
+            var current = this.element,
+                thiz    = this;
+            
+            current.on('submit', function(e){
+                e.preventDefault();
+                
+                $.ajax({
+                    type: current.attr('method'),
+                    url: current.attr('action'),
+                    data: current.serialize(),
+                    success: function(response){
+                        thiz.append(response.data);
+                        current.find('[name=skill]').val('');
+                    }
+                });
+            });
+        },
+        append: function(data) {
+            var skills = this.element.find('.skill-tags'),
+                html   =  '<div class="tag">' +
+                            '<div class="tag-container">' +
+                                '<div class="rating" data-rating="5">' +
+                                    '<i class="fa fa-star-o"></i> ' +
+                                    '<i class="fa fa-star-o"></i> ' +
+                                    '<i class="fa fa-star-o"></i> ' +
+                                    '<i class="fa fa-star-o"></i> ' +
+                                    '<i class="fa fa-star-o"></i>' +
+                                    '<input type="hidden" value="0" class="current-rating"/>' +
+                                '</div>' +
+                                '<div class="tag-name">' + data.name + '</div>' +
+                                '<i class="fa fa-close"></i>' +
+                            '</div>' +
+                        '</div>';
+                
+            skills.append(html);
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

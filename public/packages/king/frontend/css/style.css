@@ -3,6 +3,72 @@ body {background-color:#f5f8fa;}
 
 /* Settings Page */
 
+.header {
+    width: 100%;
+    height: 49px;
+    float: left;
+    border-bottom: solid 1px #007aff;
+    background-color: #fff;
+}
+.navbar-master {
+    background-color: transparent;
+    border: none;
+    min-height: 49px;
+}
+.navbar-master .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+.navbar-master .container-fluid>.navbar-header {
+    margin-left: 0;
+    margin-right: 0;
+}
+.navbar-master>.container-fluid .navbar-brand {
+    margin-left: 0;
+    padding: 0;
+    height: 49px;
+}
+.navbar-master .navbar-toggle {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    margin-top: 14px;
+    margin-bottom: 14px;
+    border: none;
+}
+.navbar-master .navbar-toggle:focus, .navbar-master .navbar-toggle:hover {
+    background-color: transparent;
+}
+.navbar-master .navbar-toggle .icon-bar {
+    border-radius: 0;
+}
+.navbar-master .navbar-toggle .icon-bar:first-child {
+    width: 16px;
+}
+.navbar-master .navbar-toggle .icon-bar:last-child {
+    width: 12px;
+}
+.navbar-master .navbar-nav>li>a {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+.navbar-master .navbar-nav>li>.dropdown-menu {
+    margin-top: -1px;
+}
+.header-login {
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: 13px;
+    color: #777;
+}
+.logo {
+    width: 42px;
+    height: 42px;
+    float: left;
+    margin-top: 3px;
+    background-color: #eee;
+    border-radius: 21px;
+}
 /* Vartical navigation */
 .setting-vertical-nav>li {
     width:100%;
@@ -37,13 +103,14 @@ body {background-color:#f5f8fa;}
 }
 
 /* Settings */
+.settings {
+    width: 100%;
+    float: left;
+    margin-top: 30px;
+}
 .col-no-padding {
     padding-left: 0;
     padding-right: 0;
-}
-.settings {
-    margin-top: 20px;
-    margin-bottom: 20px;
 }
 .settings .profile {
     background-color: #fff;
@@ -205,6 +272,9 @@ body {background-color:#f5f8fa;}
 .setting-messages.success{
     background-color: #41B584;
 }
+.settings-last-row {
+    border-bottom: none;
+}
 .message {
     height: 100%;
     line-height: 55px;
@@ -351,20 +421,50 @@ body {background-color:#f5f8fa;}
     float: left;
     text-transform: capitalize;
     margin:8px 0 9px 0;
-    color: #555;
+    color: #666;
     line-height: 24px;
 }
-.timeline-content span {
+.timeline-content .position, 
+.timeline-content .time,
+.timeline-content .subject, 
+.timeline-content .qualification, 
+.timeline-content .achievements {
     width: 100%;
     float: left;
     margin-bottom: 2px;
-    color: #888;
 }
 .timeline-content a {
     width: 100%;
     float: left;
-    color: #007aff;
+    margin-bottom: 2px;
+    color: #666;
     text-decoration: underline;
+}
+.timeline-content .position, 
+.timeline-content .subject {
+    font-size: 13px;
+}
+.timeline-content .qualification b {
+    font-weight: normal;
+    border: solid 1px #ccc;
+    border-radius: 2px;
+    
+}
+.timeline-content .time {
+    width: auto;
+    border: solid 1px #ccc;
+    border-radius: 2px;
+    margin-top: 10px;
+}
+.timeline-content .time b {
+    height: 100%;
+    float: left;
+    padding: 3px 8px;
+    border-right: solid 1px #ccc;
+}
+.timeline-content .time span {
+    float: left;
+    padding: 3px 8px;
 }
 .timeline-content .settings-form {
     width: 100%;
@@ -457,6 +557,104 @@ body {background-color:#f5f8fa;}
     opacity: 1;
     visibility: visible;
 }
+
+/* Skills */
+.settings-page.skills {
+    background-color: #fff;
+    padding: 15px;
+}
+.skills-form .skills-title {
+    font-size: 20px;
+    color: #777;
+    border-bottom: solid 1px #ccc;
+    padding-bottom: 10px;
+    width: auto;
+}
+.settings-page.skills .settings-field-wrapper {
+    margin-top: 10px;
+}
+.skill-field {
+    width: 60%;
+    float: left;
+}
+.skill-field input{
+    border-color: #d5d5d5 !important;
+}
+.skill-btn {
+    float: left;
+    margin-left: -2px;
+}
+.skill-submit {
+    width: 65px;
+    border: solid 1px #ccc;
+    background: #fff;
+    font-size: 18px;
+    line-height: 24px;
+    color: #999;
+    padding: 6px 0;
+    border-radius: 2px;
+    text-align: center;
+}
+.skill-submit:hover {
+    color: #007aff;
+}
+.skill-submit img {
+    margin-top: -4px;
+}
+.skill-field .settings-field:focus {
+    border-color: #d5d5d5;
+}
+.tag {
+    float: left;
+    margin-bottom: 15px;
+    position: relative;
+}
+.tag:before {
+    content: '';
+    float: left;
+    margin-left: -15px;
+    border: 14px solid transparent;
+    border-right: 11px solid #eee;
+}
+.tag-container {
+    min-width: 115px;
+    height: 28px;
+    line-height: 29px;
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #eee;
+    color: #555;
+    padding: 0 10px;
+    margin-right: 15px;
+    
+}
+.tag .tag-container i.fa.fa-close {
+    float: right;
+    margin-left: 10px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+.tag-name {
+    float: left;
+}
+.tag .tag-container:hover .rating{
+    visibility: visible;
+    opacity: 1;
+}
+.tag .tag-container:hover .tag-name{
+    visibility: hidden;
+    opacity: 0;
+}
+.rating {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    color: #555;
+}
+.rating>i {
+    cursor: pointer;
+}
 @media (min-width: 1000px) {
     .container {
         width: 970px;
@@ -479,7 +677,7 @@ body {background-color:#f5f8fa;}
         border: 9px solid transparent;
         border-left: 9px solid #eee;
     }
-    .timeline-section:nth-child(even) .timeline-content::before {
+    .timeline-section:nth-child(even) .timeline-content:before {
         left: auto;
         right: 100%;
         border-color: transparent;
