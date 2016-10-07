@@ -252,10 +252,14 @@ body {background-color:#f5f8fa;}
     border-color: #007aff;
 }
 .settings-textarea {
+    width: 100%;
     height: 100px;
     line-height: normal;
     resize: vertical;
     padding: 10px;
+    border: solid 1px #d5d5d5;
+    border-radius: 2px;
+    color: #777;
 }
 .setting-messages {
     width: 100%;
@@ -327,7 +331,6 @@ body {background-color:#f5f8fa;}
     height: 32px;
     float: left;
     font-size: 13px;
-    color: #888;
     margin: 0;
 }
 .selecter i.fa-angle-down {
@@ -433,10 +436,14 @@ body {background-color:#f5f8fa;}
     float: left;
     margin-bottom: 2px;
 }
+.timeline-content .achieve {
+    width: 100%;
+    float: left;
+}
 .timeline-content a {
     width: 100%;
     float: left;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     color: #666;
     text-decoration: underline;
 }
@@ -572,6 +579,7 @@ body {background-color:#f5f8fa;}
 }
 .settings-page.skills .settings-field-wrapper {
     margin-top: 10px;
+    position: relative;
 }
 .skill-field {
     width: 60%;
@@ -604,6 +612,41 @@ body {background-color:#f5f8fa;}
 .skill-field .settings-field:focus {
     border-color: #d5d5d5;
 }
+.skill-suggestion {
+    position: absolute;
+    width: 399px;
+    background-color: #fff;
+    border: solid 1px #ddd;
+    top: 33px;
+    z-index: 10;
+    border-bottom-left-radius: 2px; 
+    border-bottom-right-radius: 2px;
+    display: none;
+}
+.skill-suggestion ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.skill-suggestion ul li {
+    width: 100%;
+    float: left;
+    display: inline-block;
+    border-bottom: solid 1px #e5e5e5;
+    padding: 3px 10px;
+    color: #777;
+    font-size: 13px;
+    line-height: 20px;
+    height: 25px;
+    cursor: pointer;
+}
+.skill-suggestion ul li:hover {
+    background-color: #f5f5f5;
+}
+.skill-suggestion ul li:last-child {
+    border: none;
+}
 .tag {
     float: left;
     margin-bottom: 15px;
@@ -634,6 +677,9 @@ body {background-color:#f5f8fa;}
     margin-left: 10px;
     margin-top: 8px;
     cursor: pointer;
+}
+.tag .tag-container i.fa.fa-close:hover {
+    color: #222;
 }
 .tag-name {
     float: left;

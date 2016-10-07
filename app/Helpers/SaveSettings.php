@@ -6,27 +6,10 @@ use Hash;
 use App\Models\EmploymentHistory;
 use App\Models\Education;
 use App\Models\Skill;
+use App\Models\UserSkill;
 
 trait SaveSettings {
     
-    /**
-     * User validate rules
-     * @var array 
-     */
-    protected $userValidateRules;
-    
-    /**
-     * User validate messages
-     *
-     * @var array 
-     */
-    protected $userValidateMessages;
-    
-    public function __construct() {
-        $this->userValidateRules    = user()->getRegisterRules();
-        $this->userValidateMessages = user()->getRegisterMessages();
-    }
-
     /**
      * Save settings email.
      * 
@@ -36,7 +19,7 @@ trait SaveSettings {
      */
     public function saveEmail(Request $request) {
         
-        $validator = validator($request->all(), $this->_saveEmailValidateRules(), $this->userValidateMessages);
+        $validator = validator($request->all(), $this->_saveEmailValidateRules(), user()->getRegisterMessages());
         $validator->after(function($validator) use($request) {
             if ( ! Hash::check($request->get('password'), user()->password)) {
                 $validator->errors()->add('password', _t('auth.login.pass_wrong'));
@@ -113,16 +96,19 @@ trait SaveSettings {
             return $validator;
         }
         
-        $d                         = (int) $request->get('date');
-        $m                         = (int) $request->get('month');
-        $y                         = (int) $request->get('year');
-        $gender                    = (int) $request->get('gender');
+        $d                              = (int) $request->get('date');
+        $m                              = (int) $request->get('month');
+        $y                              = (int) $request->get('year');
+        $gender                         = (int) $request->get('gender');
+        $maritalStatus                  = (int) $request->get('marital_status');
         
-        $userProfile               = user()->userProfile;
-        $userProfile->day_of_birth = ($d && $m && $y) ? new \DateTime("{$m}/{$d}/{$y}") : null;
-        $userProfile->gender_id    = ($gender) ? $gender : null;
-        $userProfile->first_name   = $request->get('first_name');
-        $userProfile->last_name    = $request->get('last_name');
+        $userProfile                    = user()->userProfile;
+        $userProfile->day_of_birth      = ($d && $m && $y) ? new \DateTime("{$m}/{$d}/{$y}") : null;
+        $userProfile->gender_id         = ($gender) ? $gender : null;
+        $userProfile->marital_status_id = ($maritalStatus) ? $maritalStatus : null;
+        $userProfile->first_name        = $request->get('first_name');
+        $userProfile->last_name         = $request->get('last_name');
+        $userProfile->about_me          = $request->get('about_me');
         $userProfile->save();
         
         return true;
@@ -156,8 +142,6 @@ trait SaveSettings {
             return $validator;
         }
         
-        
-        
         $userProfile                 = user()->userProfile;
         $userProfile->street_name    = $request->get('street_name');
         $userProfile->country_id     = (empty($request->get('country')))      ? null : $request->get('country');
@@ -165,6 +149,7 @@ trait SaveSettings {
         $userProfile->district_id    = (empty($request->get('district')))     ? null : $request->get('district');
         $userProfile->ward_id        = (empty($request->get('ward')))         ? null : $request->get('ward');
         $userProfile->phone_number   = (empty($request->get('phone_number'))) ? null : $request->get('phone_number');
+        $userProfile->website        = (empty($request->get('website')))      ? null : $request->get('website');
         $userProfile->social_network = $this->_generateSocialLinks($request->get('social_network'));
         $userProfile->save();
         
@@ -179,18 +164,26 @@ trait SaveSettings {
      * @return boolean|JSON
      */
     public function saveEmployment(Request $request) {
-       // return true;
-        $validator = validator($request->all(), $this->_saveEmploymentRules(), $this->_saveEmploymentMessages());
-        if ($validator->fails()) {
-            return $validator;
-        }
-        
+       
+        $validator  = validator($request->all(), $this->_saveEmploymentRules(), $this->_saveEmploymentMessages());
         $startMonth = $request->get('start_month');
         $startYear  = $request->get('start_year');
         $endMonth   = ( ! empty($request->get('end_month'))) ? $request->get('end_month') : 0;
         $endYear    = ( ! empty($request->get('end_year')))  ? $request->get('end_year') : 0;
         $current    = ($request->has('current_company'))     ? (bool) $request->get('current_company') : false;
         $website    = $request->get('website');
+        $startDate  = new \DateTime("{$startMonth}/{$startMonth}/{$startYear}");
+        $endDate    = ( ! $endMonth || ! $endYear || $current) ? $startDate : new \DateTime("{$endMonth}/{$endMonth}/{$endYear}");
+        
+        $validator->after(function($validator) use($startDate, $endDate) {
+            if ($startDate > $endDate) {
+                $validator->errors()->add('start_month', _t('setting.employment.datecompare'));
+            }
+        });
+        
+        if ($validator->fails()) {
+            return $validator;
+        }
         
         if ($current) {
             EmploymentHistory::all()->each(function($item, $key){
@@ -212,10 +205,11 @@ trait SaveSettings {
         $employmentHistory->user_id         = user_id();
         $employmentHistory->company_name    = $request->get('company_name');
         $employmentHistory->position        = $request->get('position');
-        $employmentHistory->start_date      = new \DateTime("{$startMonth}/{$startMonth}/{$startYear}");
-        $employmentHistory->end_date        = ( ! $endMonth || ! $endYear || $current) ? $employmentHistory->start_date : new \DateTime("{$endMonth}/{$endMonth}/{$endYear}");
+        $employmentHistory->start_date      = $startDate;
+        $employmentHistory->end_date        = $endDate;
         $employmentHistory->is_current      = $current;
         $employmentHistory->company_website = trim((strpos($website, 'http') === false) ? 'http://' . $website : $website);
+        $employmentHistory->achievement     = $request->get('achievement');
         $employmentHistory->save();
         
         return $employmentHistory;
@@ -230,16 +224,23 @@ trait SaveSettings {
      */
     public function saveEducation(Request $request) {
         
-        $validator = validator($request->all(), $this->_saveEducationRules(), $this->_saveEducationMessages());
+        $validator  = validator($request->all(), $this->_saveEducationRules(), $this->_saveEducationMessages());
+        $startMonth = $request->get('start_month');
+        $startYear  = $request->get('start_year');
+        $endMonth   = $request->get('end_month');
+        $endYear    = $request->get('end_year');
+        $startDate  = new \DateTime("{$startMonth}/{$startMonth}/{$startYear}");
+        $endDate    = new \DateTime("{$endMonth}/{$endMonth}/{$endYear}");
+        
+        $validator->after(function($validator) use($startDate, $endDate) {
+            if ($startDate > $endDate) {
+                $validator->errors()->add('start_month', _t('setting.education.datecompare'));
+            }
+        });
+        
         if ($validator->fails()) {
             return $validator;
         }
-        
-        $startMonth    = $request->get('start_month');
-        $startYear     = $request->get('start_year');
-        $endMonth      = $request->get('end_month');
-        $endYear       = $request->get('end_year');
-        
         
         if ($request->has('id') && Education::find($request->get('id'))) {
             $education = Education::find($request->get('id'));
@@ -260,17 +261,48 @@ trait SaveSettings {
     
     public function saveSkill(Request $request) {
         
-        $validator = validator($request->all(), $this->_saveSkillRule(), $this->_saveSkillMessages());
+        $rating = $request->has('id') && $request->has('votes');
+        $rules  = $this->_saveSkillRules();
+        
+        if ($rating) {
+            $rules = remove_rules($rules, 'skill');
+        }
+        
+        $validator = validator($request->all(), $rules, $this->_saveSkillMessages());
+        
         if ($validator->fails()) {
             return $validator;
         }
         
-        $skill       = new Skill();
-        $skill->name = $request->get('skill');
-        return $skill;
-        $skill->save();
+        if ($request->has('id') && $request->has('votes')) {
+            
+            $userSkill = UserSkill::find($request->get('id'));
+            if (null !== $userSkill) {
+                $userSkill->votes = $request->get('votes');
+                $userSkill->save();
+                
+                return $userSkill;
+            }
+            
+            return false;
+        } elseif ($request->has('skill')) {
+            $skill = Skill::where('name', $request->get('skill'))->first();
+            if (null === $skill) {
+                $skill       = new Skill();
+                $skill->name = $request->get('skill');
+                $skill->save();
+            }
+            
+            $userSkill           = new UserSkill();
+            $userSkill->user_id  = user()->id;
+            $userSkill->skill_id = $skill->id;
+            $userSkill->save();
+            
+            return $userSkill;
+        }
+        
+        return false;
     }
-
 
     /**
      * Generate social links
@@ -380,11 +412,14 @@ trait SaveSettings {
      */
     protected function _savePersonalInfoRules() {
         return [
-            'first_name' => 'required_with:last_name|max:32',
-            'last_name'  => 'required_with:first_name|max:32',
-            'date'       => 'required_with:month,year',
-            'month'      => 'required_with:date,year',
-            'year'       => 'required_with:date,month',
+            'first_name'     => 'required_with:last_name|max:32',
+            'last_name'      => 'required_with:first_name|max:32',
+            'date'           => 'required_with:month,year',
+            'month'          => 'required_with:date,year',
+            'year'           => 'required_with:date,month',
+            'marital_status' => 'exists:marital_statuses,id',
+            'gender'         => 'exists:genders,id',
+            'about_me'       => 'max:500'
         ];
     }
     
@@ -402,6 +437,9 @@ trait SaveSettings {
             'date.required_with'       => _t('setting.profile.date_req'),
             'month.required_with'      => _t('setting.profile.month_req'),
             'year.required_with'       => _t('setting.profile.year_req'),
+            'marital_status.exists'    => _t('setting.profile.marital_exi'),
+            'gender.exists'            => _t('setting.profile.gender_exi'),
+            'about_me.max'             => _t('setting.profile.aboutme_max'),
         ];
     }
     
@@ -418,6 +456,7 @@ trait SaveSettings {
             'district'     => 'required_with:ward|exists:districts,id',
             'ward'         => 'exists:wards,id',
             'phone_number' => 'max:32',
+            'website'      => 'max:250',
         ];
     }
     
@@ -436,7 +475,8 @@ trait SaveSettings {
             'district.required_with' => _t('setting.profile.district_rwith'),
             'district.exists'        => _t('setting.profile.district_exi'),
             'ward.exists'            => _t('setting.profile.ward_exi'),
-            'phone.max'              => _t('setting.profile.phone_max')
+            'phone.max'              => _t('setting.profile.phone_max'),
+            'website.max'            => _t('setting.profile.website_max')
         ];
     }
     
@@ -453,6 +493,8 @@ trait SaveSettings {
             'start_year'   => 'required',
             'end_month'    => 'required_without:current_company',
             'end_year'     => 'required_without:current_company',
+            'end_year'     => 'required_without:current_company',
+            'achievement'  => 'max:500'
         ];
     }
     
@@ -471,6 +513,7 @@ trait SaveSettings {
             'start_year.required'        => _t('setting.employment.startyear_req'),
             'end_month.required_without' => _t('setting.employment.endmonth_req'),
             'end_year.required_without'  => _t('setting.employment.endyear_req'),
+            'achievement.max'            => _t('setting.employment.achieve_max')
         ];
     }
     
@@ -516,9 +559,11 @@ trait SaveSettings {
      * 
      * @return array
      */
-    protected function _saveSkillRule() {
+    protected function _saveSkillRules() {
         return [
-            'skill' => 'required|max:250'
+            'skill' => 'required|max:250',
+            'id'    => 'exists:user_skills,id',
+            'votes' => 'between:1,5'
         ];
     }
     
@@ -530,7 +575,9 @@ trait SaveSettings {
     protected function _saveSkillMessages() {
         return [
             'skill.required' => _t('setting.skill.req'),
-            'skill.max' => _t('setting.skill.max')
-        ];
+            'skill.max'      => _t('setting.skill.max'),
+            'id.exists'      => _t('setting.skill.exi'),
+            'votes.between'  => _t('setting.skill.bet')
+        ]; 
     }
 }

@@ -24,6 +24,6 @@ class UserSkill extends Base {
      * Get the skill record associated with the user skill.
      */
     public function skill() {
-        return $this->hasOne('App\Models\Skill');
+        return $this->belongsTo('App\Models\Skill');
     }
 }

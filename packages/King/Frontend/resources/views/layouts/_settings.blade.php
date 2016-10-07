@@ -31,7 +31,7 @@
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                 </button>
-                                <a class="navbar-brand" href="#">
+                                <a class="navbar-brand" href="{{ route('front_home') }}">
                                     <span class="logo"></span>
                                 </a>
                             </div>
@@ -48,7 +48,7 @@
                                             <li><a href="#">Settings</a></li>
                                             <li><a href="#">Help</a></li>
                                             <li role="separator" class="divider"></li>
-                                            <li><a href="#">Logout</a></li>
+                                            <li><a href={{ route('front_logout') }}>Logout</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -77,10 +77,13 @@
                 AJAX_OK: 'OK',
                 AJAX_ERROR: 'ERROR',
                 TOKEN: '{{ csrf_token() }}',
+                AJAX_SAVE_INFO: '{{ route('front_settings_save_info') }}',
+                AJAX_KILL_TAG: '{{ route('front_settings_killtag') }}',
                 AJAX_PUBLISH_PROFILE_URL: '{{ route('front_setting_publish_profile') }}',
                 AJAX_SELECT_PLACE_URL: '{{ route('front_settings_select_place') }}',
                 AJAX_GET_EMPLOYMENTBYID: '{{ route('front_settings_employmentbyid') }}',
                 AJAX_GET_EDUCATIONBYID: '{{ route('front_settings_educationbyid') }}',
+                AJAX_GET_SEARCHSKILL: '{{ route('front_settings_searchskill') }}',
                 AJAX_GET_EMPLOYMENTREMOVEBYID: '{{ route('front_settings_employmentremovebyid') }}',
                 AJAX_GET_EDUCATIONREMOVEBYID: '{{ route('front_settings_educationremovebyid') }}',
                 LOADING_BLUE_NAVY_24: '{{ asset('packages/king/frontend/images/loading_blue_navy_24x24.gif') }}',
@@ -91,8 +94,6 @@
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery-ui-1.11.4.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap-switch.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/webtoolkit.aim.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/masonry.pkgd.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/script.js') }}"></script>
     </body>
 </html>

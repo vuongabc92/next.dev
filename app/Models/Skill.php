@@ -12,5 +12,12 @@ class Skill extends Base {
     protected $table = 'skills';
     
     public $timestamps = false;
+    
+    /**
+     * Get the user skill record associated with the skill.
+     */
+    public function userSkills() {
+        return $this->hasMany('App\Models\UserSkill');
+    }
      
 }

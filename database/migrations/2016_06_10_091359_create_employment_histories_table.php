@@ -21,6 +21,7 @@ class CreateEmploymentHistoriesTable extends Migration
             $table->date('end_date')->nullable();
             $table->boolean('is_current')->default(0);
             $table->string('company_website', 250);
+            $table->text('achievement', 500);
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

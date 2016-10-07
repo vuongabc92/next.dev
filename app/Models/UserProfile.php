@@ -15,6 +15,41 @@ class UserProfile extends Base {
      * Get the user profile record associated with the gender.
      */
     public function gender() {
-        return $this->hasOne('App\Models\Gender');
+        return $this->belongsTo('App\Models\Gender');
+    }
+    
+    /**
+     * Get the marital status record associated with the user.
+     */
+    public function maritalStatus() {
+        return $this->belongsTo('App\Models\MaritalStatus');
+    }
+    
+    /**
+     * Get the country record associated with the user.
+     */
+    public function country() {
+        return $this->belongsTo('App\Models\Country');
+    }
+    
+    /**
+     * Get the city record associated with the user.
+     */
+    public function city() {
+        return $this->belongsTo('App\Models\City');
+    }
+    
+    /**
+     * Get the district record associated with the user.
+     */
+    public function district() {
+        return $this->belongsTo('App\Models\District');
+    }
+    
+    /**
+     * Get the ward record associated with the user.
+     */
+    public function ward() {
+        return $this->belongsTo('App\Models\Ward');
     }
 }

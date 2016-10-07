@@ -34,15 +34,23 @@ class User extends Authenticatable {
     /**
      * Get the employment history record associated with the user.
      */
-    public function employmentHistory() {
-        return $this->hasOne('App\Models\EmploymentHistory');
+    public function employmentHistories() {
+        return $this->hasMany('App\Models\EmploymentHistory');
     }
     
     /**
      * Get the education record associated with the user.
      */
-    public function education() {
-        return $this->hasOne('App\Models\Education');
+    public function educations() {
+        return $this->hasMany('App\Models\Education');
+    }
+    
+    
+    /**
+     * Get the skill record associated with the user.
+     */
+    public function skills() {
+        return $this->hasMany('App\Models\UserSkill');
     }
     
     /**

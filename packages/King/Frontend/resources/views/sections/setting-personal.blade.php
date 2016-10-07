@@ -36,6 +36,12 @@
             <div class="settings-field-wrapper">
                 {!! Form::kingSelect('gender', $genders, $userProfile->gender_id, ['id' => 'settings-gender', 'class' => 'settings-field']) !!}
             </div>
+            <div class="settings-field-wrapper">
+                {!! Form::kingSelect('marital_status', $maritalStatuses, $userProfile->marital_status_id, ['id' => 'settings-gender', 'class' => 'settings-field']) !!}
+            </div>
+            <div class="settings-field-wrapper">
+                {!! Form::textarea('about_me', $userProfile->about_me, ['class' => 'settings-textarea', 'placeholder' => _t('setting.profile.aboutme'), 'maxlength' => 500]) !!}
+            </div>
             <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
             <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
             <input type="hidden" name="type" value="_PERSONAL"/>

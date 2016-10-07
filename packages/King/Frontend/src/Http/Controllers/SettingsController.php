@@ -11,7 +11,9 @@ use App\Models\Gender;
 use App\Models\Country;
 use App\Models\EmploymentHistory;
 use App\Models\Education;
+use App\Models\UserSkill;
 use App\Models\Skill;
+use App\Models\MaritalStatus;
 use DB;
 use Validator;
 use Intervention\Image\Facades\Image as ImageIntervention;
@@ -37,6 +39,7 @@ class SettingsController extends FrontController {
         $avatarMedium        = isset($avatar[$avatarMediumSize]) ? $avatarStoragePath . '/' . $avatar[$avatarMediumSize] : '';
         $coverMedium         = isset($cover[$coverMediumSize])   ? $coverStoragePath . '/' . $cover[$coverMediumSize]    : '';
         $genders             = ['' => _t('setting.profile.sextell')];
+        $maritalStatuses     = ['' => _t('setting.profile.marital')];
         $genderName          = Gender::find($userProfile->gender_id);
         $countries           = Country::where('id', 237)->pluck('country_name', 'id')->toArray();
         $cities              = $this->_getCityByCountryId(((is_null($userProfile->country_id)) ? 0 : $userProfile->country_id), 'array');
@@ -51,6 +54,12 @@ class SettingsController extends FrontController {
             }
         }
         
+        if (MaritalStatus::all()) {
+            foreach (MaritalStatus::all() as $marital) {
+                $maritalStatuses[$marital->id] = $marital->name;
+            }
+        }
+        
         return view('frontend::settings.index', [
             'userProfile'         => $userProfile,
             'avatarMedium'        => $avatarMedium,
@@ -62,7 +71,8 @@ class SettingsController extends FrontController {
             'districts'           => $districts,
             'wards'               => $wards,
             'employmentHistories' => $employmentHistories,
-            'educations'          => $educations
+            'educations'          => $educations,
+            'maritalStatuses'     => $maritalStatuses
         ]);
     }
     
@@ -317,6 +327,7 @@ class SettingsController extends FrontController {
                 'id'          => $employment->id,
                 'name'        => $employment->company_name,
                 'position'    => $employment->position,
+                'achievement' => $employment->achievement,
                 'start_month' => (strlen($sm = $startDate->format('d')) === 2) ? $sm : '0' . $sm,
                 'start_year'  => $startDate->format('Y'),
                 'end_month'   => ($isCurrent) ? null : ((strlen($em = $endDate->format('d')) === 2) ? $em : '0' . $em),
@@ -403,6 +414,50 @@ class SettingsController extends FrontController {
     }
 
     /**
+     * Delete user skill
+     * 
+     * @param Request $request
+     * 
+     * @return JSON
+     */
+    public function killTag(Request $request) {
+        if ($request->ajax() && $request->isMethod('DELETE')) {
+            $userSkill = UserSkill::find((int) $request->get('id'));
+            if (null === $userSkill) {
+                return pong(['message' => _t('oops')], 403);
+            }
+            
+            if ($userSkill->skill->userSkills->count() === 1) {
+                $userSkill->skill->delete();
+            }
+            
+            $userSkill->delete();
+            
+            return pong(['message' => _t('saved')]);
+        }
+    }
+    
+    /**
+     * Searching skill by name
+     * 
+     * @param Request $request
+     * @param string  $keyword
+     * 
+     * @return JSON
+     */
+    public function searchSkill(Request $request, $keyword) {
+        if ($request->ajax() && $request->isMethod('GET')) {
+            $skills = Skill::where('name', 'like', '%' . $keyword . '%')->limit(10)->get();
+            
+            if ($skills->count() > 0) {
+                return pong(['skills' => $skills->toArray(), 'total' => $skills->count()]);
+            }
+            
+            return pong(['total' => $skills->count()]);
+        }
+    }
+    
+    /**
      * Get save info result
      * 
      * @param array|object $save
@@ -428,6 +483,7 @@ class SettingsController extends FrontController {
                     'id'           => $save->id,
                     'name'         => $save->company_name,
                     'position'     => $save->position,
+                    'achievement'  => $save->achievement,
                     'date'         => $workedDate,
                     'website_text' => $websiteText,
                     'website_href' => $save->company_website
@@ -444,18 +500,18 @@ class SettingsController extends FrontController {
                     'qualification' => $save->qualification->name,
                     'achievements'  => $save->achievements
             ]];
-        } elseif($save instanceof Skill){
+        } elseif($save instanceof UserSkill){
             return [
                 'message' => _t('good_job'), 
                 'data'    => [
                     'id'    => $save->id,
-                    'name'  => $save->name,
+                    'name'  => $save->skill->name,
                     'votes' => $save->votes
             ]];
         }elseif (true === $save) {
             return ['message' => _t('good_job')];
         } elseif(false !== $save) {
-            return ['message' => $save->errors()->first(), _error(), 'code' => 403];
+           return ['message' => $save->errors()->first(), _error(), 'code' => 403];
         } else {
             return ['message' => _t('good_job')];
         }
@@ -499,8 +555,8 @@ class SettingsController extends FrontController {
                                       ->orderBy('type')
                                       ->orderBy('name')
                                       ->get();
-        
-        if ('VN' === $country->country_code) {
+                              
+        if ( ! is_null($country) && 'VN' === $country->country_code) {
             $cities    = collect($cities)->splice(5);
             $bigCities = DB::table('cities')->select('id', 'name')->where('country_id', $countryId)->skip(0)->take(5)->get();
             $cities    = collect($bigCities)->merge($cities)->toArray();

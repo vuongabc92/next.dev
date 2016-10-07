@@ -9,6 +9,7 @@
                             <h4>{{ $employment->company_name }}</h4>
                             <b class="position">{{ $employment->position }}</b>
                             <a href="{{ $employment->company_website }}" target="_blank">{{ (str_contains($employment->company_website, 'https')) ? str_replace('https://', '', $employment->company_website) : str_replace('http://', '', $employment->company_website) }}</a>
+                            <span class="achieve">{{ $employment->achievement }}</span>
                             <div class="time"><b><i class="fa fa-calendar"></i></b><span>{{ Carbon\Carbon::parse($employment->start_date)->format('m/Y') }} - {{ ($employment->is_current) ? _t('setting.employment.current') : Carbon\Carbon::parse($employment->end_date)->format('m/Y') }}</span></div>
                             <button class="btn _btn timeline-btn timeline-edit" data-update-employment-id="{{ $employment->id }}"><i class="fa fa-pencil"></i></button>
                             <button class="btn _btn timeline-btn timeline-remove" data-remove-employment-id="{{ $employment->id }}" data-confirm-msg="{{ _t('sure_remove') }}"><i class="fa fa-remove"></i></button>
@@ -44,7 +45,10 @@
                             <div class="_fl _w50 _pl3">{!! Form::kingSelect('end_year', $end_date['y'], null, ['id' => 'end-year', 'class' => 'settings-field']) !!}</div>
                         </div>
                         <div class="settings-field-wrapper">
-                            {!! Form::text('website', '', ['class' => 'settings-field', 'placeholder' => 'Company website']) !!}
+                            {!! Form::text('website', '', ['class' => 'settings-field', 'placeholder' => _t('setting.employment.companyurl')]) !!}
+                        </div>
+                        <div class="settings-field-wrapper">
+                            {!! Form::textarea('achievement', '', ['class' => 'settings-textarea', 'placeholder' => _t('setting.employment.achievement'), 'maxlength' => 500]) !!}
                         </div>
                         <div class="settings-field-wrapper">
                             {!! Form::checkbox('current_company', 1, 0, ['class' => '_fl _mr5', 'id' => 'current-company']) !!} <label class="_fwn _fl _ml5 settings-label" for="current-company">{{ _t('setting.employment.curcompany') }}</label>

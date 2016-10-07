@@ -85,11 +85,32 @@ $("[name='publish_profile']").bootstrapSwitch({
     }
 });
 
+function selectorStatus(element, status) {
+    
+    if ($.isArray(element)) {
+        $.each(element, function(k, v){
+            selectorStatus(v, status);
+        });
+    } else {
+        if (typeof status === 'undefined' || status === null) { 
+            status = 'disable'; 
+        }
+
+        if (status === 'enable') {
+            element.attr('disabled', false).parent('.selecter').css({opacity: '1'});
+            element.attr('disabled', false).parent('.selecter').css({opacity: '1'});
+        } else {
+            element.attr('disabled', true).parent('.selecter').css({opacity: '0.5'});
+            element.attr('disabled', true).parent('.selecter').css({opacity: '0.5'});
+        }
+    }
+}
+
 // Enable or disable employment history end day
 $('#current-company').on('change', function(){
-    var endMonth = $('.settings-field-wrapper').find('[name="end_month"]'),
-        endYear  = $('.settings-field-wrapper').find('[name="end_year"]'),
-        form     = $(this).closest('form'),
+    var form     = $(this).closest('form'),
+        endMonth = form.find('[name="end_month"]'),
+        endYear  = form.find('[name="end_year"]'),
         requires = form.data('requires').split('|');
         
     if ($(this).is(':checked')) {
@@ -101,14 +122,20 @@ $('#current-company').on('change', function(){
         form.data('requires', requires.join('|'));
         endMonth.parent('.selecter').removeClass('error');
         endYear.parent('.selecter').removeClass('error');
-        endMonth.attr('disabled', true).parent('.selecter').css({opacity: '0.5'});
-        endYear.attr('disabled', true).parent('.selecter').css({opacity: '0.5'});
+        selectorStatus([endMonth, endYear]);
     } else {
         form.attr('data-requires', requires.join('|') + '|end_month|end_year');
         form.data('requires', requires.join('|') + '|end_month|end_year');
-        endMonth.attr('disabled', false).parent('.selecter').css({opacity: '1'});
-        endYear.attr('disabled', false).parent('.selecter').css({opacity: '1'});
+        selectorStatus([endMonth, endYear], 'enable');
     }
+});
+
+/**
+ * append skill suggestion on add skill input field
+ */
+$('.skill-suggestion').on('click', 'li', function(){
+    $('.skill-suggestion').parents('form').find('[name=skill]').val($(this).text());
+    $('.skill-suggestion').hide();
 });
 
 function showMessage(message, error) {
@@ -167,7 +194,7 @@ function showMessage(message, error) {
                 fieldArray = fields.split('|'),
                 empty      = false;
 
-            current.on('submit', function() {    
+            current.on('submit', function() { 
                 $.each(fieldArray, function(k, v) {
                     var field = current.find('[name=' + v + ']');
                     
@@ -558,42 +585,42 @@ function showMessage(message, error) {
         init: function() {
             var current = this.element;
                 
-                current.on('click', function(e){
-                    var section      = current.closest('section'),
-                        settingsForm = section.find('form'),
-                        requires     = (settingsForm.data('requires').trim() !== '') ? settingsForm.data('requires').split('|') : [],
-                        saveFormType = settingsForm.find('[name="type"]').val();
-                    
-                    if ('_PASS' !== saveFormType && '_EMPLOYMENT' !== saveFormType && '_EDUCATION' !== saveFormType) {
-                        e.preventDefault();
-                    }
-                    
-                    if ('_EMPLOYMENT' === saveFormType || '_EDUCATION' === saveFormType) {
-                        $.each(settingsForm.find('select'), function(k, field){
-                            $(field).next('label').html($(field).find('option:first').html());
-                            $(field).attr('disabled', false).parent('.selecter').css({opacity: '1'});
-                            settingsForm.find('[name="id"]').remove();
-                        });
-                    }
-                    
-                    $('.settings section').removeClass('_disable');
-                    section.find('.settings-show').show();
-                    settingsForm.hide();
-                    
-                    if ($.isArray(requires) && requires.length) {
-                        $.each(requires, function(k, v){
-                            var field = $('[name=' + v + ']');
-                            
-                            if (field.is('select')) {
-                                field.parent('.selecter').removeClass('error');
-                            } else if(field.is(':checkbox')) {
-                                field.next('.settings-label').removeClass('error');
-                            } else {
-                                field.removeClass('error');
-                            }
-                        });
-                    }
-                });
+            current.on('click', function(e){
+                var section      = current.closest('section'),
+                    settingsForm = section.find('form'),
+                    requires     = (settingsForm.data('requires').trim() !== '') ? settingsForm.data('requires').split('|') : [],
+                    saveFormType = settingsForm.find('[name="type"]').val();
+
+                if ('_PASS' !== saveFormType && '_EMPLOYMENT' !== saveFormType && '_EDUCATION' !== saveFormType) {
+                    e.preventDefault();
+                }
+
+                if ('_EMPLOYMENT' === saveFormType || '_EDUCATION' === saveFormType) {
+                    $.each(settingsForm.find('select'), function(k, field){
+                        $(field).next('label').html($(field).find('option:first').html()).addClass('_tga').removeClass('_tg7');
+                        $(field).attr('disabled', false).parent('.selecter').css({opacity: '1'});
+                        settingsForm.find('[name="id"]').remove();
+                    });
+                }
+
+                $('.settings section').removeClass('_disable');
+                section.find('.settings-show').show();
+                settingsForm.hide();
+
+                if ($.isArray(requires) && requires.length) {
+                    $.each(requires, function(k, v){
+                        var field = $('[name=' + v + ']');
+
+                        if (field.is('select')) {
+                            field.parent('.selecter').removeClass('error');
+                        } else if(field.is(':checkbox')) {
+                            field.next('.settings-label').removeClass('error');
+                        } else {
+                            field.removeClass('error');
+                        }
+                    });
+                }
+            });
             
         },
         destroy: function() {
@@ -707,8 +734,9 @@ function showMessage(message, error) {
                             var employment = response.data,
                                 section    = '<div class="_fwfl timeline-section" id="timeline-section-' + employment.id + '"><div class="timeline-point"></div><div class="timeline-content">',
                                 name       = '<h4>' + employment.name + '</h4>',
-                                position   = '<span class="position">' + employment.position + '</span>',
+                                position   = '<b class="position">' + employment.position + '</b>',
                                 time       = '<div class="time"><b><i class="fa fa-calendar"></i></b><span>' + employment.date + '</span></div>',
+                                achieve    = '<span class="achieve">' + employment.achievement + '</span>',
                                 button     = '<button class="btn _btn timeline-btn timeline-edit" data-update-employment-id="' + employment.id + '"><i class="fa fa-pencil"></i></button>',
                                 button     = button + '<button class="btn _btn timeline-btn timeline-remove" data-remove-employment-id="' + employment.id + '"><i class="fa fa-remove"></i></button>',
                                 link       = ('' !== employment.website_text) ? '<a href="' + employment.website_href + '" target="_blank">' + employment.website_text + '</a>' : '';
@@ -717,10 +745,11 @@ function showMessage(message, error) {
                                     var editSection = $('.employment-timeline #timeline-section-' + employment.id);
                                     editSection.find('h4').html(employment.name);
                                     editSection.find('.position').html(employment.position);
+                                    editSection.find('.achieve').html(employment.achievement);
                                     editSection.find('.time span').html(employment.date);
                                     editSection.find('a').html(employment.website_text).attr('href', employment.website_href);
                                 } else {
-                                    var timelineSection = section + name + position + time + link + button + '</div></div>';
+                                    var timelineSection = section + name + position + link + achieve + time + button + '</div></div>';
                                     
                                     $(timelineSection).insertBefore('.employment-timeline .default-timeline');
                                 }
@@ -870,6 +899,12 @@ function showMessage(message, error) {
                 
             select.on('change', function(e){
                 label.html($(this).find('option[value="' + $(this).val() + '"]').text());
+                
+                if ($(this).val() !== '') {
+                    label.addClass('_tg7').removeClass('_tga');
+                } else {
+                    label.addClass('_tga').removeClass('_tg7');
+                }
             });
         },
         destroy: function() {
@@ -1036,8 +1071,9 @@ function showMessage(message, error) {
 
     Plugin.prototype = {
         init: function() {
-            var current = this.element;
-                
+            var current = this.element,
+                thiz    = this;
+        
             current.on('click', '.timeline-edit', function(){
                 
                 $.ajax({
@@ -1045,21 +1081,10 @@ function showMessage(message, error) {
                     url: SETTINGS.AJAX_GET_EMPLOYMENTBYID + '/' + $(this).attr('data-update-employment-id'),
                     dataType: 'json',
                     success: function(response){
-                        var data = response.data,
-                            form = current.find('form');
+                        var data      = response.data,
+                            form      = current.find('form');
                     
-                        form.find('[name="company_name"]').val(data.name);
-                        form.find('[name="position"]').val(data.position);
-                        form.find('[name="start_month"]').val(data.start_month).parent('.selecter').find('label').html(data.start_month);
-                        form.find('[name="start_year"]').val(data.start_year).parent('.selecter').find('label').html(data.start_year);
-                        form.find('[name="website"]').val(data.website);
-                        
-                        if (data.is_current) {
-                            form.find('[name="current_company"]').click();
-                        } else {
-                            form.find('[name="end_month"]').val(data.end_month).parent('.selecter').find('label').html(data.end_month);
-                            form.find('[name="end_year"]').val(data.end_year).parent('.selecter').find('label').html(data.end_year);
-                        }
+                        thiz.fillData(data);
                         form.append('<input type="hidden" name="id" value="' + data.id +'" />');
                         form.prev('div.settings-show').hide();
                         form.show();
@@ -1070,6 +1095,35 @@ function showMessage(message, error) {
                     }
                 });
             });
+        },
+        fillData: function(data) {
+            var form     = this.element.find('form'),
+                name     = form.find('[name="company_name"]'),
+                position = form.find('[name="position"]'),
+                achieve  = form.find('[name="achievement"]'),
+                smonth   = form.find('[name="start_month"]'),
+                syear    = form.find('[name="start_year"]'),
+                emonth   = form.find('[name="end_month"]'),
+                eyear    = form.find('[name="end_year"]'),
+                web      = form.find('[name="website"]'),
+                current  = form.find('[name="current_company"]');
+        
+            name.val(data.name);
+            position.val(data.position);
+            achieve.val(data.achievement);
+            smonth.val(data.start_month).parent('.selecter').find('label').html(data.start_month).addClass('_tg7').removeClass('_tga');
+            syear.val(data.start_year).parent('.selecter').find('label').html(data.start_year).addClass('_tg7').removeClass('_tga');
+            web.val(data.website);
+            
+            if (data.is_current) {
+                selectorStatus([emonth, eyear]);
+                current.click();
+            } else {
+                emonth.val(data.end_month).parent('.selecter').find('label').html(data.end_month).addClass('_tg7').removeClass('_tga');
+                eyear.val(data.end_year).parent('.selecter').find('label').html(data.end_year).addClass('_tg7').removeClass('_tga');
+                selectorStatus([emonth, eyear], 'enable');
+                current.prop('checked', false).attr('checked', false);
+            }
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);
@@ -1284,11 +1338,11 @@ function showMessage(message, error) {
                             
                         form.find('[name="college_name"]').val(data.name);
                         form.find('[name="subject"]').val(data.subject);
-                        form.find('[name="start_month"]').val(data.start_month).parent('.selecter').find('label').html(data.start_month);
-                        form.find('[name="start_year"]').val(data.start_year).parent('.selecter').find('label').html(data.start_year);
-                        form.find('[name="qualification"]').val(data.qualification_id).parent('.selecter').find('label').html(data.qualification_name);
-                        form.find('[name="end_month"]').val(data.end_month).parent('.selecter').find('label').html(data.end_month);
-                        form.find('[name="end_year"]').val(data.end_year).parent('.selecter').find('label').html(data.end_year);
+                        form.find('[name="start_month"]').val(data.start_month).parent('.selecter').find('label').html(data.start_month).addClass('_tg7').removeClass('_tga');
+                        form.find('[name="start_year"]').val(data.start_year).parent('.selecter').find('label').html(data.start_year).addClass('_tg7').removeClass('_tga');
+                        form.find('[name="end_month"]').val(data.end_month).parent('.selecter').find('label').html(data.end_month).addClass('_tg7').removeClass('_tga');
+                        form.find('[name="end_year"]').val(data.end_year).parent('.selecter').find('label').html(data.end_year).addClass('_tg7').removeClass('_tga');
+                        form.find('[name="qualification"]').val(data.qualification_id).parent('.selecter').find('label').html(data.qualification_name).addClass('_tg7').removeClass('_tga');
                         form.append('<input type="hidden" name="id" value="' + data.id +'" />');
                         form.prev('div.settings-show').hide();
                         form.show();
@@ -1462,7 +1516,6 @@ function showMessage(message, error) {
 
 }(jQuery, window));
 
-
 /**
  *  @name Rating
  *  @description
@@ -1489,33 +1542,62 @@ function showMessage(message, error) {
 
     Plugin.prototype = {
         init: function() {
+            this.load();
             this.select();
             this.rate();
         },
+        load: function() {
+            var rates = this.element.find('.rating');
+            if (rates.length > 0) {
+                $.each(rates, function(k, v){
+                    var currentRating = parseInt($(v).find('.current-rating').val());
+                    for (var i = 1; i <= currentRating; i++) {
+                        $(v).find('i:nth-child(' + i + ')').addClass('fa-star').removeClass('fa-star-o');
+                    }
+                });
+            }
+        },
         rate: function() {
-            var item = '.' + this.element.attr('class') + ' i.fa';
+            var maxStar = this.maxStar;
             
-            $(document).on('click', item, function(){
-                var rating = $(item).parents('.rating');
+            this.element.on('click', '.rating i.fa', function(){
+                var rating = $(this).parents('.rating');
                 
                 rating.find('.current-rating').val($(this).index() + 1);
-                for (var i = ($(this).index() + 2); i <= this.maxStar; i++) {
-                    rating.find('i:nth-child(' + i + ')').addClass('fa-star-o').removeClass('fa-star');
+                
+                for (var i = 1; i <= maxStar; i++) {
+                    if (i <= ($(this).index() + 1)) {
+                        rating.find('i:nth-child(' + i + ')').addClass('fa-star').removeClass('fa-star-o');
+                    } else if (i > ($(this).index() + 1)) {
+                        rating.find('i:nth-child(' + i + ')').addClass('fa-star-o').removeClass('fa-star');
+                    }
+                }
+                
+                if (parseInt(rating.find('.current-rating').val()) > 0) {
+                    $.ajax({
+                        type: 'POST',
+                        url: SETTINGS.AJAX_SAVE_INFO,
+                        data: {id: rating.closest('.tag').attr('id'), votes: $(this).index() + 1, type: '_SKILL'},
+                        success: function(response){
+                            console.log(response);
+                        }
+                    });
                 }
             });
+            
+            
         },
         select: function() {
-            var thiz = this,
-                item = '.' + this.element.attr('class') + ' i.fa';
+            var thiz = this;
             
-            $(document).on({
+            this.element.on({
                 mouseenter: function () {
                     thiz.mouseIn($(this));
                 },
                 mouseleave: function () {
                     thiz.mouseOut($(this));
                 }
-            }, item);
+            }, '.rating i.fa');
         },
         mouseIn: function(element) {
             element.addClass('fa-star').removeClass('fa-star-o');
@@ -1525,18 +1607,88 @@ function showMessage(message, error) {
             }
         },
         mouseOut: function(element) {
-            var rateScore = parseInt(this.element.find('.current-rating').val()),
+            var rateScore = parseInt(element.parents('.rating').find('.current-rating').val()),
                 index     = element.index();
             
             if ((index + 1) > rateScore) { 
                 element.addClass('fa-star-o').removeClass('fa-star');
-
                 for (var i = 1; i <= index; i++) {
                     if (rateScore < i) {
                         element.parents('.rating').find('i:nth-child(' + i + ')').addClass('fa-star-o').removeClass('fa-star');
                     }
                 }
             }
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Kill Tag
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'kill-tag';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var thiz = this;
+            this.element.on('click', '.tag i.fa-close', function(){
+                var id = parseInt($(this).closest('.tag').attr('id'));
+                
+                $.ajax({
+                    type: 'DELETE',
+                    url: SETTINGS.AJAX_KILL_TAG,
+                    data: {id: id},
+                    success: function(){
+                        $('#' + id).remove();
+                    }
+                });
+                console.log(thiz.element.find('.tag').length);
+                if (thiz.element.find('.tag').length === 0) {
+                    $('.no-skills').addClass('_dn');
+                }
+            });
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);
@@ -1600,6 +1752,10 @@ function showMessage(message, error) {
             current.on('submit', function(e){
                 e.preventDefault();
                 
+                if ($(this).find('[name=skill]').val().trim() === '') {
+                    return false;
+                }
+                
                 $.ajax({
                     type: current.attr('method'),
                     url: current.attr('action'),
@@ -1613,9 +1769,9 @@ function showMessage(message, error) {
         },
         append: function(data) {
             var skills = this.element.find('.skill-tags'),
-                html   =  '<div class="tag">' +
+                html   =  '<div class="tag" id="' + data.id + '">' +
                             '<div class="tag-container">' +
-                                '<div class="rating" data-rating="5">' +
+                                '<div class="rating">' +
                                     '<i class="fa fa-star-o"></i> ' +
                                     '<i class="fa fa-star-o"></i> ' +
                                     '<i class="fa fa-star-o"></i> ' +
@@ -1629,6 +1785,110 @@ function showMessage(message, error) {
                         '</div>';
                 
             skills.append(html);
+            
+            if ( ! $('.no-skills').hasClass('_dn')) {
+                $('.no-skills').addClass('_dn')
+            }
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Autocomplate Skill
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'autocomplete-skill';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var thiz = this;
+            
+            this.element.on('keyup', function(e){
+                if(e.keyCode !== 13){
+                    setTimeout(thiz.search(thiz.element.val()), 700);
+                }
+            });
+        },
+        search: function(keyword){
+            var thiz = this;
+            if (keyword.length >= 3) {
+                $.ajax({
+                    type: 'GET',
+                    url: SETTINGS.AJAX_GET_SEARCHSKILL + '/' + keyword,
+                    success: function(response){
+                        if (response.total > 0) {
+                            thiz.append(response.skills);
+                        } else {
+                            thiz.hide();
+                        }
+                    }
+                });
+            } else {
+                thiz.hide();
+            }
+        },
+        append: function(list){
+            var html = '',
+                thiz = this;
+            
+            if (list.length > 0) {
+                html = '<ul>';
+                $.each(list, function(k, v){
+                    html += '<li>' + v.name + '</li>';
+                });
+                html += '</ul>';
+            } else {
+                thiz.hide();
+            }
+            
+            if ('' !== html) {
+                $('.skill-suggestion').html(html).show();
+            }
+        },
+        hide: function(){
+            $('.skill-suggestion').hide();
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

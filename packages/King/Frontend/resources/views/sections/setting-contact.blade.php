@@ -36,7 +36,11 @@
                 {!! Form::text('phone_number', $userProfile->phone_number, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.phone')]) !!}
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::textarea('social_network', implode("\n", unserialize($userProfile->social_network)), ['class' => 'settings-field settings-textarea social-network', 'placeholder' => _t('setting.profile.social'), 'rows' => 3]) !!}
+                {!! Form::text('website', $userProfile->website, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.website')]) !!}
+            </div>
+            <div class="settings-field-wrapper">
+                @set $network = ('' !== $userProfile->social_network) ? implode("\n", unserialize($userProfile->social_network)) : ''
+                {!! Form::textarea('social_network', $network, ['class' => 'settings-field settings-textarea social-network', 'placeholder' => _t('setting.profile.social'), 'rows' => 3]) !!}
                 <span class="_mt5 settings-help-text">
                     {!! _t('setting.profile.social_help') !!}
                 </span>
