@@ -97,7 +97,7 @@ return [
     'setting.profile.male' => 'Male',
     'setting.profile.female' => 'Female',
     'setting.profile.sextell' => 'Tell us what is your gender?',
-    'setting.profile.marital' => 'Tell us what is your merital status?',
+    'setting.profile.marital' => 'Tell us what is your marital status?',
     'setting.profile.single' => 'Single',
     'setting.profile.married' => 'Married',
     'setting.profile.aboutme' => 'About me',

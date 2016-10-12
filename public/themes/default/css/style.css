@@ -155,27 +155,22 @@ section.skill {
     float: left;
     background-color: #888;
 }
-section.skill .skill-line:nth-child(2) .skill-rates b{
-    width: 90%;
+section.skill .skill-line .skill-rates-1 b{
+    width: 20%;
 }
-section.skill .skill-line:nth-child(3) .skill-rates b{
-    width: 70%;
+section.skill .skill-line .skill-rates-2 b{
+    width: 40%;
 }
-section.skill .skill-line:nth-child(4) .skill-rates b{
-    width: 76%;
+section.skill .skill-line .skill-rates-3 b{
+    width: 60%;
 }
-section.skill .skill-line:nth-child(5) .skill-rates b{
+section.skill .skill-line .skill-rates-4 b{
     width: 80%;
 }
-section.skill .skill-line:nth-child(6) .skill-rates b{
-    width: 90%;
+section.skill .skill-line .skill-rates-5 b{
+    width: 100%;
 }
-section.skill .skill-line:nth-child(7) .skill-rates b{
-    width: 70%;
-}
-section.skill .skill-line:nth-child(8) .skill-rates b{
-    width: 80%;
-}
+
 section.contact {
     float: left;
     margin-top: 30px;
