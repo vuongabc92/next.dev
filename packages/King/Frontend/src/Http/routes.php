@@ -35,6 +35,7 @@ Route::group(['middleware' => ['web', 'auth:web']], function () {
     Route::delete('settings/education_history_remove', ['as' => 'front_settings_educationremovebyid', 'uses' => 'SettingsController@removeEducationHistoryById']);
     Route::get('settings/education_history/{id?}', ['as' => 'front_settings_educationbyid', 'uses' => 'SettingsController@getEducationHistoryById'])->where('id', '[0-9]+');
     Route::delete('settings/kill_tag', ['as' => 'front_settings_killtag', 'uses' => 'SettingsController@killTag']);
+    Route::delete('settings/kill_social', ['as' => 'front_settings_killsocial', 'uses' => 'SettingsController@killSocial']);
     Route::get('settings/search_skill/{keyword?}', ['as' => 'front_settings_searchskill', 'uses' => 'SettingsController@searchSkill']);
 });
 

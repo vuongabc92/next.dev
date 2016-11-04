@@ -11,22 +11,41 @@ return [
     'avatarMaxFileSizeMessage' => 10,
     'coverMaxFileSize'         => 10000,
     'coverMaxFileSizeMessage'  => 10,
-    'socialNetWorks'           => [
+    
+    'socialUrls' => [
         'facebook'    => 'facebook.com',
         'twitter'     => 'twitter.com',
+        'instagram'   => 'instagram.com',
         'google-plus' => 'plus.google.com',
         'tumblr'      => 'tumblr.com',
-        'pinterest'   => 'pinterest.com',
-        'ello'        => 'ello.co',
         'vine'        => 'vine.co',
+        'ello'        => 'ello.co',
+        'linkedin'    => 'linkedin.com',
+        'pinterest'   => 'pinterest.com',
+        'vk'          => 'vk.com',
     ],
-    'socialIcons' => [
+    'availableSocialIcons' => [
         'facebook'    => 'fa fa-facebook',
         'twitter'     => 'fa fa-twitter',
+        'instagram'   => 'fa fa-instagram',
         'google-plus' => 'fa fa-google-plus',
         'tumblr'      => 'fa fa-tumblr',
-        'pinterest'   => 'fa fa-pinterest',
-        'ello'        => 'fa fa-vine',
         'vine'        => 'fa fa-vine',
+        'ello'        => 'fa fa-ello',
+        'linkedin'    => 'fa fa-linkedin',
+        'pinterest'   => 'fa fa-pinterest',
+        'vk'          => 'fa fa-vk',
+    ],
+    'availableSocial' => [
+        'facebook'    => 'Facebook',
+        'twitter'     => 'Twitter',
+        'instagram'   => 'Instagram',
+        'google-plus' => 'Google+',
+        'tumblr'      => 'Tumblr',
+        'vine'        => 'Vine',
+        'ello'        => 'Ello',
+        'linkedin'    => 'LinkedIn',
+        'pinterest'   => 'Pinterest',
+        'vk'          => 'VK'
     ]
 ];

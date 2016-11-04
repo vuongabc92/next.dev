@@ -123,6 +123,12 @@ trait SaveSettings {
      */
     public function saveContactInfo(Request $request) {
         
+        $userProfile = user()->userProfile;
+        
+        if ($request->has('contact_social')) {
+            return $this->_saveSocialLinks($request);
+        }
+        
         $validateRules = $this->_saveContactRules();
         
         if (empty($request->get('city'))) {
@@ -142,18 +148,66 @@ trait SaveSettings {
             return $validator;
         }
         
-        $userProfile                 = user()->userProfile;
-        $userProfile->street_name    = $request->get('street_name');
-        $userProfile->country_id     = (empty($request->get('country')))      ? null : $request->get('country');
-        $userProfile->city_id        = (empty($request->get('city')))         ? null : $request->get('city');
-        $userProfile->district_id    = (empty($request->get('district')))     ? null : $request->get('district');
-        $userProfile->ward_id        = (empty($request->get('ward')))         ? null : $request->get('ward');
-        $userProfile->phone_number   = (empty($request->get('phone_number'))) ? null : $request->get('phone_number');
-        $userProfile->website        = (empty($request->get('website')))      ? null : $request->get('website');
-        $userProfile->social_network = $this->_generateSocialLinks($request->get('social_network'));
+        $userProfile->street_name  = $request->get('street_name');
+        $userProfile->country_id   = (empty($request->get('country')))      ? null : $request->get('country');
+        $userProfile->city_id      = (empty($request->get('city')))         ? null : $request->get('city');
+        $userProfile->district_id  = (empty($request->get('district')))     ? null : $request->get('district');
+        $userProfile->ward_id      = (empty($request->get('ward')))         ? null : $request->get('ward');
+        $userProfile->phone_number = (empty($request->get('phone_number'))) ? null : $request->get('phone_number');
+        $userProfile->website      = (empty($request->get('website')))      ? null : $request->get('website');
         $userProfile->save();
         
         return true;
+    }
+    
+    /**
+     * Generate social links
+     * 
+     * @param Request $request
+     * 
+     * @return string
+     */
+    protected function _saveSocialLinks($request) {
+        
+        $userProfile = user()->userProfile;
+        $type        = $request->get('social_type');
+        $socialLink  = $request->get('social_profile');
+        
+        $validator = validator(
+            $request->all(), 
+            array('social_type' => 'required', 'social_profile' => 'required'), 
+            array('social_type.required' => _t('settings.contact.social_req'), 'social_profile.required' => _t('settings.contact.sociallink_req'))
+        );
+            
+        $validator->after(function($validator) use($type, $socialLink) {
+            $socialAllowed = config('frontend.availableSocial');
+            $socialUrls    = config('frontend.socialUrls');
+            
+            if ( ! isset($socialAllowed[$type])) {
+                $validator->errors()->add('social_type', _t('settings.contact.social_exi'));
+            }
+            
+            foreach ($socialUrls as $id => $url) {
+                if (strpos($socialLink, $url) !== false && $id !== $type) {
+                    $validator->errors()->add('social_type', _t('settings.contact.social_linkwrog'));
+                }
+            }
+        });
+        
+        if ($validator->fails()) {
+            return $validator;
+        }
+        
+        $socialRaw      = $userProfile->social_network;
+        $socials        = is_null($socialRaw) ? [] : unserialize($socialRaw);
+        $url            = parse_url(trim((strpos($socialLink, 'http') === false) ? 'http://' . $socialLink : $socialLink));
+        $fullUrl        = $url['host'] . $url['path'];
+        $socials[$type] = $fullUrl;
+        
+        $userProfile->social_network = serialize($socials);
+        $userProfile->save();
+        
+        return $userProfile;
     }
     
     /**
@@ -302,40 +356,6 @@ trait SaveSettings {
         }
         
         return false;
-    }
-
-    /**
-     * Generate social links
-     * 
-     * @param string $linkRaw
-     * 
-     * @return string
-     */
-    protected function _generateSocialLinks($linkRaw) {
-        $link        = trim($linkRaw);
-        $linkExplore = explode("\n", $link);
-        $linkArray   = array_filter($linkExplore, 'trim');
-        $socials     = [];
-        
-        if (count($linkArray)) {
-            foreach ($linkArray as $link) {
-                
-                $url           = parse_url(trim((strpos($link, 'http') === false) ? 'http://' . $link : $link));
-                $fullUrl       = $url['host'] . $url['path'];
-                $socialAllowed = config('frontend.socialNetWorks');
-                
-                if (count($socialAllowed)) {
-                    foreach ($socialAllowed as $type => $social) {
-                        $social = str_replace('.', '\.', $social);
-                        if (preg_match('/(www\.)?' . $social . '/', $url['host'])) {
-                            $socials[$type] = $fullUrl;
-                        }
-                    }
-                }
-            }
-        }
-        
-        return count($socials) ? serialize($socials) : null;
     }
 
     /**

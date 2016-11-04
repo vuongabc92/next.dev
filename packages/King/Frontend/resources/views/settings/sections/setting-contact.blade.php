@@ -39,16 +39,55 @@
                 {!! Form::text('website', $userProfile->website, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.website')]) !!}
             </div>
             <div class="settings-field-wrapper">
-                @set $network = ('' !== $userProfile->social_network) ? implode("\n", unserialize($userProfile->social_network)) : ''
-                {!! Form::textarea('social_network', $network, ['class' => 'settings-field settings-textarea social-network', 'placeholder' => _t('setting.profile.social'), 'rows' => 3]) !!}
-                <span class="_mt5 settings-help-text">
-                    {!! _t('setting.profile.social_help') !!}
-                </span>
+                <div class="social-added-list">
+                    <ul data-kill-social data-delete-msg="Delete this social profile?">
+                        @set $socialList = social_profile_list()
+                        
+                        @if(count($socialList))
+                            @foreach($socialList as $id => $one)
+                            <li>
+                                <a href="{{ $one['link'] }}" target="_blank"><i class="{{ (isset($one['icon'])) ? $one['icon'] : '' }}"></i></a>
+                                <span class="kill-social" data-kill-id="{{ $id }}" >&times;</span>
+                            </li>
+                            @endforeach
+                            <li><a href="#" onclick="$('#social-modal').modal('show');"><i class="fa fa-plus"></i></a></li>
+                        @else
+                        <li><a href="#" class="social-empty-msg" onclick="$('#social-modal').modal('show');"><strong>{{ _t('setting.profile.add_social_add') }}</strong></a></li>
+                        @endif
+                    </ul>
+                </div>
             </div>
             <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
             <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
             <input type="hidden" name="type" value="_CONTACT"/>
             {!! Form::close() !!}
+        </div>
+    </div>
+    
+    <div class="modal modal-social fade" id="social-modal" tabindex="-1" role="dialog" aria-labelledby="socialModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="_fl modal-content">
+                <div class="_fwfl modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="socialModalLabel">{{ _t('setting.profile.add_social_title') }}</h4>
+                </div>
+                {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form full', 'data-save-form' => '', 'data-requires' => 'social_type|social_profile']) !!}
+                <div class="_fwfl modal-body">
+                    <div class="settings-field-wrapper">
+                        {!! Form::kingSelect('social_type', $availableSocial, null, ['id' => 'settings-available-social', 'class' => 'settings-field']) !!}
+                    </div>
+                    <div class="settings-field-wrapper">
+                        {!! Form::text('social_profile', '', ['class' => 'settings-field', 'placeholder' => _t('setting.profile.social_profile')]) !!}
+                    </div>
+                    <input type="hidden" name="type" value="_CONTACT"/>
+                    <input type="hidden" name="contact_social" value="true"/>
+                </div>
+                <div class="_fwfl modal-footer">
+                    <button type="button" class="btn _btn _btn-sm _btn-gray" data-dismiss="modal">{{ _t('cancel') }}</button>
+                    <button type="submit" class="btn _btn _btn-sm _btn-blue-navy">{{ _t('save') }}</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
         </div>
     </div>
 </section>

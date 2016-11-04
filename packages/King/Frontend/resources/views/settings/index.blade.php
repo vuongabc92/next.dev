@@ -4,28 +4,28 @@
 <div class="row" data-settings-page-view>
     <div class="_fl col-md-9 col-xs-12">
         <div class="_fwfl settings-page profile" id="profile">
-            @include('frontend::sections.setting-header')
-            @include('frontend::sections.setting-publish')
-            @include('frontend::sections.setting-email')
-            @include('frontend::sections.setting-slug')
-            @include('frontend::sections.setting-password')
-            @include('frontend::sections.setting-personal')
-            @include('frontend::sections.setting-contact')
+            @include('frontend::settings.sections.setting-header')
+            @include('frontend::settings.sections.setting-publish')
+            @include('frontend::settings.sections.setting-email')
+            @include('frontend::settings.sections.setting-slug')
+            @include('frontend::settings.sections.setting-password')
+            @include('frontend::settings.sections.setting-personal')
+            @include('frontend::settings.sections.setting-contact')
         </div>
         <div class="_fwfl settings-page employment" id="employment">
-            @include('frontend::sections.setting-employment')
+            @include('frontend::settings.sections.setting-employment')
         </div>
         
         <div class="_fwfl settings-page skills" id="skills">
-            @include('frontend::sections.setting-skills')
+            @include('frontend::settings.sections.setting-skills')
         </div>
         
         <div class="_fwfl settings-page education" id="education">
-            @include('frontend::sections.setting-education')
+            @include('frontend::settings.sections.setting-education')
         </div>
     </div>
     <div class="_fr col-md-3 hidden-xs">
-        @include('frontend::layouts.settings-vertical-navigation')
+        @include('frontend::settings.settings-nav')
     </div>
 </div>
 @stop

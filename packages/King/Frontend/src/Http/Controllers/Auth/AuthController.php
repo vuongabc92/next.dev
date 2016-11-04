@@ -21,7 +21,7 @@ class AuthController extends FrontController {
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/settings';
     
     /**
      * Where to redirect users after logout.

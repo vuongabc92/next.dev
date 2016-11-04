@@ -22,7 +22,7 @@ use App\Helpers\SaveSettings;
 class SettingsController extends FrontController {
     
     use SaveSettings;
-    
+        
     /**
      * Display settings page
      * 
@@ -45,8 +45,9 @@ class SettingsController extends FrontController {
         $cities              = $this->_getCityByCountryId(((is_null($userProfile->country_id)) ? 0 : $userProfile->country_id), 'array');
         $districts           = $this->_getDistrictByCityId(((is_null($userProfile->city_id)) ? 0 : $userProfile->city_id), 'array');
         $wards               = $this->_getWardByDistrictId(((is_null($userProfile->district_id)) ? 0 : $userProfile->district_id), 'array');
-        $employmentHistories = EmploymentHistory::orderBy('is_current', 'DESC')->orderBy('start_date', 'DESC')->get();
-        $educations          = Education::orderBy('start_date', 'DESC')->get();
+        $employmentHistories = user()->employmentHistories->sortByDesc('is_current')->sortByDesc('start_date')->all();
+        $educations          = user()->educations->sortByDesc('start_date')->all();
+        $availableSocial     = ['' => _t('setting.profile.social_selector')] + config('frontend.availableSocial');
         
         if (Gender::all()) {
             foreach (Gender::all() as $gender) {
@@ -72,7 +73,8 @@ class SettingsController extends FrontController {
             'wards'               => $wards,
             'employmentHistories' => $employmentHistories,
             'educations'          => $educations,
-            'maritalStatuses'     => $maritalStatuses
+            'maritalStatuses'     => $maritalStatuses,
+            'availableSocial'     => $availableSocial
         ]);
     }
     
@@ -316,7 +318,7 @@ class SettingsController extends FrontController {
            
             $employment = EmploymentHistory::find($id);
             if (is_null($employment)) {
-                return pong(['message' => _t('oops')], 403);
+                return pong(['message' => _t('oops')],  _error(), 403);
             }
             
             $isCurrent = $employment->is_current;
@@ -350,7 +352,7 @@ class SettingsController extends FrontController {
            
             $employment = EmploymentHistory::find((int) $request->get('id'));
             if (is_null($employment)) {
-                return pong(['message' => _t('oops')], 403);
+                return pong(['message' => _t('oops')], _error(), 403);
             }
             
             $employment->delete();
@@ -371,7 +373,7 @@ class SettingsController extends FrontController {
 
             $education = Education::find((int) $request->get('id'));
             if (is_null($education)) {
-                return pong(['message' => _t('oops')], 403);
+                return pong(['message' => _t('oops')], _error(), 403);
             }
             
             $education->delete();
@@ -393,7 +395,7 @@ class SettingsController extends FrontController {
            
             $education = Education::find($id);
             if (is_null($education)) {
-                return pong(['message' => _t('oops')], 403);
+                return pong(['message' => _t('oops')], _error(), 403);
             }
             
             $startDate = new \DateTime($education->start_date);
@@ -424,7 +426,7 @@ class SettingsController extends FrontController {
         if ($request->ajax() && $request->isMethod('DELETE')) {
             $userSkill = UserSkill::find((int) $request->get('id'));
             if (null === $userSkill) {
-                return pong(['message' => _t('oops')], 403);
+                return pong(['message' => _t('oops')], _error(), 403);
             }
             
             if ($userSkill->skill->userSkills->count() === 1) {
@@ -434,6 +436,36 @@ class SettingsController extends FrontController {
             $userSkill->delete();
             
             return pong(['message' => _t('saved')]);
+        }
+    }
+    
+    /**
+     * Delete user skill
+     * 
+     * @param Request $request
+     * 
+     * @return JSON
+     */
+    public function killSocial(Request $request) {
+        if ($request->ajax() && $request->isMethod('DELETE')) {
+            $userProfile   = user()->userProfile;
+            $socialLinks   = unserialize($userProfile->social_network);
+            $socialId      = $request->get('id');
+            $socialAllowed = config('frontend.availableSocial');
+            
+            if (isset($socialAllowed[$socialId])) {
+                if (count($socialLinks)) {
+                    if (isset($socialLinks[$socialId])) {
+                        unset($socialLinks[$socialId]);
+                        $userProfile->social_network = serialize($socialLinks);
+                        $userProfile->save();
+                    }
+                }
+                
+                return pong(['message' => _t('saved')]);
+            }
+            
+            return pong(['message' => _t('oops')],  _error(), 403);
         }
     }
     
@@ -508,7 +540,13 @@ class SettingsController extends FrontController {
                     'name'  => $save->skill->name,
                     'votes' => $save->votes
             ]];
-        }elseif (true === $save) {
+        } elseif($save instanceof UserProfile){
+            return [
+                'message' => _t('good_job'), 
+                'data'    => [
+                    'socials' => social_profile_list()
+            ]];
+        } elseif (true === $save) {
             return ['message' => _t('good_job')];
         } elseif(false !== $save) {
            return ['message' => $save->errors()->first(), _error(), 'code' => 403];

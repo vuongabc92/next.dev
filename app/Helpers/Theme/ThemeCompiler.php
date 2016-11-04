@@ -420,7 +420,7 @@ class ThemeCompiler extends Compiler{
     protected function compileCountry() {
         $country = $this->resume->getCountry();
         
-        return $country['country_name'];
+        return isset($country['country_name']) ? $country['country_name'] : '';
     }
     
     /**
@@ -431,7 +431,7 @@ class ThemeCompiler extends Compiler{
     protected function compileCountryCode() {
         $country = $this->resume->getCountry();
         
-        return $country['country_code'];
+        return isset($country['country_code']) ? $country['country_code'] : '';
     }
     
     /**
@@ -442,7 +442,7 @@ class ThemeCompiler extends Compiler{
     protected function compileCity() {
         $city = $this->resume->getCity();
         
-        return $city['name'];
+        return isset($city['name']) ? $city['name'] : '';
     }
     
     /**
@@ -453,7 +453,7 @@ class ThemeCompiler extends Compiler{
     protected function compileCityType() {
         $city = $this->resume->getCity();
         
-        return $city['type'];
+        return isset($city['type']) ? $city['type'] : '';
     }
     
     /**
@@ -464,7 +464,7 @@ class ThemeCompiler extends Compiler{
     protected function compileDistrict() {
         $district = $this->resume->getDistrict();
         
-        return $district['name'];
+        return isset($district['name']) ? $district['name'] : '';
     }
     
     /**
@@ -475,7 +475,7 @@ class ThemeCompiler extends Compiler{
     protected function compileDistrictType() {
         $district = $this->resume->getDistrict();
         
-        return $district['type'];
+        return isset($district['type']) ? $district['type'] : '';
     }
     
     /**
@@ -486,7 +486,7 @@ class ThemeCompiler extends Compiler{
     protected function compileWard() {
         $ward = $this->resume->getWard();
         
-        return $ward['name'];
+        return isset($ward['name']) ? $ward['name'] : '';
     }
     
     /**

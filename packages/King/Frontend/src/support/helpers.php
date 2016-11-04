@@ -1,9 +1,9 @@
 <?php
-use App\Models\Country;
-use App\Models\City;
-use App\Models\District;
-use App\Models\Ward;
-use App\Models\Gender;
+//use App\Models\Country;
+//use App\Models\City;
+//use App\Models\District;
+//use App\Models\Ward;
+//use App\Models\Gender;
 
 if ( ! function_exists('_t')) :
 
@@ -405,14 +405,37 @@ if ( ! function_exists('selector_date')) {
     }
 }
 
-
 if ( ! function_exists('qualification')) {
     function qualification() {
-        $quaArr        = ['' => _t('setting.education.selectdefault')]; 
+        $quaArr = ['' => _t('setting.education.selectdefault')];
+        
         App\Models\Qualification::all()->each(function($v, $k) use(&$quaArr) {
             $quaArr[$v->id] = $v->name;
         });
         
         return $quaArr;
+    }
+}
+
+if ( ! function_exists('social_profile_list')) {
+    function social_profile_list() {
+        $socialRaw = user()->userProfile->social_network;
+        $socialArr = unserialize($socialRaw);
+        $icons     = config('frontend.availableSocialIcons');
+        if (is_array($socialArr) && count($socialArr)) {
+            $listWithIcon = [];
+            foreach ($socialArr as $k => $one) {
+                $listWithIcon[$k]         = array();
+                $listWithIcon[$k]['link'] = (false === strpos('http', $one)) ? 'http://' . $one : $one;
+                
+                if (isset($icons[$k])) {
+                    $listWithIcon[$k]['icon'] = $icons[$k];
+                }
+            }
+            
+            return $listWithIcon;
+        }
+        
+        return [];
     }
 }

@@ -79,6 +79,7 @@
                 TOKEN: '{{ csrf_token() }}',
                 AJAX_SAVE_INFO: '{{ route('front_settings_save_info') }}',
                 AJAX_KILL_TAG: '{{ route('front_settings_killtag') }}',
+                AJAX_KILL_SOCIAL: '{{ route('front_settings_killsocial') }}',
                 AJAX_PUBLISH_PROFILE_URL: '{{ route('front_setting_publish_profile') }}',
                 AJAX_SELECT_PLACE_URL: '{{ route('front_settings_select_place') }}',
                 AJAX_GET_EMPLOYMENTBYID: '{{ route('front_settings_employmentbyid') }}',

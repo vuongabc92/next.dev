@@ -36,7 +36,6 @@ AIM = {
     },
     loaded: function(id) {
         var i = document.getElementById(id);
-        //alert(i.parentNode.innerHTML);
         if (i.contentDocument) {
             var d = i.contentDocument;
         } else if (i.contentWindow) {
@@ -105,6 +104,10 @@ function selectorStatus(element, status) {
         }
     }
 }
+
+$('#settings-available-social').on('change', function(){
+    $('#social-modal').find('.modal-header h4').html($(this).find('option:selected').text());
+});
 
 // Enable or disable employment history end day
 $('#current-company').on('change', function(){
@@ -723,11 +726,11 @@ function showMessage(message, error) {
                                 year         = current.find('[name="year"]').val().trim(),
                                 currentYear  = new Date().getFullYear();
                         
-                                if (firstName !== '' && year !== '') {
-                                    $('.personal-intro').html(lastName + ' ' + firstName + ', ' + (parseInt(currentYear) - parseInt(year)) + ' ' + personalYear);
-                                } else {
-                                    $('.personal-intro').html(personalText);
-                                }
+                            if (firstName !== '' && year !== '') {
+                                $('.personal-intro').html(lastName + ' ' + firstName + ', ' + (parseInt(currentYear) - parseInt(year)) + ' ' + personalYear);
+                            } else {
+                                $('.personal-intro').html(personalText);
+                            }
                         }
                         
                         if (formType === '_EMPLOYMENT') {
@@ -741,18 +744,18 @@ function showMessage(message, error) {
                                 button     = button + '<button class="btn _btn timeline-btn timeline-remove" data-remove-employment-id="' + employment.id + '"><i class="fa fa-remove"></i></button>',
                                 link       = ('' !== employment.website_text) ? '<a href="' + employment.website_href + '" target="_blank">' + employment.website_text + '</a>' : '';
                                 
-                                if(current.find('[name="id"]').length) {
-                                    var editSection = $('.employment-timeline #timeline-section-' + employment.id);
-                                    editSection.find('h4').html(employment.name);
-                                    editSection.find('.position').html(employment.position);
-                                    editSection.find('.achieve').html(employment.achievement);
-                                    editSection.find('.time span').html(employment.date);
-                                    editSection.find('a').html(employment.website_text).attr('href', employment.website_href);
-                                } else {
-                                    var timelineSection = section + name + position + link + achieve + time + button + '</div></div>';
-                                    
-                                    $(timelineSection).insertBefore('.employment-timeline .default-timeline');
-                                }
+                            if(current.find('[name="id"]').length) {
+                                var editSection = $('.employment-timeline #timeline-section-' + employment.id);
+                                editSection.find('h4').html(employment.name);
+                                editSection.find('.position').html(employment.position);
+                                editSection.find('.achieve').html(employment.achievement);
+                                editSection.find('.time span').html(employment.date);
+                                editSection.find('a').html(employment.website_text).attr('href', employment.website_href);
+                            } else {
+                                var timelineSection = section + name + position + link + achieve + time + button + '</div></div>';
+
+                                $(timelineSection).insertBefore('.employment-timeline .default-timeline');
+                            }
                         }
                         
                         if (formType === '_EDUCATION') {
@@ -765,18 +768,33 @@ function showMessage(message, error) {
                                 button        = '<button class="btn _btn timeline-btn timeline-edit" data-update-education-id="' + education.id + '"><i class="fa fa-pencil"></i></button>',
                                 button        = button + '<button class="btn _btn timeline-btn timeline-remove" data-remove-education-id="' + education.id + '"><i class="fa fa-remove"></i></button>';
                                 
+                            if(current.find('[name="id"]').length) {
+                                var editSection = $('.education-timeline #timeline-section-' + education.id);
+                                editSection.find('h4').html(education.name);
+                                editSection.find('.subject').html(education.subject);
+                                editSection.find('.qualification').html(education.qualification);
+                                editSection.find('.time span').html(education.date);
+                            } else {
+                                var timelineSection = section + name + subject + qualification + time + button + '</div></div>';
+
+                                $(timelineSection).insertBefore('.education-timeline .default-timeline');
+                            }
+                        }
+                        
+                        if (formType === '_CONTACT') {
+                            var data = response.data,
+                                html = '';
+                        
+                            if (typeof data !== 'undefined' && typeof data.socials !== 'undefined') {
+                                $('#social-modal').find('form')[0].reset();
+                                $('#social-modal').modal('hide');
                                 
-                                if(current.find('[name="id"]').length) {
-                                    var editSection = $('.education-timeline #timeline-section-' + education.id);
-                                    editSection.find('h4').html(education.name);
-                                    editSection.find('.subject').html(education.subject);
-                                    editSection.find('.qualification').html(education.qualification);
-                                    editSection.find('.time span').html(education.date);
-                                } else {
-                                    var timelineSection = section + name + subject + qualification + time + button + '</div></div>';
-                                    
-                                    $(timelineSection).insertBefore('.education-timeline .default-timeline');
-                                }
+                                $.each(data.socials, function(k, v){
+                                    html = html + '<li><a href="' + v['link'] + '" target="_blank"><i class="' + v['icon'] + '"></i></a><span class="kill-social" data-kill-id="' + k + '" >&times;</span></li>';
+                                });
+                                html = html + '<li><a href="#" onclick="$(\'#social-modal\').modal(\'show\');"><i class="fa fa-plus"></i></a></li>';
+                                $('.social-added-list ul').html(html);
+                            }
                         }
                         
                         showMessage(response.message, 'success');
@@ -895,8 +913,13 @@ function showMessage(message, error) {
         init: function() {
             var current = this.element,
                 select  = current.find('select'),
+                ddIcon  = current.find('i.fa'),
                 label   = current.find('label');
-                
+            
+            ddIcon.on('click', function(){
+                select.click();
+            });
+            
             select.on('change', function(e){
                 label.html($(this).find('option[value="' + $(this).val() + '"]').text());
                 
@@ -1684,7 +1707,7 @@ function showMessage(message, error) {
                         $('#' + id).remove();
                     }
                 });
-                console.log(thiz.element.find('.tag').length);
+                
                 if (thiz.element.find('.tag').length === 0) {
                     $('.no-skills').addClass('_dn');
                 }
@@ -1917,3 +1940,76 @@ function showMessage(message, error) {
     });
 
 }(jQuery, window));
+
+/**
+ *  @name Skill Social
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'kill-social';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+        
+            this.element.on('click', '.kill-social', function(){
+                
+                var socialId = $(this).attr('data-kill-id'),
+                    li       = $(this).closest('li');
+                if( ! confirm($(this).closest('ul').attr('data-delete-msg'))) {
+                    return false;
+                }
+                
+                $.ajax({
+                    type: 'DELETE',
+                    url: SETTINGS.AJAX_KILL_SOCIAL,
+                    data: {id: socialId},
+                    success: function(){
+                        li.remove();
+                    }
+                });
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
