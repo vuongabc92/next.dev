@@ -182,15 +182,20 @@ trait SaveSettings {
         $validator->after(function($validator) use($type, $socialLink) {
             $socialAllowed = config('frontend.availableSocial');
             $socialUrls    = config('frontend.socialUrls');
+            $match         = false;
             
             if ( ! isset($socialAllowed[$type])) {
                 $validator->errors()->add('social_type', _t('settings.contact.social_exi'));
             }
             
             foreach ($socialUrls as $id => $url) {
-                if (strpos($socialLink, $url) !== false && $id !== $type) {
-                    $validator->errors()->add('social_type', _t('settings.contact.social_linkwrog'));
+                if (strpos($socialLink, $url) !== false) {
+                    $match = $id;
                 }
+            }
+            
+            if ($match !== $type) {
+                $validator->errors()->add('social_type', _t('settings.contact.social_linkwrog'));
             }
         });
         
@@ -201,8 +206,9 @@ trait SaveSettings {
         $socialRaw      = $userProfile->social_network;
         $socials        = is_null($socialRaw) ? [] : unserialize($socialRaw);
         $url            = parse_url(trim((strpos($socialLink, 'http') === false) ? 'http://' . $socialLink : $socialLink));
-        $fullUrl        = $url['host'] . $url['path'];
-        $socials[$type] = $fullUrl;
+        $host           = isset($url['host']) ? $url['host'] : '';
+        $path           = isset($url['path']) ? $url['path'] : '';
+        $socials[$type] = $host . $path;
         
         $userProfile->social_network = serialize($socials);
         $userProfile->save();

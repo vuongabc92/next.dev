@@ -15,8 +15,8 @@ class CreateTableUserProfile extends Migration
         Schema::create('user_profile', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('theme_id')->unsigned();
-            $table->integer('marital_status_id')->unsigned();
+            $table->integer('theme_id')->unsigned()->nullable();
+            $table->integer('marital_status_id')->unsigned()->nullable();
             $table->string('slug', 128);
             $table->text('avatar_image');
             $table->text('cover_image');
@@ -42,7 +42,7 @@ class CreateTableUserProfile extends Migration
             $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
             $table->foreign('ward_id')->references('id')->on('wards')->onDelete('cascade');
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
-            $table->foreign('marital_status_id')->references('id')->on('marital_status')->onDelete('cascade');
+            $table->foreign('marital_status_id')->references('id')->on('marital_statuses')->onDelete('cascade');
         });
     }
 
