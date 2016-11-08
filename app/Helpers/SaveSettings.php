@@ -3,6 +3,7 @@ namespace App\Helpers;
 
 use Illuminate\Http\Request;
 use Hash;
+use Route;
 use App\Models\EmploymentHistory;
 use App\Models\Education;
 use App\Models\Skill;
@@ -44,13 +45,20 @@ trait SaveSettings {
      * @return boolean|JSON
      */
     public function saveSlug(Request $request) {
+        $slug        = $request->get('slug');
+        $validator   = validator($request->all(), $this->_saveSlugValidateRules(), $this->_saveSlugValidateMessages());
+
+        $validator->after(function($validator) use($slug) {
+            if (in_array($slug, config('frontend.privateUrls'))) {
+                $validator->errors()->add('old_password', _t('setting.profile.slug_exi'));
+            }
+        });
         
-        $validator = validator($request->all(), $this->_saveSlugValidateRules(),$this->_saveSlugValidateMessages());
         if ($validator->fails()) {
             return $validator;
         }
         
-        user()->userProfile->slug = $request->get('slug');
+        user()->userProfile->slug = $slug;
         user()->userProfile->save();
         
         return true;
@@ -109,6 +117,7 @@ trait SaveSettings {
         $userProfile->first_name        = $request->get('first_name');
         $userProfile->last_name         = $request->get('last_name');
         $userProfile->about_me          = $request->get('about_me');
+        $userProfile->hobbies           = $request->get('hobbies');
         $userProfile->save();
         
         return true;
@@ -364,6 +373,24 @@ trait SaveSettings {
         return false;
     }
 
+    protected function getPrivateUrls() {
+                
+        $routeCollection = Route::getRoutes();
+        $routes          = [];
+        
+        if (count($routeCollection)) {
+            foreach ($routeCollection as $route) {
+                $routeSplit = explode('/', $route->getPath());
+                if (count($routeSplit) === 1) {
+                    $routes[] = $route->getPath();
+                }
+            }
+        }
+        
+        return array_unique($routes);
+    }
+
+
     /**
      * Save email validate rules.
      * 
@@ -382,7 +409,7 @@ trait SaveSettings {
      * @return array
      */
     protected function _saveSlugValidateRules() {
-        return ['slug' => 'required|min:2|max:128|unique:user_profile,slug,' . user_id() . ',user_id'];
+        return ['slug' => 'required|alpha_dash|min:2|max:128|unique:user_profile,slug,' . user_id() . ',user_id'];
     }
     
     /**
@@ -392,10 +419,11 @@ trait SaveSettings {
      */
     protected function _saveSlugValidateMessages() {
         return [
-            'slug.required' => _t('setting.profile.slug_req'),
-            'slug.min'      => _t('setting.profile.slug_min'),
-            'slug.max'      => _t('setting.profile.slug_max'),
-            'slug.unique'   => _t('setting.profile.slug_uni'),
+            'slug.required'   => _t('setting.profile.slug_req'),
+            'slug.alpha_dash' => _t('setting.profile.slug_alp'),
+            'slug.min'        => _t('setting.profile.slug_min'),
+            'slug.max'        => _t('setting.profile.slug_max'),
+            'slug.unique'     => _t('setting.profile.slug_uni'),
         ];
     }
     
@@ -445,7 +473,8 @@ trait SaveSettings {
             'year'           => 'required_with:date,month',
             'marital_status' => 'exists:marital_statuses,id',
             'gender'         => 'exists:genders,id',
-            'about_me'       => 'max:500'
+            'about_me'       => 'max:500',
+            'hobbies'        => 'max:250'
         ];
     }
     
@@ -466,6 +495,7 @@ trait SaveSettings {
             'marital_status.exists'    => _t('setting.profile.marital_exi'),
             'gender.exists'            => _t('setting.profile.gender_exi'),
             'about_me.max'             => _t('setting.profile.aboutme_max'),
+            'hobbies.max'              => _t('setting.profile.hobbies_max'),
         ];
     }
     

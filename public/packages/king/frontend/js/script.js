@@ -913,12 +913,7 @@ function showMessage(message, error) {
         init: function() {
             var current = this.element,
                 select  = current.find('select'),
-                ddIcon  = current.find('i.fa'),
                 label   = current.find('label');
-            
-            ddIcon.on('click', function(){
-                select.click();
-            });
             
             select.on('change', function(e){
                 label.html($(this).find('option[value="' + $(this).val() + '"]').text());

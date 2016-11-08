@@ -20,7 +20,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('password/reset', ['as' => 'front_password_reset', 'uses' => 'Auth\PasswordController@reset']);
 
     Route::get('/', ['as' => 'front_home', 'uses' => 'HomeController@index']);
-    Route::get('/strong_password', ['as' => 'front_strong_pass', 'uses' => 'SettingsController@strongPassword']);
 });
 
 Route::group(['middleware' => ['web', 'auth:web']], function () {
@@ -39,4 +38,4 @@ Route::group(['middleware' => ['web', 'auth:web']], function () {
     Route::get('settings/search_skill/{keyword?}', ['as' => 'front_settings_searchskill', 'uses' => 'SettingsController@searchSkill']);
 });
 
-Route::get('/{slug?}', ['as' => 'front_cv', 'uses' => 'ResumeController@index']);
+Route::get('{slug?}', ['as' => 'front_cv', 'uses' => 'ResumeController@index']);

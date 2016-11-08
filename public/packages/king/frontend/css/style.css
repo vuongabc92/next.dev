@@ -266,7 +266,6 @@ body {background-color:#f5f8fa;}
 }
 .setting-messages {
     width: 100%;
-    min-height: 55px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -284,7 +283,7 @@ body {background-color:#f5f8fa;}
 }
 .message {
     height: 100%;
-    line-height: 55px;
+    padding: 17px 0;
     color: #fdfdfd;
 }
 .setting-messages .close {
@@ -335,16 +334,15 @@ body {background-color:#f5f8fa;}
     opacity: 0;
 }
 .selecter label {
+    width: 87%;
     height: 32px;
     float: left;
     font-size: 13px;
     margin: 0;
 }
 .selecter i.fa-angle-down {
-    position: absolute;
-    right: 0;
+    float: right;
     height: 32px;
-    padding: 0 10px;
     background-color: #fff;
     line-height: 34px;
     font-size: 17px;
@@ -362,11 +360,12 @@ body {background-color:#f5f8fa;}
 }
 
 .settings-birthday .selecter {
-    width: 32.65%;
-    margin-right: 4px;
+    width: 32.26%;
+    margin-right: 1.6%;
 }
 .settings-birthday .selecter:last-child {
-    margin-right:0;
+    float: right;
+    margin-right: 0;
 }
 .social-added-list {
     width: 100%;

@@ -23,6 +23,8 @@ class CreateTableUserProfile extends Migration
             $table->string('first_name', 32);
             $table->string('last_name', 32);
             $table->date('day_of_birth')->nullable();
+            $table->text('about_me');
+            $table->string('hobbies', 250);
             $table->integer('country_id')->unsigned()->nullable();
             $table->integer('city_id')->unsigned()->nullable();
             $table->integer('district_id')->unsigned()->nullable();

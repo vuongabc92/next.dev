@@ -91,17 +91,9 @@ class AuthController extends FrontController {
             'password' => bcrypt($data['password']),
         ]);
         
-        $slug = $data['username'];
-        $i    = 0;
-        
-        while(null !== UserProfile::where('slug', $slug)->first()) {
-            $i++;
-            $slug .= $i;
-        }
-        
-        $userProfile = new UserProfile();
+        $userProfile          = new UserProfile();
         $userProfile->user_id = $user->id;
-        $userProfile->slug    = $slug;
+        $userProfile->slug    = $data['username'];
         $userProfile->save();
         
         return $user;

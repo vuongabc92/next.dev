@@ -11,7 +11,12 @@ return [
     'avatarMaxFileSizeMessage' => 10,
     'coverMaxFileSize'         => 10000,
     'coverMaxFileSizeMessage'  => 10,
-    
+    'privateUrls'              => [
+        'aboutus',
+        'about-us',
+        'about_us',
+        'contact',
+    ],
     'socialUrls' => [
         'facebook'    => 'facebook.com',
         'twitter'     => 'twitter.com',
