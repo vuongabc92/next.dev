@@ -4,6 +4,7 @@ namespace App\Helpers;
 use Illuminate\Http\Request;
 use Hash;
 use Route;
+use Validator;
 use App\Models\EmploymentHistory;
 use App\Models\Education;
 use App\Models\Skill;
@@ -45,12 +46,24 @@ trait SaveSettings {
      * @return boolean|JSON
      */
     public function saveSlug(Request $request) {
+        
+        $userProfile = user()->userProfile;
         $slug        = $request->get('slug');
         $validator   = validator($request->all(), $this->_saveSlugValidateRules(), $this->_saveSlugValidateMessages());
-
+        
         $validator->after(function($validator) use($slug) {
-            if (in_array($slug, config('frontend.privateUrls'))) {
-                $validator->errors()->add('old_password', _t('setting.profile.slug_exi'));
+            if (getSlugRemainDay()) {
+                $remainDay     = getSlugRemainDay();
+                $slugUpdatedAt = new \DateTime(user()->userProfile->slug_updated_at);
+                $slugUpdatedAt->modify("+{$remainDay} days");
+                
+                $validator->errors()->add('slug', _t('setting.profile.slug_time', ['date' => $slugUpdatedAt->format('d/m/Y')]));
+            }
+            
+            $privateUrls = config('frontend.unavailableCVUrls') + $this->_getPrivateUrls();
+            
+            if (in_array($slug, $privateUrls)) {
+                $validator->errors()->add('slug', _t('setting.profile.slug_exi'));
             }
         });
         
@@ -58,8 +71,9 @@ trait SaveSettings {
             return $validator;
         }
         
-        user()->userProfile->slug = $slug;
-        user()->userProfile->save();
+        $userProfile->slug            = $slug;
+        $userProfile->slug_updated_at = new \DateTime();
+        $userProfile->save();
         
         return true;
     }
@@ -134,7 +148,7 @@ trait SaveSettings {
         
         $userProfile = user()->userProfile;
         
-        if ($request->has('contact_social')) {
+        if ($request->has('social_type') && $request->has('social_profile')) {
             return $this->_saveSocialLinks($request);
         }
         
@@ -234,6 +248,21 @@ trait SaveSettings {
      */
     public function saveEmployment(Request $request) {
        
+        if ($request->has('expected_job')) {
+            $validator = validator($request->all(), ['expected_job' => 'required|max:250'], [
+                'expected_job.required' => _t('setting.employment.expjob_req'),
+                'expected_job.max'      => _t('setting.employment.expjob_max')
+            ]);
+            
+            if ($validator->fails()) {
+                return $validator;
+            }
+            user()->userProfile->expected_job = $request->get('expected_job');
+            user()->userProfile->save();
+            
+            return true;
+        }
+        
         $validator  = validator($request->all(), $this->_saveEmploymentRules(), $this->_saveEmploymentMessages());
         $startMonth = $request->get('start_month');
         $startYear  = $request->get('start_year');
@@ -373,7 +402,12 @@ trait SaveSettings {
         return false;
     }
 
-    protected function getPrivateUrls() {
+    /**
+     * Get site urls that user CV slug must not be duplicated
+     * 
+     * @return array
+     */
+    protected function _getPrivateUrls() {
                 
         $routeCollection = Route::getRoutes();
         $routes          = [];

@@ -18,7 +18,7 @@
                     <img src="{{ asset('packages/king/frontend/images/loading_white_16x16.gif') }}" class="_dn"/>
                     <i class="fa fa-pencil"></i>
                 </button>
-                <img class="_r50 _fwfl _fh avatar-img" src="{{ check_file($avatarMedium) ? $avatarMedium : asset('uploads/avatars/__default.jpg') }}" />
+                <img class="_r50 _fwfl _fh avatar-img" src="{{ asset(check_file($avatarMedium) ? $avatarMedium : config('frontend.avatarsDefault')) }}" />
 
             </div>
             <div class="_fwfl _mt15">

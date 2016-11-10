@@ -80,7 +80,6 @@
                         {!! Form::text('social_profile', '', ['class' => 'settings-field', 'placeholder' => _t('setting.profile.social_profile')]) !!}
                     </div>
                     <input type="hidden" name="type" value="_CONTACT"/>
-                    <input type="hidden" name="contact_social" value="true"/>
                 </div>
                 <div class="_fwfl modal-footer">
                     <button type="button" class="btn _btn _btn-sm _btn-gray" data-dismiss="modal">{{ _t('cancel') }}</button>

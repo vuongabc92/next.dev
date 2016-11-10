@@ -34,7 +34,9 @@ class CreateTableUserProfile extends Migration
             $table->string('phone_number', 32);
             $table->string('website', 250);
             $table->text('social_network', 1000);
+            $table->string('expected_job', 250);
             $table->boolean('publish');
+            $table->dateTime('slug_updated_at')->nullable();;
             $table->timestamps();
 
 

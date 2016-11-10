@@ -529,7 +529,7 @@ function showMessage(message, error) {
                     $('.settings section').addClass('_disable');
                     section.removeClass('_disable');
                     section.find('.settings-show').hide();
-                    section.find('form').show();
+                    section.find('form.settings-form').show();
                 });
             
         },
@@ -590,7 +590,7 @@ function showMessage(message, error) {
                 
             current.on('click', function(e){
                 var section      = current.closest('section'),
-                    settingsForm = section.find('form'),
+                    settingsForm = section.find('form.settings-form'),
                     requires     = (settingsForm.data('requires').trim() !== '') ? settingsForm.data('requires').split('|') : [],
                     saveFormType = settingsForm.find('[name="type"]').val();
 
@@ -734,27 +734,29 @@ function showMessage(message, error) {
                         }
                         
                         if (formType === '_EMPLOYMENT') {
-                            var employment = response.data,
-                                section    = '<div class="_fwfl timeline-section" id="timeline-section-' + employment.id + '"><div class="timeline-point"></div><div class="timeline-content">',
-                                name       = '<h4>' + employment.name + '</h4>',
-                                position   = '<b class="position">' + employment.position + '</b>',
-                                time       = '<div class="time"><b><i class="fa fa-calendar"></i></b><span>' + employment.date + '</span></div>',
-                                achieve    = '<span class="achieve">' + employment.achievement + '</span>',
-                                button     = '<button class="btn _btn timeline-btn timeline-edit" data-update-employment-id="' + employment.id + '"><i class="fa fa-pencil"></i></button>',
-                                button     = button + '<button class="btn _btn timeline-btn timeline-remove" data-remove-employment-id="' + employment.id + '"><i class="fa fa-remove"></i></button>',
-                                link       = ('' !== employment.website_text) ? '<a href="' + employment.website_href + '" target="_blank">' + employment.website_text + '</a>' : '';
-                                
-                            if(current.find('[name="id"]').length) {
-                                var editSection = $('.employment-timeline #timeline-section-' + employment.id);
-                                editSection.find('h4').html(employment.name);
-                                editSection.find('.position').html(employment.position);
-                                editSection.find('.achieve').html(employment.achievement);
-                                editSection.find('.time span').html(employment.date);
-                                editSection.find('a').html(employment.website_text).attr('href', employment.website_href);
-                            } else {
-                                var timelineSection = section + name + position + link + achieve + time + button + '</div></div>';
+                            if (typeof response.data !== 'undefined') {
+                                var employment = response.data,
+                                    section    = '<div class="_fwfl timeline-section" id="timeline-section-' + employment.id + '"><div class="timeline-point"></div><div class="timeline-content">',
+                                    name       = '<h4>' + employment.name + '</h4>',
+                                    position   = '<b class="position">' + employment.position + '</b>',
+                                    time       = '<div class="time"><b><i class="fa fa-calendar"></i></b><span>' + employment.date + '</span></div>',
+                                    achieve    = '<span class="achieve">' + employment.achievement + '</span>',
+                                    button     = '<button class="btn _btn timeline-btn timeline-edit" data-update-employment-id="' + employment.id + '"><i class="fa fa-pencil"></i></button>',
+                                    button     = button + '<button class="btn _btn timeline-btn timeline-remove" data-remove-employment-id="' + employment.id + '"><i class="fa fa-remove"></i></button>',
+                                    link       = ('' !== employment.website_text) ? '<a href="' + employment.website_href + '" target="_blank">' + employment.website_text + '</a>' : '';
 
-                                $(timelineSection).insertBefore('.employment-timeline .default-timeline');
+                                if(current.find('[name="id"]').length) {
+                                    var editSection = $('.employment-timeline #timeline-section-' + employment.id);
+                                    editSection.find('h4').html(employment.name);
+                                    editSection.find('.position').html(employment.position);
+                                    editSection.find('.achieve').html(employment.achievement);
+                                    editSection.find('.time span').html(employment.date);
+                                    editSection.find('a').html(employment.website_text).attr('href', employment.website_href);
+                                } else {
+                                    var timelineSection = section + name + position + link + achieve + time + button + '</div></div>';
+
+                                    $(timelineSection).insertBefore('.employment-timeline .default-timeline');
+                                }
                             }
                         }
                         

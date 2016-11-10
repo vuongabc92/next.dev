@@ -1,6 +1,19 @@
 <section>
     <div class="_fwfl timeline-container">
         <div class="timeline employment-timeline" data-update-employment data-remove-employment>
+            <div class="_fwfl timeline-section">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    <h4>{{ _t('setting.employment.urexpjob') }}</h4>
+                    {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => '_fwfl settings-expected-job-form', 'data-save-form' => '', 'data-requires' => 'expected_job']) !!}
+                    <div class="settings-field-wrapper _pr">
+                        {!! Form::text('expected_job', $userProfile->expected_job, ['class' => 'settings-field', 'placeholder' => _t('setting.employment.expjobwhat')]) !!}
+                    </div>
+                    <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
+                    <input type="hidden" name="type" value="_EMPLOYMENT"/>
+                    {!! Form::close() !!}
+                </div>
+            </div>
             @if (count($employmentHistories))
                 @foreach($employmentHistories as $employment)
                     <div class="_fwfl timeline-section" id="timeline-section-{{ $employment->id }}">

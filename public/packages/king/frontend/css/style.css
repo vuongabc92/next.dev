@@ -358,7 +358,15 @@ body {background-color:#f5f8fa;}
     margin-top: -12px;
     display: none;
 }
-
+.slug-countdown-timer {
+    position: absolute;
+    right: 20px;
+    height: 34px;
+    line-height: 34px;
+    font-weight: bold;
+    font-size: 13px;
+    color: #f77;
+}
 .settings-birthday .selecter {
     width: 32.26%;
     margin-right: 1.6%;

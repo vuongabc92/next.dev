@@ -13,12 +13,18 @@
                 </div>
             </div>
             {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form', 'data-save-form' => '', 'data-requires' => 'slug']) !!}
-            <div class="settings-field-wrapper">
-                {!! Form::text('slug', $userProfile->slug, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.slug')]) !!}
+            <div class="settings-field-wrapper _pr">
+                @if (getSlugRemainDay())
+                    <span class="slug-countdown-timer" id="slug-countdown-timer">{{ trans_choice('frontend::frontend.setting.profile.slug_dayleft', getSlugRemainDay(), ['day' => getSlugRemainDay()]) }}</span>
+                    {!! Form::text('slug', $userProfile->slug, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.slug'), 'disabled']) !!}
+                @else
+                    {!! Form::text('slug', $userProfile->slug, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.slug')]) !!}
+                @endif
             </div>
             <span class="_fwfl settings-help-text _mb10">
                 {{ _t('setting.profile.currurl') }} <strong class="_tg7 current-slug">{{ preg_replace('/^http:\/\//', '', url($userProfile->slug)) }}</strong>
-                <p>{{ _t('setting.profile.slug_note') }}</p>
+                <p class="_mb1">{!! _t('setting.profile.slug_note', ['link' => '#']) !!}</p>
+                <p class="_mt1 _tr8">{{ _t('setting.profile.slug_note_time') }}</p>
             </span>
             <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
             <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>

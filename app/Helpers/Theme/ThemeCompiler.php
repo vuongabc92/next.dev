@@ -371,9 +371,11 @@ class ThemeCompiler extends Compiler{
      * @return string 
      */
     protected function compileAvatar256() {
-        $avatarImg = unserialize($this->resume->getAvatarImages());
+        $avatarImg     = unserialize($this->resume->getAvatarImages());
+        $avatar        = config('frontend.avatarsFolder') . '/' . $avatarImg['256'];
+        $avatarDefault = config('frontend.avatarsDefault');
         
-        return asset(config('frontend.avatarsFolder') . '/' . $avatarImg['256']);
+        return asset( (check_file($avatar)) ? $avatar : $avatarDefault);
     }
     
     /**

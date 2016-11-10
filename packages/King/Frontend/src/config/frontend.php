@@ -3,6 +3,7 @@
 return [
     'uploadsFolder'            => 'uploads',
     'avatarsFolder'            => 'uploads/avatars',
+    'avatarsDefault'           => 'uploads/avatars/__default.jpg',
     'coversFolder'             => 'uploads/covers',
     'avatarMedium'             => 256,
     'coverMediumW'             => 960,
@@ -11,11 +12,10 @@ return [
     'avatarMaxFileSizeMessage' => 10,
     'coverMaxFileSize'         => 10000,
     'coverMaxFileSizeMessage'  => 10,
-    'privateUrls'              => [
-        'aboutus',
-        'about-us',
-        'about_us',
-        'contact',
+    'dayLimitedToChangeSlug'   => 7,
+    'unavailableCVUrls'        => [
+        'setting',
+        'config'
     ],
     'socialUrls' => [
         'facebook'    => 'facebook.com',

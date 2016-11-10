@@ -439,3 +439,25 @@ if ( ! function_exists('social_profile_list')) {
         return [];
     }
 }
+
+if ( ! function_exists('getSlugRemainDay')) {
+    /**
+     * get the remain day to update cv slug
+     * 
+     * @return int
+     */
+    function getSlugRemainDay() {
+        if ( ! is_null(user()->userProfile->slug_updated_at)) {
+            $now           = time();
+            $limitedDate   = config('frontend.dayLimitedToChangeSlug');
+            $slugUpdatedAt = new \DateTime(user()->userProfile->slug_updated_at);
+            $slugUpdatedAt->modify("+{$limitedDate} days");
+            $updatedAt     = strtotime($slugUpdatedAt->format('Y-m-d h:i:s'));
+            $datediff      = $updatedAt - $now;
+            
+            return floor($datediff / (60 * 60 * 24));
+        }
+        
+        return 0;
+    }
+}
