@@ -147,6 +147,7 @@ trait SaveSettings {
     public function saveContactInfo(Request $request) {
         
         $userProfile = user()->userProfile;
+        $website     = $request->get('website');
         
         if ($request->has('social_type') && $request->has('social_profile')) {
             return $this->_saveSocialLinks($request);
@@ -177,7 +178,7 @@ trait SaveSettings {
         $userProfile->district_id  = (empty($request->get('district')))     ? null : $request->get('district');
         $userProfile->ward_id      = (empty($request->get('ward')))         ? null : $request->get('ward');
         $userProfile->phone_number = (empty($request->get('phone_number'))) ? null : $request->get('phone_number');
-        $userProfile->website      = (empty($request->get('website')))      ? null : $request->get('website');
+        $userProfile->website      = (strpos($website, 'http') === false)   ? 'http://' . $website : $website;
         $userProfile->save();
         
         return true;
@@ -248,7 +249,7 @@ trait SaveSettings {
      */
     public function saveEmployment(Request $request) {
        
-        if ($request->has('expected_job')) {
+        if ($request->has('employment_expected')) {
             $validator = validator($request->all(), ['expected_job' => 'required|max:250'], [
                 'expected_job.required' => _t('setting.employment.expjob_req'),
                 'expected_job.max'      => _t('setting.employment.expjob_max')
@@ -266,11 +267,11 @@ trait SaveSettings {
         $validator  = validator($request->all(), $this->_saveEmploymentRules(), $this->_saveEmploymentMessages());
         $startMonth = $request->get('start_month');
         $startYear  = $request->get('start_year');
-        $endMonth   = ( ! empty($request->get('end_month'))) ? $request->get('end_month') : 0;
-        $endYear    = ( ! empty($request->get('end_year')))  ? $request->get('end_year') : 0;
+        $endMonth   = ( ! empty($request->get('end_month'))) ? $request->get('end_month')              : 0;
+        $endYear    = ( ! empty($request->get('end_year')))  ? $request->get('end_year')               : 0;
         $current    = ($request->has('current_company'))     ? (bool) $request->get('current_company') : false;
         $website    = $request->get('website');
-        $startDate  = new \DateTime("{$startMonth}/{$startMonth}/{$startYear}");
+        $startDate  = ($startMonth && $startYear) ? new \DateTime("{$startMonth}/{$startMonth}/{$startYear}") : null;
         $endDate    = ( ! $endMonth || ! $endYear || $current) ? $startDate : new \DateTime("{$endMonth}/{$endMonth}/{$endYear}");
         
         $validator->after(function($validator) use($startDate, $endDate) {

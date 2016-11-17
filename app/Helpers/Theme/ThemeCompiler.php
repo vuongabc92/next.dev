@@ -76,6 +76,20 @@ class ThemeCompiler extends Compiler{
     protected $skillVariable = 'skills';
     
     /**
+     * Social variables name
+     * 
+     * @var string 
+     */
+    protected $socialVariable = 'socials';
+    
+    /**
+     * Hobbies variables name
+     * 
+     * @var string 
+     */
+    protected $hobbyVariable = 'hobbies';
+    
+    /**
      * Experience available properties
      * 
      * @var array 
@@ -84,7 +98,8 @@ class ThemeCompiler extends Compiler{
         'TIME',
         'COMPANY_NAME',
         'POSITION',
-        'DESCRIPTION'
+        'DESCRIPTION',
+        'LINK',
     ];
     
     /**
@@ -108,6 +123,25 @@ class ThemeCompiler extends Compiler{
         'NAME',
         'RATES'
     ];
+    
+    /**
+     * Social available properties
+     * 
+     * @var array 
+     */
+    protected $socialProperties = [
+        'LINK',
+        'ICON'
+    ];
+    
+    /**
+     * Hobby available properties
+     * 
+     * @var array 
+     */
+    protected $hobbyProperties = [
+        'HOBBY',
+    ];
 
     /**
      * Array of variables
@@ -116,29 +150,39 @@ class ThemeCompiler extends Compiler{
      */
     protected $variables = [
         'ASSET',
-        'FIRST_NAME',
-        'LAST_NAME',
-        'ABOUT_ME',
-        'MONTH_OF_BIRTH',
-        'DATE_OF_BIRTH',
-        'YEAR_OF_BIRTH',
-        'BIRTHDAY',
-        'AGE',
-        'MARITAL_STATUS',
-        'GENDER',
+        'AVATAR',
+        'AVATAR_128',
         'AVATAR_256',
-        'STREET',
+        'AVATAR_512',
+        'AGE',
+        'ABOUT_ME',
+        'BIRTHDAY',
         'COUNTRY',
         'COUNTRY_CODE',
         'CITY',
         'CITY_TYPE',
+        'COVER',
+        'COVER_768',
+        'COVER_960',
+        'COVER_1200',
+        'DATE_OF_BIRTH',
         'DISTRICT',
         'DISTRICT_TYPE',
+        'EMAIL',
+        'EXPECTED_JOB',
+        'FIRST_NAME',
+        'FULL_NAME',
+        'GENDER',
+        'HOBBIES',
+        'LAST_NAME',
+        'MONTH_OF_BIRTH',
+        'MARITAL_STATUS',
+        'PHONE_NUMBER',
+        'STREET',
         'WARD',
         'WARD_TYPE',
         'WEBSITE',
-        'EMAIL',
-        'PHONE_NUMBER',
+        'YEAR_OF_BIRTH',
     ];
     
     /**
@@ -171,12 +215,13 @@ class ThemeCompiler extends Compiler{
                 $methodSplit = explode('_', $matches[1]);
                 $method      = 'compile';
                 
+                
                 foreach ($methodSplit as $item) {
                     $method .= ucfirst($item);
                 }
                 
                 if (method_exists($this, $method)) {
-                    return $this->$method();
+                    return (trim($this->$method())) === '' ? $matches[1] : $this->$method();
                 }
             }
             
@@ -186,6 +231,13 @@ class ThemeCompiler extends Compiler{
         return preg_replace_callback($pattern, $callback, $contents);
     }
     
+    /**
+     * Compile statement in theme such as: foreach, ...
+     * 
+     * @param string $contents
+     * 
+     * @return string
+     */
     protected function compileFunctions($contents) {
         $pattern  = sprintf('/%s(.*?)%s(.*?)%s(.*?)%s/s', $this->functionTags[0], $this->functionTags[1], $this->functionTags[0], $this->functionTags[1]);
         $callback = function($matches) {
@@ -201,6 +253,13 @@ class ThemeCompiler extends Compiler{
         return preg_replace_callback($pattern, $callback, $contents);
     }
     
+    /**
+     * Compile foreach statement
+     * 
+     * @param string $pregMatch
+     * 
+     * @return string
+     */
     protected function compileForeach($pregMatch) {
         if (preg_match('/foreach\((.*?)\)/', $pregMatch[1], $matches)) {
             
@@ -217,6 +276,14 @@ class ThemeCompiler extends Compiler{
                 
                 case $this->skillVariable:
                     $content = $this->compileSkill($pregMatch[2]);
+                    break;
+                
+                case $this->socialVariable:
+                    $content = $this->compileSocial($pregMatch[2]);
+                    break;
+                
+                case $this->hobbyVariable:
+                    $content = $this->compileHobby($pregMatch[2]);
                     break;
             }
             
@@ -255,6 +322,9 @@ class ThemeCompiler extends Compiler{
                             
                         case 'DESCRIPTION':
                             return $one->achievement;
+                            
+                        case 'LINK':
+                            return $one->company_website;
                             
                         default;
                     }
@@ -339,6 +409,74 @@ class ThemeCompiler extends Compiler{
     }
     
     /**
+     * Compile skills
+     * 
+     * @param string $socialRaw
+     * 
+     * @return string
+     */
+    protected function compileSocial($socialRaw) {
+        $socials = unserialize($this->resume->getSocialNetworks());
+        $content = '';
+        
+        if (is_array($socials) && count($socials)) {
+            
+            foreach ($socials as $k => $one) {
+                $content .= preg_replace_callback('/\[\[(.*?)\]\]/s', function($matches) use($one, $k) {
+                    $socialProperty = trim($matches[1]);
+                    $icons          = config('frontend.availableSocialIcons');
+
+                    if (in_array($socialProperty, $this->socialProperties)) {
+                        switch($socialProperty) {
+                            case 'LINK':
+                                return $one;
+
+                            case 'ICON':
+                                if (isset($icons[$k])) {
+                                    return $icons[$k];
+                                }
+                                break;
+
+                            default;
+                        }
+                    }
+                }, $socialRaw);
+            }
+        }
+        
+        return $content;
+    }
+    
+    /**
+     * Compile hobbies
+     * 
+     * @param string $hobbyRaw
+     * 
+     * @return string
+     */
+    protected function compileHobby($hobbyRaw) {
+        $hobbies = explode(',', $this->resume->getHobbies());
+        $content = '';
+        
+        if (count($hobbies)) {
+            foreach ($hobbies as $one) {
+                $content .= preg_replace_callback('/\[\[(.*?)\]\]/s', function($matches) use($one) {
+                    $hobbyProperty = trim($matches[1]);
+
+                    if (in_array($hobbyProperty, $this->hobbyProperties)) {
+                        switch($hobbyProperty) {
+                            case 'HOBBY':
+                                return $one;
+                        }
+                    }
+                }, $hobbyRaw);
+            }
+        }
+        
+        return $content;
+    }
+    
+    /**
      * Compile asset path
      * 
      * @return string 
@@ -370,12 +508,80 @@ class ThemeCompiler extends Compiler{
      * 
      * @return string 
      */
+    protected function compileFullName() {
+        return $this->resume->getFirstName() . ' ' . $this->resume->getLastName();
+    }
+    
+    /**
+     * Compile avatar
+     * 
+     * @return string 
+     */
+    protected function compileAvatar() {
+        return $this->getAvatar('original');
+    }
+    
+    /**
+     * Compile avatar 128
+     * 
+     * @return string 
+     */
+    protected function compileAvatar128() {
+        return $this->getAvatar(128);
+    }
+    
+    /**
+     * Compile avatar 256
+     * 
+     * @return string 
+     */
     protected function compileAvatar256() {
-        $avatarImg     = unserialize($this->resume->getAvatarImages());
-        $avatar        = config('frontend.avatarsFolder') . '/' . $avatarImg['256'];
-        $avatarDefault = config('frontend.avatarsDefault');
-        
-        return asset( (check_file($avatar)) ? $avatar : $avatarDefault);
+        return $this->getAvatar(256);
+    }
+    
+    /**
+     * Compile avatar 512
+     * 
+     * @return string 
+     */
+    protected function compileAvatar512() {
+        return $this->getAvatar(512);
+    }
+    
+    /**
+     * Compile avatar
+     * 
+     * @return string 
+     */
+    protected function compileCover() {
+        return $this->getCover('original');
+    }
+    
+    /**
+     * Compile avatar 128
+     * 
+     * @return string 
+     */
+    protected function compileCover768() {
+        return $this->getCover(768);
+    }
+    
+    /**
+     * Compile avatar 256
+     * 
+     * @return string 
+     */
+    protected function compileCover960() {
+        return $this->getCover(960);
+    }
+    
+    /**
+     * Compile avatar 512
+     * 
+     * @return string 
+     */
+    protected function compileCover1200() {
+        return $this->getCover(1200);
     }
     
     /**
@@ -567,6 +773,29 @@ class ThemeCompiler extends Compiler{
         return ((int) date('Y')) - ((int) $this->getDobDateTime()->format('Y'));
     }
     
+    /**
+     * Compile expected job
+     * 
+     * @return string
+     */
+    protected function compileExpectedJob() {
+        return $this->resume->getExpectedJob();
+    }
+    
+    /**
+     * Compile hobbies
+     * 
+     * @return string
+     */
+    protected function compileHobbies() {
+        return $this->resume->getHobbies();
+    }
+    
+    /**
+     * Get day of birth
+     * 
+     * @return \DateTime
+     */
     protected function getDobDateTime() {
         return new \DateTime($this->resume->getDob());
     }
@@ -578,5 +807,35 @@ class ThemeCompiler extends Compiler{
      */
     protected function generateFilenamePath() {
         return base_path($this->publicFolder . '/' . $this->themesFolder . '/' . $this->getThemeName() . '/' . $this->filename);
+    }
+    
+    /**
+     * Get cover image path
+     * 
+     * @param string|int $size
+     * 
+     * @return string
+     */
+    protected function getAvatar($size) {
+        $avatarImg     = unserialize($this->resume->getAvatarImages());
+        $avatar        = config('frontend.avatarsFolder') . '/' . (isset($avatarImg[$size]) ? $avatarImg[$size] : '');
+        $avatarDefault = config('frontend.avatarDefault');
+        
+        return asset((check_file($avatar)) ? $avatar : $avatarDefault);
+    }
+    
+    /**
+     * Get cover image path
+     * 
+     * @param string|int $size
+     * 
+     * @return string
+     */
+    protected function getCover($size) {
+        $coverImg     = unserialize($this->resume->getCoverImages());
+        $cover        = config('frontend.coversFolder') . '/' . (isset($coverImg[$size]) ? $coverImg[$size] : '');
+        $coverDefault = config('frontend.coverDefault');
+        
+        return asset((check_file($cover)) ? $cover : $coverDefault);
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
 return [
+    'defaultThemeName'         => 'twenty_sixteen',   
     'uploadsFolder'            => 'uploads',
     'avatarsFolder'            => 'uploads/avatars',
-    'avatarsDefault'           => 'uploads/avatars/__default.jpg',
+    'avatarDefault'            => 'uploads/avatars/__default.jpg',
     'coversFolder'             => 'uploads/covers',
+    'coverDefault'             => 'uploads/covers/__default.jpg',
     'avatarMedium'             => 256,
-    'coverMediumW'             => 960,
-    'coverMediumH'             => 500,
     'avatarMaxFileSize'        => 10000,
     'avatarMaxFileSizeMessage' => 10,
     'coverMaxFileSize'         => 10000,
@@ -52,5 +52,35 @@ return [
         'linkedin'    => 'LinkedIn',
         'pinterest'   => 'Pinterest',
         'vk'          => 'VK'
-    ]
+    ],
+    'avatarSizes' => array(
+        'original' => 'Original',
+        'small'  => array(
+            'w'  => 128,
+            'h'  => 128
+        ),
+        'medium' => array(
+            'w' => 256,
+            'h' => 256
+        ),
+        'big' => array(
+            'w' => 512,
+            'h' => 512
+        )
+    ),
+    'coverSizes'               => array(
+        'original' => 'Original',
+        'small'  => array(
+            'w'  => 768,
+            'h'  => 420
+        ),
+        'medium' => array(
+            'w' => 960,
+            'h' => 500
+        ),
+        'big' => array(
+            'w' => 1200,
+            'h' => 500
+        )
+    ),
 ];

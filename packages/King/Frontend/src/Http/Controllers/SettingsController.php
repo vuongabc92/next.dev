@@ -16,6 +16,7 @@ use App\Models\Skill;
 use App\Models\MaritalStatus;
 use DB;
 use Validator;
+use Log;
 use Intervention\Image\Facades\Image as ImageIntervention;
 use App\Helpers\SaveSettings;
 
@@ -29,25 +30,25 @@ class SettingsController extends FrontController {
      * @return Response
      */
     public function index() {
-        $userProfile         = is_null(user()->userProfile) ? new UserProfile() : user()->userProfile;
-        $avatarMediumSize    = (int) config('frontend.avatarMedium');
-        $coverMediumSize     = (int) config('frontend.coverMediumW');
-        $avatar              = unserialize($userProfile->avatar_image);
-        $cover               = unserialize($userProfile->cover_image);
+        $coverSizes          = config('frontend.coverSizes');
+        $avatarSizes         = config('frontend.avatarSizes');
         $avatarStoragePath   = config('frontend.avatarsFolder');
         $coverStoragePath    = config('frontend.coversFolder');
-        $avatarMedium        = isset($avatar[$avatarMediumSize]) ? $avatarStoragePath . '/' . $avatar[$avatarMediumSize] : '';
-        $coverMedium         = isset($cover[$coverMediumSize])   ? $coverStoragePath . '/' . $cover[$coverMediumSize]    : '';
         $genders             = ['' => _t('setting.profile.sextell')];
         $maritalStatuses     = ['' => _t('setting.profile.marital')];
+        $availableSocial     = ['' => _t('setting.profile.social_selector')] + config('frontend.availableSocial');
+        $userProfile         = is_null(user()->userProfile) ? new UserProfile() : user()->userProfile;
+        $avatar              = unserialize($userProfile->avatar_image);
+        $cover               = unserialize($userProfile->cover_image);
+        $avatarMedium        = isset($avatar[$avatarSizes['small']['w']]) ? $avatarStoragePath . '/' . $avatar[$avatarSizes['small']['w']] : '';
+        $coverMedium         = isset($cover[$coverSizes['small']['w']])   ? $coverStoragePath . '/' . $cover[$coverSizes['small']['w']]    : '';
         $genderName          = Gender::find($userProfile->gender_id);
         $countries           = Country::where('id', 237)->pluck('country_name', 'id')->toArray();
-        $cities              = $this->_getCityByCountryId(((is_null($userProfile->country_id)) ? 0 : $userProfile->country_id), 'array');
-        $districts           = $this->_getDistrictByCityId(((is_null($userProfile->city_id)) ? 0 : $userProfile->city_id), 'array');
+        $cities              = $this->_getCityByCountryId(((is_null($userProfile->country_id))   ? 0 : $userProfile->country_id), 'array');
+        $districts           = $this->_getDistrictByCityId(((is_null($userProfile->city_id))     ? 0 : $userProfile->city_id), 'array');
         $wards               = $this->_getWardByDistrictId(((is_null($userProfile->district_id)) ? 0 : $userProfile->district_id), 'array');
         $employmentHistories = user()->employmentHistories->sortByDesc('is_current')->sortByDesc('start_date')->all();
         $educations          = user()->educations->sortByDesc('start_date')->all();
-        $availableSocial     = ['' => _t('setting.profile.social_selector')] + config('frontend.availableSocial');
         
         if (Gender::all()) {
             foreach (Gender::all() as $gender) {
@@ -121,39 +122,31 @@ class SettingsController extends FrontController {
             }
             
             if ($request->file('__file')->isValid()) {
-                $avatar      = $request->file('__file');
-                $storagePath = config('frontend.avatarsFolder');
-                $mediumSize  = (int) config('frontend.avatarMedium');
-                $mediumName  = generate_filename($storagePath, $avatar->getClientOriginalExtension(), [
-                    'prefix' => 'avatar_', 
-                    'suffix' => "_{$mediumSize}x{$mediumSize}"
-                ]);
+                $names = $this->_uploadAvatarImage($request->file('__file'));
                 
-                $avatar->move($storagePath, $mediumName);
-                
-                $image = ImageIntervention::make($storagePath . '/' . $mediumName)->orientate();
-                $image->fit($mediumSize, $mediumSize, function ($constraint) {
-                    $constraint->upsize();
-                });
-                
-                $image->save();
-                
-                $userProfile = user()->userProfile;
-                
-                if (is_null($userProfile)) {
-                    $userProfile          = new UserProfile();
-                    $userProfile->user_id = user()->id;
-                } else {
-                    $avatarImg = unserialize($userProfile->avatar_image);
-                    if (isset($avatarImg[$mediumSize])) {
-                        delete_file($storagePath . '/' . $avatarImg[$mediumSize]);
+                if (is_array($names) && count($names)) {
+                    $userProfile  = user()->userProfile;
+                    $sizes        = config('frontend.avatarSizes');
+                    $storagePath  = config('frontend.avatarsFolder');
+                    $responseName = (isset($names[$sizes['small']['w']])) ? $names[$sizes['small']['w']] : '';
+                    
+                    if (is_null($userProfile)) {
+                        $userProfile          = new UserProfile();
+                        $userProfile->user_id = user()->id;
+                    } else {
+                        $avatarImages = unserialize($userProfile->avatar_image);
+                        if (count($avatarImages)) {
+                            foreach ($avatarImages as $img) {
+                                delete_file($storagePath . '/' . $img);
+                            }
+                        }
                     }
+
+                    $userProfile->avatar_image = serialize($names);
+                    $userProfile->save();
+
+                    return file_pong(['avatar_medium' => $storagePath . '/' . $responseName]);
                 }
-                
-                $userProfile->avatar_image = serialize(array($mediumSize => $mediumName));
-                $userProfile->save();
-                
-                return file_pong(['avatar_medium' => $storagePath . '/' . $mediumName]);
             }
             
             return file_pong(['messages' => _t('oops')], _error(), 403);
@@ -178,40 +171,33 @@ class SettingsController extends FrontController {
             }
             
             if ($request->file('__file')->isValid()) {
-                $avatar      = $request->file('__file');
-                $storagePath = config('frontend.coversFolder');
-                $mediumSizeW = (int) config('frontend.coverMediumW');
-                $mediumSizeH = (int) config('frontend.coverMediumH');
-                $mediumName  = generate_filename($storagePath, $avatar->getClientOriginalExtension(), [
-                    'prefix' => 'cover_', 
-                    'suffix' => "_{$mediumSizeW}x{$mediumSizeH}"
-                ]);
                 
-                $avatar->move($storagePath, $mediumName);
+                $names = $this->_uploadCoverImage($request->file('__file'));
                 
-                $image = ImageIntervention::make($storagePath . '/' . $mediumName)->orientate();
-                $image->fit($mediumSizeW, $mediumSizeH, function ($constraint) {
-                    $constraint->upsize();
-                });
-                
-                $image->save();
-                
-                $userProfile = user()->userProfile;
-                
-                if (is_null($userProfile)) {
-                    $userProfile          = new UserProfile();
-                    $userProfile->user_id = user()->id;
-                } else {
-                    $avatarImg = unserialize($userProfile->cover_image);
-                    if (isset($avatarImg[$mediumSizeW])) {
-                        delete_file($storagePath . '/' . $avatarImg[$mediumSizeW]);
+                if (is_array($names) && count($names)) {
+                    $userProfile  = user()->userProfile;
+                    $sizes        = config('frontend.coverSizes');
+                    $storagePath  = config('frontend.coversFolder');
+                    $responseName = (isset($names[$sizes['small']['w']])) ? $names[$sizes['small']['w']] : '';
+
+                    if (is_null($userProfile)) {
+                        $userProfile          = new UserProfile();
+                        $userProfile->user_id = user()->id;
+                    } else {
+                        $coverImages = unserialize($userProfile->cover_image);
+                        if (count($coverImages)) {
+                            foreach ($coverImages as $img) {
+                                delete_file($storagePath . '/' . $img);
+                            }
+                        }
                     }
+
+                    $userProfile->cover_image = serialize($names);
+                    $userProfile->save();
+                    
+                    
+                    return file_pong(['cover_medium' => $storagePath . '/' . $responseName]);
                 }
-                
-                $userProfile->cover_image = serialize(array($mediumSizeW => $mediumName));
-                $userProfile->save();
-                
-                return file_pong(['cover_medium' => $storagePath . '/' . $mediumName]);
             }
             
             return file_pong(['messages' => _t('oops')], _error(), 403);
@@ -520,7 +506,7 @@ class SettingsController extends FrontController {
                     'website_text' => $websiteText,
                     'website_href' => $save->company_website
             ]];
-        } elseif($save instanceof Education){
+        } elseif($save instanceof Education) {
 
             return [
                 'message' => _t('good_job'), 
@@ -532,7 +518,7 @@ class SettingsController extends FrontController {
                     'qualification' => $save->qualification->name,
                     'achievements'  => $save->achievements
             ]];
-        } elseif($save instanceof UserSkill){
+        } elseif($save instanceof UserSkill) {
             return [
                 'message' => _t('good_job'), 
                 'data'    => [
@@ -540,7 +526,7 @@ class SettingsController extends FrontController {
                     'name'  => $save->skill->name,
                     'votes' => $save->votes
             ]];
-        } elseif($save instanceof UserProfile){
+        } elseif($save instanceof UserProfile) {
             return [
                 'message' => _t('good_job'), 
                 'data'    => [
@@ -687,7 +673,88 @@ class SettingsController extends FrontController {
         return $default;
     }
 
+    /**
+     * Upload cover image then duplicate to many sizes
+     * 
+     * @param UploadFile $file
+     * 
+     * return array
+     */
+    protected function _uploadCoverImage($file) {
+        try {
+            $storagePath       = config('frontend.coversFolder');
+            $sizes             = config('frontend.coverSizes');
+            $names['original'] = generate_filename($storagePath, $file->getClientOriginalExtension(), [
+                'prefix' => 'cover_', 
+                'suffix' => "_{$sizes['original']}"
+            ]);
+                
+            unset($sizes['original']);
 
+            if ($file->move($storagePath, $names['original'])) {
+                foreach ($sizes as $size) {
+                    $name = generate_filename($storagePath, $file->getClientOriginalExtension(), [
+                        'prefix' => 'cover_', 
+                        'suffix' => "_{$size['w']}x{$size['h']}"
+                    ]);
+                        
+                    $image = ImageIntervention::make($storagePath . '/' . $names['original'])->orientate();
+                    $image->fit($size['w'], $size['h'], function ($constraint) {
+                        $constraint->upsize();
+                    });
+
+                    $image->save($storagePath . '/' . $name);
+                    $names[$size['w']] = $name;
+                }
+            }
+            
+            return $names;
+        } catch (Exception $ex) {
+            Log::error($ex->getMessage());
+        }
+    }
+    
+    /**
+     * Upload cover image then duplicate to many sizes
+     * 
+     * @param UploadFile $file
+     * 
+     * return array
+     */
+    protected function _uploadAvatarImage($file) {    
+        try {
+            $storagePath       = config('frontend.avatarsFolder');
+            $sizes             = config('frontend.avatarSizes');
+            $names['original'] = generate_filename($storagePath, $file->getClientOriginalExtension(), [
+                'prefix' => 'avatar_', 
+                'suffix' => "_{$sizes['original']}"
+            ]);
+                
+            unset($sizes['original']);
+
+            if ($file->move($storagePath, $names['original'])) {
+                foreach ($sizes as $size) {
+                    $name = generate_filename($storagePath, $file->getClientOriginalExtension(), [
+                        'prefix' => 'avatar_', 
+                        'suffix' => "_{$size['w']}x{$size['h']}"
+                    ]);
+                        
+                    $image = ImageIntervention::make($storagePath . '/' . $names['original'])->orientate();
+                    $image->fit($size['w'], $size['h'], function ($constraint) {
+                        $constraint->upsize();
+                    });
+
+                    $image->save($storagePath . '/' . $name);
+                    $names[$size['w']] = $name;
+                }
+            }
+            
+            return $names;
+        } catch (Exception $ex) {
+            Log::error($ex->getMessage());
+        }
+    }
+    
     /**
      * Get avatar validation rules
      *

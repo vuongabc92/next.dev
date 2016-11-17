@@ -11,6 +11,7 @@
                     </div>
                     <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
                     <input type="hidden" name="type" value="_EMPLOYMENT"/>
+                    <input type="hidden" name="employment_expected" value="1"/>
                     {!! Form::close() !!}
                 </div>
             </div>

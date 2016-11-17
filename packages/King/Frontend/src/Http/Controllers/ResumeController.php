@@ -16,6 +16,15 @@ use Illuminate\Filesystem\Filesystem;
 
 class ResumeController extends FrontController {
     
+    /**
+     * Find and display the match resume.
+     * 
+     * @param string $slug
+     * 
+     * @return Response
+     * 
+     * @throws NotFoundHttpException
+     */
     public function index($slug) {
         
         $userProfile = UserProfile::where('slug', $slug)->first();
@@ -24,14 +33,15 @@ class ResumeController extends FrontController {
             throw new NotFoundHttpException;
         }
         
+        if ($userProfile->theme_id === null) {
+            $themeName = config('frontend.defaultThemeName');
+        } else {
+            $themeName = $userProfile->theme_id;
+        }
         
-        
-        //Read theme default.
-        
-        $resume    = $this->generateResumeData($userProfile->user_id);
-        $themeName = 'default';
-        $compiler  = new ThemeCompiler(new Filesystem, $resume, $themeName);
-        $contents  = $compiler->compile();
+        $resume   = $this->generateResumeData($userProfile->user_id);
+        $compiler = new ThemeCompiler(new Filesystem, $resume, $themeName);
+        $contents = $compiler->compile();
         
         return new Response($contents);
     }
@@ -68,110 +78,9 @@ class ResumeController extends FrontController {
         $resume->setSkills($user->skills);
         $resume->setEmployments($user->employmentHistories);
         $resume->setEducations($user->educations);
+        $resume->setExpectedJob($user->userProfile->expected_job);
+        $resume->setHobbies($user->userProfile->hobbies);
         
         return $resume;
     }
-    
-//    function generateSetGetFunctions(){
-//        $attributes = [
-//            '1_string'  => 'avatar_images',
-//            '2_string'  => 'cover_images',
-//            '3_string' => 'email',
-//            '4_string' => 'first_name',
-//            '5_string' => 'last_name',
-//            '6_string' => 'dob',
-//            '7_\Illuminate\Support\Collection' => 'gender',
-//            '8_\Illuminate\Support\Collection' => 'marital_status',
-//            '9_string' => 'about_me',
-//            '10_string' => 'street_name',
-//            '11_\Illuminate\Support\Collection'  => 'country',
-//            '12_\Illuminate\Support\Collection'  => 'city',
-//            '13_\Illuminate\Support\Collection'  => 'district',
-//            '14_\Illuminate\Support\Collection'  => 'ward',
-//            '15_string' => 'phone_number',
-//            '16_string' => 'website',
-//            '17_string' => 'social_networks',
-//            '18_\Illuminate\Support\Collection' => 'skills',
-//            '19_\Illuminate\Support\Collection' => 'employments',
-//            '20_\Illuminate\Support\Collection' => 'educations'
-//        ];
-//        
-//        foreach ($attributes as $type => $attribute) {
-//            
-//            $attrSplit  = explode('_', $attribute);
-//            $varComment = '';
-//            $varName    = '';
-//            $type       = explode('_', $type);
-//            
-//            if (count($attrSplit) > 1) {
-//                foreach($attrSplit as $key => $item) {
-//                    if ($key > 0) {
-//                        $varName .= ucfirst($item);
-//                    } else {
-//                        $varName .= $item;
-//                    }
-//                    
-//                    $varComment .= ucfirst($item) . ' ';
-//                }
-//            } else {
-//                $varName    = $attribute;
-//                $varComment = ucfirst($attribute);
-//            }
-//            
-//            echo '/**<br>';
-//            echo '&nbsp; * ' . $varComment . '<br>'; 
-//            echo '&nbsp; *<br>';
-//            echo '&nbsp; * @var ' . $type[1] . '<br>'; 
-//            echo '&nbsp;&nbsp;*/<br>';
-//            
-//            echo 'protected $' . $varName . ';<br><br>';
-//        }
-//        
-//        foreach ($attributes as $type => $attribute) {
-//            
-//            $attrSplit     = explode('_', $attribute);
-//            $methodName    = '';
-//            $methodComment = '';
-//            $varName       = '';
-//            $type          = explode('_', $type);
-//            
-//            if (count($attrSplit) > 1) {
-//                foreach($attrSplit as $key => $item) {
-//                    $methodName .= ucfirst($item);
-//                    
-//                    if ($key > 0) {
-//                        $varName .= ucfirst($item);
-//                    } else {
-//                        $varName .= $item;
-//                    }
-//                    
-//                    $methodComment .= $item . ' ';
-//                }
-//            } else {
-//                $methodName = ucfirst($attribute);
-//                $methodComment = $attribute;
-//                $varName = $attribute;
-//            }
-//            
-//            echo '/**<br>';
-//            echo '&nbsp; * Get ' . $methodComment . '<br>'; 
-//            echo '&nbsp; *<br>';
-//            echo '&nbsp; * @return ' . $type[1] . '<br>'; 
-//            echo '&nbsp;&nbsp;*/<br>';         
-//            
-//            echo 'public function get' . $methodName . '() {<br>';
-//            echo '&nbsp;&nbsp;&nbsp;&nbsp;return $this->' . $varName . '; <br>';
-//            echo '}<br><br>';
-//            
-//            echo '/**<br>';
-//            echo '&nbsp; * Set ' . $methodComment . '<br>'; 
-//            echo '&nbsp; *<br>';
-//            echo '&nbsp; * @param ' . $type[1] . ' $' . $varName . '<br>'; 
-//            echo '&nbsp;&nbsp;*/<br>';    
-//            
-//            echo 'public function set' . $methodName . '($' . $varName . ') {<br>';
-//            echo '&nbsp;&nbsp;&nbsp;&nbsp;$this->' . $varName . ' = $' . $varName . ';<br>';
-//            echo '}<br><br>';
-//        }
-//    }
 }

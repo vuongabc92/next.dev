@@ -143,6 +143,20 @@ class Resume {
      * @var \Illuminate\Support\Collection
      */
     protected $educations;
+    
+    /**
+     * Expected job
+     *
+     * @var string
+     */
+    protected $expectedJob;
+    
+    /**
+     * Hobbies
+     *
+     * @var string
+     */
+    protected $hobbies;
 
     /**
      * Get avatar images 
@@ -502,6 +516,42 @@ class Resume {
      */
     public function setEducations($educations) {
         $this->educations = $educations;
+    }
+    
+    /**
+     * Get expected job
+     *
+     * @return string
+     */
+    public function getExpectedJob() {
+        return $this->expectedJob;
+    }
+
+    /**
+     * Set expected job
+     *
+     * @param string expectedJob
+     */
+    public function setExpectedJob($expectedJob) {
+        $this->expectedJob = $expectedJob;
+    }
+    
+    /**
+     * Get hobbies
+     *
+     * @return string
+     */
+    public function getHobbies() {
+        return $this->hobbies;
+    }
+
+    /**
+     * Set hobbies
+     *
+     * @param string hobbies
+     */
+    public function setHobbies($hobbies) {
+        $this->hobbies = $hobbies;
     }
 
 }

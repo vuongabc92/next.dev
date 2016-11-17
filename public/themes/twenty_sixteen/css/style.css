@@ -4,7 +4,7 @@ body {
     margin: 0;
 }
 main {
-    width: 970px;
+    width: 900px;
     margin: 0 auto;
 }
 .wrapper {
@@ -12,44 +12,61 @@ main {
     float: left;
     background-color: #fff;
     margin: 30px 0;
-    border-radius: 2px;
-    padding: 30px 20px 70px 20px;
+    border-radius: 3px;
 }
 .header {
     width: 100%;
     float: left;
-    text-align: center;
 }
-.header h1.name {
-    margin: 60px 0 30px 0;
-    color: #444;
-    text-transform: uppercase;
-}
-.header h1.name span{
-    padding: 10px 50px;
-    border: solid 1px #777;
-}
-.header .job-title {
-    color: #666;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-.header .avatar-box {
-    width: 150px;
-    height: 150px;
-    margin: 15px auto;
-}
-.header .avatar-box img{
+.cover-image {
     width: 100%;
-    height: 100%;
+    height: 420px;
     float: left;
-    border-radius: 50%;
+    background-size: cover;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+.avatar-container {
+    width: 100%;
+    float: left;
+}
+.avatar {
+    width: 128px;
+    height: 128px;
+    margin: -90px auto 0;
+    margin-top: -90px;
+}
+.avatar>img {
+    width: 100%;
+    float: left;
+    border: solid 5px #fff;
+    border-radius: 64px;
+    -webkit-border-radius: 64px;
+    -moz-border-radius: 64px;
+    -ms-border-radius: 64px;
+    -o-border-radius: 64px;
+}
+.header-name {
+    width: 100%;
+    float: left;
+    text-align: center;
+    color: #666;
+    font-size: 20px;
+    margin: 15px 0 5px 0;
+}
+.expected-job {
+    width: 100%;
+    float: left;
+    text-align: center;
+    color: #777;
+    font-size: 13px;
 }
 .resume-container {
     width: 100%;
     float: left;
     position: relative;
-    margin-top: 20px;
+    padding: 0 30px;
+    margin: 50px 0;
 }
 .resume-content {
     width: 100%;
@@ -92,31 +109,34 @@ main {
 }
 .section-title {
     text-transform: uppercase;
-    color: #444;
-    font-size: 20px;
+    color: #666;
+    font-size: 19px;
     margin: 0 0 25px 0;
+}
+.section-title>span {
+    border-bottom: solid 2px #666;
 }
 .time-box {
     width: 100%;
     float: left;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 .time-box .time-period {
     width: 100%;
     float: right;
     font-size: 13px;
     color: #777;
-    margin: 0 0 10px 0;
+    margin: 0 0 7px 0;
 }
 .time-box .time-title {
     width: 100%;
     float: right;
-    color: #555;
+    color: #666;
 }
 .time-box .time-subtitle {
     width: 100%;
     float: right;
-    color: #333;
+    color: #444;
     font-size: 15px;
     padding: 3px 0;
 }
@@ -153,7 +173,6 @@ section.skill {
     margin-top: 8px;
 }
 .skill-line .skill-rates b {
-    width: 100%;
     height: 4px;
     float: left;
     background-color: #888;
@@ -194,7 +213,7 @@ section.contact {
     font-size: 13px;
     margin-bottom: 13px;
 }
-section.about {
+section.about, section.hobbies {
     width: 100%;
     float: left;
     margin-top: 10px;

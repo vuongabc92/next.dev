@@ -12,16 +12,19 @@
     <main>
         <div class="wrapper">
             <section class="header">
-                <h1 class="name"><span>{{ FIRST_NAME }} {{ LAST_NAME }}</span></h1>
-                <strong class="job-title">{{ EXPECTED_JOB }}</strong>
-                <div class="avatar-box"><image src="{{ AVATAR_256 }}" /></div>
+                <div class="cover-image" style="background-image: url('{{ COVER_960 }}');"></div>
+                <div class="avatar-container">
+                    <div class="avatar"><img src="{{ AVATAR_128 }}" /></div>
+                </div>
+                <h2 class="header-name">{{ FULL_NAME }}</h2>
+                <span class="expected-job"><strong>{{ EXPECTED_JOB }}</strong></span>
             </section>
             <section class="resume-container">
                 <div class="resume-content">
                     <div class="resume-left-container">
                         <div class="resume-left">
                             <section class="experience">
-                                <h3 class="section-title">Experiences</h3>
+                                <h3 class="section-title"><span>Experiences</span></h3>
                                 
                                 {% foreach(experiences) %}
                                 <div class="time-box">
@@ -29,16 +32,15 @@
                                     <b class="time-title">[[ COMPANY_NAME ]]</b>
                                     <i class="time-subtitle">[[ POSITION ]]</i>
                                     <span class="time-desc">[[ DESCRIPTION ]]</span>
+                                    <a href="[[ LINK ]]" target="_blank">[[ LINK ]]</a>
                                 </div>
                                 {% endforeach %}
                                 
                             </section>
                             <section class="about">
-                                <h3 class="section-title">About me</h3>
+                                <h3 class="section-title"><span>About me</span></h3>
                                 <div class="about-content">
-                                    I'm {{ FIRST_NAME }}, {{ AGE }} years old,<br/>
-                                    I was born {{ BIRTHDAY }} and I'm a hot boy<br/><br/>
-                                    
+                                    <p>Hi! My name is {{ FULL_NAME }}, I'm {{ AGE }} years old, {{ GENDER }} and {{ MARITAL_STATUS }}. Below is something about me</p>
                                     {{ ABOUT_ME }}
                                 </div>
                             </section>
@@ -47,7 +49,7 @@
                     <div class="resume-right-container">
                         <div class="resume-right">
                             <section class="education">
-                                <h3 class="section-title">Education</h3>
+                                <h3 class="section-title"><span>Education</span></h3>
                                 
                                 {% foreach(education) %}
                                 <div class="time-box">
@@ -59,7 +61,7 @@
                                 
                             </section>
                             <section class="skill">
-                                <h3 class="section-title">Skill</h3>
+                                <h3 class="section-title"><span>Skill</span></h3>
                                 
                                 {% foreach(skills) %}
                                 <div class="skill-line">
@@ -70,7 +72,7 @@
                                 
                             </section>
                             <section class="contact">
-                                <h3 class="section-title">Contact me</h3>
+                                <h3 class="section-title"><span>Contact me</span></h3>
                                 <div class="contact-content">
                                     <span class="contact-row address"><strong>{{ STREET }}, {{ CITY_TYPE }} {{ CITY }}, {{ COUNTRY_CODE }}</strong></span>
                                     <span class="contact-row"><i class="fa fa-phone"></i>{{ PHONE_NUMBER }}</span>
@@ -81,6 +83,12 @@
                                         <li><a href="http://[[ LINK ]]" target="_blank"><i class="fa fa-[[ ICON ]]"></i>[[ LINK ]]</a></li>
                                     {% endforeach %}
                                     </ul>
+                                </div>
+                            </section>
+                            <section class="hobbies">
+                                <h3 class="section-title"><span>Hobbies</span></h3>
+                                <div class="about-content">
+                                    {{ HOBBIES }}
                                 </div>
                             </section>
                         </div>

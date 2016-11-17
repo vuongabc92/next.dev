@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2015 at 06:23 AM
--- Server version: 5.6.11
--- PHP Version: 5.5.3
+-- Generation Time: Nov 17, 2016 at 04:02 AM
+-- Server version: 10.1.13-MariaDB
+-- PHP Version: 5.6.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,20 +14,24 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `next.dev`
+--
 
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `king_cities`
 --
 
-CREATE TABLE IF NOT EXISTS `king_cities` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) CHARACTER SET utf8 NOT NULL,
-  `type` varchar(250) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=64 ;
+CREATE TABLE `king_cities` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `country_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_cities`
@@ -101,17 +105,279 @@ INSERT INTO `king_cities` (`id`, `country_id`, `name`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `king_countries`
+--
+
+CREATE TABLE `king_countries` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `country_code` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+  `country_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `king_countries`
+--
+
+INSERT INTO `king_countries` (`id`, `country_code`, `country_name`) VALUES
+(1, 'AF', 'Afghanistan'),
+(2, 'AL', 'Albania'),
+(3, 'DZ', 'Algeria'),
+(4, 'DS', 'American Samoa'),
+(5, 'AD', 'Andorra'),
+(6, 'AO', 'Angola'),
+(7, 'AI', 'Anguilla'),
+(8, 'AQ', 'Antarctica'),
+(9, 'AG', 'Antigua and Barbuda'),
+(10, 'AR', 'Argentina'),
+(11, 'AM', 'Armenia'),
+(12, 'AW', 'Aruba'),
+(13, 'AU', 'Australia'),
+(14, 'AT', 'Austria'),
+(15, 'AZ', 'Azerbaijan'),
+(16, 'BS', 'Bahamas'),
+(17, 'BH', 'Bahrain'),
+(18, 'BD', 'Bangladesh'),
+(19, 'BB', 'Barbados'),
+(20, 'BY', 'Belarus'),
+(21, 'BE', 'Belgium'),
+(22, 'BZ', 'Belize'),
+(23, 'BJ', 'Benin'),
+(24, 'BM', 'Bermuda'),
+(25, 'BT', 'Bhutan'),
+(26, 'BO', 'Bolivia'),
+(27, 'BA', 'Bosnia and Herzegovina'),
+(28, 'BW', 'Botswana'),
+(29, 'BV', 'Bouvet Island'),
+(30, 'BR', 'Brazil'),
+(31, 'IO', 'British Indian Ocean Territory'),
+(32, 'BN', 'Brunei Darussalam'),
+(33, 'BG', 'Bulgaria'),
+(34, 'BF', 'Burkina Faso'),
+(35, 'BI', 'Burundi'),
+(36, 'KH', 'Cambodia'),
+(37, 'CM', 'Cameroon'),
+(38, 'CA', 'Canada'),
+(39, 'CV', 'Cape Verde'),
+(40, 'KY', 'Cayman Islands'),
+(41, 'CF', 'Central African Republic'),
+(42, 'TD', 'Chad'),
+(43, 'CL', 'Chile'),
+(44, 'CN', 'China'),
+(45, 'CX', 'Christmas Island'),
+(46, 'CC', 'Cocos (Keeling) Islands'),
+(47, 'CO', 'Colombia'),
+(48, 'KM', 'Comoros'),
+(49, 'CG', 'Congo'),
+(50, 'CK', 'Cook Islands'),
+(51, 'CR', 'Costa Rica'),
+(52, 'HR', 'Croatia (Hrvatska)'),
+(53, 'CU', 'Cuba'),
+(54, 'CY', 'Cyprus'),
+(55, 'CZ', 'Czech Republic'),
+(56, 'DK', 'Denmark'),
+(57, 'DJ', 'Djibouti'),
+(58, 'DM', 'Dominica'),
+(59, 'DO', 'Dominican Republic'),
+(60, 'TP', 'East Timor'),
+(61, 'EC', 'Ecuador'),
+(62, 'EG', 'Egypt'),
+(63, 'SV', 'El Salvador'),
+(64, 'GQ', 'Equatorial Guinea'),
+(65, 'ER', 'Eritrea'),
+(66, 'EE', 'Estonia'),
+(67, 'ET', 'Ethiopia'),
+(68, 'FK', 'Falkland Islands (Malvinas)'),
+(69, 'FO', 'Faroe Islands'),
+(70, 'FJ', 'Fiji'),
+(71, 'FI', 'Finland'),
+(72, 'FR', 'France'),
+(73, 'FX', 'France, Metropolitan'),
+(74, 'GF', 'French Guiana'),
+(75, 'PF', 'French Polynesia'),
+(76, 'TF', 'French Southern Territories'),
+(77, 'GA', 'Gabon'),
+(78, 'GM', 'Gambia'),
+(79, 'GE', 'Georgia'),
+(80, 'DE', 'Germany'),
+(81, 'GH', 'Ghana'),
+(82, 'GI', 'Gibraltar'),
+(83, 'GK', 'Guernsey'),
+(84, 'GR', 'Greece'),
+(85, 'GL', 'Greenland'),
+(86, 'GD', 'Grenada'),
+(87, 'GP', 'Guadeloupe'),
+(88, 'GU', 'Guam'),
+(89, 'GT', 'Guatemala'),
+(90, 'GN', 'Guinea'),
+(91, 'GW', 'Guinea-Bissau'),
+(92, 'GY', 'Guyana'),
+(93, 'HT', 'Haiti'),
+(94, 'HM', 'Heard and Mc Donald Islands'),
+(95, 'HN', 'Honduras'),
+(96, 'HK', 'Hong Kong'),
+(97, 'HU', 'Hungary'),
+(98, 'IS', 'Iceland'),
+(99, 'IN', 'India'),
+(100, 'IM', 'Isle of Man'),
+(101, 'ID', 'Indonesia'),
+(102, 'IR', 'Iran (Islamic Republic of)'),
+(103, 'IQ', 'Iraq'),
+(104, 'IE', 'Ireland'),
+(105, 'IL', 'Israel'),
+(106, 'IT', 'Italy'),
+(107, 'CI', 'Ivory Coast'),
+(108, 'JE', 'Jersey'),
+(109, 'JM', 'Jamaica'),
+(110, 'JP', 'Japan'),
+(111, 'JO', 'Jordan'),
+(112, 'KZ', 'Kazakhstan'),
+(113, 'KE', 'Kenya'),
+(114, 'KI', 'Kiribati'),
+(115, 'KP', 'Korea, Democratic People''s Republic of'),
+(116, 'KR', 'Korea, Republic of'),
+(117, 'XK', 'Kosovo'),
+(118, 'KW', 'Kuwait'),
+(119, 'KG', 'Kyrgyzstan'),
+(120, 'LA', 'Lao People''s Democratic Republic'),
+(121, 'LV', 'Latvia'),
+(122, 'LB', 'Lebanon'),
+(123, 'LS', 'Lesotho'),
+(124, 'LR', 'Liberia'),
+(125, 'LY', 'Libyan Arab Jamahiriya'),
+(126, 'LI', 'Liechtenstein'),
+(127, 'LT', 'Lithuania'),
+(128, 'LU', 'Luxembourg'),
+(129, 'MO', 'Macau'),
+(130, 'MK', 'Macedonia'),
+(131, 'MG', 'Madagascar'),
+(132, 'MW', 'Malawi'),
+(133, 'MY', 'Malaysia'),
+(134, 'MV', 'Maldives'),
+(135, 'ML', 'Mali'),
+(136, 'MT', 'Malta'),
+(137, 'MH', 'Marshall Islands'),
+(138, 'MQ', 'Martinique'),
+(139, 'MR', 'Mauritania'),
+(140, 'MU', 'Mauritius'),
+(141, 'TY', 'Mayotte'),
+(142, 'MX', 'Mexico'),
+(143, 'FM', 'Micronesia, Federated States of'),
+(144, 'MD', 'Moldova, Republic of'),
+(145, 'MC', 'Monaco'),
+(146, 'MN', 'Mongolia'),
+(147, 'ME', 'Montenegro'),
+(148, 'MS', 'Montserrat'),
+(149, 'MA', 'Morocco'),
+(150, 'MZ', 'Mozambique'),
+(151, 'MM', 'Myanmar'),
+(152, 'NA', 'Namibia'),
+(153, 'NR', 'Nauru'),
+(154, 'NP', 'Nepal'),
+(155, 'NL', 'Netherlands'),
+(156, 'AN', 'Netherlands Antilles'),
+(157, 'NC', 'New Caledonia'),
+(158, 'NZ', 'New Zealand'),
+(159, 'NI', 'Nicaragua'),
+(160, 'NE', 'Niger'),
+(161, 'NG', 'Nigeria'),
+(162, 'NU', 'Niue'),
+(163, 'NF', 'Norfolk Island'),
+(164, 'MP', 'Northern Mariana Islands'),
+(165, 'NO', 'Norway'),
+(166, 'OM', 'Oman'),
+(167, 'PK', 'Pakistan'),
+(168, 'PW', 'Palau'),
+(169, 'PS', 'Palestine'),
+(170, 'PA', 'Panama'),
+(171, 'PG', 'Papua New Guinea'),
+(172, 'PY', 'Paraguay'),
+(173, 'PE', 'Peru'),
+(174, 'PH', 'Philippines'),
+(175, 'PN', 'Pitcairn'),
+(176, 'PL', 'Poland'),
+(177, 'PT', 'Portugal'),
+(178, 'PR', 'Puerto Rico'),
+(179, 'QA', 'Qatar'),
+(180, 'RE', 'Reunion'),
+(181, 'RO', 'Romania'),
+(182, 'RU', 'Russian Federation'),
+(183, 'RW', 'Rwanda'),
+(184, 'KN', 'Saint Kitts and Nevis'),
+(185, 'LC', 'Saint Lucia'),
+(186, 'VC', 'Saint Vincent and the Grenadines'),
+(187, 'WS', 'Samoa'),
+(188, 'SM', 'San Marino'),
+(189, 'ST', 'Sao Tome and Principe'),
+(190, 'SA', 'Saudi Arabia'),
+(191, 'SN', 'Senegal'),
+(192, 'RS', 'Serbia'),
+(193, 'SC', 'Seychelles'),
+(194, 'SL', 'Sierra Leone'),
+(195, 'SG', 'Singapore'),
+(196, 'SK', 'Slovakia'),
+(197, 'SI', 'Slovenia'),
+(198, 'SB', 'Solomon Islands'),
+(199, 'SO', 'Somalia'),
+(200, 'ZA', 'South Africa'),
+(201, 'GS', 'South Georgia South Sandwich Islands'),
+(202, 'ES', 'Spain'),
+(203, 'LK', 'Sri Lanka'),
+(204, 'SH', 'St. Helena'),
+(205, 'PM', 'St. Pierre and Miquelon'),
+(206, 'SD', 'Sudan'),
+(207, 'SR', 'Suriname'),
+(208, 'SJ', 'Svalbard and Jan Mayen Islands'),
+(209, 'SZ', 'Swaziland'),
+(210, 'SE', 'Sweden'),
+(211, 'CH', 'Switzerland'),
+(212, 'SY', 'Syrian Arab Republic'),
+(213, 'TW', 'Taiwan'),
+(214, 'TJ', 'Tajikistan'),
+(215, 'TZ', 'Tanzania, United Republic of'),
+(216, 'TH', 'Thailand'),
+(217, 'TG', 'Togo'),
+(218, 'TK', 'Tokelau'),
+(219, 'TO', 'Tonga'),
+(220, 'TT', 'Trinidad and Tobago'),
+(221, 'TN', 'Tunisia'),
+(222, 'TR', 'Turkey'),
+(223, 'TM', 'Turkmenistan'),
+(224, 'TC', 'Turks and Caicos Islands'),
+(225, 'TV', 'Tuvalu'),
+(226, 'UG', 'Uganda'),
+(227, 'UA', 'Ukraine'),
+(228, 'AE', 'United Arab Emirates'),
+(229, 'GB', 'United Kingdom'),
+(230, 'US', 'United States'),
+(231, 'UM', 'United States minor outlying islands'),
+(232, 'UY', 'Uruguay'),
+(233, 'UZ', 'Uzbekistan'),
+(234, 'VU', 'Vanuatu'),
+(235, 'VA', 'Vatican City State'),
+(236, 'VE', 'Venezuela'),
+(237, 'VN', 'Vietnam'),
+(238, 'VG', 'Virgin Islands (British)'),
+(239, 'VI', 'Virgin Islands (U.S.)'),
+(240, 'WF', 'Wallis and Futuna Islands'),
+(241, 'EH', 'Western Sahara'),
+(242, 'YE', 'Yemen'),
+(243, 'YU', 'Yugoslavia'),
+(244, 'ZR', 'Zaire'),
+(245, 'ZM', 'Zambia'),
+(246, 'ZW', 'Zimbabwe');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `king_districts`
 --
 
-CREATE TABLE IF NOT EXISTS `king_districts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `city_id` int(10) unsigned NOT NULL,
-  `name` varchar(250) CHARACTER SET utf8 NOT NULL,
-  `type` varchar(250) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `districts_city_id_foreign` (`city_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=705 ;
+CREATE TABLE `king_districts` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `city_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_districts`
@@ -819,10 +1085,102 @@ INSERT INTO `king_districts` (`id`, `city_id`, `name`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `king_education`
+--
+
+CREATE TABLE `king_education` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `qualification_id` int(10) UNSIGNED NOT NULL,
+  `college_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `subject` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `king_education`
+--
+
+INSERT INTO `king_education` (`id`, `user_id`, `qualification_id`, `college_name`, `subject`, `start_date`, `end_date`) VALUES
+(6, 1, 2, 'University of Social Sciences and Humanities', 'Information Technology', '2010-06-06', '2013-05-05'),
+(7, 1, 4, 'Industrial University Of Ho Chi Minh City', 'Computer Science', '2010-07-07', '2013-07-07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `king_employment_histories`
+--
+
+CREATE TABLE `king_employment_histories` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `company_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `position` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT NULL,
+  `is_current` tinyint(1) NOT NULL DEFAULT '0',
+  `company_website` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `achievement` text COLLATE utf8_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `king_employment_histories`
+--
+
+INSERT INTO `king_employment_histories` (`id`, `user_id`, `company_name`, `position`, `start_date`, `end_date`, `is_current`, `company_website`, `achievement`) VALUES
+(1, 1, 'Studio 60', 'PHP developer', '2016-04-04', '2016-04-04', 1, 'https://s60.co', 'Brief description of the position and the responsibilities you had in this post. Nullam pulvinar mattis.'),
+(2, 1, 'Ekino', 'PHP developer', '2015-11-11', '2016-04-04', 0, 'http://ekino.com', 'Brief description of the position and the responsibilities you had in this post. Nullam pulvinar mattis.'),
+(3, 1, 'Sutrix Group', 'PHP developer', '2014-05-05', '2015-11-11', 0, 'http://sutrixgroup.com', 'Brief description of the position and the responsibilities you had in this post. Nullam pulvinar mattis.'),
+(5, 1, 'Uniweb', 'Full Stack Developer', '2013-04-04', '2014-05-05', 0, 'http://uniweb.vn/', 'Brief description of the position and the responsibilities you had in this post. Nullam pulvinar mattis.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `king_genders`
+--
+
+CREATE TABLE `king_genders` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `gender_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `king_genders`
+--
+
+INSERT INTO `king_genders` (`id`, `gender_name`) VALUES
+(1, 'Male'),
+(2, 'Female'),
+(3, 'Other');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `king_marital_statuses`
+--
+
+CREATE TABLE `king_marital_statuses` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `king_marital_statuses`
+--
+
+INSERT INTO `king_marital_statuses` (`id`, `name`) VALUES
+(1, 'Single'),
+(2, 'Married'),
+(3, 'Secret');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `king_migrations`
 --
 
-CREATE TABLE IF NOT EXISTS `king_migrations` (
+CREATE TABLE `king_migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -832,85 +1190,69 @@ CREATE TABLE IF NOT EXISTS `king_migrations` (
 --
 
 INSERT INTO `king_migrations` (`migration`, `batch`) VALUES
-('2015_01_21_154256_create_users_table', 1),
-('2015_03_28_084414_create_cities_table', 2),
-('2015_03_28_084443_create_districts_table', 3),
-('2015_03_28_084505_create_wards_table', 4),
-('2015_03_28_100240_create_categories_table', 5),
-('2015_03_28_082757_create_stores_table', 6),
-('2015_04_16_132840_create_products_table', 7);
+('2014_10_12_000000_create_users_table', 1),
+('2014_10_12_100000_create_password_resets_table', 1),
+('2015_07_13_133005_create_cities_table', 1),
+('2015_07_13_133024_create_districts_table', 1),
+('2015_07_13_133036_create_wards_table', 1),
+('2016_02_20_090616_create_table_user_profile', 1),
+('2016_02_20_130226_create_table_countries', 1),
+('2016_02_20_131935_create_table_genders', 1),
+('2016_06_10_091359_create_employment_histories_table', 2),
+('2016_07_28_042727_create_qualification_table', 3),
+('2016_07_28_042320_create_education_table', 4),
+('2016_08_09_021957_create_skills_table', 5),
+('2016_08_09_025826_create_user_skills_table', 6),
+('2016_09_14_063250_create_marital_status_table', 7);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `king_products`
+-- Table structure for table `king_qualification`
 --
 
-CREATE TABLE IF NOT EXISTS `king_products` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `store_id` int(10) unsigned NOT NULL,
-  `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `image1` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `image2` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `image3` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `image4` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `price` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
-  `old_price` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `products_store_id_foreign` (`store_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
+CREATE TABLE `king_qualification` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `king_products`
+-- Dumping data for table `king_qualification`
 --
 
-INSERT INTO `king_products` (`id`, `store_id`, `name`, `image1`, `image2`, `image3`, `image4`, `price`, `old_price`, `description`, `created_at`, `updated_at`) VALUES
-(23, 1, 'Áo cặp cực cute cho teen vào hè năm nay', '__product_650173a9ed66f4d6e1c5f868d676bb69.jpg', '__product_be3f43811d813dd96500a8ae48cd5f6a.jpg', '__product_b46ba69ea5de01dcb4bdc7ed10b2c3a1.jpg', '', '200.000', '300.000', 'Áo cặp cực cute cho teen vào hè năm nay', '2015-05-08 20:28:18', '2015-05-08 20:29:41'),
-(24, 1, 'Áo lên cực dể thương cho boy vào đông năm nay', '__product_fe922ea0115ce190035e4582066a91a6.jpg', '', '', '', '150.000', '200.000', 'Áo lên cực dể thương cho boy vào đông năm nay', '2015-05-08 20:36:04', '2015-05-08 20:37:03'),
-(25, 1, 'Dể thương quá trời quá đất luôn bà con woi bà con woi hahahaha hehehe huhuhu kakaka kikiki', '__product_03893d8148f8767878cbfdb2e318ef3a.jpg', '', '', '', '300.000', '450.000', 'Dể thương quá trời quá đất luôn bà con woi bà con woi hahahaha hehehe huhuhu kakaka kikiki', '2015-05-08 20:37:30', '2015-05-08 20:39:04'),
-(26, 1, 'Áo khoác cực kỳ cực kỳ kì cục dể thương đáng ghét hahahaha', '', '', '', '__product_43aea2063b5dcdd4dff09c6361c97c90.jpg', '100.000', '200.0000', 'Áo khoác cực kỳ cực kỳ kì cục dể thương đáng ghét hahahaha\r\n', '2015-05-08 20:40:39', '2015-05-08 20:41:23'),
-(28, 1, 'Áo đẹp cực đẹp cho người đẹp dáng đẹp xe đẹp nhà đẹp', '__product_69105cbe1ea1c5e25ab944b0da650b9e.jpg', '', '', '', '500.000', '1000.000', 'Áo đẹp cực đẹp cho người đẹp dáng đẹp xe đẹp nhà đẹp', '2015-05-08 21:20:38', '2015-05-08 21:22:17'),
-(29, 1, '', '', '__product_03e485a675f8e8cdd235a9a2409f7031.jpg', '', '', '', '', '', '2015-05-08 21:22:33', '2015-05-08 21:22:33');
+INSERT INTO `king_qualification` (`id`, `name`) VALUES
+(1, 'High school'),
+(2, 'Associate’s degree'),
+(3, 'College'),
+(4, 'Bachelors'),
+(5, 'Masters'),
+(6, 'Doctorate'),
+(7, 'Others');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `king_stores`
+-- Table structure for table `king_skills`
 --
 
-CREATE TABLE IF NOT EXISTS `king_stores` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `category_id` int(10) unsigned NOT NULL,
-  `street` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `city_id` int(10) unsigned NOT NULL,
-  `district_id` int(10) unsigned NOT NULL,
-  `ward_id` int(10) unsigned NOT NULL,
-  `phone_number` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `cover_img` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `stores_user_id_foreign` (`user_id`),
-  KEY `stores_city_id_foreign` (`city_id`),
-  KEY `stores_district_id_foreign` (`district_id`),
-  KEY `stores_ward_id_foreign` (`ward_id`),
-  KEY `stores_category_id_foreign` (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+CREATE TABLE `king_skills` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `king_stores`
+-- Dumping data for table `king_skills`
 --
 
-INSERT INTO `king_stores` (`id`, `user_id`, `name`, `category_id`, `street`, `city_id`, `district_id`, `ward_id`, `phone_number`, `cover_img`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Shop Quần Áo Liên Liên', 1, '12 Lê Văn Khương', 1, 12, 6369, '0902109711', '__cover_a4683df3091057904257b17aec31abef.jpg', '2015-04-11 00:11:19', '2015-05-05 08:09:51'),
-(2, 3, 'The Store 1', 1, '22 Cao Thắng', 1, 19, 6490, '0903289482', '', '2015-04-11 01:18:24', '2015-04-11 01:18:24'),
-(3, 4, 'The Store 1', 1, '32 - Quang Trung', 1, 12, 6368, '0928329333', '__cover_c74bca380b8931c7594de9f1c47a7e03.jpg', '2015-04-13 07:50:31', '2015-04-13 08:06:56'),
-(4, 2, 'Shop Quần Áo NANA', 1, '12 Hai Ba Trung', 1, 8, 6324, '0902109711', '__cover_281944bf539d69508e8b977ef60ab3bd.jpg', '2015-05-05 09:29:02', '2015-05-05 09:31:36');
+INSERT INTO `king_skills` (`id`, `name`) VALUES
+(3, 'PHP & MySQL'),
+(11, 'Wordpress CMS'),
+(12, 'HTML (5)'),
+(13, 'CSS (3)'),
+(15, 'CI Framework'),
+(18, 'Drupal CMS (7)'),
+(20, 'Laravel'),
+(21, 'Symfony');
 
 -- --------------------------------------------------------
 
@@ -918,32 +1260,99 @@ INSERT INTO `king_stores` (`id`, `user_id`, `name`, `category_id`, `street`, `ci
 -- Table structure for table `king_users`
 --
 
-CREATE TABLE IF NOT EXISTS `king_users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `king_users` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `username` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `username` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `avatar` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `role_id` int(11) NOT NULL,
-  `first_name` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `last_name` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `is_blocked` tinyint(1) NOT NULL DEFAULT '0',
-  `has_store` tinyint(1) NOT NULL DEFAULT '0',
+  `password` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_users`
 --
 
-INSERT INTO `king_users` (`id`, `email`, `username`, `password`, `avatar`, `role_id`, `first_name`, `last_name`, `is_blocked`, `has_store`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'master@wiki.com', 'master', '$2y$10$akrDQSAqqbjlJCaPrOLUnOL40CjWeSRm8hOuP7CeoLOqDgywjBvcG', '__avatar_46ec016c59fcf41af292853d71e0d51c.jpg', 0, 'vuong', 'bui', 0, 1, 'GezDL0WetSkyu9CA1D6WhHO3lMv1QgZyph6WcKohQ7319SQDsUPR4RXh8JHP', '2015-03-12 07:55:59', '2015-05-05 09:27:36'),
-(2, 'vuongabc92@wiki.com', 'vuongabc92', '$2y$10$9J58IbhypHOPdh.rKTG54OKHgMa70Kc/g1M3ODc4ODXrTPTxixudm', NULL, 0, NULL, NULL, 0, 1, '3SAnOJHzGdNFSY6flYNafLdYfhOBkdYDVsazTsFBLtGza8s3YZwVyzbrgxCD', '2015-03-17 08:03:44', '2015-05-05 09:44:53'),
-(3, 'the_store@wiki.com', 'the_store', '$2y$10$Ge4eGH3BGDNJSr/DdwHD8Otk6yccKNFMsOI/38F7Df6ZZKIP57CAy', NULL, 0, NULL, NULL, 0, 1, NULL, '2015-04-11 01:17:11', '2015-04-11 01:18:24'),
-(4, 'the_store1@wiki.com', 'the_store1', '$2y$10$/pP.lPAi6yw28T7nuajFmOMizEXnpjyxN/5Xqlqhag3s7sWuipgiu', NULL, 0, NULL, NULL, 0, 1, NULL, '2015-04-13 07:49:34', '2015-04-13 07:51:10');
+INSERT INTO `king_users` (`id`, `username`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'master', 'master@yopmail.com', '$2y$10$Rjn77JX8H4JZgXtuRv0qM..UennGPHSfPA9hIc.E3N2npEtXOB1JC', 'OuTwYN7K0cxD85zugJwp3y3u5CuagzJ43AOsX6VpqBHMkMTnGVbBTyrLlBaZ', '2016-05-22 21:06:32', '2016-11-09 21:06:28'),
+(2, 'vuongabc92', 'vuongabc92@yopmail.com', '$2y$10$HHO7Ukn9jf7jfsGwfvdyweaJdVb3SflH6pZeD0HUAZeCa01YQGXQu', 'pvQd33dYfn2NH0rNSVNQGW5YIPY8LWSuOUDK1xQ0jO6YF6jUaaQu5zHW3gf9', '2016-05-27 01:55:32', '2016-08-23 20:46:31'),
+(3, 'vuongabc921', 'vuongabc921@yopmail.com', '$2y$10$fl4087pf8VVtAV8KxhUOGeyQaKy3DNW/mlBzHFngCzoX9581DxRSK', 'fD1xsq2fuYdjjqpja2DreZ23rZk5f4Fz7bLE6rWsplUW5pTAsijhr5jjLO5b', '2016-05-27 02:06:17', '2016-05-27 02:13:24'),
+(4, 'vuong.bui', 'vuong.bui@s60.com.au', '$2y$10$/ruId.oCuZyXhS42NBNpdelCQBOnAzykLKZR8sv9aZFLKeQAEqK9S', 'nmsPEebjk27TU7IH5aIvlRZFFHQ1J76nPo3J6fp8cttHxXZWojrFREpeWI7L', '2016-11-02 20:54:51', '2016-11-02 21:15:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `king_user_profile`
+--
+
+CREATE TABLE `king_user_profile` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `theme_id` int(10) UNSIGNED DEFAULT NULL,
+  `marital_status_id` int(10) UNSIGNED DEFAULT NULL,
+  `slug` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `avatar_image` text COLLATE utf8_unicode_ci NOT NULL,
+  `cover_image` text COLLATE utf8_unicode_ci NOT NULL,
+  `first_name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(32) CHARACTER SET utf8 NOT NULL,
+  `day_of_birth` date DEFAULT NULL,
+  `about_me` text COLLATE utf8_unicode_ci NOT NULL,
+  `hobbies` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `country_id` int(10) UNSIGNED DEFAULT NULL,
+  `city_id` int(10) UNSIGNED DEFAULT NULL,
+  `district_id` int(10) UNSIGNED DEFAULT NULL,
+  `ward_id` int(10) UNSIGNED DEFAULT NULL,
+  `street_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `gender_id` int(10) UNSIGNED DEFAULT NULL,
+  `phone_number` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `website` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `social_network` text COLLATE utf8_unicode_ci NOT NULL,
+  `expected_job` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `publish` tinyint(1) NOT NULL,
+  `slug_updated_at` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `king_user_profile`
+--
+
+INSERT INTO `king_user_profile` (`id`, `user_id`, `theme_id`, `marital_status_id`, `slug`, `avatar_image`, `cover_image`, `first_name`, `last_name`, `day_of_birth`, `about_me`, `hobbies`, `country_id`, `city_id`, `district_id`, `ward_id`, `street_name`, `gender_id`, `phone_number`, `website`, `social_network`, `expected_job`, `publish`, `slug_updated_at`, `created_at`, `updated_at`) VALUES
+(1, 1, NULL, 1, 'vuongbui', 'a:4:{s:8:"original";s:36:"avatar_G4RY6r8XKqP7ZxeJ_Original.jpg";i:128;s:35:"avatar_EqFebmxE9mYVJptB_128x128.jpg";i:256;s:35:"avatar_tBQEVBnbc7ydSn8x_256x256.jpg";i:512;s:35:"avatar_MdGBnPD4FX4uw3Pu_512x512.jpg";}', 'a:4:{s:8:"original";s:35:"cover_steb2NmewruzUbJ2_Original.jpg";i:768;s:34:"cover_9KXr292s6KjxARR9_768x420.jpg";i:960;s:34:"cover_c9Hu4PGrURRYExZa_960x500.jpg";i:1200;s:35:"cover_9MTMdgz9Z7WpTwaJ_1200x500.jpg";}', 'Vuong', 'Thanh Bui', '1992-09-09', 'This is a section where you describe your professional career. Let the career employer know why would want to hire you. Use this section for...', 'Travel, Food, Music, Football, Swimming', 237, 1, 8, 6316, '1 Dien Bien Phu', 1, '0908709876', 'http://s60.co', 'a:4:{s:8:"facebook";s:23:"facebook.com/vuongabc92";s:7:"twitter";s:22:"twitter.com/vuongabc92";s:9:"instagram";s:24:"instagram.com/vuongabc92";s:2:"vk";s:17:"vk.com/vuongabc92";}', 'Senior PHP Developer', 0, '2016-11-10 06:25:49', '2016-05-22 21:10:49', '2016-11-15 23:55:43'),
+(2, 2, NULL, NULL, 'vuongabc92', 'a:1:{i:256;s:35:"avatar_zWdwcT9unbG7f96m_256x256.jpg";}', 'a:1:{i:960;s:34:"cover_DABzZc6bPjj7KXua_960x500.jpg";}', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', NULL, '', '', '', '', 0, NULL, '2016-05-27 01:55:32', '2016-08-23 20:45:40'),
+(3, 3, NULL, NULL, 'vuongabc9211', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', NULL, '', '', '', '', 0, NULL, '2016-05-27 02:06:17', '2016-05-27 02:06:17'),
+(4, 4, NULL, NULL, 'vuong.bui', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', NULL, '', '', '', '', 0, NULL, '2016-11-02 20:54:51', '2016-11-02 20:54:51');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `king_user_skills`
+--
+
+CREATE TABLE `king_user_skills` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `skill_id` int(10) UNSIGNED NOT NULL,
+  `votes` smallint(2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `king_user_skills`
+--
+
+INSERT INTO `king_user_skills` (`id`, `user_id`, `skill_id`, `votes`) VALUES
+(13, 2, 11, NULL),
+(14, 2, 3, NULL),
+(28, 1, 11, 5),
+(30, 1, 3, 4),
+(31, 1, 12, 3),
+(32, 1, 13, 4),
+(34, 1, 15, 4),
+(37, 1, 18, 3),
+(39, 1, 20, 5),
+(40, 1, 21, 3);
 
 -- --------------------------------------------------------
 
@@ -951,14 +1360,12 @@ INSERT INTO `king_users` (`id`, `email`, `username`, `password`, `avatar`, `role
 -- Table structure for table `king_wards`
 --
 
-CREATE TABLE IF NOT EXISTS `king_wards` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `district_id` int(10) unsigned NOT NULL,
+CREATE TABLE `king_wards` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `district_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `wards_district_id_foreign` (`district_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12927 ;
+  `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_wards`
@@ -2467,8 +2874,7 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (1505, 133, 'Tung Chung Phố', 'Xã'),
 (1506, 133, 'Mường Khương', 'Xã'),
 (1507, 133, 'Dìn Chin', 'Xã'),
-(1508, 133, 'Tả Gia Khâu', 'Xã');
-INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
+(1508, 133, 'Tả Gia Khâu', 'Xã'),
 (1509, 133, 'Nậm Chảy', 'Xã'),
 (1510, 133, 'Nấm Lư', 'Xã'),
 (1511, 133, 'Lùng Khấu Nhin', 'Xã'),
@@ -2674,7 +3080,8 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (1711, 146, 'Núa Ngam', 'Xã'),
 (1712, 146, 'Na Ư', 'Xã'),
 (1713, 146, 'Mường Nhà', 'Xã'),
-(1714, 146, 'Mường Lói', 'Xã'),
+(1714, 146, 'Mường Lói', 'Xã');
+INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (1715, 147, 'Điện Biên Đông', 'Thị Trấn'),
 (1716, 147, 'Na Son', 'Xã'),
 (1717, 147, 'Phì Nhừ', 'Xã'),
@@ -3942,8 +4349,7 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (2979, 216, 'Đài Xuyên', 'Xã'),
 (2980, 216, 'Bình Dân', 'Xã'),
 (2981, 216, 'Vạn Yên', 'Xã'),
-(2982, 216, 'Minh Châu', 'Xã');
-INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
+(2982, 216, 'Minh Châu', 'Xã'),
 (2983, 216, 'Đoàn Kết', 'Xã'),
 (2984, 216, 'Hạ Long', 'Xã'),
 (2985, 216, 'Đông Xá', 'Xã'),
@@ -4344,7 +4750,8 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (3380, 235, 'Ninh Dân', 'Xã'),
 (3381, 235, 'Quảng Nạp', 'Xã'),
 (3382, 235, 'Vũ Yển', 'Xã'),
-(3383, 235, 'Yên Nội', 'Xã'),
+(3383, 235, 'Yên Nội', 'Xã');
+INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (3384, 235, 'Phương Lĩnh', 'Xã'),
 (3385, 235, 'Võ Lao', 'Xã'),
 (3386, 235, 'Khải Xuân', 'Xã'),
@@ -5423,8 +5830,7 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (4459, 288, 'Nam Hải', 'Xã'),
 (4460, 288, 'Nam Phú', 'Xã'),
 (4461, 289, 'Thanh Nê', 'Thị Trấn'),
-(4462, 289, 'Trà Giang', 'Xã');
-INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
+(4462, 289, 'Trà Giang', 'Xã'),
 (4463, 289, 'Quốc Tuấn', 'Xã'),
 (4464, 289, 'An Bình', 'Xã'),
 (4465, 289, 'Vũ Tây', 'Xã'),
@@ -6008,7 +6414,8 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (5043, 316, 'Quang Trung', 'Xã'),
 (5044, 316, 'Hà Lan', 'Xã'),
 (5045, 317, 'Trung Sơn', 'Phường'),
-(5046, 317, 'Bắc Sơn', 'Phường'),
+(5046, 317, 'Bắc Sơn', 'Phường');
+INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (5047, 317, 'Trường Sơn', 'Phường'),
 (5048, 317, 'Quảng Cư', 'Xã'),
 (5049, 317, 'Quảng Tiến', 'Phường'),
@@ -6899,8 +7306,7 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (5934, 355, 'Diễn Thái', 'Xã'),
 (5935, 355, 'Diễn Đồng', 'Xã'),
 (5936, 355, 'Diễn Bích', 'Xã'),
-(5937, 355, 'Diễn Hạnh', 'Xã');
-INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
+(5937, 355, 'Diễn Hạnh', 'Xã'),
 (5938, 355, 'Diễn Ngọc', 'Xã'),
 (5939, 355, 'Diễn Quảng', 'Xã'),
 (5940, 355, 'Diễn Nguyên', 'Xã'),
@@ -7677,7 +8083,8 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (6711, 63, 'Hoà Cường Bắc', 'Phường'),
 (6712, 63, 'Hoà Cường Nam', 'Phường'),
 (6713, 64, 'Thọ Quang', 'Phường'),
-(6714, 64, 'Nại Hiên Đông', 'Phường'),
+(6714, 64, 'Nại Hiên Đông', 'Phường');
+INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (6715, 64, 'Mân Thái', 'Phường'),
 (6716, 64, 'An Hải Bắc', 'Phường'),
 (6717, 64, 'Phước Mỹ', 'Phường'),
@@ -8369,8 +8776,7 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (7403, 383, 'Vĩnh Ô', 'Xã'),
 (7404, 384, 'Khe Sanh', 'Thị Trấn'),
 (7405, 384, 'Lao Bảo', 'Thị Trấn'),
-(7406, 384, 'Hướng Lập', 'Xã');
-INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
+(7406, 384, 'Hướng Lập', 'Xã'),
 (7407, 384, 'Hướng Việt', 'Xã'),
 (7408, 384, 'Hướng Phùng', 'Xã'),
 (7409, 384, 'Hướng Sơn', 'Xã'),
@@ -9338,7 +9744,8 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (8371, 451, 'Hòa Xuân Đông', 'Xã'),
 (8372, 451, 'Hòa Tâm', 'Xã'),
 (8373, 451, 'Hòa Xuân Nam', 'Xã'),
-(8374, 452, 'Vĩnh Hoà', 'Phường'),
+(8374, 452, 'Vĩnh Hoà', 'Phường');
+INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (8375, 452, 'Vĩnh Hải', 'Phường'),
 (8376, 452, 'Vĩnh Phước', 'Phường'),
 (8377, 452, 'Ngọc Hiệp', 'Phường'),
@@ -9836,8 +10243,7 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (8869, 491, 'Tân Bình', 'Xã'),
 (8870, 491, 'Glar', 'Xã'),
 (8871, 491, 'A Dơk', 'Xã'),
-(8872, 491, 'Trang', 'Xã');
-INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
+(8872, 491, 'Trang', 'Xã'),
 (8873, 491, 'Hnol', 'Xã'),
 (8874, 491, 'Ia Pết', 'Xã'),
 (8875, 491, 'Ia Băng', 'Xã'),
@@ -11002,7 +11408,8 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (10034, 574, 'Xuân Hưng', 'Xã'),
 (10035, 574, 'Xuân Tâm', 'Xã'),
 (10036, 574, 'Suối Cát', 'Xã'),
-(10037, 574, 'Xuân Hiệp', 'Xã'),
+(10037, 574, 'Xuân Hiệp', 'Xã');
+INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (10038, 574, 'Xuân Phú', 'Xã'),
 (10039, 574, 'Xuân Định', 'Xã'),
 (10040, 574, 'Bảo Hoà', 'Xã'),
@@ -11308,8 +11715,7 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (10340, 597, 'Thái Bình', 'Xã'),
 (10341, 597, 'An Cơ', 'Xã'),
 (10342, 597, 'Biên Giới', 'Xã'),
-(10343, 597, 'Hòa Thạnh', 'Xã');
-INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
+(10343, 597, 'Hòa Thạnh', 'Xã'),
 (10344, 597, 'Trí Bình', 'Xã'),
 (10345, 597, 'Hòa Hội', 'Xã'),
 (10346, 597, 'An Bình', 'Xã'),
@@ -12595,7 +13001,8 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (11626, 644, 'Qưới Sơn', 'Xã'),
 (11627, 644, 'An Khánh', 'Xã'),
 (11628, 644, 'Giao Long', 'Xã'),
-(11629, 644, 'Giao Hòa', 'Xã'),
+(11629, 644, 'Giao Hòa', 'Xã');
+INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (11630, 644, 'Phú Túc', 'Xã'),
 (11631, 644, 'Phú Đức', 'Xã'),
 (11632, 644, 'Phú An Hòa', 'Xã'),
@@ -12725,8 +13132,7 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (11756, 648, 'Tân Thành', 'Xã'),
 (11757, 648, 'Tân Phú', 'Xã'),
 (11758, 648, 'Tân Hưng', 'Xã'),
-(11759, 648, 'Long Thạnh', 'Phường');
-INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
+(11759, 648, 'Long Thạnh', 'Phường'),
 (11760, 648, 'Long Hưng', 'Phường'),
 (11761, 648, 'Long Châu', 'Phường'),
 (11762, 648, 'Phú Lộc', 'Xã'),
@@ -13895,9 +14301,201 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 (12925, 704, 'Tân Ân', 'Xã'),
 (12926, 704, 'Đất Mũi', 'Xã');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `king_cities`
+--
+ALTER TABLE `king_cities`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cities_country_id_foreign` (`country_id`);
+
+--
+-- Indexes for table `king_countries`
+--
+ALTER TABLE `king_countries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `king_districts`
+--
+ALTER TABLE `king_districts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `districts_city_id_foreign` (`city_id`);
+
+--
+-- Indexes for table `king_education`
+--
+ALTER TABLE `king_education`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `education_user_id_foreign` (`user_id`),
+  ADD KEY `education_qualification_id_foreign` (`qualification_id`);
+
+--
+-- Indexes for table `king_employment_histories`
+--
+ALTER TABLE `king_employment_histories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `employment_histories_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `king_genders`
+--
+ALTER TABLE `king_genders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `king_marital_statuses`
+--
+ALTER TABLE `king_marital_statuses`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `king_qualification`
+--
+ALTER TABLE `king_qualification`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `king_skills`
+--
+ALTER TABLE `king_skills`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `king_users`
+--
+ALTER TABLE `king_users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- Indexes for table `king_user_profile`
+--
+ALTER TABLE `king_user_profile`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_profile_user_id_foreign` (`user_id`),
+  ADD KEY `user_profile_country_id_foreign` (`country_id`),
+  ADD KEY `user_profile_city_id_foreign` (`city_id`),
+  ADD KEY `user_profile_district_id_foreign` (`district_id`),
+  ADD KEY `user_profile_ward_id_foreign` (`ward_id`),
+  ADD KEY `user_profile_gender_id_foreign` (`gender_id`),
+  ADD KEY `marital_status_id` (`marital_status_id`);
+
+--
+-- Indexes for table `king_user_skills`
+--
+ALTER TABLE `king_user_skills`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_skills_user_id_foreign` (`user_id`),
+  ADD KEY `user_skills_skill_id_foreign` (`skill_id`);
+
+--
+-- Indexes for table `king_wards`
+--
+ALTER TABLE `king_wards`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `wards_district_id_foreign` (`district_id`);
+
+--
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`),
+  ADD KEY `password_resets_token_index` (`token`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `king_cities`
+--
+ALTER TABLE `king_cities`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+--
+-- AUTO_INCREMENT for table `king_countries`
+--
+ALTER TABLE `king_countries`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
+--
+-- AUTO_INCREMENT for table `king_districts`
+--
+ALTER TABLE `king_districts`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=705;
+--
+-- AUTO_INCREMENT for table `king_education`
+--
+ALTER TABLE `king_education`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `king_employment_histories`
+--
+ALTER TABLE `king_employment_histories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `king_genders`
+--
+ALTER TABLE `king_genders`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `king_marital_statuses`
+--
+ALTER TABLE `king_marital_statuses`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `king_qualification`
+--
+ALTER TABLE `king_qualification`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `king_skills`
+--
+ALTER TABLE `king_skills`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+--
+-- AUTO_INCREMENT for table `king_users`
+--
+ALTER TABLE `king_users`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `king_user_profile`
+--
+ALTER TABLE `king_user_profile`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `king_user_skills`
+--
+ALTER TABLE `king_user_skills`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+--
+-- AUTO_INCREMENT for table `king_wards`
+--
+ALTER TABLE `king_wards`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12927;
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `king_cities`
+--
+ALTER TABLE `king_cities`
+  ADD CONSTRAINT `cities_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `king_countries` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `king_districts`
@@ -13906,20 +14504,36 @@ ALTER TABLE `king_districts`
   ADD CONSTRAINT `districts_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `king_cities` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `king_products`
+-- Constraints for table `king_education`
 --
-ALTER TABLE `king_products`
-  ADD CONSTRAINT `products_store_id_foreign` FOREIGN KEY (`store_id`) REFERENCES `king_stores` (`id`) ON DELETE CASCADE;
+ALTER TABLE `king_education`
+  ADD CONSTRAINT `education_qualification_id_foreign` FOREIGN KEY (`qualification_id`) REFERENCES `king_qualification` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `education_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `king_stores`
+-- Constraints for table `king_employment_histories`
 --
-ALTER TABLE `king_stores`
-  ADD CONSTRAINT `stores_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `king_categories` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `stores_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `king_cities` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `stores_district_id_foreign` FOREIGN KEY (`district_id`) REFERENCES `king_districts` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `stores_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `stores_ward_id_foreign` FOREIGN KEY (`ward_id`) REFERENCES `king_wards` (`id`) ON DELETE CASCADE;
+ALTER TABLE `king_employment_histories`
+  ADD CONSTRAINT `employment_histories_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `king_user_profile`
+--
+ALTER TABLE `king_user_profile`
+  ADD CONSTRAINT `king_user_profile_ibfk_1` FOREIGN KEY (`marital_status_id`) REFERENCES `king_marital_statuses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_profile_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `king_cities` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_profile_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `king_countries` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_profile_district_id_foreign` FOREIGN KEY (`district_id`) REFERENCES `king_districts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_profile_gender_id_foreign` FOREIGN KEY (`gender_id`) REFERENCES `king_genders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_profile_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_profile_ward_id_foreign` FOREIGN KEY (`ward_id`) REFERENCES `king_wards` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `king_user_skills`
+--
+ALTER TABLE `king_user_skills`
+  ADD CONSTRAINT `user_skills_skill_id_foreign` FOREIGN KEY (`skill_id`) REFERENCES `king_skills` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_skills_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `king_wards`
@@ -13930,251 +14544,3 @@ ALTER TABLE `king_wards`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-INSERT INTO `countries` VALUES (null, 'AF', 'Afghanistan');
-INSERT INTO `countries` VALUES (null, 'AL', 'Albania');
-INSERT INTO `countries` VALUES (null, 'DZ', 'Algeria');
-INSERT INTO `countries` VALUES (null, 'DS', 'American Samoa');
-INSERT INTO `countries` VALUES (null, 'AD', 'Andorra');
-INSERT INTO `countries` VALUES (null, 'AO', 'Angola');
-INSERT INTO `countries` VALUES (null, 'AI', 'Anguilla');
-INSERT INTO `countries` VALUES (null, 'AQ', 'Antarctica');
-INSERT INTO `countries` VALUES (null, 'AG', 'Antigua and Barbuda');
-INSERT INTO `countries` VALUES (null, 'AR', 'Argentina');
-INSERT INTO `countries` VALUES (null, 'AM', 'Armenia');
-INSERT INTO `countries` VALUES (null, 'AW', 'Aruba');
-INSERT INTO `countries` VALUES (null, 'AU', 'Australia');
-INSERT INTO `countries` VALUES (null, 'AT', 'Austria');
-INSERT INTO `countries` VALUES (null, 'AZ', 'Azerbaijan');
-INSERT INTO `countries` VALUES (null, 'BS', 'Bahamas');
-INSERT INTO `countries` VALUES (null, 'BH', 'Bahrain');
-INSERT INTO `countries` VALUES (null, 'BD', 'Bangladesh');
-INSERT INTO `countries` VALUES (null, 'BB', 'Barbados');
-INSERT INTO `countries` VALUES (null, 'BY', 'Belarus');
-INSERT INTO `countries` VALUES (null, 'BE', 'Belgium');
-INSERT INTO `countries` VALUES (null, 'BZ', 'Belize');
-INSERT INTO `countries` VALUES (null, 'BJ', 'Benin');
-INSERT INTO `countries` VALUES (null, 'BM', 'Bermuda');
-INSERT INTO `countries` VALUES (null, 'BT', 'Bhutan');
-INSERT INTO `countries` VALUES (null, 'BO', 'Bolivia');
-INSERT INTO `countries` VALUES (null, 'BA', 'Bosnia and Herzegovina');
-INSERT INTO `countries` VALUES (null, 'BW', 'Botswana');
-INSERT INTO `countries` VALUES (null, 'BV', 'Bouvet Island');
-INSERT INTO `countries` VALUES (null, 'BR', 'Brazil');
-INSERT INTO `countries` VALUES (null, 'IO', 'British Indian Ocean Territory');
-INSERT INTO `countries` VALUES (null, 'BN', 'Brunei Darussalam');
-INSERT INTO `countries` VALUES (null, 'BG', 'Bulgaria');
-INSERT INTO `countries` VALUES (null, 'BF', 'Burkina Faso');
-INSERT INTO `countries` VALUES (null, 'BI', 'Burundi');
-INSERT INTO `countries` VALUES (null, 'KH', 'Cambodia');
-INSERT INTO `countries` VALUES (null, 'CM', 'Cameroon');
-INSERT INTO `countries` VALUES (null, 'CA', 'Canada');
-INSERT INTO `countries` VALUES (null, 'CV', 'Cape Verde');
-INSERT INTO `countries` VALUES (null, 'KY', 'Cayman Islands');
-INSERT INTO `countries` VALUES (null, 'CF', 'Central African Republic');
-INSERT INTO `countries` VALUES (null, 'TD', 'Chad');
-INSERT INTO `countries` VALUES (null, 'CL', 'Chile');
-INSERT INTO `countries` VALUES (null, 'CN', 'China');
-INSERT INTO `countries` VALUES (null, 'CX', 'Christmas Island');
-INSERT INTO `countries` VALUES (null, 'CC', 'Cocos (Keeling) Islands');
-INSERT INTO `countries` VALUES (null, 'CO', 'Colombia');
-INSERT INTO `countries` VALUES (null, 'KM', 'Comoros');
-INSERT INTO `countries` VALUES (null, 'CG', 'Congo');
-INSERT INTO `countries` VALUES (null, 'CK', 'Cook Islands');
-INSERT INTO `countries` VALUES (null, 'CR', 'Costa Rica');
-INSERT INTO `countries` VALUES (null, 'HR', 'Croatia (Hrvatska)');
-INSERT INTO `countries` VALUES (null, 'CU', 'Cuba');
-INSERT INTO `countries` VALUES (null, 'CY', 'Cyprus');
-INSERT INTO `countries` VALUES (null, 'CZ', 'Czech Republic');
-INSERT INTO `countries` VALUES (null, 'DK', 'Denmark');
-INSERT INTO `countries` VALUES (null, 'DJ', 'Djibouti');
-INSERT INTO `countries` VALUES (null, 'DM', 'Dominica');
-INSERT INTO `countries` VALUES (null, 'DO', 'Dominican Republic');
-INSERT INTO `countries` VALUES (null, 'TP', 'East Timor');
-INSERT INTO `countries` VALUES (null, 'EC', 'Ecuador');
-INSERT INTO `countries` VALUES (null, 'EG', 'Egypt');
-INSERT INTO `countries` VALUES (null, 'SV', 'El Salvador');
-INSERT INTO `countries` VALUES (null, 'GQ', 'Equatorial Guinea');
-INSERT INTO `countries` VALUES (null, 'ER', 'Eritrea');
-INSERT INTO `countries` VALUES (null, 'EE', 'Estonia');
-INSERT INTO `countries` VALUES (null, 'ET', 'Ethiopia');
-INSERT INTO `countries` VALUES (null, 'FK', 'Falkland Islands (Malvinas)');
-INSERT INTO `countries` VALUES (null, 'FO', 'Faroe Islands');
-INSERT INTO `countries` VALUES (null, 'FJ', 'Fiji');
-INSERT INTO `countries` VALUES (null, 'FI', 'Finland');
-INSERT INTO `countries` VALUES (null, 'FR', 'France');
-INSERT INTO `countries` VALUES (null, 'FX', 'France, Metropolitan');
-INSERT INTO `countries` VALUES (null, 'GF', 'French Guiana');
-INSERT INTO `countries` VALUES (null, 'PF', 'French Polynesia');
-INSERT INTO `countries` VALUES (null, 'TF', 'French Southern Territories');
-INSERT INTO `countries` VALUES (null, 'GA', 'Gabon');
-INSERT INTO `countries` VALUES (null, 'GM', 'Gambia');
-INSERT INTO `countries` VALUES (null, 'GE', 'Georgia');
-INSERT INTO `countries` VALUES (null, 'DE', 'Germany');
-INSERT INTO `countries` VALUES (null, 'GH', 'Ghana');
-INSERT INTO `countries` VALUES (null, 'GI', 'Gibraltar');
-INSERT INTO `countries` VALUES (null, 'GK', 'Guernsey');
-INSERT INTO `countries` VALUES (null, 'GR', 'Greece');
-INSERT INTO `countries` VALUES (null, 'GL', 'Greenland');
-INSERT INTO `countries` VALUES (null, 'GD', 'Grenada');
-INSERT INTO `countries` VALUES (null, 'GP', 'Guadeloupe');
-INSERT INTO `countries` VALUES (null, 'GU', 'Guam');
-INSERT INTO `countries` VALUES (null, 'GT', 'Guatemala');
-INSERT INTO `countries` VALUES (null, 'GN', 'Guinea');
-INSERT INTO `countries` VALUES (null, 'GW', 'Guinea-Bissau');
-INSERT INTO `countries` VALUES (null, 'GY', 'Guyana');
-INSERT INTO `countries` VALUES (null, 'HT', 'Haiti');
-INSERT INTO `countries` VALUES (null, 'HM', 'Heard and Mc Donald Islands');
-INSERT INTO `countries` VALUES (null, 'HN', 'Honduras');
-INSERT INTO `countries` VALUES (null, 'HK', 'Hong Kong');
-INSERT INTO `countries` VALUES (null, 'HU', 'Hungary');
-INSERT INTO `countries` VALUES (null, 'IS', 'Iceland');
-INSERT INTO `countries` VALUES (null, 'IN', 'India');
-INSERT INTO `countries` VALUES (null, 'IM', 'Isle of Man');
-INSERT INTO `countries` VALUES (null, 'ID', 'Indonesia');
-INSERT INTO `countries` VALUES (null, 'IR', 'Iran (Islamic Republic of)');
-INSERT INTO `countries` VALUES (null, 'IQ', 'Iraq');
-INSERT INTO `countries` VALUES (null, 'IE', 'Ireland');
-INSERT INTO `countries` VALUES (null, 'IL', 'Israel');
-INSERT INTO `countries` VALUES (null, 'IT', 'Italy');
-INSERT INTO `countries` VALUES (null, 'CI', 'Ivory Coast');
-INSERT INTO `countries` VALUES (null, 'JE', 'Jersey');
-INSERT INTO `countries` VALUES (null, 'JM', 'Jamaica');
-INSERT INTO `countries` VALUES (null, 'JP', 'Japan');
-INSERT INTO `countries` VALUES (null, 'JO', 'Jordan');
-INSERT INTO `countries` VALUES (null, 'KZ', 'Kazakhstan');
-INSERT INTO `countries` VALUES (null, 'KE', 'Kenya');
-INSERT INTO `countries` VALUES (null, 'KI', 'Kiribati');
-INSERT INTO `countries` VALUES (null, 'KP', 'Korea, Democratic People''s Republic of');
-INSERT INTO `countries` VALUES (null, 'KR', 'Korea, Republic of');
-INSERT INTO `countries` VALUES (null, 'XK', 'Kosovo');
-INSERT INTO `countries` VALUES (null, 'KW', 'Kuwait');
-INSERT INTO `countries` VALUES (null, 'KG', 'Kyrgyzstan');
-INSERT INTO `countries` VALUES (null, 'LA', 'Lao People''s Democratic Republic');
-INSERT INTO `countries` VALUES (null, 'LV', 'Latvia');
-INSERT INTO `countries` VALUES (null, 'LB', 'Lebanon');
-INSERT INTO `countries` VALUES (null, 'LS', 'Lesotho');
-INSERT INTO `countries` VALUES (null, 'LR', 'Liberia');
-INSERT INTO `countries` VALUES (null, 'LY', 'Libyan Arab Jamahiriya');
-INSERT INTO `countries` VALUES (null, 'LI', 'Liechtenstein');
-INSERT INTO `countries` VALUES (null, 'LT', 'Lithuania');
-INSERT INTO `countries` VALUES (null, 'LU', 'Luxembourg');
-INSERT INTO `countries` VALUES (null, 'MO', 'Macau');
-INSERT INTO `countries` VALUES (null, 'MK', 'Macedonia');
-INSERT INTO `countries` VALUES (null, 'MG', 'Madagascar');
-INSERT INTO `countries` VALUES (null, 'MW', 'Malawi');
-INSERT INTO `countries` VALUES (null, 'MY', 'Malaysia');
-INSERT INTO `countries` VALUES (null, 'MV', 'Maldives');
-INSERT INTO `countries` VALUES (null, 'ML', 'Mali');
-INSERT INTO `countries` VALUES (null, 'MT', 'Malta');
-INSERT INTO `countries` VALUES (null, 'MH', 'Marshall Islands');
-INSERT INTO `countries` VALUES (null, 'MQ', 'Martinique');
-INSERT INTO `countries` VALUES (null, 'MR', 'Mauritania');
-INSERT INTO `countries` VALUES (null, 'MU', 'Mauritius');
-INSERT INTO `countries` VALUES (null, 'TY', 'Mayotte');
-INSERT INTO `countries` VALUES (null, 'MX', 'Mexico');
-INSERT INTO `countries` VALUES (null, 'FM', 'Micronesia, Federated States of');
-INSERT INTO `countries` VALUES (null, 'MD', 'Moldova, Republic of');
-INSERT INTO `countries` VALUES (null, 'MC', 'Monaco');
-INSERT INTO `countries` VALUES (null, 'MN', 'Mongolia');
-INSERT INTO `countries` VALUES (null, 'ME', 'Montenegro');
-INSERT INTO `countries` VALUES (null, 'MS', 'Montserrat');
-INSERT INTO `countries` VALUES (null, 'MA', 'Morocco');
-INSERT INTO `countries` VALUES (null, 'MZ', 'Mozambique');
-INSERT INTO `countries` VALUES (null, 'MM', 'Myanmar');
-INSERT INTO `countries` VALUES (null, 'NA', 'Namibia');
-INSERT INTO `countries` VALUES (null, 'NR', 'Nauru');
-INSERT INTO `countries` VALUES (null, 'NP', 'Nepal');
-INSERT INTO `countries` VALUES (null, 'NL', 'Netherlands');
-INSERT INTO `countries` VALUES (null, 'AN', 'Netherlands Antilles');
-INSERT INTO `countries` VALUES (null, 'NC', 'New Caledonia');
-INSERT INTO `countries` VALUES (null, 'NZ', 'New Zealand');
-INSERT INTO `countries` VALUES (null, 'NI', 'Nicaragua');
-INSERT INTO `countries` VALUES (null, 'NE', 'Niger');
-INSERT INTO `countries` VALUES (null, 'NG', 'Nigeria');
-INSERT INTO `countries` VALUES (null, 'NU', 'Niue');
-INSERT INTO `countries` VALUES (null, 'NF', 'Norfolk Island');
-INSERT INTO `countries` VALUES (null, 'MP', 'Northern Mariana Islands');
-INSERT INTO `countries` VALUES (null, 'NO', 'Norway');
-INSERT INTO `countries` VALUES (null, 'OM', 'Oman');
-INSERT INTO `countries` VALUES (null, 'PK', 'Pakistan');
-INSERT INTO `countries` VALUES (null, 'PW', 'Palau');
-INSERT INTO `countries` VALUES (null, 'PS', 'Palestine');
-INSERT INTO `countries` VALUES (null, 'PA', 'Panama');
-INSERT INTO `countries` VALUES (null, 'PG', 'Papua New Guinea');
-INSERT INTO `countries` VALUES (null, 'PY', 'Paraguay');
-INSERT INTO `countries` VALUES (null, 'PE', 'Peru');
-INSERT INTO `countries` VALUES (null, 'PH', 'Philippines');
-INSERT INTO `countries` VALUES (null, 'PN', 'Pitcairn');
-INSERT INTO `countries` VALUES (null, 'PL', 'Poland');
-INSERT INTO `countries` VALUES (null, 'PT', 'Portugal');
-INSERT INTO `countries` VALUES (null, 'PR', 'Puerto Rico');
-INSERT INTO `countries` VALUES (null, 'QA', 'Qatar');
-INSERT INTO `countries` VALUES (null, 'RE', 'Reunion');
-INSERT INTO `countries` VALUES (null, 'RO', 'Romania');
-INSERT INTO `countries` VALUES (null, 'RU', 'Russian Federation');
-INSERT INTO `countries` VALUES (null, 'RW', 'Rwanda');
-INSERT INTO `countries` VALUES (null, 'KN', 'Saint Kitts and Nevis');
-INSERT INTO `countries` VALUES (null, 'LC', 'Saint Lucia');
-INSERT INTO `countries` VALUES (null, 'VC', 'Saint Vincent and the Grenadines');
-INSERT INTO `countries` VALUES (null, 'WS', 'Samoa');
-INSERT INTO `countries` VALUES (null, 'SM', 'San Marino');
-INSERT INTO `countries` VALUES (null, 'ST', 'Sao Tome and Principe');
-INSERT INTO `countries` VALUES (null, 'SA', 'Saudi Arabia');
-INSERT INTO `countries` VALUES (null, 'SN', 'Senegal');
-INSERT INTO `countries` VALUES (null, 'RS', 'Serbia');
-INSERT INTO `countries` VALUES (null, 'SC', 'Seychelles');
-INSERT INTO `countries` VALUES (null, 'SL', 'Sierra Leone');
-INSERT INTO `countries` VALUES (null, 'SG', 'Singapore');
-INSERT INTO `countries` VALUES (null, 'SK', 'Slovakia');
-INSERT INTO `countries` VALUES (null, 'SI', 'Slovenia');
-INSERT INTO `countries` VALUES (null, 'SB', 'Solomon Islands');
-INSERT INTO `countries` VALUES (null, 'SO', 'Somalia');
-INSERT INTO `countries` VALUES (null, 'ZA', 'South Africa');
-INSERT INTO `countries` VALUES (null, 'GS', 'South Georgia South Sandwich Islands');
-INSERT INTO `countries` VALUES (null, 'ES', 'Spain');
-INSERT INTO `countries` VALUES (null, 'LK', 'Sri Lanka');
-INSERT INTO `countries` VALUES (null, 'SH', 'St. Helena');
-INSERT INTO `countries` VALUES (null, 'PM', 'St. Pierre and Miquelon');
-INSERT INTO `countries` VALUES (null, 'SD', 'Sudan');
-INSERT INTO `countries` VALUES (null, 'SR', 'Suriname');
-INSERT INTO `countries` VALUES (null, 'SJ', 'Svalbard and Jan Mayen Islands');
-INSERT INTO `countries` VALUES (null, 'SZ', 'Swaziland');
-INSERT INTO `countries` VALUES (null, 'SE', 'Sweden');
-INSERT INTO `countries` VALUES (null, 'CH', 'Switzerland');
-INSERT INTO `countries` VALUES (null, 'SY', 'Syrian Arab Republic');
-INSERT INTO `countries` VALUES (null, 'TW', 'Taiwan');
-INSERT INTO `countries` VALUES (null, 'TJ', 'Tajikistan');
-INSERT INTO `countries` VALUES (null, 'TZ', 'Tanzania, United Republic of');
-INSERT INTO `countries` VALUES (null, 'TH', 'Thailand');
-INSERT INTO `countries` VALUES (null, 'TG', 'Togo');
-INSERT INTO `countries` VALUES (null, 'TK', 'Tokelau');
-INSERT INTO `countries` VALUES (null, 'TO', 'Tonga');
-INSERT INTO `countries` VALUES (null, 'TT', 'Trinidad and Tobago');
-INSERT INTO `countries` VALUES (null, 'TN', 'Tunisia');
-INSERT INTO `countries` VALUES (null, 'TR', 'Turkey');
-INSERT INTO `countries` VALUES (null, 'TM', 'Turkmenistan');
-INSERT INTO `countries` VALUES (null, 'TC', 'Turks and Caicos Islands');
-INSERT INTO `countries` VALUES (null, 'TV', 'Tuvalu');
-INSERT INTO `countries` VALUES (null, 'UG', 'Uganda');
-INSERT INTO `countries` VALUES (null, 'UA', 'Ukraine');
-INSERT INTO `countries` VALUES (null, 'AE', 'United Arab Emirates');
-INSERT INTO `countries` VALUES (null, 'GB', 'United Kingdom');
-INSERT INTO `countries` VALUES (null, 'US', 'United States');
-INSERT INTO `countries` VALUES (null, 'UM', 'United States minor outlying islands');
-INSERT INTO `countries` VALUES (null, 'UY', 'Uruguay');
-INSERT INTO `countries` VALUES (null, 'UZ', 'Uzbekistan');
-INSERT INTO `countries` VALUES (null, 'VU', 'Vanuatu');
-INSERT INTO `countries` VALUES (null, 'VA', 'Vatican City State');
-INSERT INTO `countries` VALUES (null, 'VE', 'Venezuela');
-INSERT INTO `countries` VALUES (null, 'VN', 'Vietnam');
-INSERT INTO `countries` VALUES (null, 'VG', 'Virgin Islands (British)');
-INSERT INTO `countries` VALUES (null, 'VI', 'Virgin Islands (U.S.)');
-INSERT INTO `countries` VALUES (null, 'WF', 'Wallis and Futuna Islands');
-INSERT INTO `countries` VALUES (null, 'EH', 'Western Sahara');
-INSERT INTO `countries` VALUES (null, 'YE', 'Yemen');
-INSERT INTO `countries` VALUES (null, 'YU', 'Yugoslavia');
-INSERT INTO `countries` VALUES (null, 'ZR', 'Zaire');
-INSERT INTO `countries` VALUES (null, 'ZM', 'Zambia');
-INSERT INTO `countries` VALUES (null, 'ZW', 'Zimbabwe');

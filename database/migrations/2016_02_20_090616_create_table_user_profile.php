@@ -39,7 +39,6 @@ class CreateTableUserProfile extends Migration
             $table->dateTime('slug_updated_at')->nullable();;
             $table->timestamps();
 
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');

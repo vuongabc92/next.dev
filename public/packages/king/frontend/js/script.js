@@ -837,7 +837,7 @@ function showMessage(message, error) {
                 $.each(requires, function(k, v){
                     var field = current.find('[name=' + v + ']');
 
-                    if (field.val() === '') {
+                    if (field.val().trim() === '') {
                         if (field.is('select')) {
                             field.parent('.selecter').addClass('error');
                         } else if(field.is(':checkbox')) {
@@ -1867,7 +1867,7 @@ function showMessage(message, error) {
             
             this.element.on('keyup', function(e){
                 if(e.keyCode !== 13){
-                    setTimeout(thiz.search(thiz.element.val()), 700);
+                    setTimeout(thiz.search(thiz.element.val()), 1000);
                 }
             });
         },
