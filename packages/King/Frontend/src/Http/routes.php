@@ -36,6 +36,7 @@ Route::group(['middleware' => ['web', 'auth:web']], function () {
     Route::delete('settings/kill_tag', ['as' => 'front_settings_killtag', 'uses' => 'SettingsController@killTag']);
     Route::delete('settings/kill_social', ['as' => 'front_settings_killsocial', 'uses' => 'SettingsController@killSocial']);
     Route::get('settings/search_skill/{keyword?}', ['as' => 'front_settings_searchskill', 'uses' => 'SettingsController@searchSkill']);
+    Route::get('settings/themes', ['as' => 'front_themes', 'uses' => 'ThemeController@index']);
 });
 
 Route::get('{slug?}', ['as' => 'front_cv', 'uses' => 'ResumeController@index']);
