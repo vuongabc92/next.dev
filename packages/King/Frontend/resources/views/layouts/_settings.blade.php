@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/bootstrap-switch.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/font-awesome.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/common.css') }}">
-        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/settings.css') }}">
     </head>
     <body>
         <main>
