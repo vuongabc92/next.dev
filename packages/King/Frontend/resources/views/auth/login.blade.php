@@ -47,7 +47,7 @@
                 <button class="_fwfl btn _btn _btn-blue auth-btn"><i class="fa fa-arrow-right"></i></button>
             </div>
             <div class="_fwfl">
-                <a href="#" class="_fr _tb">{{ _t('signin.lostpass') }}</a>
+                <a href="{{ route('front_forgotpass') }}" class="_fr _tb">{{ _t('signin.lostpass') }}</a>
             </div>
         {!! Form::close() !!}
     </div>

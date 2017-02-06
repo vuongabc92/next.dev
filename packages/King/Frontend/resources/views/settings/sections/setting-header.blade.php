@@ -1,5 +1,5 @@
 <section>
-    <div class="_fwfl cover" style="background-image: url('{{ asset(check_file($coverMedium) ? $coverMedium : asset('uploads/covers/__default.jpg')) }}');">
+    <div class="_fwfl cover" style="background-image: url('{{ asset($coverMedium) }}');">
         {!! Form::open(['route' => 'front_settings_upload_cover','files' => true, 'method' => 'POST', 'class' => '_fwfl _dn', 'id' => 'upload_cover_form', 'data-upload-cover']) !!}
         {!! Form::file('__file', ['class' => '_dn', 'id' => 'cover_file_input', 'accept' => 'image/*', 'data-event-trigger' => '#upload_cover_form', 'data-event' => 'change|submit']) !!}
         {!! Form::close() !!}
@@ -18,7 +18,7 @@
                     <img src="{{ asset('packages/king/frontend/images/loading_white_16x16.gif') }}" class="_dn"/>
                     <i class="fa fa-pencil"></i>
                 </button>
-                <img class="_r50 _fwfl _fh avatar-img" src="{{ asset(check_file($avatarMedium) ? $avatarMedium : config('frontend.avatarsDefault')) }}" />
+                <img class="_r50 _fwfl _fh avatar-img" src="{{ asset($avatarMedium) }}" />
 
             </div>
             <div class="_fwfl _mt15">

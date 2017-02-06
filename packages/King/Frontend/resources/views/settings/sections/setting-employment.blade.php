@@ -48,8 +48,10 @@
                         <div class="settings-field-wrapper">
                             {!! Form::text('position', '', ['class' => 'settings-field', 'placeholder' => _t('setting.employment.position')]) !!}
                         </div>
-                        @set $start_date = selector_date();
-                        @set $end_date   = selector_date('end');
+                        @php
+                            $start_date = selector_date();
+                            $end_date   = selector_date('end');
+                        @endphp
                         <div class="settings-field-wrapper">
                             <div class="_fl _w50 _pr3">{!! Form::kingSelect('start_month', $start_date['m'], null, ['id' => 'start-month', 'class' => 'settings-field']) !!}</div>
                             <div class="_fl _w50 _pl3">{!! Form::kingSelect('start_year', $start_date['y'], null, ['id' => 'start-year', 'class' => 'settings-field']) !!}</div>

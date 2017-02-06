@@ -3,7 +3,7 @@ namespace App\Helpers\Theme;
 
 use Carbon\Carbon;
 
-class ThemeCompiler extends Compiler{
+class ThemeCompiler extends Compiler {
     
     /**
      * The path currently being compiled.
@@ -24,7 +24,7 @@ class ThemeCompiler extends Compiler{
      *  
      * @var string 
      */
-    protected $themesFolder = 'themes';
+    protected $themesFolder = 'uploads/themes';
 
     /**
      * Public folder
@@ -714,7 +714,7 @@ class ThemeCompiler extends Compiler{
     protected function compileGender() {
         $gender = $this->resume->getGender();
         
-        return $gender['gender_name'];
+        return isset($gender['gender_name']) ? $gender['gender_name'] : '';
     }
     
     /**
@@ -761,7 +761,7 @@ class ThemeCompiler extends Compiler{
     protected function compileMaritalStatus() {
         $status = $this->resume->getMaritalStatus();
         
-        return $status['name'];
+        return isset($status['name']) ? $status['name'] : '';
     }
     
     /**

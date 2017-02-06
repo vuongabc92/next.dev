@@ -7,6 +7,7 @@ namespace King\Frontend\Http\Controllers;
 
 use App\Models\UserProfile;
 use App\Models\User;
+use App\Models\Theme;
 use App\Helpers\Theme\Resume;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,15 +29,17 @@ class ResumeController extends FrontController {
     public function index($slug) {
         
         $userProfile = UserProfile::where('slug', $slug)->first();
+        $themeName   = config('frontend.defaultThemeName');
         
         if (null === $userProfile) {
             throw new NotFoundHttpException;
         }
         
-        if ($userProfile->theme_id === null) {
-            $themeName = config('frontend.defaultThemeName');
-        } else {
-            $themeName = $userProfile->theme_id;
+        if ($userProfile->theme_id) {
+            $theme = Theme::find($userProfile->theme_id);
+            if (null !== $theme) {
+                $themeName = $theme->slug;
+            }
         }
         
         $resume   = $this->generateResumeData($userProfile->user_id);

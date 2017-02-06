@@ -45,7 +45,7 @@
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="header-login">{{ user()->username }}</span> <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#">Settings</a></li>
+                                            <li><a href="{{ route('front_settings') }}">Settings</a></li>
                                             <li><a href="#">Help</a></li>
                                             <li role="separator" class="divider"></li>
                                             <li><a href={{ route('front_logout') }}>Logout</a></li>
@@ -88,7 +88,7 @@
                 AJAX_GET_EMPLOYMENTREMOVEBYID: '{{ route('front_settings_employmentremovebyid') }}',
                 AJAX_GET_EDUCATIONREMOVEBYID: '{{ route('front_settings_educationremovebyid') }}',
                 LOADING_BLUE_NAVY_24: '{{ asset('packages/king/frontend/images/loading_blue_navy_24x24.gif') }}',
-                LOADING_GRAY_24: '{{ asset('packages/king/frontend/images/loading_gray_24x24.gif') }}'
+                LOADING_GRAY_24: '{{ asset('packages/king/frontend/images/loading_gray_24x24.gif') }}',
             }
         </script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery_v1.11.1.js') }}"></script>

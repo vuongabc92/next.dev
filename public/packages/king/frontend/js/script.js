@@ -341,8 +341,7 @@ function showMessage(message, error) {
             var current   = this.element,
                 avatar    = current.parent('.avatar'),
                 editBtn   = avatar.children('.edit-btn'),
-                fileInput = current.children('#avatar_file_input'),
-                msgBlock  = $('.setting-messages');
+                fileInput = current.children('#avatar_file_input');
             
             current.on('submit', function(){
                 return AIM.submit(this, {
@@ -359,12 +358,7 @@ function showMessage(message, error) {
                         if (response.status === SETTINGS.AJAX_OK) {
                             avatar.children('.avatar-img').attr('src', response.avatar_medium);
                         } else {
-                            msgBlock.show();
-                            $('#message').html(response.messages);
-                            
-                            setTimeout(function(){
-                                msgBlock.hide();
-                            }, 4000);
+                            showMessage(response.message, 'error');
                         }
                         
                         editBtn.removeClass('show-edit-btn');
@@ -433,8 +427,7 @@ function showMessage(message, error) {
             var current   = this.element,
                 cover     = current.parent('.cover'),
                 editBtn   = cover.children('.edit-btn'),
-                fileInput = current.children('#cover_file_input'),
-                msgBlock  = $('.setting-messages');
+                fileInput = current.children('#cover_file_input');
             
             current.on('submit', function(){
                 return AIM.submit(this, {
@@ -451,12 +444,7 @@ function showMessage(message, error) {
                         if (response.status === SETTINGS.AJAX_OK) {
                             cover.css('background-image', 'url(' + response.cover_medium + ')');
                         } else {
-                            msgBlock.show();
-                            $('#message').html(response.messages);
-                            
-                            setTimeout(function(){
-                                msgBlock.hide();
-                            }, 4000);
+                            showMessage(response.message, 'error');
                         }
                         
                         editBtn.removeClass('show-edit-btn');
@@ -1014,12 +1002,12 @@ function showMessage(message, error) {
                             var options = [[wardSelect, response.options.ward]];
                         }
                         
-                        $.each(options, function(k, valueArr){
-                            var selectHtml = valueArr[0],
-                                selectObj  = valueArr[1];
+                        $.each(options, function(k, valueArr) {
+                            var selectHtml    = valueArr[0],
+                                selectOptions = valueArr[1];
                             
                             selectHtml.find('option').remove();
-                            selectHtml.parent('.selecter').find('label').html(selectObj[Object.keys(selectObj)[0]].name);
+                            selectHtml.parent('.selecter').find('label').html(selectOptions[Object.keys(selectOptions)[0]].name);
                             
                             $.map(selectObj, function(object, k) {
                                 selectHtml.append($('<option>', { 
@@ -1031,9 +1019,6 @@ function showMessage(message, error) {
                         
                         selecter.find('img').hide();
                         selecter.find('label').css({opacity: '1'});
-                    },
-                    complete: function() {
-                        
                     }
                 });
             });
@@ -1978,6 +1963,81 @@ function showMessage(message, error) {
                     data: {id: socialId},
                     success: function(){
                         li.remove();
+                    }
+                });
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Install theme
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'install-theme';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+        
+            this.element.on('submit', function(){
+                var check   = $(this).find('button>i'),
+                    loading = $(this).find('button>img'),
+                    text    = $(this).find('button>span');
+                
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: {id: $(this).find('[name=theme_id]')},
+                    beforeSend: function() {
+                        loading.show();
+                        text.hide();
+                    },
+                    success: function(){
+                        loading.hide();
+                        check.show();
+                        text.show();
                     }
                 });
             });

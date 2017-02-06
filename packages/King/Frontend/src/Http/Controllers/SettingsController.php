@@ -34,19 +34,23 @@ class SettingsController extends FrontController {
         $avatarSizes         = config('frontend.avatarSizes');
         $avatarStoragePath   = config('frontend.avatarsFolder');
         $coverStoragePath    = config('frontend.coversFolder');
+        $avatarDefault       = config('frontend.avatarDefault');
+        $coverDefault        = config('frontend.coverDefault');
+        
         $genders             = ['' => _t('setting.profile.sextell')];
         $maritalStatuses     = ['' => _t('setting.profile.marital')];
         $availableSocial     = ['' => _t('setting.profile.social_selector')] + config('frontend.availableSocial');
+        
         $userProfile         = is_null(user()->userProfile) ? new UserProfile() : user()->userProfile;
         $avatar              = unserialize($userProfile->avatar_image);
         $cover               = unserialize($userProfile->cover_image);
-        $avatarMedium        = isset($avatar[$avatarSizes['small']['w']]) ? $avatarStoragePath . '/' . $avatar[$avatarSizes['small']['w']] : '';
-        $coverMedium         = isset($cover[$coverSizes['small']['w']])   ? $coverStoragePath . '/' . $cover[$coverSizes['small']['w']]    : '';
+        $avatarMedium        = isset($avatar[$avatarSizes['small']['w']]) ? $avatarStoragePath . '/' . $avatar[$avatarSizes['small']['w']] : $avatarDefault;
+        $coverMedium         = isset($cover[$coverSizes['small']['w']])   ? $coverStoragePath . '/' . $cover[$coverSizes['small']['w']]    : $coverDefault;
         $genderName          = Gender::find($userProfile->gender_id);
         $countries           = Country::where('id', 237)->pluck('country_name', 'id')->toArray();
-        $cities              = $this->_getCityByCountryId(((is_null($userProfile->country_id))   ? 0 : $userProfile->country_id), 'array');
-        $districts           = $this->_getDistrictByCityId(((is_null($userProfile->city_id))     ? 0 : $userProfile->city_id), 'array');
-        $wards               = $this->_getWardByDistrictId(((is_null($userProfile->district_id)) ? 0 : $userProfile->district_id), 'array');
+        $cities              = $this->_getCityByCountryId($userProfile->country_id, $toArray = true);
+        $districts           = $this->_getDistrictByCityId($userProfile->city_id, $toArray = true);
+        $wards               = $this->_getWardByDistrictId($userProfile->district_id, $toArray = true);
         $employmentHistories = user()->employmentHistories->sortByDesc('is_current')->sortByDesc('start_date')->all();
         $educations          = user()->educations->sortByDesc('start_date')->all();
         
@@ -75,7 +79,9 @@ class SettingsController extends FrontController {
             'employmentHistories' => $employmentHistories,
             'educations'          => $educations,
             'maritalStatuses'     => $maritalStatuses,
-            'availableSocial'     => $availableSocial
+            'availableSocial'     => $availableSocial,
+            'birthdate'           => birthdate(),
+            'socialList'          => social_profile_list()
         ]);
     }
     
@@ -118,7 +124,7 @@ class SettingsController extends FrontController {
             $validator = Validator::make($request->all(), $rules, $messages);
             
             if ($validator->fails()) {
-                return file_pong(['messages' => $validator->errors()->first()], _error(), 403);
+                return file_pong(['message' => $validator->errors()->first()], _error(), 403);
             }
             
             if ($request->file('__file')->isValid()) {
@@ -134,8 +140,10 @@ class SettingsController extends FrontController {
                         $userProfile          = new UserProfile();
                         $userProfile->user_id = user()->id;
                     } else {
+                        
                         $avatarImages = unserialize($userProfile->avatar_image);
-                        if (count($avatarImages)) {
+                        if (is_array($avatarImages) && count($avatarImages)) {
+                            
                             foreach ($avatarImages as $img) {
                                 delete_file($storagePath . '/' . $img);
                             }
@@ -149,7 +157,7 @@ class SettingsController extends FrontController {
                 }
             }
             
-            return file_pong(['messages' => _t('oops')], _error(), 403);
+            return file_pong(['message' => _t('oops')], _error(), 403);
         }
     }
     
@@ -167,7 +175,7 @@ class SettingsController extends FrontController {
             $validator = Validator::make($request->all(), $rules, $messages);
             
             if ($validator->fails()) {
-                return file_pong(['messages' => $validator->errors()->first()], _error(), 403);
+                return file_pong(['message' => $validator->errors()->first()], _error(), 403);
             }
             
             if ($request->file('__file')->isValid()) {
@@ -185,7 +193,7 @@ class SettingsController extends FrontController {
                         $userProfile->user_id = user()->id;
                     } else {
                         $coverImages = unserialize($userProfile->cover_image);
-                        if (count($coverImages)) {
+                        if (is_array($coverImages) && count($coverImages)) {
                             foreach ($coverImages as $img) {
                                 delete_file($storagePath . '/' . $img);
                             }
@@ -200,7 +208,7 @@ class SettingsController extends FrontController {
                 }
             }
             
-            return file_pong(['messages' => _t('oops')], _error(), 403);
+            return file_pong(['message' => _t('oops')], _error(), 403);
         }
     }
 
@@ -265,13 +273,12 @@ class SettingsController extends FrontController {
     public function createAddressSelectData(Request $request) {
         if ($request->ajax() && $request->isMethod('POST')) {
             
-            $target   = $request->get('target');
             $findId   = (int) $request->get('find_id');
             $city     = [$this->_getDefaultAddress('city')];
             $district = [$this->_getDefaultAddress('district')];
             $ward     = [$this->_getDefaultAddress('ward')];
             
-            switch ($target) {
+            switch ($request->get('target')) {
                 case 'city':
                     $city = $this->_getCityByCountryId($findId);
                     break;
@@ -285,9 +292,7 @@ class SettingsController extends FrontController {
                     break;
             }
             
-            $options = ['city' => $city, 'district' => $district, 'ward' => $ward];
-           
-            return pong(['options' => $options]);
+            return pong(['options' => ['city' => $city, 'district' => $district, 'ward' => $ward]]);
         }
     }
     
@@ -545,32 +550,33 @@ class SettingsController extends FrontController {
      * Convert array of object to normal array [0 => '...', 1 => '...']
      * 
      * @param array  $places   List of cities or districts or wards
-     * @param string $dataType Data type include object|aray
      * 
      * @return aray
      */
-    protected function _placeObjectToArray($places, $dataType = 'array') {
-        if ($dataType === 'array') {
-            $placesArr = [];
-            foreach ($places as $place) {
-                $placesArr[($place->id === 0) ? '' : $place->id] = $place->name;
-            }
-            
-            return $placesArr;
-        }
+    protected function _placeObjectToArray($places) {
         
-        return $places;
+        $placesArr = [];
+        
+        if (count($places)) {
+            foreach ($places as $place) {
+                if (is_object($place)) {
+                    $placesArr[( ! $place->id) ? '' : $place->id] = $place->name;
+                }
+            }
+        }
+
+        return $placesArr;
     }
 
     /**
      * Get cities by country id.
      * 
-     * @param int    $countryId Country id
-     * @param string $dataType  Data type include object|array
+     * @param int  $countryId Country id
+     * @param bool $toArray   Convert to array or not
      * 
      * @return array|\stdClass
      */
-    protected function _getCityByCountryId($countryId = 0, $dataType = 'object') {
+    protected function _getCityByCountryId($countryId = 0, $toArray = false) {
         
         $country = Country::find($countryId);
         $default = $this->_getDefaultAddress('city');
@@ -581,9 +587,9 @@ class SettingsController extends FrontController {
                                       ->get();
                               
         if ( ! is_null($country) && 'VN' === $country->country_code) {
-            $cities    = collect($cities)->splice(5);
-            $bigCities = DB::table('cities')->select('id', 'name')->where('country_id', $countryId)->skip(0)->take(5)->get();
-            $cities    = collect($bigCities)->merge($cities)->toArray();
+            $smallCities = collect($cities)->splice(5);
+            $bigCities   = DB::table('cities')->select('id', 'name')->where('country_id', $countryId)->skip(0)->take(5)->get();
+            $cities      = collect($bigCities)->merge($smallCities)->toArray();
         }
         
         if (count($cities)) {
@@ -592,49 +598,48 @@ class SettingsController extends FrontController {
             $cities = [$default];
         }
         
-        return $this->_placeObjectToArray($cities, $dataType);
+        return ($toArray) ? $this->_placeObjectToArray($cities) : $cities;
     }
     
     /**
      * Get districts by city id.
      * 
-     * @param int    $cityId   City id
-     * @param string $dataType Data type include object|array
+     * @param int $cityId City id
+     * @param bool $toArray   Convert to array or not
      * 
      * @return array|\stdClass
      */
-    protected function _getDistrictByCityId($cityId = 0, $dataType = 'object') {
+    protected function _getDistrictByCityId($cityId = 0, $toArray = false) {
         
         $default   = $this->_getDefaultAddress('district');
         $districts = DB::table('districts')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
                                            ->where('city_id', $cityId)
                                            ->orderBy('name')
-                                           ->get();
-        
+                                           ->get()->toArray();
+
         if (count($districts)) {
             array_unshift($districts, $default);
         } else {
             $districts = [$default];
         }
         
-        return $this->_placeObjectToArray($districts, $dataType);
+        return ($toArray) ? $this->_placeObjectToArray($districts) : $districts;
     }
     
     /**
      * Get Wards by district id.
      * 
-     * @param int    $districtId District id
-     * @param string $dataType   Data type include object|array
+     * @param int $districtId District id
      * 
      * @return array|\stdClass
      */
-    protected function _getWardByDistrictId($districtId = 0, $dataType = 'object') {
+    protected function _getWardByDistrictId($districtId = 0, $toArray = false) {
         
         $default = $this->_getDefaultAddress('ward');
         $wards   = DB::table('wards')->select('id', DB::raw('CONCAT(type, " ", name) AS name'))
                                      ->where('district_id', $districtId)
                                      ->orderBy('name')
-                                     ->get();
+                                     ->get()->toArray();
                              
         if (count($wards)) {
             array_unshift($wards, $default);
@@ -642,7 +647,7 @@ class SettingsController extends FrontController {
             $wards = [$default];
         }
         
-        return $this->_placeObjectToArray($wards, $dataType);
+        return ($toArray) ? $this->_placeObjectToArray($wards) : $wards;
     }
     
     /**

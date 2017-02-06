@@ -41,8 +41,6 @@
             <div class="settings-field-wrapper">
                 <div class="social-added-list">
                     <ul data-kill-social data-delete-msg="Delete this social profile?">
-                        @set $socialList = social_profile_list()
-                        
                         @if(count($socialList))
                             @foreach($socialList as $id => $one)
                             <li>

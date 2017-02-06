@@ -1,70 +1,60 @@
-@extends('layouts.app')
+@extends('frontend::layouts._auth')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
+@section('title')
+    {{ _t('signin.title') }}
+@stop
 
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
-                        {!! csrf_field() !!}
+@section('button')
+    <a href="{{ route('front_register') }}" class="_fr btn _btn _btn-white-link signup-btn">{{ _t('signup') }}</a>
+    <a href="{{ route('front_login') }}" class="_fr _mr10 btn _btn _btn-white-link signup-btn">{{ _t('signin') }}</a>
+@stop
 
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ $email or old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Confirm Password</label>
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="password_confirmation">
-
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-refresh"></i>Reset Password
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+@section('body')
+    <div class="auth-box login-box">
+        {!! Form::open(['route' => 'front_resetpass_post', 'method' => 'POST', 'class' => '_fwfl auth-form']) !!}
+            <input type="hidden" name="token" value="{{ $token }}">
+            <h1 class="_fwfl _m0 _p0 auth-form-title">{{ _t('password.form.reset_title') }}</h1>
+            <div class="_fwfl auth-field-group first-field-group">
+                <label class="_fwfl _fs14 _fwn _tg5" for="email">
+                    @if (session('status'))
+                        <span class="_tgs">{{ session('status') }}</span>
+                    @elseif ($errors->has('email'))
+                        <span class="_tr5">{{ $errors->first('email') }}</span>
+                    @else
+                        {{ _t('common.email') }}
+                    @endif
+                </label>
+                <div class="_fwfl">
+                    {!! Form::text('email', $email, ['class' => '_fwfl  _ff0 _r2 auth-field', 'id' => 'email', 'maxlength' => '128', 'autocomplete' => 'off']) !!}
                 </div>
             </div>
-        </div>
+            <div class="_fwfl auth-field-group">
+                <label class="_fwfl _fs14 _fwn _tg5" for="password">
+                    @if ($errors->has('password'))
+                        <span class="_tr5">{{ $errors->first('password') }}</span>
+                    @else
+                        {{ _t('common.pass') }}
+                    @endif
+                </label>
+                <div class="_fwfl">
+                    {!! Form::password('password', ['class' => '_ff0 _r2 _fwfl auth-field', 'id' => 'password', 'maxlength' => '60']) !!}
+                </div>
+            </div>
+            <div class="_fwfl auth-field-group">
+                <label class="_fwfl _fs14 _fwn _tg5" for="password-confirmation">
+                    @if ($errors->has('password_confirmation'))
+                        <span class="_tr5">{{ $errors->first('password_confirmation') }}</span>
+                    @else
+                        {{ _t('common.passconfirm') }}
+                    @endif
+                </label>
+                <div class="_fwfl">
+                    {!! Form::password('password_confirmation', ['class' => '_ff0 _r2 _fwfl auth-field', 'id' => 'password-confirmation']) !!}
+                </div>
+            </div>
+            <div class="_fwfl auth-field-group">
+                <button class="_fwfl btn _btn _btn-blue auth-btn"><i class="fa fa-arrow-right"></i></button>
+            </div>
+        {!! Form::close() !!}
     </div>
-</div>
-@endsection
+@stop

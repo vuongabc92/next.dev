@@ -1,47 +1,35 @@
 @extends('frontend::layouts._auth')
 
-<!-- Main Content -->
+@section('title')
+    {{ _t('signin.title') }}
+@stop
+
+@section('button')
+    <a href="{{ route('front_register') }}" class="_fr btn _btn _btn-white-link signup-btn">{{ _t('signup') }}</a>
+    <a href="{{ route('front_login') }}" class="_fr _mr10 btn _btn _btn-white-link signup-btn">{{ _t('signin') }}</a>
+@stop
+
 @section('body')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-                <div class="panel-body">
+    <div class="auth-box login-box">
+        {!! Form::open(['route' => 'front_forgotpass_post', 'method' => 'POST', 'class' => '_fwfl auth-form']) !!}
+            <h1 class="_fwfl _m0 _p0 auth-form-title">{{ _t('password.form.forgot_title') }}</h1>
+            <div class="_fwfl auth-field-group first-field-group">
+                <label class="_fwfl _fs14 _fwn _tg5" for="email">
                     @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
+                        <span class="_tgs">{{ session('status') }}</span>
+                    @elseif ($errors->has('email'))
+                        <span class="_tr5">{{ $errors->first('email') }}</span>
+                    @else
+                        {{ _t('common.email') }}
                     @endif
-
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
-                        {!! csrf_field() !!}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-envelope"></i>Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                </label>
+                <div class="_fwfl">
+                    {!! Form::text('email', '', ['class' => '_fwfl  _ff0 _r2 auth-field', 'id' => 'email', 'maxlength' => '128', 'autocomplete' => 'off']) !!}
                 </div>
             </div>
-        </div>
+            <div class="_fwfl auth-field-group">
+                <button class="_fwfl btn _btn _btn-blue auth-btn"><i class="fa fa-arrow-right"></i></button>
+            </div>
+        {!! Form::close() !!}
     </div>
-</div>
-@endsection
+@stop

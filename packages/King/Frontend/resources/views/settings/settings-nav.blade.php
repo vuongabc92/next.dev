@@ -30,7 +30,7 @@
         </a>
     </li>
     <li class="nav-link-last">
-        <a href="#">
+        <a href="{{ route('front_themes') }}">
             <strong>{{ _t('setting.nav.theme') }}</strong>
             <span class="nav-link-help">{{ _t('setting.nav.theme_help') }}</span>
         </a>

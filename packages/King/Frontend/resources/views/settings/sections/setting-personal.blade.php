@@ -1,4 +1,3 @@
-@set $birthdate = birthdate()
 <section>
     <div class="_fwfl settings-row">
         <div class="_fl col-md-3 col-xs-12">
