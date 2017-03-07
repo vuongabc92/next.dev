@@ -24,7 +24,7 @@ font-weight:bold;border-radius:2px;-webkit-border-radius:2px;
 button._btn-sm{height: 30px;line-height:17px;}
 ._save-btn{padding-left:18px;padding-right:18px;}
 
-._btn-white-link{color:#007aff;background-color:#fff;border-color:#eee;}
+._btn-white-link{color:#007aff;background-color:#fff;border-color:#e5e5e5;}
 ._btn-white-link:hover{color:#007aff;background-color:#fff;border-color:#007aff;}
 ._btn-white-link:active{color:#007aff;background-color:#fff;border-color:#0972E5;}
 ._btn-white-link:focus{color:#007aff;background-color:#fff;border-color:#0972E5;}

@@ -4,6 +4,23 @@ $.ajaxSetup({
     },
 });
 
+
+var radius = 200;
+var fields = $('.hallo-btn'), container = $('.buttons'), width = container.width()/2, height = container.height()/2;
+var angle = 0, step = (2*Math.PI) / fields.length;
+fields.each(function() {
+    var x = Math.round(width/2 + radius * Math.cos(angle) - $(this).width()/2);
+    var y = Math.round(height/2 + radius * Math.sin(angle) - $(this).height()/2);
+    
+    $(this).css({
+        left: (x*0.6) + 'px',
+        top: (y*0.6) + 'px'
+    });
+    angle += step;
+    //http://jsfiddle.net/LPh33/2046/
+});
+
+
 /**
  * AJAX upload file
  */
@@ -167,6 +184,38 @@ function showMessage(message, error) {
     return showErrorMsg;
 }
 
+var message = {
+    messageBar: $('#messageBar'),
+    messageTxt: $('#messageTxt'),
+    success: function(message) {
+        this.messageBar.removeClass('error').addClass('success');
+        this.display(message);
+    },
+    error: function(message) {
+        this.messageBar.removeClass('success').addClass('error');
+        this.display(message);
+    },
+    display: function(message) {
+        var msgBar  = this.messageBar,
+            timeOut = false;
+        
+        this.messageTxt.html(message);
+        msgBar.show();
+
+        timeOut = setTimeout(function(){
+            msgBar.hide();
+        }, 4000);
+
+        msgBar.on('click', function(){
+           $(this).hide();
+           clearTimeout(timeOut);
+        });
+
+        return timeOut;
+    }
+    
+};
+
 /**
  *  @name Required
  *  @description
@@ -194,18 +243,23 @@ function showMessage(message, error) {
         init: function() {
             var current    = this.element,
                 fields     = current.data('required'),
-                fieldArray = fields.split('|'),
-                empty      = false;
+                fieldArray = fields.split('|');
 
-            current.on('submit', function() { 
+            current.on('submit', function() {  
+                var empty = false,
+                    i     = 0;
                 $.each(fieldArray, function(k, v) {
                     var field = current.find('[name=' + v + ']');
                     
-                    if (field.val().trim() === '') {
+                    if (field.val().trim() === '') {  i++;
                         field.addClass('error');
-                        field.focus();
+                        if (i === 1) {
+                            field.focus();
+                        }
                         
                         empty = true;
+                    } else {
+                        field.removeClass('error');
                     }
                 });
 
@@ -787,7 +841,8 @@ function showMessage(message, error) {
                             }
                         }
                         
-                        showMessage(response.message, 'success');
+//                        showMessage(response.message, 'success');
+                        message.success(response.message);
                         submitBtn.attr('disabled', false);
                         submitBtn.html('<i class="fa fa-check"></i>');
                         setTimeout(function(){
@@ -807,7 +862,8 @@ function showMessage(message, error) {
                             submitBtn.html(submitLabel);
                         }
                         var response = $.parseJSON(xhr.responseText);
-                        showMessage(response.message, 'error');
+//                        showMessage(response.message, 'error');
+message.error(response.message);
                         submitBtn.attr('disabled', false);
                         submitBtn.html(submitLabel);
                     }
@@ -2041,6 +2097,67 @@ function showMessage(message, error) {
                     }
                 });
             });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Hallo button
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'hallo-btn';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var btn      = this.element,
+                btnWidth = btn.width();
+            this.element.css({height: btnWidth});
+            
+            
+            
+//            this.element.css({height: btnWidth, 'margin-left': -(btnWidth/2), 'margin-top': -(btnWidth/2)});
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

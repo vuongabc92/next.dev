@@ -1,7 +1,80 @@
-.header {
+main.hallo {
     width: 100%;
-    float: left;
-    height: 700px;
-    background-image: url('../images/header.jpg');
-    background-size: cover;
+    height: 100%;
+    position: fixed;
+    background-position: center center;
 }
+.hallo .buttons {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 100px auto;
+}
+.buttons .hallo-btn {
+    position: absolute;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: solid 1px rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    left: 50%;
+    top: 50%;
+}
+.buttons .hallo-btn>b{
+    float: left;
+    padding: 0 15px;
+}
+/*.buttons .hallo-login{
+    margin-left: 61px !important;
+}*/
+/*.buttons .hallo-btn:nth-child(2) {
+    margin-left: 12.5px !important;
+    margin-top: -138.5px !important;
+}
+.buttons .hallo-btn:nth-child(3) {
+    margin-left: -87px !important;
+    margin-top: -135px !important;
+}
+.buttons .hallo-btn:nth-child(4) {
+    margin-left: -117.5px !important;
+    margin-top: -48.5px !important;
+}
+.buttons .hallo-btn:nth-child(5) {
+    margin-left: -119px !important;
+    margin-top: 25px !important;
+}
+.buttons .hallo-btn:nth-child(6) {
+    margin-left: -26.5px !important;
+    margin-top: 55.5px !important;
+}
+.buttons .hallo-btn:nth-child(7) {
+    margin-left: 35px !important;
+    margin-top: 27px !important;
+}
+.buttons .hallo-btn:nth-child(8) {
+    margin-left: 35px !important;
+    margin-top: 27px !important;
+}*/
+/*.buttons .hallo-explode{
+    margin-left: -87px !important;
+    margin-top: -135px !important;
+}
+.buttons .hallo-wtf{
+    margin-left: -117.5px !important;
+    margin-top: -48.5px !important;
+}
+.buttons .hallo-contact{
+    margin-left: -119px !important;
+    margin-top: 25px !important;
+}
+.buttons .hallo-terms{
+    margin-left: -26.5px !important;
+    margin-top: 55.5px !important;
+}
+.buttons .hallo-privacy{
+    margin-left: 35px !important;
+    margin-top: 27px !important;
+}*/

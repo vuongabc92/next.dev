@@ -11,3 +11,4 @@
 .auth-field:focus{border-color:#007aff;}
 .signup-btn{margin-top:13px;}
 .auth-btn{height:38px;}
+.auth-field.error{border-color: #f66;}

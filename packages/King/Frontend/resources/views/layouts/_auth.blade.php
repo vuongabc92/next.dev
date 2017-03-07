@@ -22,5 +22,11 @@
         <div class="_fwfl auth-container">
             @yield('body')
         </div>
+        
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery_v1.11.1.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery-ui-1.11.4.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap-switch.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/script.js') }}"></script>
     </body>
 </html>

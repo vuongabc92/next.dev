@@ -10,7 +10,7 @@
 
 @section('body')
     <div class="auth-box register-box">
-        {!! Form::open(['route' => 'front_register_post', 'method' => 'POST', 'class' => '_fwfl auth-form']) !!}
+        {!! Form::open(['route' => 'front_register_post', 'method' => 'POST', 'class' => '_fwfl auth-form', 'data-required' => 'email|username|password']) !!}
             <h1 class="_fwfl _m0 _p0 auth-form-title">{{ _t('signup.form.title') }}</h1>
             <div class="_fwfl auth-field-group first-field-group">
                 <label class="_fwfl _fs14 _fwn _tg5" for="email">

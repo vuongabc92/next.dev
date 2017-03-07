@@ -264,7 +264,7 @@ body {background-color:#f5f8fa;}
     border-radius: 2px;
     color: #777;
 }
-.setting-messages {
+.message-bar {
     width: 100%;
     position: fixed;
     bottom: 0;
@@ -272,22 +272,23 @@ body {background-color:#f5f8fa;}
     right:0;
     opacity: 0.9;
 }
-.setting-messages.error{
+.message-bar.error{
     background-color: #f66;
 }
-.setting-messages.success{
+.message-bar.success{
     background-color: #41B584;
 }
-.settings-last-row {
-    border-bottom: none;
-}
-.message {
+
+.message-bar .message-txt {
     height: 100%;
     padding: 17px 0;
     color: #fdfdfd;
 }
-.setting-messages .close {
+.message-bar .close {
     position: relative;
+}
+.settings-last-row {
+    border-bottom: none;
 }
 .settings-field-wrapper .settings-field.error {
     border-color: #de5d3d;

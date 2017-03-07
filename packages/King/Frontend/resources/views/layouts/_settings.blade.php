@@ -64,10 +64,10 @@
                 </div>
             </div>
             
-            <div class="setting-messages _dn">
+            <div class="message-bar _dn" id="messageBar">
                 <div class="container">
                     <div class="_fl col-md-9 col-xs-12">
-                        <b class="_fl _fs13 message" id="message"></b>
+                        <b class="_fl _fs13 message-txt" id="messageTxt"></b>
                     </div>
                 </div>
             </div>
