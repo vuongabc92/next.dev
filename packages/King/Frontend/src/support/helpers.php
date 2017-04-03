@@ -448,14 +448,16 @@ if ( ! function_exists('getSlugRemainDay')) {
      */
     function getSlugRemainDay() {
         if ( ! is_null(user()->userProfile->slug_updated_at)) {
-            $now           = time();
-            $limitedDate   = config('frontend.dayLimitedToChangeSlug');
+            $now           = new \DateTime('now');
             $slugUpdatedAt = new \DateTime(user()->userProfile->slug_updated_at);
+            $limitedDate   = config('frontend.dayLimitedToChangeSlug');
             $slugUpdatedAt->modify("+{$limitedDate} days");
-            $updatedAt     = strtotime($slugUpdatedAt->format('Y-m-d h:i:s'));
-            $datediff      = $updatedAt - $now;
             
-            return floor($datediff / (60 * 60 * 24));
+            if ($slugUpdatedAt <= $now) {
+                return 0;
+            }
+            
+            return $slugUpdatedAt->diff(new \DateTime('now'))->days;
         }
         
         return 0;

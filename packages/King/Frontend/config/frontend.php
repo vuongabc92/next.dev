@@ -12,7 +12,7 @@ return [
     'avatarMaxFileSizeMessage' => 5,
     'coverMaxFileSize'         => 5000,
     'coverMaxFileSizeMessage'  => 5,
-    'dayLimitedToChangeSlug'   => 7,
+    'dayLimitedToChangeSlug'   => 8,
     'unavailableCVUrls'        => [
         'setting',
         'config'

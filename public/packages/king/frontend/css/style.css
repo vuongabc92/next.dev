@@ -1,80 +1,95 @@
-main.hallo {
-    width: 100%;
-    height: 100%;
+body.home {
+    background-repeat: no-repeat;
+}
+.home header {
     position: fixed;
-    background-position: center center;
-}
-.hallo .buttons {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    margin: 100px auto;
-}
-.buttons .hallo-btn {
-    position: absolute;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: solid 1px rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    left: 50%;
-    top: 50%;
-}
-.buttons .hallo-btn>b{
+    width: 100%;
+    height: 60px;
     float: left;
-    padding: 0 15px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
 }
-/*.buttons .hallo-login{
-    margin-left: 61px !important;
-}*/
-/*.buttons .hallo-btn:nth-child(2) {
-    margin-left: 12.5px !important;
-    margin-top: -138.5px !important;
+.home header nav {
+    width: 100%;
+    height: 34px;
+    float: left;
+    margin-top: 13px;
 }
-.buttons .hallo-btn:nth-child(3) {
-    margin-left: -87px !important;
-    margin-top: -135px !important;
+.home header nav .logo {
+    float: left;
 }
-.buttons .hallo-btn:nth-child(4) {
-    margin-left: -117.5px !important;
-    margin-top: -48.5px !important;
+.logo span {
+    width: 34px;
+    height: 34px;
+    float: left;
+    margin-left: -7px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
 }
-.buttons .hallo-btn:nth-child(5) {
-    margin-left: -119px !important;
-    margin-top: 25px !important;
+.logo span:first-child {
+    margin-left: 0;
 }
-.buttons .hallo-btn:nth-child(6) {
-    margin-left: -26.5px !important;
-    margin-top: 55.5px !important;
+.home header nav>ul {
+    float: right;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
-.buttons .hallo-btn:nth-child(7) {
-    margin-left: 35px !important;
-    margin-top: 27px !important;
+.home header nav>ul>li {
+    float: left;
+    margin-right: 20px;
+    display: inline;
 }
-.buttons .hallo-btn:nth-child(8) {
-    margin-left: 35px !important;
-    margin-top: 27px !important;
-}*/
-/*.buttons .hallo-explode{
-    margin-left: -87px !important;
-    margin-top: -135px !important;
+.home header nav>ul>li>a {
+    float: left;
+    text-decoration: none;
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 34px;
 }
-.buttons .hallo-wtf{
-    margin-left: -117.5px !important;
-    margin-top: -48.5px !important;
+.home header nav>ul>li>a:hover {
+    color: #eee;
 }
-.buttons .hallo-contact{
-    margin-left: -119px !important;
-    margin-top: 25px !important;
+.home header nav>ul>li>ul.language-dropdown-menu {
+    min-width: 110px;
+    margin-left: -26px;
 }
-.buttons .hallo-terms{
-    margin-left: -26.5px !important;
-    margin-top: 55.5px !important;
+.home-wrapper {
+    width: 400px;
+    height: 116px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -58px;
+    margin-left: -200px;
 }
-.buttons .hallo-privacy{
-    margin-left: 35px !important;
-    margin-top: 27px !important;
-}*/
+.home-wrapper .home-btn-group {
+    width: 100%;
+    float: left;
+}
+.home-wrapper .home-btn-group .btn-twice {
+    width: 100%;
+    float: left;
+}
+.home-btn-group .btn-twice a {
+    width: 198px;
+    float: left;
+}
+.home-btn-group .btn-twice a:last-child {
+    float: right;
+}
+.home-wrapper .btn-home {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: #666;
+    font-size: 17px;
+    line-height: 53px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+}
+.home-wrapper .btn-developer {
+    width: 100%;
+    float: left;
+    margin-top: 10px;
+}

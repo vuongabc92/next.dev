@@ -30,18 +30,18 @@ class ThemeController extends FrontController {
      * @param type $id
      */
     public function install(Request $request) {
-//        if ($request->ajax() && $request->isMethod('post')) {
-//            
-//            $id = (int) $request->get('id');
-//            
-//            if (Theme::find($id) !== null) {
-//                user()->userProfile->theme_id = $id;
-//                user()->userProfile->save();
-//                
-//                return pong(['message' => _t('saved')]);
-//            } 
-//            
-//            return pong(['message' => _t('oops')], _error(), 403);
-//        }
+        if ($request->ajax() && $request->isMethod('post')) {
+            
+            $id = (int) $request->get('theme_id');
+            
+            if (Theme::find($id) !== null) {
+                user()->userProfile->theme_id = $id;
+                user()->userProfile->save();
+                
+                return pong(['message' => _t('saved')]);
+            } 
+            
+            return pong(['message' => _t('oops')], _error(), 403);
+        }
     }
 }

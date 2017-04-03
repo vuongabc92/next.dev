@@ -1,25 +1,8 @@
 $.ajaxSetup({
     headers: {
        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
+    }
 });
-
-
-var radius = 200;
-var fields = $('.hallo-btn'), container = $('.buttons'), width = container.width()/2, height = container.height()/2;
-var angle = 0, step = (2*Math.PI) / fields.length;
-fields.each(function() {
-    var x = Math.round(width/2 + radius * Math.cos(angle) - $(this).width()/2);
-    var y = Math.round(height/2 + radius * Math.sin(angle) - $(this).height()/2);
-    
-    $(this).css({
-        left: (x*0.6) + 'px',
-        top: (y*0.6) + 'px'
-    });
-    angle += step;
-    //http://jsfiddle.net/LPh33/2046/
-});
-
 
 /**
  * AJAX upload file
@@ -60,7 +43,7 @@ AIM = {
         } else {
             var d = window.frames[id].document;
         }
-        //alert(d.location.href);
+        
         if (d.location.href == "about:blank")
             return;
         if (typeof (i.onComplete) == 'function') {
@@ -215,6 +198,107 @@ var message = {
     }
     
 };
+
+var HELPERS = {
+    messageBar: $('#messageBar'),
+    messageTxt: $('#messageTxt'),
+    
+    success: function(message) {
+        this.messageBar.removeClass('error').addClass('success');
+        this.display(message);
+    },
+    error: function(message) {
+        this.messageBar.removeClass('success').addClass('error');
+        this.display(message);
+    },
+    display: function(message) {
+        var msgBar  = this.messageBar,
+            timeOut = false;
+        
+        this.messageTxt.html(message);
+        msgBar.show();
+
+        timeOut = setTimeout(function(){
+            msgBar.hide();
+        }, 4000);
+
+        msgBar.on('click', function(){
+           $(this).hide();
+           clearTimeout(timeOut);
+        });
+
+        return timeOut;
+    }
+};
+
+var Message = function () {
+    
+}
+
++function ($) {
+    'use strict';
+
+    var Button = function (element, options) {
+        this.$element = $(element)
+        this.options  = $.extend({}, Button.DEFAULTS, options)
+        this.text     = this.$element.find('span')
+        this.image    = this.$element.find('img')
+        this.icon     = this.$element.find('i')
+    } 
+
+    Button.VERSION = '3.3.6'
+
+    Button.DEFAULTS = {
+        checkTimeout: 2000
+    }
+
+    Button.prototype.start = function() {
+        
+        this.text.hide()
+        this.image.show()
+        this.$element.prop('disabled', true)
+    }
+    
+    Button.prototype.finish = function() {
+        var $el  = this.$element
+        var icon = this.icon
+        var data = $el.data()
+        
+        if (data['finishedText']) {
+            this.text.html(data['finishedText'])
+        }
+        
+        this.image.hide()
+        this.text.show()
+        icon.show()
+        $el.prop('disabled', false)
+        
+        setTimeout(function () {
+           icon.hide();
+        }, this.options.checkTimeout);
+    }
+
+    function Plugin(option, _relatedTarget) {
+        
+        return this.each(function () {
+            var $this   = $(this)
+            var data    = $this.data('king.loading')
+            var options = $.extend({}, Button.DEFAULTS, $this.data(), typeof option == 'object' && option)
+            
+            if (!data) $this.data('king.loading', (data = new Button(this, options)))
+            
+            
+            
+            if (typeof option == 'string') data[option](_relatedTarget)
+            else if (options.state) data[options.state](_relatedTarget)
+            
+        })
+    }
+
+    $.fn.loading = Plugin
+    $.fn.loading.Constructor = Button
+
+}(jQuery);
 
 /**
  *  @name Required
@@ -2078,24 +2162,31 @@ message.error(response.message);
         init: function() {
         
             this.element.on('submit', function(){
-                var check   = $(this).find('button>i'),
-                    loading = $(this).find('button>img'),
-                    text    = $(this).find('button>span');
+                var btn  = $(this).find('button'),
+                    that = $(this);
                 
                 $.ajax({
-                    type: 'POST',
+                    type: 'post',
                     url: $(this).attr('action'),
-                    data: {id: $(this).find('[name=theme_id]')},
+                    data: $(this).serialize(),
                     beforeSend: function() {
-                        loading.show();
-                        text.hide();
+                        btn.loading('start');
+                        that.css({opacity: 1});
                     },
-                    success: function(){
-                        loading.hide();
-                        check.show();
-                        text.show();
+                    success: function(response){
+                        if (response.status === 'OK') {
+                            btn.loading('finish').removeClass('_btn-blue-navy').addClass('_btn-blue');
+                            that.parents('div').addClass('installed');
+                            $('<form><button type="button" class="' + that.find('button').attr('class') + '">' + that.find('button>span').html() + '</button></form>').insertAfter(that);
+                            that.remove();
+                        } else {
+                            btn.loading('stop');
+                        }
+                        
                     }
                 });
+                
+                return false;
             });
         },
         destroy: function() {
@@ -2125,65 +2216,3 @@ message.error(response.message);
     });
 
 }(jQuery, window));
-
-/**
- *  @name Hallo button
- *  @description
- *  @version 1.0
- *  @options
- *    option
- *  @events
- *    event
- *  @methods
- *    init
- *    publicMethod
- *    destroy
- */
-;
-(function($, window, undefined) {
-    var pluginName = 'hallo-btn';
-
-    function Plugin(element, options) {
-        this.element = $(element);
-        this.options = $.extend({}, $.fn[pluginName].defaults, options);
-        this.init();
-    }
-
-    Plugin.prototype = {
-        init: function() {
-            var btn      = this.element,
-                btnWidth = btn.width();
-            this.element.css({height: btnWidth});
-            
-            
-            
-//            this.element.css({height: btnWidth, 'margin-left': -(btnWidth/2), 'margin-top': -(btnWidth/2)});
-        },
-        destroy: function() {
-            $.removeData(this.element[0], pluginName);
-        }
-    };
-
-    $.fn[pluginName] = function(options, params) {
-        return this.each(function() {
-            var instance = $.data(this, pluginName);
-            if (!instance) {
-                $.data(this, pluginName, new Plugin(this, options));
-            } else if (instance[options]) {
-                instance[options](params);
-            } else {
-                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
-            }
-        });
-    };
-
-    $.fn[pluginName].defaults = {
-        option: 'value'
-    };
-
-    $(function() {
-        $('[data-' + pluginName + ']')[pluginName]();
-    });
-
-}(jQuery, window));
-

@@ -13,21 +13,47 @@
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/common.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/style.css') }}">
     </head>
-    <body>
-        <main class="hallo" style="background-image: url('{{ asset('packages/king/frontend/images/sohp-grid-resized.jpg') }}')">
-            <div class="container">
-                <section class="buttons">
-                    <button class="hallo-btn hallo-dev" data-hallo-btn><b>Developer</b></button>
-                    <button class="hallo-btn hallo-regsiter" data-hallo-btn><b>Register</b></button>
-                    <button class="hallo-btn hallo-login" data-hallo-btn><b>Login</b></button>
-                    <button class="hallo-btn hallo-explode" data-hallo-btn><b>Explode</b></button>
-                    <button class="hallo-btn hallo-wtf" data-hallo-btn><b>WTF</b></button>
-                    <button class="hallo-btn hallo-contact" data-hallo-btn><b>Contact</b></button>
-                    <button class="hallo-btn hallo-terms" data-hallo-btn><b>Terms</b></button>
-                    <button class="hallo-btn hallo-privacy" data-hallo-btn><b>Privacy</b></button>
+    <body class="home" style="background-image: url({{ asset('packages/king/frontend/images/home-bg.jpg') }})">
+        <header>
+            <div class="container-fluid">
+                <nav>
+                    <a href="#" class="logo">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </a>
+                    <ul>
+                        <li><a href="#">Explode</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">English <span class="caret"></span></a>
+                            <ul class="dropdown-menu language-dropdown-menu">
+                                <li><a href="#">Français</a></li>
+                                <li><a href="#">Tiếng Việt</a></li>
+                                <li><a href="#">Italiano</a></li>
+                                <li><a href="#">日本語</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="home-wrapper">
+                <section class="home-btn-group">
+                    <div class="btn-twice">
+                        <a href="{{ route('front_login') }}" class="btn-home _r2">Login</a>
+                        <a href="{{ route('front_login') }}" class="btn-home _r2">Register</a>
+                    </div>
+                    <a href="{{ route('front_developer') }}" class="btn-home btn-developer _r2"><i class="fa fa-code"></i> Developer</a>
                 </section>
             </div>
-        </main>
+        </div>
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->

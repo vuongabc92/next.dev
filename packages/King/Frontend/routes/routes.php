@@ -22,6 +22,8 @@ Route::group(['middleware' => ['web', 'auth:web']], function ($route) {
 
 Route::group(['middleware' => 'web'], function ($route) {
 
+    $route->get('developer', 'Auth\LoginController@showLoginForm')->name('front_developer');
+    
     // Authentication Routes.
     $route->get('login', 'Auth\LoginController@showLoginForm')->name('front_login');
     $route->post('login', 'Auth\LoginController@login')->name('front_login_post');

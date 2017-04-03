@@ -902,6 +902,12 @@ body {background-color:#f5f8fa;}
     background-color: rgba(245, 245, 245, 0.7);
     opacity: 0;
 }
+.theme-tree>li>div.installed>form {
+    opacity: 1;
+}
+.theme-tree>li>div.installed>form>button {
+    cursor: default;
+}
 .theme-tree>li>div>form>button {
     float: right;
     margin: 9px 15px 0 0;
