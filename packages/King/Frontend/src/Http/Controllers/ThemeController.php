@@ -16,7 +16,13 @@ class ThemeController extends FrontController {
      * @return void
      */
     public function index() {
-        $themes = Theme::all();
+        $currentThemeId = auth()->user()->userProfile->theme_id;
+        
+        if (null === $currentThemeId) {
+            $themes = Theme::all();
+        } else {
+            $themes = Theme::where('id', '!=', $currentThemeId)->get();
+        }
         
         return view('frontend::theme.index', [
             'themes' => $themes
@@ -43,5 +49,28 @@ class ThemeController extends FrontController {
             
             return pong(['message' => _t('oops')], _error(), 403);
         }
+    }
+    
+    public function themeDetails(Request $request) {
+        $themeId     = (int) $request->get('theme_id');
+        $theme       = Theme::find($themeId);
+        $userProfile = $theme->user->userProfile;
+        
+        if ( $theme !== null ) {
+            return pong(['data' => [
+                'theme_id'   => $theme->id,
+                'theme_name'  => $theme->name,
+                'screenshot'  => asset(config('frontend.themesFolder') . '/' . $theme->slug . '/screenshot.png'),
+                'version'     => 'Version ' . $theme->getJson()->version,
+                'description' => $theme->getJson()->description,
+                'created_at'  => $theme->createdAtFormat('M d, Y'),
+                'author'      => [
+                    'name'   => (empty($userProfile->first_name)) ? $theme->user->username : $userProfile->first_name . ' ' . $userProfile->last_name,
+                    'avatar' => $userProfile->avatar()
+                ]
+            ]]);
+        }
+        
+        return pong(['message' => _t('oops')], _error(), 403);
     }
 }

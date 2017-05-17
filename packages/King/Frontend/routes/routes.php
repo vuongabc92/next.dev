@@ -42,6 +42,7 @@ Route::group(['middleware' => 'web'], function ($route) {
     Route::get('/', ['as' => 'front_home', 'uses' => 'HomeController@index']);
     
     Route::get('themes', 'ThemeController@index')->name('front_themes');
+    Route::get('theme/popup_details', 'ThemeController@themeDetails')->name('front_theme_details');
     
     Route::get('{slug?}', 'ResumeController@index')->name('front_cv');
 });

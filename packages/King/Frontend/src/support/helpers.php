@@ -1,10 +1,4 @@
 <?php
-//use App\Models\Country;
-//use App\Models\City;
-//use App\Models\District;
-//use App\Models\Ward;
-//use App\Models\Gender;
-
 if ( ! function_exists('_t')) :
 
     /**
@@ -461,5 +455,11 @@ if ( ! function_exists('getSlugRemainDay')) {
         }
         
         return 0;
+    }
+}
+
+if ( ! function_exists('asset_img') ) {
+    function asset_img($file_name) {
+        return asset("packages/king/frontend/images/{$file_name}");
     }
 }

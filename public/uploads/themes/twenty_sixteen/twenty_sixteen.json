@@ -1,8 +1,7 @@
 {
-    "Theme Name": "Twenty Sixteen",
-    "Theme URL": "",
-    "Description": "Default theme for all NEXT user accounts.",
-    "Author": "The Next Team",
-    "Author URL": "",
-    "Version": "1.0"
+	"theme_name": "Twenty Sixteen",
+	"version": "1.0",
+	"author": "The Next Team",
+	"description": "Since I have published my new portfolio and brand identity I thought it was time to come up with a refreshed resume as well. Hope you guys like it =)",
+	"view_mode": "desktop|tablet"
 }

@@ -19,8 +19,7 @@ trait SaveSettings {
      * @return boolean|JSON
      */
     public function saveEmail(Request $request) {
-        
-        $validator = validator($request->all(), $this->_saveEmailValidateRules(), user()->getRegisterMessages());
+        $validator = validator($request->all(), $this->_saveEmailValidateRules(), $this->_saveEmailValidateMessages());
         $validator->after(function($validator) use($request) {
             if ( ! Hash::check($request->get('password'), user()->password)) {
                 $validator->errors()->add('password', _t('auth.login.pass_wrong'));
@@ -442,6 +441,16 @@ trait SaveSettings {
         return [
             'email'    => 'required|email|max:128|unique:users,email,' . user_id() . ',id', 
             'password' => 'required'
+        ];
+    }
+    
+    public function _saveEmailValidateMessages() {
+        return [
+            'email.required'    => _t('register.email.req'),
+            'email.email'       => _t('register.email.email'),
+            'email.max'         => _t('register.email.max'),
+            'email.unique'      => _t('register.email.uni'),
+            'password.required' => _t('register.pass.req'),
         ];
     }
     

@@ -3,6 +3,7 @@
 return [
     'defaultThemeName'         => 'twenty_sixteen',   
     'uploadsFolder'            => 'uploads',
+    'themesFolder'            =>  'uploads/themes',
     'avatarsFolder'            => 'uploads/avatars',
     'avatarDefault'            => 'uploads/avatars/__default.jpg',
     'coversFolder'             => 'uploads/covers',

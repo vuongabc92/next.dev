@@ -141,99 +141,43 @@ $('.skill-suggestion').on('click', 'li', function(){
     $('.skill-suggestion').hide();
 });
 
-function showMessage(message, error) {
-
-    var msgBlock = $('.setting-messages'),
-        msgText  = $('#message');
-    
-    if (error === 'success') {
-        msgBlock.removeClass('error').addClass('success');
-    } else {
-        msgBlock.removeClass('success').addClass('error');
-    }
-    
-    msgText.html(message);
-    msgBlock.show();
-    
-    var showErrorMsg = setTimeout(function(){
-        msgBlock.hide();
-    }, 4000);
-
-    msgBlock.on('click', function(){
-       $(this).hide();
-       clearTimeout(showErrorMsg);
-    });
-    
-    return showErrorMsg;
-}
-
-var message = {
-    messageBar: $('#messageBar'),
-    messageTxt: $('#messageTxt'),
-    success: function(message) {
-        this.messageBar.removeClass('error').addClass('success');
-        this.display(message);
-    },
-    error: function(message) {
-        this.messageBar.removeClass('success').addClass('error');
-        this.display(message);
-    },
-    display: function(message) {
-        var msgBar  = this.messageBar,
-            timeOut = false;
-        
-        this.messageTxt.html(message);
-        msgBar.show();
-
-        timeOut = setTimeout(function(){
-            msgBar.hide();
-        }, 4000);
-
-        msgBar.on('click', function(){
-           $(this).hide();
-           clearTimeout(timeOut);
-        });
-
-        return timeOut;
-    }
-    
-};
-
 var HELPERS = {
-    messageBar: $('#messageBar'),
-    messageTxt: $('#messageTxt'),
-    
-    success: function(message) {
-        this.messageBar.removeClass('error').addClass('success');
-        this.display(message);
-    },
-    error: function(message) {
-        this.messageBar.removeClass('success').addClass('error');
-        this.display(message);
-    },
-    display: function(message) {
-        var msgBar  = this.messageBar,
-            timeOut = false;
-        
-        this.messageTxt.html(message);
-        msgBar.show();
+    message: {
+        messageBar: $('#alertBar'),
+        messageTxt: $('#alertText'),
+        success: function(message) {
+            this.messageBar.removeClass('alert-danger').addClass('alert-success');
+            this.display(message);
+        },
+        error: function(message) {
+            this.messageBar.removeClass('alert-success').addClass('alert-danger');
+            this.display(message);
+        },
+        display: function(message) {
+            this.messageTxt.html(message);
+            this.messageBar.show(300).removeClass('out').addClass('in');
+            this.hide();
+        },
+        hide: function() {
+            var that = this;
+            
+            setTimeout(function() {
+                that.fade(that.messageBar);
+            }, 4000);
 
-        timeOut = setTimeout(function(){
-            msgBar.hide();
-        }, 4000);
-
-        msgBar.on('click', function(){
-           $(this).hide();
-           clearTimeout(timeOut);
-        });
-
-        return timeOut;
+            that.messageBar.on('click', function() {
+               that.fade($(this));
+            });
+        },
+        fade: function(alertBar) {
+            alertBar.removeClass('in').addClass('out');
+               
+            setTimeout(function(){
+                alertBar.hide();
+            }, 300);
+        }
     }
 };
-
-var Message = function () {
-    
-}
 
 +function ($) {
     'use strict';
@@ -241,22 +185,40 @@ var Message = function () {
     var Button = function (element, options) {
         this.$element = $(element)
         this.options  = $.extend({}, Button.DEFAULTS, options)
-        this.text     = this.$element.find('span')
-        this.image    = this.$element.find('img')
-        this.icon     = this.$element.find('i')
+        
+        var data = this.$element.data()
+        var label = this.$element.html()
+        
+        this.$element.html(options.hmtl)
+        
+        this.text  = this.$element.find('span')
+        this.image = this.$element.find('img')
+        this.icon  = this.$element.find('i')
+        
+         if ( ! data['loading']) {
+            this.image.attr('src', options.loading)
+        }
+        
+        this.text.html(label)
     } 
 
     Button.VERSION = '3.3.6'
 
     Button.DEFAULTS = {
-        checkTimeout: 2000
+        checkTimeout: 2000,
+        hmtl: '<img class="_dn" src="/packages/king/frontend/images/loading_blue_navy_24x24.gif" /><i class="fa fa-check _dn"></i> <span></span>'
     }
 
     Button.prototype.start = function() {
-        
         this.text.hide()
         this.image.show()
         this.$element.prop('disabled', true)
+    }
+    
+    Button.prototype.stop = function() {
+        this.text.show()
+        this.image.hide()
+        this.$element.prop('disabled', false)
     }
     
     Button.prototype.finish = function() {
@@ -267,7 +229,7 @@ var Message = function () {
         if (data['finishedText']) {
             this.text.html(data['finishedText'])
         }
-        
+
         this.image.hide()
         this.text.show()
         icon.show()
@@ -286,9 +248,7 @@ var Message = function () {
             var options = $.extend({}, Button.DEFAULTS, $this.data(), typeof option == 'object' && option)
             
             if (!data) $this.data('king.loading', (data = new Button(this, options)))
-            
-            
-            
+            if (option === undefined) data['start'](_relatedTarget)
             if (typeof option == 'string') data[option](_relatedTarget)
             else if (options.state) data[options.state](_relatedTarget)
             
@@ -496,7 +456,7 @@ var Message = function () {
                         if (response.status === SETTINGS.AJAX_OK) {
                             avatar.children('.avatar-img').attr('src', response.avatar_medium);
                         } else {
-                            showMessage(response.message, 'error');
+                            HELPERS.message.error(response.message)
                         }
                         
                         editBtn.removeClass('show-edit-btn');
@@ -582,7 +542,7 @@ var Message = function () {
                         if (response.status === SETTINGS.AJAX_OK) {
                             cover.css('background-image', 'url(' + response.cover_medium + ')');
                         } else {
-                            showMessage(response.message, 'error');
+                            HELPERS.message.error(response.message);
                         }
                         
                         editBtn.removeClass('show-edit-btn');
@@ -812,11 +772,8 @@ var Message = function () {
                 
                 e.preventDefault();
                 
-                var submitBtn   = current.find(':submit'),
-                    submitLabel = submitBtn.html(),
-                    require     = that.require(),
-                    loadSrc     = (submitBtn.hasClass('_btn-blue-navy')) ? SETTINGS.LOADING_BLUE_NAVY_24 : SETTINGS.LOADING_GRAY_24,
-                    loadingImg  = '<img class="loading-inbtn" src="' + loadSrc + '" />';
+                var submitBtn = current.find(':submit'),
+                    require   = that.require();
                     
                 if ( ! require) {
                     return false;
@@ -830,7 +787,7 @@ var Message = function () {
                     data: current.serialize(),
                     dataType: 'json',
                     beforeSend: function(){
-                        submitBtn.html(loadingImg);
+                        submitBtn.loading();
                     },
                     success: function(response){
                         var formType = current.find('[name="type"]').val();
@@ -925,12 +882,9 @@ var Message = function () {
                             }
                         }
                         
-//                        showMessage(response.message, 'success');
-                        message.success(response.message);
-                        submitBtn.attr('disabled', false);
-                        submitBtn.html('<i class="fa fa-check"></i>');
+                        HELPERS.message.success(response.message);
+                        submitBtn.loading('finish');
                         setTimeout(function(){
-                            submitBtn.html(submitLabel);
                             if (formType !== '_EMPLOYMENT' || formType === '_EDUCATION') { 
                                 current.find('button[type=reset]').click();
                             }
@@ -941,15 +895,10 @@ var Message = function () {
                         }
                     },
                     error: function(xhr, status, error) {
-                        if (xhr.status === 500) {
-                            submitBtn.attr('disabled', false);
-                            submitBtn.html(submitLabel);
-                        }
+                        submitBtn.loading('stop');
                         var response = $.parseJSON(xhr.responseText);
-//                        showMessage(response.message, 'error');
-message.error(response.message);
-                        submitBtn.attr('disabled', false);
-                        submitBtn.html(submitLabel);
+                        HELPERS.message.error(response.message);
+                        
                     }
                 });
                 
@@ -2163,31 +2112,119 @@ message.error(response.message);
         
             this.element.on('submit', function(){
                 var btn  = $(this).find('button'),
-                    that = $(this);
+                    that = $(this),
+                    form = btn.parent('form');
                 
                 $.ajax({
                     type: 'post',
                     url: $(this).attr('action'),
                     data: $(this).serialize(),
                     beforeSend: function() {
-                        btn.loading('start');
+                        btn.loading();
                         that.css({opacity: 1});
                     },
                     success: function(response){
                         if (response.status === 'OK') {
-                            btn.loading('finish').removeClass('_btn-blue-navy').addClass('_btn-blue');
-                            that.parents('div').addClass('installed');
-                            $('<form><button type="button" class="' + that.find('button').attr('class') + '">' + that.find('button>span').html() + '</button></form>').insertAfter(that);
-                            that.remove();
+                            btn.loading('finish');
+                            form.removeAttr('action').removeAttr('method').removeAttr('data-install-theme').find('input').remove()
+                            form.find('button').attr('type', 'button').css({cursor: 'default'});
                         } else {
                             btn.loading('stop');
                         }
-                        
+                    },
+                    error: function(xhr, status, error) {
+                        btn.loading('stop');
+                        HELPERS.message.error($.parseJSON(xhr.responseText).message);
                     }
                 });
                 
                 return false;
             });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Theme Details
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'theme-details';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            
+            var that = this;
+        
+            this.element.on('click', function(){
+                
+                var url      = $(this).parents('ol').data('theme-details-url'),
+                    theme_id = $(this).attr('data-theme-id'),
+                    modal    = $('#themeDetailsModal');
+                
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data: {theme_id: theme_id},
+                        success: function(response) {
+                            var data = response.data;
+                            that.fillModal(modal, data);
+                            
+                            modal.modal('show');
+                        }
+                    });
+            });
+        },
+        fillModal: function(modal, data) {
+            modal.find('#themeAuthorAvatar').find('img').attr('src', data.author.avatar);
+            modal.find('#themeScreenshot').find('img').attr('src', data.screenshot);
+            modal.find('#themeDetailsHeader').find('.theme-by a').html(data.author.name);
+            modal.find('#themeDetailsHeader').find('.theme-date span').html(data.created_at);
+            modal.find('#themeDetailsHeader').find('#themeVersion').html(data.version);
+            modal.find('#themeDetailsHeader').find('#themeName').html(data.theme_name);
+            modal.find('#themeDesc').html(data.description);
+            modal.find('#themeAction').find('input[name=theme_id]').val(data.theme_id);
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

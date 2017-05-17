@@ -25,7 +25,7 @@ class LoginController extends FrontController {
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/settings';
 
     /**
      * Create a new controller instance.

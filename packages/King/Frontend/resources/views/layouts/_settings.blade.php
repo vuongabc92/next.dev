@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Bui Thanh Vuong - Next</title>
+        <title>:)</title>
         <meta charset="UTF-8">
         <meta id="viewport" name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
         <meta name="msapplication-tap-highlight" content="no"/>
@@ -64,11 +64,10 @@
                 </div>
             </div>
             
-            <div class="message-bar _dn" id="messageBar">
+            <div class="alert-bar alert fade out" role="alert" id="alertBar">
+                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="container">
-                    <div class="_fl col-md-9 col-xs-12">
-                        <b class="_fl _fs13 message-txt" id="messageTxt"></b>
-                    </div>
+                    <span class="_fs13 _fwb" id="alertText"></span>
                 </div>
             </div>
         </main>

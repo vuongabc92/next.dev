@@ -52,4 +52,22 @@ class UserProfile extends Base {
     public function ward() {
         return $this->belongsTo('App\Models\Ward');
     }
+    
+    public function avatar($size = 'small') {
+        $avatars           = unserialize($this->avatar_image);
+        $avatarDefault     = config('frontend.avatarDefault');
+        $avatarStoragePath = config('frontend.avatarsFolder');
+        $avatarSizes       = config('frontend.avatarSizes');
+        
+        return isset($avatars[$avatarSizes[$size]['w']]) ? $avatarStoragePath . '/' . $avatars[$avatarSizes[$size]['w']] : $avatarDefault;
+    }
+    
+    public function cover($size = 'small') {
+        $cover               = unserialize($this->cover_image);
+        $coverDefault        = config('frontend.coverDefault');
+        $coverStoragePath    = config('frontend.coversFolder');
+        $coverSizes          = config('frontend.coverSizes');
+        
+        return isset($cover[$coverSizes[$size]['w']])   ? $coverStoragePath . '/' . $cover[$coverSizes[$size]['w']]    : $coverDefault;
+    }
 }

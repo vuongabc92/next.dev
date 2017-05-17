@@ -30,22 +30,11 @@ class SettingsController extends FrontController {
      * @return Response
      */
     public function index() {
-        $coverSizes          = config('frontend.coverSizes');
-        $avatarSizes         = config('frontend.avatarSizes');
-        $avatarStoragePath   = config('frontend.avatarsFolder');
-        $coverStoragePath    = config('frontend.coversFolder');
-        $avatarDefault       = config('frontend.avatarDefault');
-        $coverDefault        = config('frontend.coverDefault');
-        
         $genders             = ['' => _t('setting.profile.sextell')];
         $maritalStatuses     = ['' => _t('setting.profile.marital')];
         $availableSocial     = ['' => _t('setting.profile.social_selector')] + config('frontend.availableSocial');
         
         $userProfile         = is_null(user()->userProfile) ? new UserProfile() : user()->userProfile;
-        $avatar              = unserialize($userProfile->avatar_image);
-        $cover               = unserialize($userProfile->cover_image);
-        $avatarMedium        = isset($avatar[$avatarSizes['small']['w']]) ? $avatarStoragePath . '/' . $avatar[$avatarSizes['small']['w']] : $avatarDefault;
-        $coverMedium         = isset($cover[$coverSizes['small']['w']])   ? $coverStoragePath . '/' . $cover[$coverSizes['small']['w']]    : $coverDefault;
         $genderName          = Gender::find($userProfile->gender_id);
         $countries           = Country::where('id', 237)->pluck('country_name', 'id')->toArray();
         $cities              = $this->_getCityByCountryId($userProfile->country_id, $toArray = true);
@@ -68,8 +57,8 @@ class SettingsController extends FrontController {
         
         return view('frontend::settings.index', [
             'userProfile'         => $userProfile,
-            'avatarMedium'        => $avatarMedium,
-            'coverMedium'         => $coverMedium,
+            'avatarMedium'        => $userProfile->avatar(),
+            'coverMedium'         => $userProfile->cover(),
             'genders'             => $genders,
             'gender'              => ( ! is_null($genderName)) ? $genderName->gender_name : null,
             'countries'           => ['' => _t('setting.profile.country')] + ((count($countries)) ? $countries : []),

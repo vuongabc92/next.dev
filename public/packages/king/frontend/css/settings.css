@@ -238,7 +238,6 @@ body {background-color:#f5f8fa;}
     width: 100%;
     float: left;
     height: 34px;
-    line-height: 34px;
     border: solid 1px #d5d5d5;
     outline: none;
     padding: 0 10px;
@@ -264,28 +263,34 @@ body {background-color:#f5f8fa;}
     border-radius: 2px;
     color: #777;
 }
-.message-bar {
+.alert-bar {
     width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
     right:0;
-    opacity: 0.9;
+    color: #fdfdfd;
+    border-radius: 0;
+    margin-bottom: 0;
+    display: none;
 }
-.message-bar.error{
-    background-color: #f66;
+.alert-bar.alert-success {
+    background-color: #56bc8a;
+    border-color: #56bc8a;
 }
-.message-bar.success{
-    background-color: #41B584;
+.alert-bar.alert-danger {
+    background-color: #d95e40;
+    border-color: #d95e40;
 }
 
-.message-bar .message-txt {
-    height: 100%;
-    padding: 17px 0;
+.alert-bar button.close {
     color: #fdfdfd;
+    top: 0;
+    opacity: .6;
 }
-.message-bar .close {
-    position: relative;
+.alert-bar button.close:hover {
+    color: #fdfdfd;
+    opacity: .9;
 }
 .settings-last-row {
     border-bottom: none;
@@ -801,128 +806,245 @@ body {background-color:#f5f8fa;}
 }
 .theme-filter-bar {
     width: 100%;
-    height: 60px;
+    height: 52px;
     float: left;
     margin-bottom: 30px;
     padding: 0 15px;
     background-color: #fff;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border: solid 1px #e5e5e5;
+    border: solid 1px #eee;
     
 }
 .theme-filter-bar .theme-search-frm {
+    width: 35%;
     float: right;
-    height: 58px;
+    height: 100%;
     padding-left: 15px;
-    border-left: solid 1px #e5e5e5;
+    border-left: solid 1px #eee;
 }
 .theme-filter-bar .theme-search-frm>.theme-search-txt {
-    width: 300px;
+    width: 100%;
     float: left;
-    margin-top: 13px;
-    height: 34px;
-    line-height: 34px;
+    height: 100%;
     outline: none;
     border: none;
     font-size: 13px;
     font-weight: bold;
     color: #666;
 }
-.theme-tree>li{
-    width: 31.95876288659794%;
+.theme-filter-elements {
+    width: 65%;
     float: left;
-    margin-right: 2.061855670103093%;
-    margin-bottom: 2.061855670103093%;
 }
-.theme-tree>li:nth-child(3n){
+.theme-filter-elements ul{
+    width: 100%;
+    float: left;
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+}
+.theme-filter-elements ul li{
+    float:left;
+    margin-right: 20px;
+    display: inline;
+}
+.theme-filter-elements ul li:last-child {
     margin-right: 0;
 }
-.theme-tree>li>div{
+.theme-filter-elements ul li>* {
+    float:left;
+    display: inline-block;
+    line-height: 35px;
+    height: 35px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+}
+.theme-filter-elements ul li span {
+    background-color: #ddd;
+    padding: 0 15px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+}
+.theme-filter-elements ul li a {
+    text-decoration: none;
+}
+.theme-filter-elements ul li a:hover {
+    color: #007aff;
+}
+.theme-filter-elements ul li.active>a {
+    border-bottom: solid 2px;
+    color: #007aff;
+}
+.theme-tree>li {
+    width: calc(100% / 4 - 23px);
+    float: left;
+    margin: 0 30px 30px 0;
+}
+.theme-tree>li:nth-child(4n) {
+    margin-right: 0;
+}
+.theme-tree>li>div.theme-leaf {
     width: 100%;
-    height: 250px;
     float: left;
     background-color: #fff;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    overflow: hidden;
     position: relative;
-    border: 1px solid #dedede;
-    -webkit-box-shadow: 0 1px 1px -1px rgba(0,0,0,0.1);
-    box-shadow: 0 1px 1px -1px rgba(0,0,0,0.1);
-    box-sizing: border-box;
-    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
 }
-.theme-tree>li>div>a>.theme-screenshot>img{
+.theme-tree li .theme-screenshot {
     width: 100%;
+    float: left;
+    padding: 10px;
+    outline: none;
+    position: relative;
+}
+.theme-counting-bar {
+    width: 100%;
+    float: left;
+    list-style: none;
+    padding: 0 10px 7px 10px;
+}
+.theme-counting-bar>li{
+    float: right;
+    display: inline;
+    margin-left: 15px;
+    color: #888;
+    font-size: 13px;
+}
+.theme-counting-bar>li>span{
+    font-size: 11px;
+}
+.theme-view-mode {
     position: absolute;
+    list-style: none;
+    padding: 0 5px;
+    right: 15px;
+    top: 15px;
+    background-color: #fff;
+    border-radius: 2px;
+}
+.theme-view-mode>li {
+    float: left;
+    display: inline;
+    margin-right: 5px;
+    color: #777;
+    line-height: 14px;
+    padding: 2px 0 1px 0;
+}
+.theme-view-mode>li:last-child {
+    margin-right: 0;
+}
+.theme-tree li .theme-screenshot:hover .theme-toggle-info {
+    display: block;
+}
+.theme-tree li .theme-screenshot:hover .theme-view-mode {
+    display: none;
+}
+.theme-toggle-info {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
     top: 0;
     left: 0;
+    background-color: rgba(255, 255, 255, .95);
 }
-.theme-tree>li>div>a>h3{
-    position: absolute;
+.theme-toggle-info strong {
     width: 100%;
-    height: 49px;
-    margin: 0;
-    bottom: 0;
-    left: 0;
-    background: #fff;
-    border-top: 1px solid #dedede;
-    font-size: 13px;
-    font-weight: bold;
+    float: left;
+    font-weight: 500;
+    font-size: 15px;
     color: #555;
-    line-height: 49px;
-    padding: 0 15px;
 }
-.theme-tree>li>div>a>span {
-    position: absolute;
-    height: 40px;
-    line-height: 40px;
-    width: 90px;
-    left: 50%;
-    top: 50%;
-    margin-left: -45px;
-    margin-top: -40px;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    color: #fff;
-    font-size: 13px;
-    font-weight: bold;
-    opacity: 0;
+.theme-toggle-info span {
+    width: 100%;
+    float: left;
+    margin-top: 7px;
+    font-size: 12px;
+    color: #777;
 }
-.theme-tree>li>div>form {
-    position: absolute;
+.modal-theme-details.in {
+    background-color: rgba(30,30,30,0.7);
+}
+.modal-theme-details .modal-content {
+    background: #f4f4f4;
+    box-shadow: none;
+    border: none;
+}
+.modal-theme-details .modal-body {
+    padding: 40px 50px;
+}
+.theme-details-header img {
+    width: 48px;
     height: 48px;
-    bottom: 0;
-    right: 0;
-    padding-left: 15px;
-    border-left: solid 1px #e5e5e5;
-    background-color: rgba(245, 245, 245, 0.7);
-    opacity: 0;
+    float: left;
+    margin-right: 10px;
 }
-.theme-tree>li>div.installed>form {
-    opacity: 1;
+.theme-details-header a:hover {
+    text-decoration: none;
+    color: #1e6189;
 }
-.theme-tree>li>div.installed>form>button {
-    cursor: default;
+.theme-details-header img:hover {
+    opacity: .9;
 }
-.theme-tree>li>div>form>button {
-    float: right;
-    margin: 9px 15px 0 0;
+.theme-details-header h1 {
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.5;
 }
-.theme-tree>li>div:hover form{
-    opacity: 1;
-    transition: opacity 0.2s ease-in-out;
+.theme-details-header h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: normal;
+    color: #999;
 }
-.theme-tree>li>div:hover a>span{
-    opacity: 1;
-    transition: opacity 0.2s ease-in-out;
+.theme-details-content {
+    margin-top: 30px;
 }
-.theme-tree>li>div:hover a>.theme-screenshot{
-    opacity: 0.5;
-    transition: opacity 0.2s ease-in-out;
+.theme-details-screenshot {
+    position: relative;
+    width: 100%;
+    min-height: 340px;
+    float: left;
+    padding: 20px;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+}
+.theme-details-screenshot img {
+    display: block;
+    width: 100%;
+}
+.theme-details-desc {
+    width: 100%;
+    float: left;
+    margin-top: 20px;
+    font-size: 17px;
+    color: #555;
+}
+.theme-details-meta {
+    width: 100%;
+    float: left;
+    margin-top: 15px;
+}
+.theme-details-actions .btn {
+    min-width: 90px;
+    float: left;
+}
+.theme-details-actions button {
+    margin-right: 10px;
+}
+.theme-details-version {
+    position: relative;
+    font-size: 10px;
+    top: -3px;
 }
 @media (min-width: 1000px) {
     .container {
