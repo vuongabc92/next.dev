@@ -750,7 +750,13 @@ class ThemeCompiler extends Compiler {
      * @return string
      */
     protected function compileBirthDay() {
-         return $this->resume->getDob();
+        if (null !== $this->resume->getDob()) {
+            $dob = new \DateTime($this->resume->getDob());
+            
+            return $dob->format('M d, Y');
+        }
+        
+        return '';
     }
     
     /**

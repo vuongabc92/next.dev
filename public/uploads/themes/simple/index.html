@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ FIRST_NAME }} {{ LAST_NAME }}</title>
+        <link rel="stylesheet" href="{{ ASSET }}/css/app.css">
+        <link rel="stylesheet" href="{{ ASSET }}/css/style.css">
+        <style>
+            @font-face{ 
+                font-family: 'calendas plus';
+                src: url('{{ ASSET }}/fonts/calendas-plus/calendas_plus-webfont.eot');
+                src: url('{{ ASSET }}/fonts/calendas-plus/calendas_plus-webfont.eot?#iefix') format('embedded-opentype'),
+                    url('{{ ASSET }}/fonts/calendas-plus/calendas_plus-webfont.woff') format('woff'),
+                    url('{{ ASSET }}/fonts/calendas-plus/calendas_plus-webfont.ttf') format('truetype'),
+                    url('{{ ASSET }}/fonts/calendas-plus/calendas_plus-webfont.svg#webfont') format('svg');
+            }
+        </style>
+    </head>
+
+    <body style="background-image: url('{{ ASSET }}/images/bg.png');">
+        <main>
+            <div class="wrapper">
+                <div class="left">
+                    <section class="header">
+                        <div class="avatar">
+                            <img src="{{ AVATAR_128 }}" />
+                        </div>
+                        <div class="name-job-address">
+                            <h1>{{ FIRST_NAME }} {{ LAST_NAME }}</h1>
+                            <h3>{{ EXPECTED_JOB }}</h3>
+                            <p><i class="fa fa-map-marker"></i> {{ CITY }}, {{ COUNTRY }}</p>
+                        </div>
+                    </section>
+                    <section class="title-content-row">
+                        <h2 class="title">Profile</h2>
+                        <div class="content">{{ ABOUT_ME }}</div>
+                    </section>
+                    <section class="title-content-row">
+                        <h2 class="title">Experience</h2>
+                        <div class="content border-left">
+                            {% foreach(experiences) %}
+                                <div class="timeline-container">
+                                    <h3 class="time-title">[[ POSITION ]] <span class="company-name">@[[ COMPANY_NAME ]]</span></h3>
+                                    <span class="time-point">[[ TIME ]]</span>
+                                    <p class="time-content">[[ DESCRIPTION ]]</p>
+                                </div>
+                            {% endforeach %}
+                            
+                        </div>
+                    </section>
+                    <section class="title-content-row">
+                        <h2 class="title">Education</h2>
+                        <div class="content border-left">
+                            {% foreach(education) %}
+                                <div class="timeline-container">
+                                    <h3 class="time-title">[[ COLLEGE_NAME ]]</h3>
+                                    <span class="time-point">[[ TIME ]]</span>
+                                    <p class="time-content">[[ SUBJECT ]] - [[ QUALIFICATION ]]</p>
+                                </div>
+                            {% endforeach %}
+                            
+                        </div>
+                    </section>
+                </div>
+                <div class="right">
+                    <section class="title-content-row">
+                        <h2 class="title">Skill</h2>
+                        <div class="content">
+                            <ul class="skill">
+                                {% foreach(skills) %}
+                                <li>
+                                    <h4 class="skill-title">[[ NAME ]]</h4>
+                                    <span class="skill-rate"><b class="rate-[[ RATES ]]"></b></span>
+                                </li>
+                                {% endforeach %}
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="title-content-row">
+                        <h2 class="title">Details</h2>
+                        <div class="content">
+                            <ul class="details">
+                                <li><i class="fa fa-calendar"></i><span>{{ BIRTHDAY }}</span></li>
+                                <li><i class="fa fa-envelope"></i><a class="email-address" href="mailto:{{ EMAIL }}">{{ EMAIL }}</a></li>
+                                <li><i class="fa fa-phone"></i><span>{{ PHONE_NUMBER }}</span></li>
+                                <li><i class="fa fa-link"></i><a href="{{ WEBSITE }}">{{ WEBSITE }}</a></li>
+                                {% foreach(socials) %}
+                                    <li><i class="fa fa-[[ ICON ]]"></i> <a href="http://[[ LINK ]]" target="_blank">[[ LINK ]]</a></li>
+                                {% endforeach %}
+                            </ul>
+                        </div>
+                    </section>
+                    
+                    <section class="title-content-row">
+                        <h2 class="title">Interest</h2>
+                        <div class="content">
+                            {{ HOBBIES }}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </body>
+
+</html>
