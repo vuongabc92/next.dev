@@ -875,7 +875,7 @@ var HELPERS = {
                                 $('#social-modal').modal('hide');
                                 
                                 $.each(data.socials, function(k, v){
-                                    html = html + '<li><a href="' + v['link'] + '" target="_blank"><i class="' + v['icon'] + '"></i></a><span class="kill-social" data-kill-id="' + k + '" >&times;</span></li>';
+                                    html = html + '<li><a href="' + v['link'] + '" target="_blank"><i class="fa fa-' + v['icon'] + '"></i></a><span class="kill-social" data-kill-id="' + k + '" >&times;</span></li>';
                                 });
                                 html = html + '<li><a href="#" onclick="$(\'#social-modal\').modal(\'show\');"><i class="fa fa-plus"></i></a></li>';
                                 $('.social-added-list ul').html(html);

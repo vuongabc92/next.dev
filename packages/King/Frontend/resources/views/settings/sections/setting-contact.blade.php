@@ -44,7 +44,7 @@
                         @if(count($socialList))
                             @foreach($socialList as $id => $one)
                             <li>
-                                <a href="{{ $one['link'] }}" target="_blank"><i class="{{ (isset($one['icon'])) ? $one['icon'] : '' }}"></i></a>
+                                <a href="{{ $one['link'] }}" target="_blank"><i class="fa fa-{{ (isset($one['icon'])) ? $one['icon'] : '' }}"></i></a>
                                 <span class="kill-social" data-kill-id="{{ $id }}" >&times;</span>
                             </li>
                             @endforeach

@@ -1,3 +1,8 @@
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
 body {
     background-color: #efefef;
     padding: 0;
@@ -22,27 +27,36 @@ main {
     width: 100%;
     float: left;
     text-align: center;
+    padding-top: 60px;
 }
-.header h1.name {
-    margin: 60px 0 30px 0;
-    color: #555;
-    text-transform: uppercase;
+.header>h1 {
+    width: 100%;
+    float: left;
+    margin-bottom: 40px;
+    font-size: 34px;
 }
-.header h1.name span{
+.header>h1>span {
     padding: 10px 45px 9px 45px;
-    border: solid 2px #888;
-    -webkit-border-radius: 2px;
+    border: solid 2px #555;
     border-radius: 2px;
-}
-.header .job-title {
-    color: #666;
+    -webkit-border-radius: 2px;
+    color: #444;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    font-size: 14px;
 }
-.header .avatar-box {
+.header h3 {
+    color: #555;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.header .avatar-mobile {
+    display: none;
+}
+.header .avatar {
     width: 140px;
     height: 140px;
-    margin: 15px auto;
+    margin: 20px auto;
     border-radius: 50%;
     -webkitborder-radius: 50%;
     padding: 9px;
@@ -50,79 +64,85 @@ main {
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
-.header .avatar-box img{
+.header .avatar img{
     width: 100%;
     height: 100%;
     float: left;
     border-radius: 50%;
 }
-.resume-container {
+
+.resume-tree {
     width: 100%;
     float: left;
     position: relative;
     margin-top: 20px;
 }
-.resume-content {
+.resume-wrapper {
     width: 100%;
     float: left;
 }
-.resume-content:before {
+.resume-wrapper:before {
+    position: absolute;
     width: 4px;
     height: 100%;
     top: 0;
     left: 50%;
     margin-left: -2px;
     background: #ccc;
-    position: absolute;
     content: '';
 }
-.resume-body {
-    width: 100%;
-    float: left;
-}
-.resume-left-container {
+.resume-wrapper .left {
     width: 50%;
     float: left;
-}
-.resume-left {
-    float: right;
-    text-align: right;
     padding: 0 30px 0 40px;
+    text-align: right;
 }
-.resume-right-container {
+.resume-wrapper .right {
     width: 50%;
-    float: right;
-}
-.resume-right {
     float: left;
-    text-align: left;
     padding: 0 40px 0 30px;
 }
-.resume-left section, .resume-right section {
+.resume-wrapper section {
     width: 100%;
+    float: left;
+    margin-bottom: 50px;
 }
-.section-title {
+.resume-wrapper section:last-child {
+    margin-bottom: 0;
+}
+section>.title {
+    width: 100%;
+    float: left;
     text-transform: uppercase;
     color: #444;
     font-size: 20px;
-    margin: 0 0 25px 0;
+    margin: 0 0 30px 0;
+}
+section>.content {
+    width: 100%;
+    float: left;
+    font-size: 17px;
+    color: #555;
 }
 .time-box {
     width: 100%;
     float: left;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
+}
+.time-box:last-child {
+    margin-bottom: 0;
 }
 .time-box .time-period {
     width: 100%;
     float: right;
-    font-size: 13px;
+    font-size: 15px;
     color: #777;
     margin: 0 0 10px 0;
 }
 .time-box .time-title {
     width: 100%;
     float: right;
-    color: #555;
+    font-size: 18px;
 }
 .time-box .time-subtitle {
     width: 100%;
@@ -135,25 +155,21 @@ main {
     width: 100%;
     float: right;
     color: #666;
-}
-section.skill {
-    float: left;
-    margin-top: 10px;
+    font-size: 17px;
 }
 .skill-line {
     width: 100%;
     float: left;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
 }
 .skill-line .skill-name {
-    width: 35%;
+    width: 40%;
     float: left;
     display: inline;
-    color: #444;
 }
 
 .skill-line .skill-rates {
-    width: 150px;
+    width: 60%;
     height: 4px;
     background-color: #d5d5d5;
     float: left;
@@ -161,51 +177,42 @@ section.skill {
     margin-top: 8px;
 }
 .skill-line .skill-rates b {
-    width: 100%;
     height: 4px;
     float: left;
     background-color: #888;
 }
-section.skill .skill-line .skill-rates-1 b{
+.skill-rates-1 b{
     width: 20%;
 }
-section.skill .skill-line .skill-rates-2 b{
+.skill-rates-2 b{
     width: 40%;
 }
-section.skill .skill-line .skill-rates-3 b{
+.skill-rates-3 b{
     width: 60%;
 }
-section.skill .skill-line .skill-rates-4 b{
+.skill-rates-4 b{
     width: 80%;
 }
-section.skill .skill-line .skill-rates-5 b{
+.skill-rates-5 b{
     width: 100%;
 }
 
-section.contact {
-    float: left;
-    margin-top: 30px;
-}
 .contact-row {
     width: 100%;
     float: left;
-    margin-bottom: 3px;
+    font-size: 17px;
+    margin-bottom: 5px;
 }
 .contact-row i {
-    width: 25px;
+    width: 30px;
 }
 .contact-row.break {
     margin-bottom: 15px;
 }
 .address {
-    color: #555;
-    font-size: 13px;
+    color: #333;
+    font-size: 17px;
     margin-bottom: 13px;
-}
-section.about {
-    width: 100%;
-    float: left;
-    margin-top: 10px;
 }
 .about-content {
     color: #555;
@@ -213,7 +220,7 @@ section.about {
 .social-list {
     width: 100%;
     float: left;
-    margin: 12px 0;
+    margin: 20px 0;
     padding: 0;
     list-style: none;
 }
@@ -231,5 +238,82 @@ section.about {
     color: #f66;
 }
 .social-list li a i{
-    width: 25px;
+    width: 30px;
+}
+
+@media screen and (max-width: 1024px) {
+    body {
+        background-color: #fff;
+    }
+    main {
+        width: 100%;
+        float: left;
+    }
+    .wrapper {
+        margin: 0;
+        padding: 30px 20px;
+    }
+    .header {
+        padding-top: 40px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        padding: 30px;
+    }
+    .resume-wrapper .left, .resume-wrapper .right {
+        width: 100%;
+        float: left;
+        text-align: left;
+        padding: 0;
+    }
+    .resume-wrapper .right {
+        margin-top: 50px;
+    }
+    .header{
+        text-align: left;
+        padding-top: 0;
+        margin-bottom: 20px;
+        border-bottom: solid 1px #ccc;
+    }
+    .header>h1 {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+    .header h3 {
+        font-size: 20px;
+    }
+    .resume-wrapper:before {
+        content: none;
+    }
+    .header .avatar {
+        display: none;
+    }
+    .header .avatar-mobile {
+        width: 115px;
+        height: 115px;
+        display: block;
+        margin: 0;
+    }
+    .header>h1>span {
+        font-size: 24px;
+        letter-spacing: 1px;
+    }
+    .header>h1>span {
+        border: none;
+        padding: 0;
+    }
+    .header h3 {
+        font-size: 15px;
+        padding-bottom: 10px;
+    }
+    section.education {
+        margin-top: 50px;
+    }
+}
+@media screen and (max-width: 680px) {
+    .wrapper {
+        padding: 20px;
+    }
 }

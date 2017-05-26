@@ -273,6 +273,7 @@ body {background-color:#f5f8fa;}
     border-radius: 0;
     margin-bottom: 0;
     display: none;
+    z-index: 9999;
 }
 .alert-bar.alert-success {
     background-color: #56bc8a;

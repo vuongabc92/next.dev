@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{{ FIRST_NAME }} {{ LAST_NAME }}</title>
         <link rel="stylesheet" href="{{ ASSET }}/css/app.css">
         <link rel="stylesheet" href="{{ ASSET }}/css/style.css">
@@ -14,10 +15,13 @@
                     url('{{ ASSET }}/fonts/calendas-plus/calendas_plus-webfont.ttf') format('truetype'),
                     url('{{ ASSET }}/fonts/calendas-plus/calendas_plus-webfont.svg#webfont') format('svg');
             }
+            body {
+                background-image: url('{{ ASSET }}/images/bg.png');
+            }
         </style>
     </head>
 
-    <body style="background-image: url('{{ ASSET }}/images/bg.png');">
+    <body>
         <main>
             <div class="wrapper">
                 <div class="left">

@@ -5,7 +5,7 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 main {
-    width: 1280px;
+    width: 1200px;
     margin: 100px auto;
 }
 .wrapper {
@@ -43,14 +43,14 @@ main {
 }
 .name-job-address h1 {
     margin: 0;
-    font-size: 38px;
+    padding-top: 3px;
     color: #555;
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 1px;
 }
 .name-job-address h3 {
-    margin: 12px 0 0 0;
+    margin: 10px 0 0 0;
     font-size: 20px;
     color: #cc506c;
 }
@@ -161,7 +161,7 @@ main {
 }
 .skill li .skill-rate {
     position: relative;
-    width: 300px;
+    width: 250px;
     float: left;
     height: 2px;
     background-color: #ddd;
@@ -188,6 +188,10 @@ main {
 }
 
 @media screen and (max-width: 1024px) {
+    body {
+        background-image: none !important;
+        background-color: #fff;
+    }
     main {
         width: 100%;
         float: left;
@@ -195,17 +199,89 @@ main {
     }
     .wrapper {
         margin-bottom: 0;
+        box-shadow: none;
     }
     .wrapper .left {
         padding: 50px;
-    }
-    .name-job-address h1 {
-        font-size: 36px;
     }
     .wrapper .right {
         padding: 35px 40px 80px 40px;
     }
     .skill li .skill-rate {
-        width: 200px;
+        width: 100%;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        margin-bottom: 50px;
+    }
+    .wrapper .left, .wrapper .right {
+        width: 100%;
+    }
+    .wrapper .left {
+        border-right: none;
+        padding-bottom: 40px;
+    }
+    .wrapper .right {
+        padding: 0 50px;
+    }
+    .name-job-address h1 {
+        font-size: 34px;
+    }
+    .title-content-row {
+        margin-bottom: 40px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .wrapper .left {
+        padding: 30px 15px 30px 15px;
+    }
+    .wrapper .right {
+        padding: 0 15px;
+    }
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+    .name-job-address {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 15px;
+    }
+    .name-job-address h1 {
+        font-size: 26px;
+    }
+    .header {
+        margin-bottom: 25px;
+    }
+    .title-content-row {
+        margin-bottom: 30px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .name-job-address h1 {
+        font-size: 24px;
+    }
+    .name-job-address h3 {
+        font-size: 18px;
+    }
+    .title-content-row .title {
+        font-size: 24px;
+    }
+    .timeline-container .time-title {
+        font-size: 18px;
+    }
+    .wrapper {
+        margin-bottom: 30px;
+    }
+}
+
+@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ }
+@media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
+@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
+@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
+@media (min-width:1281px) { /* hi-res laptops and desktops */ }
