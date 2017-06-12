@@ -7,12 +7,11 @@
         <link rel="stylesheet" href="{{ ASSET }}/css/app.css">
         <link rel="stylesheet" href="{{ ASSET }}/css/style.css">
     </head>
-
     <body>
         <main>
             <div class="wrapper">
-                <section class="header">
-                    <div class="name-avatar-job">
+                <header class="_fwfl">
+                    <div class="_fwfl name-avatar-job">
                         <img src="{{ AVATAR_128 }}" class="avatar"/>
                         <div class="name-job">
                             <h1>{{ FIRST_NAME }} {{ LAST_NAME }}</h1>
@@ -22,7 +21,7 @@
                     <div class="about">
                         {{ABOUT_ME}}
                     </div>
-                </section>
+                </header>
                 <section class="body">
                     <div class="left">
                         <section class="content-box experience">
@@ -32,10 +31,10 @@
                                     <div class="time-box">
                                         <div class="time-title">
                                             <h4>[[ POSITION ]]</h4>
-                                            <span>[[ TIME ]]</span>
+                                            <span>[[ TIME_LETTER ]]</span>
                                         </div>
                                         <div class="time-content">
-                                            <h4><span>@</span>[[ COMPANY_NAME ]] - </h4>
+                                            <h4>@[[ COMPANY_NAME ]] - </h4>
                                             <p>[[ DESCRIPTION ]]</p>
                                         </div>
                                     </div>
@@ -51,10 +50,10 @@
                                     <div class="time-box">
                                         <div class="time-title">
                                             <h4>[[ SUBJECT ]]</h4>
-                                            <span>[[ TIME ]]</span>
+                                            <span>[[ TIME_LETTER ]]</span>
                                         </div>
                                         <div class="time-content">
-                                            <h4>[[ COLLEGE_NAME ]]</h4>
+                                            <p>[[ COLLEGE_NAME ]]</p>
                                         </div>
                                     </div>
                                 {% endforeach %}
@@ -65,7 +64,10 @@
                             <div class="content">
                                 <ul class="skill-list">
                                     {% foreach(skills) %}
-                                         <li>[[ NAME ]]</li>
+                                        <li>
+                                            <span>[[ NAME ]]</span>
+                                            <b><i class="rate rate-[[ RATES ]]"></i></b>
+                                        </li>
                                     {% endforeach %}
                                 </ul>
                             </div>
@@ -76,17 +78,17 @@
                     <section class="content-box contact">
                         <h2 class="title">Contact</h2>
                         <div class="content">
-                            <ul class="contact-list">
+                            <ul class="_fwfl _lsn contact-list">
                                 <li>
                                     <span class="contact-info"><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span>
                                     <span class="contact-title">Email</span>
                                 </li>
                                 <li>
-                                    <span class="contact-info"><a href="tel:{{PHONE_NUMBER}}" style="color: #2e9394;">{{PHONE_NUMBER}}</a></span>
+                                    <span class="contact-info"><a href="tel:{{PHONE_NUMBER}}">{{PHONE_NUMBER}}</a></span>
                                     <span class="contact-title">Phone</span>
                                 </li>
                                 <li>
-                                    <span class="contact-info"><a href="{{WEBSITE}}">{{WEBSITE}}</a></span>
+                                    <span class="contact-info"><a href="{{WEBSITE}}" target="_blank">{{WEBSITE}}</a></span>
                                     <span class="contact-title">Website</span>
                                 </li>
                             </ul>

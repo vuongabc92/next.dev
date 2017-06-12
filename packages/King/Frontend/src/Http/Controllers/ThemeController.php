@@ -16,7 +16,8 @@ class ThemeController extends FrontController {
      * @return void
      */
     public function index() {
-        $currentThemeId = auth()->user()->userProfile->theme_id;
+
+        $currentThemeId = (auth()->check()) ? auth()->user()->userProfile->theme_id : null;
         
         if (null === $currentThemeId) {
             $themes = Theme::all();

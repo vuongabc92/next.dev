@@ -96,6 +96,7 @@ class ThemeCompiler extends Compiler {
      */
     protected $experienceProperties = [
         'TIME',
+        'TIME_LETTER',
         'COMPANY_NAME',
         'POSITION',
         'DESCRIPTION',
@@ -109,6 +110,7 @@ class ThemeCompiler extends Compiler {
      */
     protected $educationProperties = [
         'TIME',
+        'TIME_LETTER',
         'COLLEGE_NAME',
         'SUBJECT',
         'QUALIFICATION'
@@ -315,13 +317,19 @@ class ThemeCompiler extends Compiler {
                             $startTime = Carbon::parse($one->start_date)->format('m/Y');
                             $endTime   = ($one->is_current) ? _t('setting.employment.current') : Carbon::parse($one->end_date)->format('m/Y');
                             
+                            return $startTime . ' - ' . $endTime;
+                            
+                        case 'TIME_LETTER':
+                            $startTime = Carbon::parse($one->start_date)->format('M Y');
+                            $endTime   = ($one->is_current) ? _t('setting.employment.current') : Carbon::parse($one->end_date)->format('M Y');
+                            
                             return $startTime . ' - ' . $endTime; 
                             
                         case 'POSITION':
                             return $one->position;
                             
                         case 'DESCRIPTION':
-                            return $one->achievement;
+                            return nl2br($one->achievement);
                             
                         case 'LINK':
                             return $one->company_website;
@@ -361,11 +369,17 @@ class ThemeCompiler extends Compiler {
                             
                             return $startTime . ' - ' . $endTime; 
                             
+                        case 'TIME_LETTER':
+                            $startTime = Carbon::parse($one->start_date)->format('M Y');
+                            $endTime   = Carbon::parse($one->end_date)->format('M Y');
+                            
+                            return $startTime . ' - ' . $endTime; 
+                            
                         case 'SUBJECT':
                             return $one->subject;
                             
                         case 'QUALIFICATION':
-                            return $one->qualification->name;
+                            return nl2br($one->qualification->name);
                             
                         default;
                     }
@@ -703,7 +717,7 @@ class ThemeCompiler extends Compiler {
      * @return string
      */
     protected function compileAboutMe() {
-        return $this->resume->getAboutMe();
+        return nl2br($this->resume->getAboutMe());
     }
     
     /**

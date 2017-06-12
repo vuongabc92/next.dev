@@ -163,7 +163,7 @@ return [
     'setting.employment.endmonth_req' => 'Select your end month please.',
     'setting.employment.endyear_req' => 'Select your end year please.',
     'setting.employment.achieve_max' => 'Achievement is to long.',
-    'setting.employment.current' => 'Current',
+    'setting.employment.current' => 'Present',
     'setting.employment.expjob_req' => 'The job is required.',
     'setting.employment.expjob_max' => 'Whoops! Look like the job name is too long.',
     'setting.employment.expjobwhat' => 'what is it :)',

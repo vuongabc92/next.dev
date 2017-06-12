@@ -10,14 +10,13 @@
 
 <body>
     <main>
-        <div class="wrapper">
-            
-            <div class="header">
+        <div class="_fwfl wrapper">
+            <header>
                 <div class="avatar avatar-mobile"><image src="{{ AVATAR_256 }}" /></div>
                 <h1><span>{{ FIRST_NAME }} {{ LAST_NAME }}</span></h1>
                 <h3>{{ EXPECTED_JOB }}</h3>
                 <div class="avatar"><image src="{{ AVATAR_256 }}" /></div>
-            </div>
+            </header>
             
             <div class="resume-tree">
                 <div class="resume-wrapper">
@@ -27,7 +26,7 @@
                             <div class="content">
                                 {% foreach(experiences) %}
                                 <div class="time-box">
-                                    <span class="time-period">[[ TIME ]]</span>
+                                    <span class="time-period">[[ TIME_LETTER ]]</span>
                                     <span class="time-title">[[ COMPANY_NAME ]]</span>
                                     <i class="time-subtitle">[[ POSITION ]]</i>
                                     <span class="time-desc">[[ DESCRIPTION ]]</span>
@@ -38,20 +37,30 @@
                         <section>
                             <h3 class="title">About me</h3>
                             <div class="content">
-                                I'm {{ FIRST_NAME }}, {{ AGE }} years old,<br/>
-                                I was born {{ BIRTHDAY }} and I'm a hot boy<br/><br/>
-
                                 {{ ABOUT_ME }}
                             </div>
                         </section>
                     </div>
                     <div class="right">
                         <section>
+                            <h3 class="title">Skill</h3>
+                            <div class="content">
+                                <ul class="_fwfl _lsn skill-list">
+                                    {% foreach(skills) %}
+                                    <li>
+                                        <span>[[ NAME ]]</span>
+                                        <b><i class="rate-[[ RATES ]]"></i></b>
+                                    </li>
+                                    {% endforeach %}
+                                </ul>
+                            </div>
+                        </section>
+                        <section>
                             <h3 class="title">Education</h3>
                             <div class="content">
                                 {% foreach(education) %}
                                 <div class="time-box">
-                                    <span class="time-period">[[ TIME ]]</span>
+                                    <span class="time-period">[[ TIME_LETTER ]]</span>
                                     <span class="time-title">[[ COLLEGE_NAME ]]</span>
                                     <i class="time-subtitle">[[ SUBJECT ]] - [[ QUALIFICATION ]]</i>
                                 </div>
@@ -59,27 +68,16 @@
                             </div>
                         </section>
                         <section>
-                            <h3 class="title">Skill</h3>
-                            <div class="content">
-                                {% foreach(skills) %}
-                                <div class="skill-line">
-                                    <span class="skill-name">[[ NAME ]]</span>
-                                    <span class="skill-rates skill-rates-[[ RATES ]]"><b></b></span>
-                                </div>
-                                {% endforeach %}
-                            </div>
-                        </section>
-                        <section>
                             <h3 class="title">Contact me</h3>
                             <div class="content">
-                                <span class="contact-row"><i class="fa fa-map-marker"></i>{{ STREET }}, {{ CITY_TYPE }} {{ CITY }}, {{ COUNTRY_CODE }}</span>
-                                <span class="contact-row"><i class="fa fa-phone"></i>{{ PHONE_NUMBER }}</span>
-                                <span class="contact-row"><i class="fa fa-envelope-square"></i>{{ EMAIL }}</span>
-                                <span class="contact-row"><i class="fa fa-link"></i><a href="{{ WEBSITE }}" target="_blank">{{ WEBSITE }}</a><span>
-                                <ul class="social-list">
-                                {% foreach(socials) %}
+                                <ul class="_fwfl _lsn contact-list">
+                                    <li><i class="fa fa-map-marker"></i>{{ STREET }}, {{ CITY }}</li>
+                                    <li><i class="fa fa-phone"></i>{{ PHONE_NUMBER }}</li>
+                                    <li><i class="fa fa-envelope"></i><a href="mailto:{{ EMAIL }}" >{{ EMAIL }}</a></li>
+                                    <li><i class="fa fa-link"></i><a href="{{ WEBSITE }}" target="_blank">{{ WEBSITE }}</a></li>
+                                    {% foreach(socials) %}
                                     <li><a href="http://[[ LINK ]]" target="_blank"><i class="fa fa-[[ ICON ]]"></i>[[ LINK ]]</a></li>
-                                {% endforeach %}
+                                    {% endforeach %}
                                 </ul>
                             </div>
                         </section>

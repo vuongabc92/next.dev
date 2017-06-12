@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'defaultThemeName'         => 'twenty_sixteen',   
+    'defaultThemeName'         => 'twenty_seventeen',   
     'uploadsFolder'            => 'uploads',
     'themesFolder'            =>  'uploads/themes',
     'avatarsFolder'            => 'uploads/avatars',

@@ -1,8 +1,36 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700');
+/* Common Classes */
+._fwfl {
+    width: 100%;
+    float: left;
+}
+._fl {
+    float: left;
+}
+._lsn {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+._m0 {
+    margin: 0;
+}
+.long-score {
+    width: 16px;
+    float: left;
+    margin-right: 2px;
+    border-bottom: solid 1px;
+    line-height: 15px;
+}
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
 body {
     background-size: cover;
     background-position: center center;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto Mono', monospace;
 }
 main {
     width: 1200px;
@@ -43,11 +71,11 @@ main {
 }
 .name-job-address h1 {
     margin: 0;
-    padding-top: 3px;
-    color: #555;
+    padding-top: 5px;
+    color: #333;
+    font-size: 34px;
     text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 }
 .name-job-address h3 {
     margin: 10px 0 0 0;
@@ -58,27 +86,29 @@ main {
     color: #777;
     margin-top: 8px;
 }
-.title-content-row {
+.content-row {
     width: 100%;
     float: left;
     margin-bottom: 50px;
 }
-.title-content-row:last-child {
+.content-row:last-child {
     margin-bottom: 0;
 }
-.title-content-row .title{
+.content-row .title{
     width: 100%;
     float: left;
     color: #cc506c;
+    letter-spacing: 2px;
 }
-.title-content-row .content{
+.content-row .content{
     width: 100%;
     float: left;
     margin-top: 20px;
     font-size: 16px;
+    line-height: 25px;
     color: #666;
 }
-.title-content-row .content.border-left{
+.content-row .content.border-left{
     padding-left: 35px;
     border-left: solid 1px #ddd;
 }
@@ -128,64 +158,47 @@ main {
     margin-bottom: 10px;
 }
 .details li i.fa {
-    width: 20px;
+    width: 23px;
     float: left;
     margin-right: 10px;
-    line-height: 21px;
+    line-height: 25px;
 }
 .details li span {
     float: left;
 }
 .details li a {
     float: left;
-    text-decoration: none;
+    color: #555;
 }
-.details li a.email-address {
-    color: #cc506c;
-}
-.skill {
-    width: 100%;
-    float: left;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.skill li {
+.skill-list li {
     width: 100%;
     float: left;
     margin-bottom: 20px;
 }
-.skill li .skill-title {
+.skill-list li:last-child {
+    margin-bottom: 0;
+}
+.skill-list li h4 {
     width: 100%;
     float: left;
 }
-.skill li .skill-rate {
+.skill-list li span {
     position: relative;
-    width: 250px;
+    width: 100%;
     float: left;
-    height: 2px;
+    height: 3px;
     background-color: #ddd;
 }
-.skill li .skill-rate b {
+.skill-list li span b {
     position: absolute;
-    height: 2px;
+    height: 3px;
     background-color: #cc506c;
 }
-.skill li .skill-rate b.rate-1 {
-    width: 20%;
-}
-.skill li .skill-rate b.rate-2 {
-    width: 40%;
-}
-.skill li .skill-rate b.rate-3 {
-    width: 50%;
-}
-.skill li .skill-rate b.rate-4 {
-    width: 80%;
-}
-.skill li .skill-rate b.rate-5 {
-    width: 100%;
-}
+.skill-list li b.rate-1 {width: 20%;}
+.skill-list li b.rate-2 {width: 40%;}
+.skill-list li b.rate-3 {width: 50%;}
+.skill-list li b.rate-4 {width: 80%;}
+.skill-list li b.rate-5 {width: 100%;}
 
 @media screen and (max-width: 1024px) {
     body {
@@ -207,9 +220,6 @@ main {
     .wrapper .right {
         padding: 35px 40px 80px 40px;
     }
-    .skill li .skill-rate {
-        width: 100%;
-    }
 }
 
 @media screen and (max-width: 768px) {
@@ -229,8 +239,12 @@ main {
     .name-job-address h1 {
         font-size: 34px;
     }
-    .title-content-row {
+    .content-row {
         margin-bottom: 40px;
+    }
+    .content-row .content {
+        padding-left: 35px;
+        border-left: solid 1px #ddd;
     }
 }
 
@@ -256,8 +270,13 @@ main {
     .header {
         margin-bottom: 25px;
     }
-    .title-content-row {
+    .content-row {
         margin-bottom: 30px;
+    }
+    .content-row .content, 
+    .content-row .content.border-left {
+        padding-left: 0;
+        border-left: none;
     }
 }
 
@@ -268,7 +287,7 @@ main {
     .name-job-address h3 {
         font-size: 18px;
     }
-    .title-content-row .title {
+    .content-row .title {
         font-size: 24px;
     }
     .timeline-container .time-title {
@@ -278,10 +297,3 @@ main {
         margin-bottom: 30px;
     }
 }
-
-@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ }
-@media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
-@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
-@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
-@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
-@media (min-width:1281px) { /* hi-res laptops and desktops */ }

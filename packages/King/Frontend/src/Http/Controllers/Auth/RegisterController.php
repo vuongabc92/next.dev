@@ -7,6 +7,8 @@ use App\Models\UserProfile;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -59,6 +61,28 @@ class RegisterController extends Controller
         return Validator::make($data, $this->getRegisterRules(), $this->getRegisterMessages());
     }
 
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request) {
+        
+        $validator = $this->validator($request->all());
+        
+        if ($validator->fails()) {
+            return redirect(route('front_register'))->withErrors($validator)->withInput();
+        }
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
+    
     /**
      * Create a new user instance after a valid registration.
      *

@@ -54,4 +54,18 @@ class LoginController extends FrontController {
     protected function validateLogin(Request $request) {
         $this->validate($request, ['email' => 'required', 'password' => 'required'], ['email.required' => _t('auth.email.required'), 'password.required' => _t('auth.pass.required')]);
     }
+    
+    /**
+     * Get the failed login response instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function sendFailedLoginResponse(Request $request) {
+        return redirect(route('front_login'))
+            ->withInput($request->only($this->username(), 'remember'))
+            ->withErrors([
+                $this->username() => \Lang::get('auth.failed'),
+            ]);
+    }
 }

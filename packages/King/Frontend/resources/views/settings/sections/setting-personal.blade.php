@@ -8,7 +8,7 @@
                 <div class="_fl col-no-padding col-md-11 col-xs-11">
                     <b class="_fl _tg9 _fs13 personal-intro">
                         @if ('' !== $userProfile->first_name && null !== $birthdate['birthday']['y'])
-                            {{ $userProfile->last_name . ' ' . $userProfile->first_name }}, {{ ((int) date('Y') - (int) $birthdate['birthday']['y']) . ' ' . _t('common.yearsold') }}, ...
+                            {{ $userProfile->first_name . ' ' . $userProfile->last_name }}, {{ ((int) date('Y') - (int) $birthdate['birthday']['y']) . ' ' . _t('common.yearsold') }}, ...
                         @else
                             {{ _t('setting.profile.personalintro') }}
                         @endif

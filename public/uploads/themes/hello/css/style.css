@@ -143,7 +143,10 @@ header .contact {
 .skills>li {
     width: 100%;
     float: left;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+}
+.skills>li:last {
+    margin-bottom: 0;
 }
 .skills .skill-rate {
     width: 35%;
@@ -222,12 +225,6 @@ header .contact {
         margin-top: 40px;
         height: 110px;
     }
-    header .hello h1, header .intro h2 {
-        font-size: 25px;
-    }
-    header .hello h1 {
-        padding: 40px 7px 15px;
-    }
     header .intro h2 .my-story {
         left: 180px;
         top: 45px;
@@ -262,6 +259,17 @@ header .contact {
     }
     .skill-rate span {
         width: 100%;
+    }
+}
+@media screen and (max-width: 480px) { 
+    .wrapper {
+        padding: 0 15px 30px;
+    }
+    header .hello h1, header .intro h2 {
+        font-size: 25px;
+    }
+    header .hello h1 {
+        padding: 40px 7px 15px;
     }
 }
 @media screen and (max-width: 320px) {

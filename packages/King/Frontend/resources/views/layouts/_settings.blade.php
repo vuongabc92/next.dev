@@ -32,7 +32,16 @@
                                     <span class="icon-bar"></span>
                                 </button>
                                 <a class="navbar-brand" href="{{ route('front_home') }}">
-                                    <span class="logo"></span>
+                                    <div class="logo" data-logo>
+                                        <div class="crown">
+                                            <b></b>
+                                            <span>
+                                                <i></i>
+                                                <i></i>
+                                                <i></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </a>
                             </div>
 
@@ -42,6 +51,7 @@
                                     <li><a href="#">Explode</a></li>
                                     <li><a href="#">Wtf</a></li>
                                     <li><a href="#">Develop</a></li>
+                                    @if (auth()->check())
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="header-login">{{ user()->username }}</span> <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
@@ -51,6 +61,7 @@
                                             <li><a href={{ route('front_logout') }}>Logout</a></li>
                                         </ul>
                                     </li>
+                                    @endif
                                 </ul>
                             </div><!-- /.navbar-collapse -->
                         </div><!-- /.container-fluid -->
