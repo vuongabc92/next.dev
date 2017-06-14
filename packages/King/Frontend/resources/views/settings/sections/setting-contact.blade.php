@@ -16,22 +16,25 @@
             </div>
             {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form', 'data-save-form' => '', 'data-requires' => '']) !!}
             <div class="settings-field-wrapper">
+                {!! Form::kingSelect('country_id', $countries, $userProfile->country_id, ['id' => 'settings-country', 'class' => 'settings-field']) !!}
+            </div>
+            <div class="settings-field-wrapper">
                 {!! Form::text('street_name', $userProfile->street_name, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.street')]) !!}
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::kingSelect('country', $countries, $userProfile->country_id, ['id' => 'settings-country', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'city']) !!}
+                {!! Form::text('city_name', $userProfile->city_name, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.cityname')]) !!}
             </div>
-            <div class="settings-field-wrapper">
-                {!! Form::kingSelect('city', $cities, $userProfile->city_id, ['id' => 'settings-city', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'district']) !!}
+<!--            <div class="settings-field-wrapper">
+                {{-- Form::kingSelect('city', $cities, $userProfile->city_id, ['id' => 'settings-city', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'district']) --}}
             </div>
             <div class="settings-field-wrapper">
                 <span class="_fl _w50 _pr3">
-                    {!! Form::kingSelect('district', $districts, $userProfile->district_id, ['id' => 'settings-district', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'ward']) !!}
+                    {_-- Form::kingSelect('district', $districts, $userProfile->district_id, ['id' => 'settings-district', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'ward']) --}}
                 </span>
                 <span class="_fl _w50 _pl3">
-                    {!! Form::kingSelect('ward', $wards, $userProfile->ward_id, ['id' => 'settings-ward', 'class' => 'settings-field']) !!}
+                    {{-- Form::kingSelect('ward', $wards, $userProfile->ward_id, ['id' => 'settings-ward', 'class' => 'settings-field']) --}}
                 </span>
-            </div>
+            </div>-->
             <div class="settings-field-wrapper">
                 {!! Form::text('phone_number', $userProfile->phone_number, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.phone')]) !!}
             </div>

@@ -116,10 +116,12 @@ body {background-color:#f5f8fa;}
     font-size:15px;
     text-decoration:none;
 }
-.setting-vertical-nav>li>a:hover {
+.setting-vertical-nav>li>a:hover,
+.setting-vertical-nav>li>a.active {
     color:#007aff;
 }
-.setting-vertical-nav>li>a:hover>span {
+.setting-vertical-nav>li>a:hover>span,
+.setting-vertical-nav>li>a.active>span {
     color:#007aff !important;
 }
 .setting-vertical-nav>li>a>span {
@@ -143,9 +145,16 @@ body {background-color:#f5f8fa;}
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
+.settings-page.employment,
+.settings-page.education{
+    box-shadow: none;
+}
 .col-no-padding {
     padding-left: 0;
     padding-right: 0;
+}
+.settings .settings-page {
+    background-color: #fff;
 }
 .settings .profile {
     background-color: #fff;

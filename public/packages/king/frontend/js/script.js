@@ -801,6 +801,10 @@ var HELPERS = {
                             $('a.current-slug').attr('href', 'http://' + slugSplit[0] + '/' + current.find('[name="slug"]').val());
                         }
                         
+                        if (formType === '_EXPERTISE') {
+                            $('.expertise-intro').html(response.data.expertise);
+                        }
+                        
                         if (formType === '_PERSONAL') {
                             var personalText = current.data('personalintro-text'),
                                 personalYear = current.data('persioninfo-year'),
@@ -1506,6 +1510,8 @@ var HELPERS = {
                 targetObj = $('#' + target);
                 
             current.on('click', function(){
+                $(this).parents('ul').find('li a').removeClass('active');
+                $(this).addClass('active');
                 $('.settings section').removeClass('_disable');
                 $('.settings-page').hide();
                 if ('employment' === target || 'education' === target) {
@@ -1569,14 +1575,16 @@ var HELPERS = {
 
     Plugin.prototype = {
         init: function() {
-            var settingsPages   = ['#profile', '#skills', '#employment', '#education'],
+            var settingsPages   = ['#profile', '#skills', '#employment', '#education', '#projects'],
                 hashPage        = (settingsPages.indexOf(window.location.hash) === -1) ? settingsPages[0] : settingsPages[settingsPages.indexOf(window.location.hash)],
+                hashText        = hashPage.split('#')[1],
                 settingsPageObj = $(hashPage);
                
             $.each(settingsPages, function(k, page){
                 $(page).hide();
             });
             
+            $('.setting-vertical-nav li a[data-nav-settings=' + hashText + ']').addClass('active')
             if ('#employment' === hashPage || '#education' === hashPage) {
                 $('body').css('background-color', '#ffffff');
             }

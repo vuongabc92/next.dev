@@ -9,6 +9,7 @@
             @include('frontend::settings.sections.setting-email')
             @include('frontend::settings.sections.setting-slug')
             @include('frontend::settings.sections.setting-password')
+            @include('frontend::settings.sections.setting-expertise')
             @include('frontend::settings.sections.setting-personal')
             @include('frontend::settings.sections.setting-contact')
         </div>
@@ -22,6 +23,10 @@
         
         <div class="_fwfl settings-page education" id="education">
             @include('frontend::settings.sections.setting-education')
+        </div>
+        
+        <div class="_fwfl settings-page projects" id="projects">
+            @include('frontend::settings.sections.setting-projects')
         </div>
     </div>
     <div class="_fr col-md-3 hidden-xs">

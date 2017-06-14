@@ -47,6 +47,13 @@ class UserProfile extends Base {
     }
     
     /**
+     * Get the expertise record associated with the user.
+     */
+    public function expertise() {
+        return $this->belongsTo('App\Models\Expertise');
+    }
+    
+    /**
      * Get the ward record associated with the user.
      */
     public function ward() {

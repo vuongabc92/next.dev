@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\UserProfile;
 use App\Models\Gender;
 use App\Models\Country;
+use App\Models\Expertise;
 use App\Models\EmploymentHistory;
 use App\Models\Education;
 use App\Models\UserSkill;
@@ -36,13 +37,14 @@ class SettingsController extends FrontController {
         
         $userProfile         = is_null(user()->userProfile) ? new UserProfile() : user()->userProfile;
         $genderName          = Gender::find($userProfile->gender_id);
-        $countries           = Country::where('id', 237)->pluck('country_name', 'id')->toArray();
-        $cities              = $this->_getCityByCountryId($userProfile->country_id, $toArray = true);
-        $districts           = $this->_getDistrictByCityId($userProfile->city_id, $toArray = true);
-        $wards               = $this->_getWardByDistrictId($userProfile->district_id, $toArray = true);
+        $expertises          = Expertise::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        $countries           = Country::all()->sortBy('country_name')->pluck('country_name', 'id')->toArray();
+//        $cities              = $this->_getCityByCountryId($userProfile->country_id, $toArray = true);
+//        $districts           = $this->_getDistrictByCityId($userProfile->city_id, $toArray = true);
+//        $wards               = $this->_getWardByDistrictId($userProfile->district_id, $toArray = true);
         $employmentHistories = user()->employmentHistories->sortByDesc('is_current')->sortByDesc('start_date')->all();
         $educations          = user()->educations->sortByDesc('start_date')->all();
-        
+
         if (Gender::all()) {
             foreach (Gender::all() as $gender) {
                 $genders[$gender->id] = $gender->gender_name;
@@ -61,10 +63,11 @@ class SettingsController extends FrontController {
             'coverMedium'         => $userProfile->cover(),
             'genders'             => $genders,
             'gender'              => ( ! is_null($genderName)) ? $genderName->gender_name : null,
-            'countries'           => ['' => _t('setting.profile.country')] + ((count($countries)) ? $countries : []),
-            'cities'              => $cities,
-            'districts'           => $districts,
-            'wards'               => $wards,
+            'countries'           => ['' => _t('setting.profile.country')] + $countries,
+            'expertises'          => ['' => _t('setting.profile.pickexpertise')] + $expertises,
+//            'cities'              => $cities,
+//            'districts'           => $districts,
+//            'wards'               => $wards,
             'employmentHistories' => $employmentHistories,
             'educations'          => $educations,
             'maritalStatuses'     => $maritalStatuses,
@@ -230,6 +233,10 @@ class SettingsController extends FrontController {
                 
                 case '_CONTACT':
                     $save = $this->saveContactInfo($request);
+                    break;
+                
+                case '_EXPERTISE':
+                    $save = $this->saveExpertise($request);
                     break;
                 
                 case '_EMPLOYMENT':
@@ -524,7 +531,8 @@ class SettingsController extends FrontController {
             return [
                 'message' => _t('good_job'), 
                 'data'    => [
-                    'socials' => social_profile_list()
+                    'socials'   => social_profile_list(),
+                    'expertise' => ($save->expertise) ? $save->expertise->name : _t('setting.profile.pickexpertise')
             ]];
         } elseif (true === $save) {
             return ['message' => _t('good_job')];

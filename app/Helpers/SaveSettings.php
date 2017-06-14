@@ -136,6 +136,27 @@ trait SaveSettings {
     }
     
     /**
+     * Save settings expertise
+     * 
+     * @param Request $request
+     * 
+     * @return boolean|JSON
+     */
+    public function saveExpertise(Request $request) {
+        $validator = validator($request->all(), $this->_saveExpertiseRules(), $this->_saveExpertiseMessages());
+        
+        if ($validator->fails()) {
+            return $validator;
+        }
+        
+        $userProfile = user()->userProfile;
+        $userProfile->expertise_id = ( ! empty($id = $request->get('expertise_id'))) ? $id : null;
+        $userProfile->save();
+        
+        return $userProfile;
+    }
+    
+    /**
      * Save settings contact.
      * 
      * @param Request $request
@@ -153,17 +174,17 @@ trait SaveSettings {
         
         $validateRules = $this->_saveContactRules();
         
-        if (empty($request->get('city'))) {
-            $validateRules['city'] = 'required_with:country';
-        }
-        
-        if (empty($request->get('district'))) {
-            $validateRules['district'] = 'required_with:city';
-        }
-        
-        if (empty($request->get('ward'))) {
-            $validateRules['ward'] = 'required_with:district';
-        }
+//        if (empty($request->get('city'))) {
+//            $validateRules['city'] = 'required_with:country';
+//        }
+//        
+//        if (empty($request->get('district'))) {
+//            $validateRules['district'] = 'required_with:city';
+//        }
+//        
+//        if (empty($request->get('ward'))) {
+//            $validateRules['ward'] = 'required_with:district';
+//        }
         
         $validator = validator($request->all(), $validateRules, $this->_saveContactMessages());
         if ($validator->fails()) {
@@ -171,10 +192,11 @@ trait SaveSettings {
         }
         
         $userProfile->street_name  = $request->get('street_name');
-        $userProfile->country_id   = (empty($request->get('country')))      ? null : $request->get('country');
-        $userProfile->city_id      = (empty($request->get('city')))         ? null : $request->get('city');
-        $userProfile->district_id  = (empty($request->get('district')))     ? null : $request->get('district');
-        $userProfile->ward_id      = (empty($request->get('ward')))         ? null : $request->get('ward');
+        $userProfile->city_name    = $request->get('city_name');
+        $userProfile->country_id   = (empty($request->get('country_id')))      ? null : $request->get('country_id');
+//        $userProfile->city_id      = (empty($request->get('city')))         ? null : $request->get('city');
+//        $userProfile->district_id  = (empty($request->get('district')))     ? null : $request->get('district');
+//        $userProfile->ward_id      = (empty($request->get('ward')))         ? null : $request->get('ward');
         $userProfile->phone_number = (empty($request->get('phone_number'))) ? null : $request->get('phone_number');
         $userProfile->website      = (strpos($website, 'http') === false)   ? 'http://' . $website : $website;
         $userProfile->save();
@@ -555,13 +577,37 @@ trait SaveSettings {
      * 
      * @return array
      */
+    protected function _saveExpertiseRules() {
+        return [
+            'expertise_id' => 'exists:expertises,id'
+        ];
+    }
+    
+    /**
+     * Save personal validate messages.
+     * 
+     * @return array
+     */
+    protected function _saveExpertiseMessages() {
+        return [
+            'expertise_id.exists' => _t('setting.profile.expertise_exi')
+        ];
+    }
+    
+    /**
+     * Save contact validate rules.
+     * 
+     * @return array
+     */
     protected function _saveContactRules() {
         return [
+            'country_id'      => 'required_with:city|exists:countries,id',
             'street_name'  => 'max:250',
-            'country'      => 'required_with:city|exists:countries,id',
-            'city'         => 'required_with:district|exists:cities,id',
-            'district'     => 'required_with:ward|exists:districts,id',
-            'ward'         => 'exists:wards,id',
+            'city_name'    => 'max:250',
+//            'country'      => 'required_with:city|exists:countries,id',
+//            'city'         => 'required_with:district|exists:cities,id',
+//            'district'     => 'required_with:ward|exists:districts,id',
+//            'ward'         => 'exists:wards,id',
             'phone_number' => 'max:32',
             'website'      => 'max:250',
         ];
@@ -575,13 +621,14 @@ trait SaveSettings {
     protected function _saveContactMessages() {
         return [
             'street_name.max'        => _t('setting.profile.sname_max'),
-            'country.required_with'  => _t('setting.profile.country_rwith'),
-            'country.exists'         => _t('setting.profile.country_exi'),
-            'city.required_with'     => _t('setting.profile.city_rwith'),
-            'city.exists'            => _t('setting.profile.city_exi') ,
-            'district.required_with' => _t('setting.profile.district_rwith'),
-            'district.exists'        => _t('setting.profile.district_exi'),
-            'ward.exists'            => _t('setting.profile.ward_exi'),
+            'city_name.max'          => _t('setting.profile.cname_max'),
+//            'country.required_with'  => _t('setting.profile.country_rwith'),
+            'country_id.exists'         => _t('setting.profile.country_exi'),
+//            'city.required_with'     => _t('setting.profile.city_rwith'),
+//            'city.exists'            => _t('setting.profile.city_exi') ,
+//            'district.required_with' => _t('setting.profile.district_rwith'),
+//            'district.exists'        => _t('setting.profile.district_exi'),
+//            'ward.exists'            => _t('setting.profile.ward_exi'),
             'phone.max'              => _t('setting.profile.phone_max'),
             'website.max'            => _t('setting.profile.website_max')
         ];

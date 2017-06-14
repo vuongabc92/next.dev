@@ -24,10 +24,10 @@
         </a>
     </li>
     <li>
-        <a href="#">
-            <strong>{{ _t('setting.nav.references') }}</strong>
-            <span class="nav-link-help">{{ _t('setting.nav.references_help') }}</span>
-        </a>
+        <a href="#projects" data-nav-settings="projects">
+            <strong>{{ _t('setting.nav.projects') }}</strong>
+            <span class="nav-link-help">{{ _t('setting.nav.projects_help') }}</span>
+        </a
     </li>
     <li class="nav-link-last">
         <a href="{{ route('front_themes') }}">
