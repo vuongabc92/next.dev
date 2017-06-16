@@ -31,7 +31,7 @@
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                 </button>
-                                <a class="navbar-brand" href="{{ route('front_home') }}">
+                                <a class="navbar-brand" href="/">
                                     <div class="logo" data-logo>
                                         <div class="crown">
                                             <b></b>

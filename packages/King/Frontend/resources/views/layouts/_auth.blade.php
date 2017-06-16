@@ -15,6 +15,7 @@
     <body>
         <div class="_fwfl header">
             <div class="_mw970 _ma header-inside">
+                <a href="/" class="logo"><img src="{{ asset('packages/king/frontend/images/logo-blue.png') }}" /></a>
                 @yield('button')
             </div>
         </div>

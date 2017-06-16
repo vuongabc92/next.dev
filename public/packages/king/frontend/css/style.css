@@ -45,7 +45,6 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    position: relative;
 }
 header {
     position: relative;
@@ -57,6 +56,10 @@ header {
 .header-inner {
     max-width: 1720px;
     margin: 0 auto;
+}
+.header-inner .logo {
+    float: left;
+    margin-top: 14px;
 }
 .main-nav {
     margin-top: 13px;
@@ -72,6 +75,15 @@ header {
 .main-nav>li .dropdown-menu {
     left: -125px;
 }
+.main-nav>li>a {
+    float: left;
+    display: inline;
+    color: #fff;
+}
+.main-nav>li>a>i {
+    margin-top: 10px;
+    margin-right: 15px;
+}
 .landing-btn {
     color: #fff;
     background-color: transparent;
@@ -81,7 +93,6 @@ header {
 .landing-btn:focus {
     color: #fff;
 }
-
 .classical {
     background-image: url('../images/popup-overlay.png');
     background-repeat: repeat;
@@ -151,10 +162,28 @@ header {
 .classical .outworld-auth p {
     color: #777;
 }
-
+.classical .modal-header .auth-modal-close {
+    position: absolute;
+    top: 17px;
+    right: 15px;
+    line-height: 25px;
+    background-color: #000;
+    color: #fff;
+    padding: 0px 7px;
+    border-top-right-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    border-bottom-left-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    display: none;
+}
 .wrap-inner {
+    position: absolute;
     width: 970px;
-    margin: 15% auto;
+    height: 230px;
+    top: 50%;
+    left: 50%;
+    margin-top: -115px;
+    margin-left: -485px;
     text-align: center;
     font-family: 'Lato', sans-serif;
 }
@@ -166,39 +195,31 @@ header {
     -webkit-text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
     letter-spacing: 0.12pc;
 }
-.wrap-inner h3.why-join {
-    color: #fff;
-    font-weight: 700;
-    font-size: 20px;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-    -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-    letter-spacing: 0.12pc;
+.btn-wrap {
+    margin-top: 45px;
 }
 .wrap-inner .explode-btn {
-    padding: 10px 20px;
+    padding: 13px 40px;
     border: solid 3px #fff;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     color: #fff;
     font-weight: 700;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 27px;
     letter-spacing: 0.1pc;
-    margin-top: 10px;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
     -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.16);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     -webkit-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
-.wrap-inner .explode-btn i {
-    font-size: 22px;
-}
+
 footer {
     position: fixed;
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 .footer-nav {
     width: 970px;
@@ -210,12 +231,169 @@ footer {
 }
 .footer-nav>li>a {
     float: left;
-    padding: 15px 20px;
-    color: #ccc;
+    padding: 15px 31px;
+    color: #bbb;
     text-decoration: none;
 }
 .footer-nav>li>a:hover {
-    text-decoration: underline;
+    color: #fff;
+}
+.lang-list {
+    min-width: 120px;
+    top: -30px;
+    left: 20px;
+}
+.footer-nav>li:first-child {
+    display: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .classical .modal-header .auth-modal-close {
+        display: block;
+    }
+    .wrap-inner {
+        width: 100%;
+        margin: 0 auto;
+        left: 0;
+        margin-top: -115px;
+    }
+    .wrap-inner h1.big-slogan {
+        font-size: 60px;
+    }
+    .wrap-inner .explode-btn {
+        font-size: 24px;
+    }
+    .footer-nav {
+        width: 100%;
+    }
+}
+@media screen and (max-width: 768px) {
+    .wrap-inner {
+        height: 280px;
+        margin: 0 auto;
+        left: 0;
+        margin-top: -140px;
+    }
+    .wrap-inner h1 span {
+        width: 100%;
+        float: left;
+        text-transform: capitalize;
+    }
+    .footer-nav>li>a {
+        padding: 15px 16px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .wrap-inner {
+        height: 200px;
+        margin: 0 auto;
+        left: 0;
+        margin-top: -100px;
+    }
+    .wrap-inner h1.big-slogan {
+        font-size: 40px;
+    }
+    .btn-wrap {
+        margin-top: 30px;
+    }
+    .wrap-inner .explode-btn {
+        padding: 10px 30px;
+    }
+    .wrap-inner .explode-btn {
+        font-size: 20px;
+    }
+    .footer-nav {
+        padding: 0;
+    }
+    .footer-nav>li>a {
+        padding: 10px 14px;
+    }
+    .footer-nav>li.f-dev {
+        display: none;
+    }
+    .lang-list {
+        left: -25px;
+    }
+    .classical .modal-dialog {
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        margin: 0;
+    }
+    .classical .modal-content {
+        padding: 0;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+    }
+    .classical .modal-inner {
+        border-radius: 0;
+        -webkit-border-radius: 0;
+    }
+    .classical .modal-header .auth-modal-close {
+        top: 5px;
+        right: 5px;
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+    }
+}
+@media screen and (max-width: 480px) {
+    header {
+        padding: 0 15px;
+    }
+    .main-nav li.h-fb,
+    .main-nav li.h-tw {
+        display: none;
+    }
+    .wrap-inner {
+        height: 190px;
+        margin: 0 auto;
+        left: 0;
+        margin-top: -95px;
+    }
+    .wrap-inner h1.big-slogan {
+        font-size: 36px;
+    }
+    .btn-wrap {
+        margin-top: 35px;
+    }
+    .wrap-inner .explode-btn {
+        font-size: 17px;
+    }
+    footer {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    .footer-nav>li {
+        width: 100%;
+        border-bottom: solid 1px #999;
+        display: none;
+    }
+    .footer-nav>li:first-child {
+        display: inline;
+    }
+    .footer-nav>li>a {
+        padding: 8px 15px;
+    }
+}
+@media screen and (max-width: 320px) {
+    .header-inner .logo {
+        margin-top: 18px;
+    }
+    .header-inner .logo img {
+        width: 90px;
+    }
+    .main-nav>li {
+        margin-right: 5px;
+    }
+    .wrap-inner h1.big-slogan {
+        font-size: 32px;
+    }
+    .wrap-inner .explode-btn {
+        font-size: 14px;
+        padding: 8px 20px;
+    }
 }
 
 @media (min-width: 768px){

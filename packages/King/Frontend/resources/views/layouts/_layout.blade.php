@@ -16,32 +16,41 @@
     <body>     
         <header class="_fwfl">
             <div class="header-inner">
-                <a href="#"><img src="{{ asset('packages/king/frontend/images/logo.png') }}" /></a>
+                <a href="/" class="logo"><img src="{{ asset('packages/king/frontend/images/logo.png') }}" /></a>
                 <ul class="_fr _lsn main-nav">
+                    <li class="h-fb"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li class="h-tw"><a href="#"><i class="fa fa-twitter"></i></a></li>
                     <li><a href="#" class="btn _btn landing-btn" data-toggle="modal" data-target="#loginModal">{{ _t('login') }}</a></li>
                     <li><a href="#" class="btn _btn landing-btn" data-toggle="modal" data-target="#registerModal">{{ _t('register') }}</a></li>
                 </ul>
             </div>
         </header>
         
-        <div class="_fwfl wrap">
+        <div class="wrap">
             <div class="wrap-inner">
-                <h1 class="big-slogan">Free, Fast and BeautiFul CV</h1>
-                <h3 class="why-join">There are hundreds of CV template are waiting for your exploring.</h3>
-                <div class="_fwfl _mt20">
-                    <a href="#" class="explode-btn">Let's go</a>
+                <h1 class="big-slogan">Free, Fast <span>and BeautiFul CV</span></h1>
+                <div class="_fwfl btn-wrap">
+                    <a href="#" class="explode-btn">EXPLORE &nbsp;<i class="fa fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
         
         <footer class="_fwfl">
-            <ul class="_lsn footer-nav">
-                <li><a href="#">About</a></li>
-                <li><a href="#">Help</a></li>
-                <li><a href="#">Developers</a></li>
-                <li><a href="#">Privacy</a></li>
-                <li><a href="#">Terms</a></li>
-                <li><a href="#">English <i class="caret"></i></a></li>
+            <ul class="_lsn footer-nav" id="homeFooterNav">
+                <li><a href="#"><i class="fa fa-bars"></i></a></li>
+                <li><a href="/"><i class="fa fa-home"></i> Kpages</a></li>
+                <li><a href="#">{{ _t('aboutus') }}</a></li>
+                <li><a href="#">{{ _t('feedback') }}</a></li>
+                <li><a href="#">{{ _t('help') }}</a></li>
+                <li class="f-dev"><a href="#">{{ _t('developers') }}</a></li>
+                <li><a href="#">{{ _t('privacy') }}</a></li>
+                <li><a href="#">{{ _t('terms') }}</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">English <span class="caret"></span></a>
+                    <ul class="dropdown-menu lang-list">
+                        <li><a href="#">Vietnamese</a></li>
+                    </ul>
+                </li>
             </ul>
         </footer>
         
@@ -51,6 +60,7 @@
                     <div class="modal-inner">
                         <div class="modal-header">
                             <h4 class="modal-title" id="loginModalLabel">{{ _t('loginin.form.title') }}</h4>
+                            <button type="button" class="close auth-modal-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                             <div class="_fw outworld-auth">
@@ -91,6 +101,7 @@
                     <div class="modal-inner">
                         <div class="modal-header">
                             <h4 class="modal-title" id="registerModalLabel">{{ _t('register.joinus') }}</h4>
+                            <button type="button" class="close auth-modal-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                             <div class="_fwfl outworld-auth">

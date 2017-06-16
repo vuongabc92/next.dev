@@ -23,4 +23,13 @@ class HomeController extends FrontController {
             'themes' => $themes
         ]);
     }
+    
+    public function landing() {
+        
+        $themes = Theme::limit(6)->get();
+        
+        return view('frontend::landing.index', [
+            'themes' => $themes
+        ]);
+    }
 }

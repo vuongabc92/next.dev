@@ -1,4 +1,8 @@
 .header{height:60px;background-color:#fff;border-bottom:solid 1px #eee;position:relative;padding:0 15px;z-index:1;}
+.logo {
+    float: left;
+    margin-top: 13px;
+}
 .auth-container{padding:0 15px;}
 .auth-box{max-width:350px;margin:0 auto;}
 .login-box{height:320px;margin-top:10%;}
@@ -12,3 +16,41 @@
 .signup-btn{margin-top:13px;}
 .auth-btn{height:38px;}
 .auth-field.error{border-color: #f66;}
+.outworld-auth {
+    border-bottom: solid 1px #ddd;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    position: relative;
+}
+.outworld-auth button {
+    min-width: 120px;
+    color: #fff;
+    position: relative;
+    text-transform: uppercase;
+    line-height: 23px;
+}
+.outworld-auth button:hover,
+.outworld-auth button:focus{
+    color: #fff;
+}
+.outworld-auth .btn-fb {
+    background-color: #5776a8;
+}
+.outworld-auth .btn-google {
+    background-color: #db4437;
+}
+.outworld-auth .auth-or {
+    position: absolute;
+    left: 50%;
+    margin-left: -18px;
+    bottom: -10px;
+    background-color: #fff;
+    padding: 0 10px;
+    color: #777;
+}
+@media screen and (max-width: 480px) {
+    .outworld-auth button {
+        text-transform: capitalize;
+    }
+}
+    
