@@ -23,12 +23,12 @@
             <span class="nav-link-help">{{ _t('setting.nav.employment_help') }}</span>
         </a>
     </li>
-    <li>
+<!--    <li>
         <a href="#projects" data-nav-settings="projects">
             <strong>{{ _t('setting.nav.projects') }}</strong>
             <span class="nav-link-help">{{ _t('setting.nav.projects_help') }}</span>
         </a
-    </li>
+    </li>-->
     <li class="nav-link-last">
         <a href="{{ route('front_themes') }}">
             <strong>{{ _t('setting.nav.theme') }}</strong>

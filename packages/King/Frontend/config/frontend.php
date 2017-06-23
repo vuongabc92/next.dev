@@ -3,7 +3,8 @@
 return [
     'defaultThemeName'         => 'twenty_seventeen',   
     'uploadsFolder'            => 'uploads',
-    'themesFolder'            =>  'uploads/themes',
+    'themesFolder'             => 'uploads/themes',
+    'themesTmpFolder'          => 'uploads/themes_tmp',
     'avatarsFolder'            => 'uploads/avatars',
     'avatarDefault'            => 'uploads/avatars/__default.jpg',
     'coversFolder'             => 'uploads/covers',
@@ -13,6 +14,8 @@ return [
     'avatarMaxFileSizeMessage' => 5,
     'coverMaxFileSize'         => 5000,
     'coverMaxFileSizeMessage'  => 5,
+    'themeMaxFileSize'         => 10000,
+    'themeMaxFileSizeMessage'  => 10,
     'dayLimitedToChangeSlug'   => 8,
     'unavailableCVUrls'        => [
         'setting',
@@ -69,7 +72,7 @@ return [
             'h' => 512
         )
     ),
-    'coverSizes'               => array(
+    'coverSizes' => array(
         'original' => 'Original',
         'small'  => array(
             'w'  => 768,
@@ -84,4 +87,6 @@ return [
             'h' => 500
         )
     ),
+    'themeFileExtensionsAllow' => ['html', 'js', 'css', 'png', 'jpg', 'gif', 'jpeg', 'otf', 'eot', 'svg', 'ttf', 'woff', 'woff2', 'json', 'txt'],
+    'themeFilesRequired'       => ['index.html', 'screenshot.png', 'thumbnail.png']
 ];

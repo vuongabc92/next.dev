@@ -219,8 +219,12 @@ var HELPERS = {
         this.image = this.$element.find('img')
         this.icon  = this.$element.find('i')
         
-         if ( ! data['loading']) {
-            this.image.attr('src', options.loading)
+        if (data['loadingImg']) {
+            this.image.attr('src', options.loadingImg)
+        } else if(data['loading']) {
+            this.image.attr('src', options.loadingImgs[data['loading']])
+        } else {
+            this.image.attr('src', options.loadingImgs.blueNavy24)
         }
         
         this.text.html(label)
@@ -230,7 +234,12 @@ var HELPERS = {
 
     Button.DEFAULTS = {
         checkTimeout: 2000,
-        hmtl: '<img class="_dn" src="/packages/king/frontend/images/loading_blue_navy_24x24.gif" /><i class="fa fa-check _dn"></i> <span></span>'
+        hmtl: '<img class="_dn" src="" /><i class="fa fa-check _dn"></i> <span></span>',
+        loadingImgs: {
+            blueNavy24: '/packages/king/frontend/images/loading_blue_navy_24x24.gif',
+            blue24: '/packages/king/frontend/images/loading_blue_24x24.gif',
+            gray24: '/packages/king/frontend/images/loading_gray_24x24.gif'
+        }
     }
 
     Button.prototype.start = function() {
@@ -578,6 +587,85 @@ var HELPERS = {
                     }
                 });
             });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name Upload Theme
+ *  @description
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'upload-theme';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var current        = this.element,
+                uploadThemeBtn = $('#uploadThemeBtn'),
+                themePathInput = $('.add-theme-form').find('input[name=theme_path]');
+            
+            current.on('submit', function(){
+                return AIM.submit(this, {
+                    onStart: function() {
+                        uploadThemeBtn.loading();
+                    },
+                    onComplete: function(response){
+                        response = $.parseJSON(response);
+
+                        if (response.status === 'OK') {
+                            uploadThemeBtn.removeClass('_btn-blue').addClass('_btn-white');
+                            themePathInput.val(response.theme_path);
+                            uploadThemeBtn.loading('finish');
+                            uploadThemeBtn.prop('disabled', true);
+                        } else {
+                            HELPERS.message.error(response.message);
+                            uploadThemeBtn.loading('stop');
+                        }
+                    }
+                });
+            });
+            
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);
@@ -1026,9 +1114,9 @@ var HELPERS = {
                 label.html($(this).find('option[value="' + $(this).val() + '"]').text());
                 
                 if ($(this).val() !== '') {
-                    label.addClass('_tg7').removeClass('_tga');
+                    label.addClass('_tg5').removeClass('_tga');
                 } else {
-                    label.addClass('_tga').removeClass('_tg7');
+                    label.addClass('_tga').removeClass('_tg5');
                 }
             });
         },

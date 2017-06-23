@@ -114,7 +114,7 @@ class RegisterController extends Controller
     public function getRegisterRules() {
         return [
             'email'    => 'required|email|max:128|unique:users,email',
-            'username' => 'required|min:6:|max:64|unique:users,username',
+            'username' => 'required|min:6:|max:64|alpha_dash|unique:users,username',
             'password' => 'required|min:6|max:60',
         ];
     }
@@ -126,17 +126,18 @@ class RegisterController extends Controller
      */
     public function getRegisterMessages() {
         return [
-            'email.required'    => _t('register.email.req'),
-            'email.email'       => _t('register.email.email'),
-            'email.max'         => _t('register.email.max'),
-            'email.unique'      => _t('register.email.uni'),
-            'username.required' => _t('register.uname.req'),
-            'username.min'      => _t('register.uname.min'),
-            'username.max'      => _t('register.uname.max'),
-            'username.unique'   => _t('register.uname.uni'),
-            'password.required' => _t('register.pass.req'),
-            'password.min'      => _t('register.pass.min'),
-            'password.max'      => _t('register.pass.max'),
+            'email.required'      => _t('register.email.req'),
+            'email.email'         => _t('register.email.email'),
+            'email.max'           => _t('register.email.max'),
+            'email.unique'        => _t('register.email.uni'),
+            'username.required'   => _t('register.uname.req'),
+            'username.min'        => _t('register.uname.min'),
+            'username.max'        => _t('register.uname.max'),
+            'username.alpha_dash' => _t('register.uname.aldash'),
+            'username.unique'     => _t('register.uname.uni'),
+            'password.required'   => _t('register.pass.req'),
+            'password.min'        => _t('register.pass.min'),
+            'password.max'        => _t('register.pass.max'),
         ];
     }
 }

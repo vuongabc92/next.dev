@@ -15,6 +15,7 @@ use App\Models\Education;
 use App\Models\UserSkill;
 use App\Models\Skill;
 use App\Models\MaritalStatus;
+use App\Models\Theme;
 use DB;
 use Validator;
 use Log;
@@ -249,6 +250,10 @@ class SettingsController extends FrontController {
                 
                 case '_SKILL':
                     $save = $this->saveSkill($request);
+                    break;
+                
+                case '_THEME':
+                    $save = $this->saveTheme($request);
                     break;
 
                 default:
@@ -533,6 +538,13 @@ class SettingsController extends FrontController {
                 'data'    => [
                     'socials'   => social_profile_list(),
                     'expertise' => ($save->expertise) ? $save->expertise->name : _t('setting.profile.pickexpertise')
+            ]];
+        } elseif($save instanceof Theme) {
+            return [
+                'message' => _t('good_job'), 
+                'data'    => [
+                    'id'   => $save->id,
+                    'slug' => $save->slug,
             ]];
         } elseif (true === $save) {
             return ['message' => _t('good_job')];

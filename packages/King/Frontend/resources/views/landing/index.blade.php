@@ -37,63 +37,27 @@
             </div>
             <div class="right">
                 <div class="right-inner">
-                    <div class="_fwfl">
-                        <div class="_fwfl">
-                            <span class="logo"></span>
+                    <div class="_fwfl landing-cv">
+                        <div class="header">
+                            <div class="_fwfl avatar-box">
+                                <span class="logo avatar"></span>
+                            </div>
+                            <h1 class="_fwfl name">Next.Com</h1>
+                            <h3 class="_fwfl job">Free CV For Everyone</h3>
                         </div>
-                        <div class="_fwfl olleh">
-                            <ol class="_lsn _p0 _m0 chatbot-tree">
-                                <li>
-                                    <div class="left">
-                                        <i class="chatbox-narrow"></i>
-                                        <span class="chatbox-txt">HELLO THERE!</span>
-                                    </div>
-                                    <div class="right">
-                                        <a href="#"><span class="botface">^^</span></a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="left">
-                                        <span class="chatbox-txt">Are you looking for a great CV?</span>
-                                    </div>
-                                    <div class="right"></div>
-                                </li>
-                                <li>
-                                    <div class="left">
-                                        <span class="chatbox-txt">If so, you are in the right place babe ^^.</span>
-                                    </div>
-                                    <div class="right"></div>
-                                </li>
-                                <li>
-                                    <div class="left">
-                                        <span class="chatbox-txt">I have hundreds of beautiful CV that you will go crazy at the first time looking at them.</span>
-                                    </div>
-                                    <div class="right"></div>
-                                </li>
-                                <li>
-                                    <div class="left">
-                                        <span class="chatbox-txt">Because they are all too good, it's so hard to select one ^^.</span>
-                                    </div>
-                                    <div class="right"></div>
-                                </li>
-                                <li>
-                                    <div class="left">
-                                        <span class="chatbox-txt">Enough talk! Let's <a href="#">EXPLORE!</a></span>
-                                    </div>
-                                    <div class="right"></div>
-                                </li>
-                            </ol>
+                        <div class="_fwfl cv-body">
+                            <div class="_fwfl content-box">
+                                <h1 class="title">Profile</h1>
+                                <div class="content">
+                                    <p>HELLO THERE!!</p> 
+                                    <p>Are you looking for a GREAT CV? If so you are in the RIGHT PLACE.</p> 
+                                    <p>We have HUNDREDS OF BEAUTIFUL CV that make you go crazy at the first time looking at them, because they are all too good, it's so hard to pick one ^^!</p>
+                                    <p>Enough talk! Let's explore moreeeeee....</p>
+                                    <a href="#" class="explode-btn">Explore</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-<!--                    <ol class="_fwfl _lsn _p0 _m0 theme-tree-preview">
-                        @foreach($themes as $theme)
-                        <li>
-                            <div class="cv-leaf">
-                                <img src="{{ asset('uploads/themes/' . $theme->slug . '/screenshot.png') }}" />
-                            </div>
-                        </li>
-                        @endforeach
-                    </ol>-->
                 </div>
             </div>
         </main>

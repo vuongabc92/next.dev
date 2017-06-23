@@ -14,7 +14,7 @@ class FrontendServiceProvider extends ServiceProvider {
      */
     public function boot() {
         
-        //Load Config
+        //Load helpers
         $this->loadHelpers();
         
         // Load views.

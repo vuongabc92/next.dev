@@ -78,11 +78,15 @@ header h1 {
     margin: 36px 0 0 200px;
     font-size: 46px;
     letter-spacing: 2px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+    -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
 }
 header h3 {
     margin: 6px 0 0 200px;
     font-size: 20px;
     letter-spacing: 2px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    -webkit-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 .contact-list li {
     float: left;

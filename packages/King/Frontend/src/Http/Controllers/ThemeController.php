@@ -7,6 +7,9 @@ namespace King\Frontend\Http\Controllers;
 
 use App\Models\Theme;
 use Illuminate\Http\Request;
+use App\Models\Expertise;
+use Validator;
+use File;
 
 class ThemeController extends FrontController {
     
@@ -18,6 +21,7 @@ class ThemeController extends FrontController {
     public function index() {
 
         $currentThemeId = (auth()->check()) ? auth()->user()->userProfile->theme_id : null;
+        $expertises     = Expertise::all()->sortBy('name')->pluck('name', 'id')->toArray();
         
         if (null === $currentThemeId) {
             $themes = Theme::all();
@@ -26,7 +30,8 @@ class ThemeController extends FrontController {
         }
         
         return view('frontend::theme.index', [
-            'themes' => $themes
+            'themes'     => $themes,
+            'expertises' => ['' => _t('theme.upload.themeallExpertises')] + $expertises,
         ]);
     }
     
@@ -74,4 +79,112 @@ class ThemeController extends FrontController {
         
         return pong(['message' => _t('oops')], _error(), 403);
     }
+    
+    public function addNew(Request $request) {
+        if ($request->isMethod('POST')) {
+            $rules     = $this->_getThemeRules();
+            $messages  = $this->_getThemeMessages();
+            $validator = Validator::make($request->all(), $rules, $messages);
+            $file      = $request->file('__file');
+            
+            if ($validator->fails()) {
+                return file_pong(['message' => $validator->errors()->first()], _error(), 403);
+            }
+            
+            if ($file->isValid()) {
+                $storagePath = config('frontend.themesTmpFolder');
+                $fileStr     = random_string(16, $available_sets = 'lud');
+                $fileExt     = $file->getClientOriginalExtension();
+                $fileName    = $fileStr . '.' . $fileExt;
+                
+                try {
+                    if ($file->move($storagePath, $fileName)) {
+                        $error = $this->checkThemeFilesCorrect($storagePath . '/' . $fileStr, $storagePath . '/' . $fileName);
+                        
+                        if ($error !== true) {
+                            return file_pong(['message' => $error], _error(), 403);
+                        }
+                        
+                        return file_pong(['theme_path' => $storagePath . '/' . $fileStr]);
+                    }
+                } catch (Exception $ex) {
+                    Log::error($ex->getMessage());
+                }
+                
+            }
+            
+            return file_pong(['message' => _t('oops')], _error(), 403);
+        }
+    }
+    
+    protected function checkThemeFilesCorrect($folder, $file) {
+        $extAllow      = config('frontend.themeFileExtensionsAllow');
+        $filesRequired = config('frontend.themeFilesRequired');
+        $extUnallow    = [];
+        $fileNames     = [];
+        
+        $zipArchive    = new \ZipArchive();
+        $result        = $zipArchive->open($file);
+        
+        if ($result === TRUE) {
+            $zipArchive->extractTo($folder);
+            $zipArchive->close();
+            
+            $files = File::allFiles($folder);
+            
+            foreach ($files as $file) {
+                $fileExt = File::extension($file);
+                
+                if ( ! in_array($fileExt, $extAllow)) {
+                    $extUnallow[] = '.' . $fileExt;
+                }
+                
+                $fileNames[] = File::name($file) . '.' . $fileExt;
+            }
+            
+            if (count($extUnallow)) {
+                $extUnallowStr = strtoupper(implode(', ', array_unique($extUnallow)));
+                
+                return _t('theme.upload.unallowExt', ['extUnallow' => $extUnallowStr]);
+            }
+            
+            $fileMissing = array_diff($filesRequired, $fileNames);
+            
+            if (count($fileMissing)) {
+                $fileMissingStr = strtoupper(implode(', ', $fileMissing));
+                
+                return _t('theme.upload.mising', ['fileMissing' => $fileMissingStr]);
+            }
+            
+            return true;
+            
+        } else {
+            return _t('theme.upload.unknow');
+        }
+    }
+
+    /**
+     * Get theme validation rules
+     *
+     * @return array
+     */
+    protected function _getThemeRules() {
+        return [
+            '__file' => 'required|mimes:zip|max:' . config('frontend.themeMaxFileSize')
+        ];
+    }
+
+    /**
+     * Get theme validation messages
+     *
+     * @return array
+     */
+    protected function _getThemeMessages() {
+        return [
+            '__file.required' => _t('no_file'),
+            '__file.mimes'    => _t('file_compress_mimes'),
+            '__file.max'      => _t('theme_max', ['fileSize' => config('frontend.themeMaxFileSizeMessage')]),
+        ];
+    }
 }
+//[themify_button style="blue,large,flat" color="#d00c50" link="http://clearskincareclinics.com.au/birthdaysale2017/" ]CLICK HERE[/themify_button]

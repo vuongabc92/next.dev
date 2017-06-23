@@ -4,10 +4,12 @@ namespace App\Helpers;
 use Illuminate\Http\Request;
 use Hash;
 use Route;
+use File;
 use App\Models\EmploymentHistory;
 use App\Models\Education;
 use App\Models\Skill;
 use App\Models\UserSkill;
+use App\Models\Theme;
 
 trait SaveSettings {
     
@@ -430,6 +432,95 @@ trait SaveSettings {
         
         return false;
     }
+    
+    public function saveTheme($request) {
+        $rules       = $this->saveThemeValidateRules();
+        $messages    = $this->saveThemeValidateMessages();
+        $themePath   = $request->get('theme_path');
+        $themeFolder = config('frontend.themesFolder');
+        $themeName   = $request->get('theme_name');
+        $themeSlug   = str_slug($themeName, '_');
+        $devices     = $request->get('devices');
+        $expertises  = array_filter($request->get('expertise_id'));
+        $formData    = $request->all();
+        
+        
+        if( ! count($expertises)) {
+            $rules = remove_rules($rules, 'expertise_id');
+        }
+        
+        $formData['expertise_id'] = $expertises;
+        
+        $validator = validator($formData, $rules, $messages);
+        
+        $validator->after(function($validator) use($themePath, $themeFolder, $themeSlug, $devices) {
+            if ( ! File::exists($themePath)) {
+                $validator->errors()->add('theme_path', _t('theme.validate.themezipgone'));
+            }
+            
+            if (File::exists($themeFolder . '/' . $themeSlug)) {
+                $validator->errors()->add('theme_path', _t('theme.validate.themenameexi'));
+            }
+            
+            if (is_array($devices) && count($devices)) {
+                foreach($devices as $device) {
+                    if( ! in_array($device, ['desktop', 'tablet', 'mobile'])) {
+                        $validator->errors()->add('theme_path', _t('theme.validate.devicesin'));
+                    }
+                }
+            }
+        });
+        
+        if ($validator->fails()) {
+            return $validator;
+        }
+        
+        try {
+            $files     = File::allFiles($themePath);
+            $indexPath = '';
+            
+            foreach ($files as $file) {
+                $fileName = File::name($file) . '.' . File::extension($file);
+                
+                if ($fileName === 'index.html') {
+                    $indexPath = $file;
+                }
+            }
+            
+            if ( File::exists($indexPath) ) {
+                $parentDir = File::dirname($indexPath);
+                
+                File::moveDirectory($parentDir, $themePath . '/' . $themeSlug);
+                File::moveDirectory($themePath . '/' . $themeSlug, $themeFolder . '/' . $themeSlug);
+            }
+            
+            File::deleteDirectory($themePath);
+        
+            if(File::exists($themePath . '.zip')) {
+                File::delete($themePath . '.zip');
+            }
+            
+        } catch (Exception $ex) {
+            Log::error($ex->getMessage());
+            
+            $validator->errors()->add('theme_path', _t('theme.validate.moveziperror'));
+            
+            return $validator;
+        }
+        
+        $theme = new Theme();
+        $theme->user_id     = user_id();
+        $theme->name        = $themeName;
+        $theme->slug        = $themeSlug;
+        $theme->version     = $request->get('theme_version');
+        $theme->description = $request->get('theme_desc');
+        $theme->devices     = (is_array($devices)) ? serialize($devices) : '';
+        $theme->expertises  = (is_array($expertises)) ? serialize($expertises) : '';
+        $theme->tags        = $request->get('theme_tags');
+        $theme->save();
+        
+        return $theme;
+    }
 
     /**
      * Get site urls that user CV slug must not be duplicated
@@ -453,6 +544,37 @@ trait SaveSettings {
         return array_unique($routes);
     }
 
+    /**
+     * Save theme validate rules.
+     * 
+     * @return array
+     */
+    public function saveThemeValidateRules() {
+        return [
+            'theme_path'    => 'required',
+            'theme_name'    => 'required|alpha_spaces|min:3|max:250|unique:themes,name',
+            'theme_version' => 'required|min:2|max:10',
+            'theme_desc'    => 'required|min:20',
+            'expertise_id'  => 'exists:expertises,id'
+        ];
+    }
+    
+    public function saveThemeValidateMessages() {
+        return [
+            'theme_path.required'     => _t('theme.validate.themezipreq'),
+            'theme_name.required'     => _t('theme.validate.themenamereq'),
+            'theme_name.alpha_spaces' => _t('theme.validate.themenamealdash'),
+            'theme_name.min'          => _t('theme.validate.themenamemin'),
+            'theme_name.max'          => _t('theme.validate.themenamemax'),
+            'theme_name.unique'       => _t('theme.validate.themenameuni'),
+            'theme_version.required'  => _t('theme.validate.themeverreq'),
+            'theme_version.min'       => _t('theme.validate.themevermin'),
+            'theme_version.max'       => _t('theme.validate.themevermax'),
+            'theme_desc.required'     => _t('theme.validate.themedescreq'),
+            'theme_desc.min'          => _t('theme.validate.themedescmin'),
+            'expertise_id.exists'     => _t('theme.validate.expertise_idexi'),
+        ];  
+    }
 
     /**
      * Save email validate rules.

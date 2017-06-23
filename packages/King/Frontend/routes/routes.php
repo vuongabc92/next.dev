@@ -18,6 +18,7 @@ Route::group(['middleware' => ['web', 'auth:web']], function ($route) {
     $route->delete('settings/kill_social', 'SettingsController@killSocial')->name('front_settings_killsocial');
     $route->get('settings/search_skill/{keyword?}', 'SettingsController@searchSkill')->name('front_settings_searchskill');
     $route->post('theme/install', 'ThemeController@install')->name('front_theme_install');
+    $route->post('theme/add_new', 'ThemeController@addNew')->name('front_theme_add_new');
 });
 
 Route::group(['middleware' => 'web'], function ($route) {

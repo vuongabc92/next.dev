@@ -8,7 +8,7 @@
 }
 main>.left {
     position: absolute;
-    width: 25%;
+    width: 475px;
     height: 100%;
     left: 0;
     right: 0;
@@ -23,15 +23,17 @@ main>.left header {
     height: 60px;
     padding: 13px 0;
 }
-main>.left header .logo {
-    width: 34px;
-    height: 34px;
-    float: left;
+.logo {
     border-radius: 50%;
     -webkit-border-radius: 50%;
     background-color: #000;
     text-align: center;
     position: relative;
+}
+main>.left header .logo {
+    width: 34px;
+    height: 34px;
+    float: left;
 }
 main>.left header button {
     float: right;
@@ -40,8 +42,8 @@ main>.left header button {
 .auth-wrap {
     padding-top: 100px;
 }
-#landingLoginForm,
-#landingRegisterBtn{
+#landingRegisterForm,
+#landingLoginBtn{
     display: none;
 }
 .auth-form-title {
@@ -123,100 +125,76 @@ main>.left header button {
 
 main>.right {
     position: absolute;
-    width: 75%;
     height: 100%;
-    left: 25%;
+    left: 475px;
     top: 0;
     right: 0;
     bottom: 0;
     padding: 20px;
-}
-main>.right>.right-inner {
-    width: 960px;
-    margin: 30px auto;
-}
-main>.right .olleh {
-    font-size: 17px;
-    line-height: 25px;
-    color: #555;
     font-family: 'Roboto Mono', monospace;
 }
-.chatbot-tree {
-    width: 400px;
-    float: left;
+main>.right>.right-inner {
+    width: 640px;
+    margin: 30px auto;
 }
-.chatbot-tree>li {
-    width: 100%;
-    float: left;
-    margin-bottom: 15px;
-}
-.chatbot-tree>li:last-child {
-    margin-bottom: 0;
-}
-.chatbot-tree>li>.left {
-    position: relative;
-    width: 335px;
-    float: left;
-    padding: 15px;
-    background-color: #ddd;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-}
-.chatbot-tree>li .chatbox-narrow {
-    position: absolute;
-    top: 9px;
-    right: -11px;
-    display: block;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 11px;
-    border-right-width: 0;
-    border-left-color: #ddd;
-}
-
-.chatbot-tree>li>.right {
-    width: 65px;
-    float: left;
-}
-.chatbot-tree>li .botface {
-    width: 40px;
-    height: 40px;
-    float: right;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    background-color: #000;
+.landing-cv .header {
     text-align: center;
-    color: #eee;
-    line-height: 38px;
 }
-
-.theme-tree-preview {
+.landing-cv .avatar-box .avatar {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    float: left;
+    left: 50%;
+    margin-left: -40px
+}
+.landing-cv h1.name {
+    margin: 15px 0 10px;
+    text-transform: uppercase;
+    font-size: 30px;
+    color: #444;
+}
+.landing-cv h3.job {
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 17px;
+    color: #555;
+}
+.cv-body {
     margin-top: 50px;
 }
-.theme-tree-preview>li {
-    width: 31.25%;
-    height: 230px;
-    float: left;
-    margin: 0 30px 30px 0;
-}
-.theme-tree-preview >li:nth-child(3n) {
-    margin-right: 0;
-}
-.theme-tree-preview>li>.cv-leaf {
+.content-box .title {
     width: 100%;
     float: left;
-    padding: 10px;
-    background-color: #fff;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.07);
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    margin: 0;
+    border-bottom: solid 1px #666;
+    padding: 5px 0;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #555;
 }
-.theme-tree-preview .cv-leaf img {
+.content-box .content {
     width: 100%;
     float: left;
+    margin-top: 30px;
+    font-size: 17px;
+    color: #555;
+    line-height: 25px;
 }
-
+.explode-btn {
+    float: left;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: solid 1px #555;
+    color: #555;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.explode-btn:hover {
+    text-decoration: none;
+    color: #000;
+    border-color: #000;
+}
 
 main>.left footer {
     position: absolute;
@@ -245,4 +223,76 @@ main>.left footer {
 }
 .footer-nav>li>a:hover {
     color: #555;
+}
+
+@media screen and (max-width: 1024px) {
+    main>.left {
+        width: 380px;
+    }
+    main>.left>.left-inner {
+        width: 310px;
+        margin: 0 auto;
+    }
+    .outworld-auth button {
+        text-transform: capitalize
+    }
+    main>.right {
+        left: 380px;
+        padding: 30px;
+    }
+    main>.right>.right-inner {
+        width: 100%;
+        float: left;
+        margin: 0;
+    }
+    .footer-nav {
+        width: 310px;
+    }
+}
+@media screen and (max-width: 768px) {
+    main>.left {
+        width: 50%;
+    }
+    main>.right {
+        width: 50%;
+        left: 50%;
+    }
+    main>.right>.right-inner {
+        width: 100%;
+        float: left;
+        margin: 0;
+    }
+}
+@media screen and (max-width: 680px) {
+    main>.left {
+        width: 100%;
+        float: left;
+    }
+    .auth-wrap {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    main>.right {
+        display: none;
+    }
+    main>.left>.left-inner {
+        width: 90%;
+    }
+    .border-dot {
+        background-image: none;
+    }
+    main>.left footer {
+        display: none;
+    }
+}
+@media screen and (max-width: 480px) { 
+    main>.left>.left-inner {
+        width: 310px;
+    }
+    .footer-nav {
+        width: 310px;
+    }
+}
+@media screen and (max-width: 320px) {
+    
 }
