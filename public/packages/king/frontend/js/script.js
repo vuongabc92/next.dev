@@ -789,7 +789,7 @@ var HELPERS = {
             current.on('click', function(e){
                 var section      = current.closest('section'),
                     settingsForm = section.find('form.settings-form'),
-                    requires     = (settingsForm.data('requires').trim() !== '') ? settingsForm.data('requires').split('|') : [],
+                    requires     = (settingsForm.data('requires') && settingsForm.data('requires').trim() !== '') ? settingsForm.data('requires').split('|') : [],
                     saveFormType = settingsForm.find('[name="type"]').val();
 
                 if ('_PASS' !== saveFormType && '_EMPLOYMENT' !== saveFormType && '_EDUCATION' !== saveFormType) {
@@ -905,12 +905,11 @@ var HELPERS = {
                         var formType = current.find('[name="type"]').val();
                         
                         if (formType === '_SLUG') {
-                            var currentSlug = $('.current-slug'),
-                                slugSplit   = currentSlug.html().trim().split('/');
+                            var cvUrl       = response.data.cv_url,
+                                currentSlug = $('.current-slug');
                             
-                            currentSlug.html(slugSplit[0] + '/' + current.find('[name="slug"]').val());
-                            
-                            $('a.current-slug').attr('href', 'http://' + slugSplit[0] + '/' + current.find('[name="slug"]').val());
+                            currentSlug.html(cvUrl);
+                            $('a.current-slug').attr('href', cvUrl);
                         }
                         
                         if (formType === '_EXPERTISE') {
@@ -996,6 +995,40 @@ var HELPERS = {
                                 html = html + '<li><a href="#" onclick="$(\'#social-modal\').modal(\'show\');"><i class="fa fa-plus"></i></a></li>';
                                 $('.social-added-list ul').html(html);
                             }
+                        }
+                        
+                        if (formType === '_THEME') {
+                            var addThemeModal = $('#addThemeModal'),
+                                tabYourThemes = $('#navTabYourThemes'),
+                                themeLeafHtml = $('#themeItemTemplate'),
+                                themeDetails  = response.data,
+                                viewModeItems = '';
+                        
+                            addThemeModal.find('#uploadThemeBtn').removeClass('_btn-white').addClass('_btn-blue').prop('disabled', false);
+                            addThemeModal.find('input[name=theme_path]').val('');
+                            addThemeModal.find('form')[0].reset();
+                            addThemeModal.modal('hide');
+                            themeLeafHtml.find('a').attr('href', themeDetails.url_details);
+                            themeLeafHtml.find('img').attr('src', themeDetails.screenshot);
+                            
+                            if(themeDetails.devices.lenght) {
+                                themeDetails.devices.each(function(k, v){
+                                    viewModeItems = viewModeItems + '<li><i class="fa fa-' + v + '"></i></li>';
+                                });
+                                
+                                themeLeafHtml.find('.view-mode-list').html(viewModeItems);
+                            } else {
+                                themeLeafHtml.find('.view-mode-wrap').addClass('_dn');
+                            }
+                            themeLeafHtml.find('.theme-dataOverlay h3').html(themeDetails.name);
+                            themeLeafHtml.find('.theme-dataOverlay span').html(themeDetails.desc);
+                            
+                            $('#uploadedThemeTree').append(themeLeafHtml.html());
+                            tabYourThemes.click();
+                            
+                            $('html, body').animate({
+                                scrollTop: $('#uploadedThemeTree li:last-child').offset().top
+                            }, 1000);
                         }
                         
                         HELPERS.message.success(response.message);
@@ -2315,28 +2348,44 @@ var HELPERS = {
     Plugin.prototype = {
         init: function() {
             
-            var that = this;
+            var that      = this,
+                themeTree = $('.theme-tree');
         
             this.element.on('click', function(){
+                var url = $(this).attr('href');
+                    
+                that.getThemeDetails(url)
                 
-                var url      = $(this).parents('ol').data('theme-details-url'),
-                    theme_id = $(this).attr('data-theme-id'),
-                    modal    = $('#themeDetailsModal');
+                return false;
+            });
+            
+            themeTree.on('click', '.theme-leaf a', function(){
+                var url = $(this).attr('href');
+                    
+                that.getThemeDetails(url)
                 
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        data: {theme_id: theme_id},
-                        success: function(response) {
-                            var data = response.data;
-                            that.fillModal(modal, data);
-                            
-                            modal.modal('show');
-                        }
-                    });
+                return false;
+            });
+            
+        },
+        getThemeDetails: function(url){
+            var modal = $('#themeDetailsModal'),
+                that  = this;
+            
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function(response) {
+                    var data = response.data;
+                    that.fillModal(data);
+
+                    modal.modal('show');
+                }
             });
         },
-        fillModal: function(modal, data) {
+        fillModal: function(data) {
+            var modal = $('#themeDetailsModal');
+            
             modal.find('#themeAuthorAvatar').find('img').attr('src', data.author.avatar);
             modal.find('#themeScreenshot').find('img').attr('src', data.screenshot);
             modal.find('#themeDetailsHeader').find('.theme-by a').html(data.author.name);

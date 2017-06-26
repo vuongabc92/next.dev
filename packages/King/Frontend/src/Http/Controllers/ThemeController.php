@@ -19,19 +19,26 @@ class ThemeController extends FrontController {
      * @return void
      */
     public function index() {
-
-        $currentThemeId = (auth()->check()) ? auth()->user()->userProfile->theme_id : null;
+        $currentTheme   = null;
         $expertises     = Expertise::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        $uploadedThemes = collect([]);
         
-        if (null === $currentThemeId) {
+        if(auth()->check()) {
+            $currentTheme   = user()->userProfile->theme;
+            $uploadedThemes = user()->themes;
+        }
+        
+        if (null === $currentTheme) {
             $themes = Theme::all();
         } else {
-            $themes = Theme::where('id', '!=', $currentThemeId)->get();
+            $themes = Theme::where('id', '!=', $currentTheme->theme_id)->get();
         }
         
         return view('frontend::theme.index', [
-            'themes'     => $themes,
-            'expertises' => ['' => _t('theme.upload.themeallExpertises')] + $expertises,
+            'themes'         => $themes,
+            'expertises'     => ['' => _t('theme.upload.themeallExpertises')] + $expertises,
+            'uploadedThemes' => $uploadedThemes,
+            'currentTheme'   => $currentTheme,
         ]);
     }
     
@@ -57,8 +64,7 @@ class ThemeController extends FrontController {
         }
     }
     
-    public function themeDetails(Request $request) {
-        $themeId     = (int) $request->get('theme_id');
+    public function themeDetails($themeId) {
         $theme       = Theme::find($themeId);
         $userProfile = $theme->user->userProfile;
         
@@ -67,8 +73,8 @@ class ThemeController extends FrontController {
                 'theme_id'   => $theme->id,
                 'theme_name'  => $theme->name,
                 'screenshot'  => asset(config('frontend.themesFolder') . '/' . $theme->slug . '/screenshot.png'),
-                'version'     => 'Version ' . $theme->getJson()->version,
-                'description' => $theme->getJson()->description,
+                'version'     => $theme->version,
+                'description' => $theme->description,
                 'created_at'  => $theme->createdAtFormat('M d, Y'),
                 'author'      => [
                     'name'   => (empty($userProfile->first_name)) ? $theme->user->username : $userProfile->first_name . ' ' . $userProfile->last_name,
@@ -80,7 +86,14 @@ class ThemeController extends FrontController {
         return pong(['message' => _t('oops')], _error(), 403);
     }
     
-    public function addNew(Request $request) {
+    /**
+     * Add new theme
+     * 
+     * @param Request $request
+     * 
+     * @return type
+     */
+    public function addNewTheme(Request $request) {
         if ($request->isMethod('POST')) {
             $rules     = $this->_getThemeRules();
             $messages  = $this->_getThemeMessages();
@@ -117,6 +130,14 @@ class ThemeController extends FrontController {
         }
     }
     
+    /**
+     * Check is the uploaded theme correct
+     * 
+     * @param string $folder
+     * @param string $file
+     * 
+     * @return boolean
+     */
     protected function checkThemeFilesCorrect($folder, $file) {
         $extAllow      = config('frontend.themeFileExtensionsAllow');
         $filesRequired = config('frontend.themeFilesRequired');

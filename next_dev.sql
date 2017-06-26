@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2017 at 09:47 AM
+-- Generation Time: Jun 26, 2017 at 12:34 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.20
 
@@ -1402,6 +1402,7 @@ CREATE TABLE `king_themes` (
   `devices` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `expertises` text COLLATE utf8_unicode_ci,
   `tags` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `activated` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -1410,17 +1411,20 @@ CREATE TABLE `king_themes` (
 -- Dumping data for table `king_themes`
 --
 
-INSERT INTO `king_themes` (`id`, `user_id`, `slug`, `name`, `version`, `description`, `devices`, `expertises`, `tags`, `created_at`, `updated_at`) VALUES
-(2, 1, 'twenty_seventeen', 'Twenty Seventeen', '', '', '', '', '', '2017-05-17 07:25:23', '2017-05-17 07:25:23'),
-(3, 1, 'simple', 'Simple', '', '', '', '', '', '2017-05-18 03:29:19', '2017-05-18 03:29:19'),
-(4, 1, 'quick', 'Quick', '', '', '', '', '', '2017-05-23 04:35:16', '2017-05-23 04:35:16'),
-(5, 1, 'hello', 'Hello', '', '', '', '', '', '2017-05-26 03:23:50', '2017-05-26 03:23:50'),
-(6, 1, 'dash', 'Dash', '', '', '', '', '', '2017-05-29 07:41:29', '2017-05-29 07:41:29'),
-(7, 1, 'black', 'Black', '', '', '', '', '', '2017-06-01 07:23:48', '2017-06-01 07:23:48'),
-(8, 1, 'Clean', 'Clean', '', '', '', '', '', '2017-06-06 06:46:26', '2017-06-06 06:46:26'),
-(9, 1, 'blue_dash', 'Blue Dash', '', '', '', '', '', '2017-06-07 04:39:47', '2017-06-07 04:39:47'),
-(10, 1, 'paparazzi', 'Paparazzi', '', '', '', '', '', '2017-06-08 04:36:12', '2017-06-08 04:36:12'),
-(12, 1, 'maria_rocco', 'Maria Rocco', '', '', '', '', '', '2017-06-09 04:16:43', '2017-06-09 04:16:43');
+INSERT INTO `king_themes` (`id`, `user_id`, `slug`, `name`, `version`, `description`, `devices`, `expertises`, `tags`, `activated`, `created_at`, `updated_at`) VALUES
+(2, 1, 'twenty_seventeen', 'Twenty Seventeen', '', 'This is example description ^^!', '', '', '', 0, '2017-05-17 07:25:23', '2017-05-17 07:25:23'),
+(3, 1, 'simple', 'Simple', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-05-18 03:29:19', '2017-05-18 03:29:19'),
+(4, 1, 'quick', 'Quick', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-05-23 04:35:16', '2017-05-23 04:35:16'),
+(5, 1, 'hello', 'Hello', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-05-26 03:23:50', '2017-05-26 03:23:50'),
+(6, 1, 'dash', 'Dash', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-05-29 07:41:29', '2017-05-29 07:41:29'),
+(7, 1, 'black', 'Black', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-01 07:23:48', '2017-06-01 07:23:48'),
+(8, 1, 'Clean', 'Clean', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-06 06:46:26', '2017-06-06 06:46:26'),
+(9, 1, 'blue_dash', 'Blue Dash', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-07 04:39:47', '2017-06-07 04:39:47'),
+(10, 1, 'paparazzi', 'Paparazzi', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-08 04:36:12', '2017-06-08 04:36:12'),
+(12, 1, 'maria_rocco', 'Maria Rocco', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-09 04:16:43', '2017-06-09 04:16:43'),
+(13, 1, 'nice_one', 'Nice one', '1.0', 'This is theme description, if it''s too short, go fuck yourself*', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', 'PHP, Designer', 0, '2017-06-26 01:27:21', '2017-06-26 01:27:21'),
+(14, 1, 'theme_name', 'Theme name', '1.0', 'This is theme description, if it''s too short, go fuck yourself*', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', 'abc, ddd, aaa', 0, '2017-06-26 01:28:24', '2017-06-26 01:28:24'),
+(15, 1, 'abc', 'abc', 'svsdv', 'This is theme description, if it''s too short, go fuck yourself*', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 0, '2017-06-26 01:30:29', '2017-06-26 01:30:29');
 
 -- --------------------------------------------------------
 
@@ -1443,7 +1447,7 @@ CREATE TABLE `king_users` (
 --
 
 INSERT INTO `king_users` (`id`, `username`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'master', 'master@yopmail.com', '$2y$10$Rjn77JX8H4JZgXtuRv0qM..UennGPHSfPA9hIc.E3N2npEtXOB1JC', 'TmjkNiEBSJydQAd7RvIlSq4bPJFs16ygh3xVkRUPkWlu6fL4NzTyRq5mlvOI', '2016-05-22 21:06:32', '2017-06-21 20:21:17'),
+(1, 'master', 'master@yopmail.com', '$2y$10$Rjn77JX8H4JZgXtuRv0qM..UennGPHSfPA9hIc.E3N2npEtXOB1JC', '3wygnIGMAA9XXYEXCh6mlFEjVQQLdQtVlxiycmU0LTZfHithn6rzngsxBnO3', '2016-05-22 21:06:32', '2017-06-26 02:30:29'),
 (2, 'vuongabc92', 'vuongabc92@yopmail.com', '$2y$10$HHO7Ukn9jf7jfsGwfvdyweaJdVb3SflH6pZeD0HUAZeCa01YQGXQu', 'pvQd33dYfn2NH0rNSVNQGW5YIPY8LWSuOUDK1xQ0jO6YF6jUaaQu5zHW3gf9', '2016-05-27 01:55:32', '2016-08-23 20:46:31'),
 (3, 'vuongabc921', 'vuongabc921@yopmail.com', '$2y$10$fl4087pf8VVtAV8KxhUOGeyQaKy3DNW/mlBzHFngCzoX9581DxRSK', 'fD1xsq2fuYdjjqpja2DreZ23rZk5f4Fz7bLE6rWsplUW5pTAsijhr5jjLO5b', '2016-05-27 02:06:17', '2016-05-27 02:13:24'),
 (4, 'vuong.bui', 'vuong.bui@s60.com.au', '$2y$10$/cW5LRQjk0wVkdnp6km9gekWN3O0MFuScps7oRYuHgX24EtGZ4xxe', 'XiPk7pAndIqUvYkJaKBVilcvkwYORLQZKctHnnic3JZoLlxaQsdCMgNc1Hfk', '2016-11-02 20:54:51', '2017-01-05 23:09:12'),
@@ -1495,7 +1499,7 @@ CREATE TABLE `king_user_profile` (
 --
 
 INSERT INTO `king_user_profile` (`id`, `user_id`, `theme_id`, `marital_status_id`, `expertise_id`, `slug`, `avatar_image`, `cover_image`, `first_name`, `last_name`, `day_of_birth`, `about_me`, `hobbies`, `country_id`, `city_id`, `district_id`, `ward_id`, `street_name`, `city_name`, `gender_id`, `phone_number`, `website`, `social_network`, `expected_job`, `publish`, `slug_updated_at`, `created_at`, `updated_at`) VALUES
-(1, 1, 12, 1, 40, 'vuongbui', 'a:4:{s:8:"original";s:36:"avatar_aV52CjSyrJwRfk7j_Original.jpg";i:128;s:35:"avatar_3V9jMQrkCbZccqEY_128x128.jpg";i:256;s:35:"avatar_384fb43SXuFxcmnB_256x256.jpg";i:512;s:35:"avatar_u4RgZbRZAXxufRpd_512x512.jpg";}', 'a:4:{s:8:"original";s:35:"cover_8sED9xtjX5xwmnkv_Original.png";i:768;s:34:"cover_N8d69zrpE53k35ra_768x420.png";i:960;s:34:"cover_h5USGu9GAMz4JEKf_960x500.png";i:1200;s:35:"cover_kAZDNf3bBcW8CqA8_1200x500.png";}', 'King Of', 'Versailles', '1992-09-09', 'I heard that  Studio 60 was looking for a Senior PHP developer. I am a Senior PHP developer with strong skill and experience with a software-agency past, love to fintech and a passion for creating experiences that bring the value to people''s lives', 'Travel, Food, Music, Football, Swimming', NULL, 1, 8, 6316, '', '', 1, '', 'http://', 'a:5:{s:8:"facebook";s:23:"facebook.com/vuongabc92";s:7:"twitter";s:22:"twitter.com/vuongabc92";s:9:"instagram";s:24:"instagram.com/vuongabc92";s:2:"vk";s:17:"vk.com/vuongabc92";s:11:"google-plus";s:26:"plus.google.com/vuongabc92";}', 'Senior PHP Developer', 0, '2017-03-01 03:51:01', '2016-05-22 21:10:49', '2017-06-20 20:49:38'),
+(1, 1, 10, 1, 40, 'babe', 'a:4:{s:8:"original";s:36:"avatar_aV52CjSyrJwRfk7j_Original.jpg";i:128;s:35:"avatar_3V9jMQrkCbZccqEY_128x128.jpg";i:256;s:35:"avatar_384fb43SXuFxcmnB_256x256.jpg";i:512;s:35:"avatar_u4RgZbRZAXxufRpd_512x512.jpg";}', 'a:4:{s:8:"original";s:35:"cover_8sED9xtjX5xwmnkv_Original.png";i:768;s:34:"cover_N8d69zrpE53k35ra_768x420.png";i:960;s:34:"cover_h5USGu9GAMz4JEKf_960x500.png";i:1200;s:35:"cover_kAZDNf3bBcW8CqA8_1200x500.png";}', 'King Of', 'Versailles', '1992-09-09', 'I heard that  Studio 60 was looking for a Senior PHP developer. I am a Senior PHP developer with strong skill and experience with a software-agency past, love to fintech and a passion for creating experiences that bring the value to people''s lives', 'Travel, Food, Music, Football, Swimming', 237, 1, 8, 6316, 'Dien Bien Phu', 'Ho Chi Minh', 1, '0908709876', 'http://s60.co', 'a:5:{s:8:"facebook";s:23:"facebook.com/vuongabc92";s:7:"twitter";s:22:"twitter.com/vuongabc92";s:9:"instagram";s:24:"instagram.com/vuongabc92";s:2:"vk";s:17:"vk.com/vuongabc92";s:11:"google-plus";s:26:"plus.google.com/vuongabc92";}', 'Senior PHP Developer', 1, '2017-06-26 09:29:18', '2016-05-22 21:10:49', '2017-06-26 02:29:18'),
 (2, 2, NULL, NULL, NULL, 'vuongabc92', 'a:1:{i:256;s:35:"avatar_zWdwcT9unbG7f96m_256x256.jpg";}', 'a:1:{i:960;s:34:"cover_DABzZc6bPjj7KXua_960x500.jpg";}', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, '2016-05-27 01:55:32', '2016-08-23 20:45:40'),
 (3, 3, NULL, NULL, NULL, 'vuongabc9211', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, '2016-05-27 02:06:17', '2016-05-27 02:06:17'),
 (4, 4, NULL, 1, NULL, 'vuong.bui', 'a:4:{s:8:"original";s:36:"avatar_cjX8bThQbs6uXPFj_Original.jpg";i:128;s:35:"avatar_cnhuGsWfBw9F9Wzd_128x128.jpg";i:256;s:35:"avatar_Gek34CytSRHx7hFD_256x256.jpg";i:512;s:35:"avatar_vfdTMVDcV8dAYHF5_512x512.jpg";}', 'a:4:{s:8:"original";s:35:"cover_kAZDNf3bBcW8CqA8_Original.jpg";i:768;s:34:"cover_3YE9BzRsj3wDHN8p_768x420.jpg";i:960;s:34:"cover_xbyqmHYH7pMVES3j_960x500.jpg";i:1200;s:35:"cover_8QE5tsrtzFrThAEE_1200x500.jpg";}', '', '', '1992-09-09', 'Google', 'Food, Film, Travel', NULL, NULL, NULL, NULL, '', '', 1, '', 'http://', '', '', 0, NULL, '2016-11-02 20:54:51', '2017-01-05 01:15:37'),

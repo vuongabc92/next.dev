@@ -2,7 +2,7 @@
     {!! Form::open(['route' => 'front_login_post', 'method' => 'POST', 'class' => '_fwfl auth-form', 'id' => 'landingLoginForm', 'data-required' => 'email|password']) !!}
         <h1 class="_fwfl _m0 _p0 auth-form-title">{{ _t('loginin.form.title') }}</h1>
         <div class="_fwfl outworld-auth auth-field-group first-field-group">
-            <button class="btn _btn btn-fb">Login with Facebook</button>
+            <button type="button" class="btn _btn btn-fb" onclick="document.location.href='{{ $fbLoginUrl }}'">Login with Facebook</button>
             <button class="btn _btn btn-google">Login with Google</button>
             <span class="auth-or">Or</span>
         </div>

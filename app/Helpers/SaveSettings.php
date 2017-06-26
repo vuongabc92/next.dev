@@ -51,21 +51,21 @@ trait SaveSettings {
         $slug        = $request->get('slug');
         $validator   = validator($request->all(), $this->_saveSlugValidateRules(), $this->_saveSlugValidateMessages());
         
-        $validator->after(function($validator) use($slug) {
-            if (getSlugRemainDay()) {
-                $remainDay     = getSlugRemainDay();
-                $slugUpdatedAt = new \DateTime(user()->userProfile->slug_updated_at);
-                $slugUpdatedAt->modify("+{$remainDay} days");
-                
-                $validator->errors()->add('slug', _t('setting.profile.slug_time', ['date' => $slugUpdatedAt->format('d/m/Y')]));
-            }
-            
-            $privateUrls = config('frontend.unavailableCVUrls') + $this->_getPrivateUrls();
-            
-            if (in_array($slug, $privateUrls)) {
-                $validator->errors()->add('slug', _t('setting.profile.slug_exi'));
-            }
-        });
+//        $validator->after(function($validator) use($slug) {
+//            if (getSlugRemainDay()) {
+//                $remainDay     = getSlugRemainDay();
+//                $slugUpdatedAt = new \DateTime(user()->userProfile->slug_updated_at);
+//                $slugUpdatedAt->modify("+{$remainDay} days");
+//                
+//                $validator->errors()->add('slug', _t('setting.profile.slug_time', ['date' => $slugUpdatedAt->format('d/m/Y')]));
+//            }
+//            
+//            $privateUrls = config('frontend.unavailableCVUrls') + $this->_getPrivateUrls();
+//            
+//            if (in_array($slug, $privateUrls)) {
+//                $validator->errors()->add('slug', _t('setting.profile.slug_exi'));
+//            }
+//        });
         
         if ($validator->fails()) {
             return $validator;
@@ -75,7 +75,7 @@ trait SaveSettings {
         $userProfile->slug_updated_at = new \DateTime();
         $userProfile->save();
         
-        return true;
+        return $userProfile;
     }
     
     /**
@@ -723,7 +723,7 @@ trait SaveSettings {
      */
     protected function _saveContactRules() {
         return [
-            'country_id'      => 'required_with:city|exists:countries,id',
+            'country_id'   => 'required_with:city|exists:countries,id',
             'street_name'  => 'max:250',
             'city_name'    => 'max:250',
 //            'country'      => 'required_with:city|exists:countries,id',

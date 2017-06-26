@@ -25,7 +25,7 @@
                 <h3 class="_p0 _m0 _tg6">{{ $userProfile->first_name }} {{ $userProfile->last_name }}</h3>
                 <p class="_m0">
                     <strong class="_fs12 _tg8">Visit:</strong> 
-                    <a href="{{ url($userProfile->slug) }}" class="_tb _fs12 current-slug">{{ preg_replace('/^http:\/\//', '', url($userProfile->slug)) }}</a>
+                    <a href="{{ $userProfile->cvUrl() }}" class="_tb _fs12 current-slug">{{ preg_replace('/^http:\/\//', '', $userProfile->cvUrl()) }}</a>
                 </p>
             </div>
         </div>

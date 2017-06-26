@@ -18,7 +18,7 @@ Route::group(['middleware' => ['web', 'auth:web']], function ($route) {
     $route->delete('settings/kill_social', 'SettingsController@killSocial')->name('front_settings_killsocial');
     $route->get('settings/search_skill/{keyword?}', 'SettingsController@searchSkill')->name('front_settings_searchskill');
     $route->post('theme/install', 'ThemeController@install')->name('front_theme_install');
-    $route->post('theme/add_new', 'ThemeController@addNew')->name('front_theme_add_new');
+    $route->post('theme/add_new', 'ThemeController@addNewTheme')->name('front_theme_add_new');
 });
 
 Route::group(['middleware' => 'web'], function ($route) {
@@ -29,6 +29,7 @@ Route::group(['middleware' => 'web'], function ($route) {
     $route->get('login', 'Auth\LoginController@showLoginForm')->name('front_login');
     $route->post('login', 'Auth\LoginController@login')->name('front_login_post');
     $route->get('logout', 'Auth\LoginController@logout')->name('front_logout');
+    $route->get('facebook-authenticate', 'Auth\LoginController@loginWithFBCallback')->name('front_login_with_fbcallback');
 
     // Registration Routes.
     $route->get('register', 'Auth\RegisterController@showRegistrationForm')->name('front_register');
@@ -43,7 +44,8 @@ Route::group(['middleware' => 'web'], function ($route) {
     Route::get('/', ['as' => 'front_landing', 'uses' => 'HomeController@landing']);
     
     Route::get('themes', 'ThemeController@index')->name('front_themes');
-    Route::get('theme/popup_details', 'ThemeController@themeDetails')->name('front_theme_details');
+    Route::get('theme/{theme_id}/popup_details', 'ThemeController@themeDetails')->name('front_theme_details')->where('theme_id', '[0-9]+');
     
-    Route::get('{slug?}', 'ResumeController@index')->name('front_cv');
+    
+    Route::get('i/{slug?}', 'ResumeController@index')->name('front_cv');
 });

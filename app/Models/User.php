@@ -57,6 +57,13 @@ class User extends Authenticatable {
     }
     
     /**
+     * Get the themes record associated with the user.
+     */
+    public function themes() {
+        return $this->hasMany('App\Models\Theme');
+    }
+    
+    /**
      * Send the password reset notification.
      *
      * @param  string  $token

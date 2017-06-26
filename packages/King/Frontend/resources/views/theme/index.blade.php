@@ -22,30 +22,53 @@
             @yield('user_header')
             <div class="_fwfl theme-filter-bar">
                 <div class="container">
-                    <ul class="_fwfl _lsn _p0 _m0 theme-filter-list">
+                    <ul class="_fwfl _lsn _p0 _m0 theme-filter-list" role="tablist">
                         <li><a href="#"><i class="fa fa-bars"></i></a></li>
-                        <li><a href="#">Your themes</a></li>
-                        <li><a href="#">All themes</a></li>
-                        <li><a href="#">Popular themes</a></li>
-                        <li><a href="#" class="add-theme-btn" data-toggle="modal" data-target="#addThemeModal"><i class="fa fa-plus"></i> Add theme</a></li>
+                        <li role="presentation"><a href="#yourThemes" aria-controls="yourThemes" role="tab" data-toggle="tab" id="navTabYourThemes">{{ _t('theme.bar.your') }}</a></li>
+                        <li role="presentation" class="active"><a href="#allThemes" aria-controls="allThemes" role="tab" data-toggle="tab" id="navTabAllThemes">{{ _t('theme.bar.all') }}</a></li>
+                        <li role="presentation"><a href="#popularThemes" aria-controls="popularThemes" role="tab" data-toggle="tab">{{ _t('theme.bar.popular') }}</a></li>
+                        <li role="presentation"><a href="#" class="add-theme-btn" data-toggle="modal" data-target="#addThemeModal"><i class="fa fa-plus"></i> {{ _t('theme.bar.add') }}</a></li>
                     </ul>
                 </div>
             </div>
             <div class="container">
                 <div class="settings">
                     <div class="row">
-                        <div role="tabThemes" class="tab-pane active" id="themes">
-                            <ol class="_fwfl _lsn _p0 theme-tree" data-theme-details-url="{{ route('front_theme_details') }}">
-                                @foreach($themes as $theme)
-                                <li>
-                                    <div class="theme-leaf">
-                                        <a href="#" data-theme-details data-theme-id="{{ $theme->id }}">
-                                            <img src="{{ asset('uploads/themes/' . $theme->slug . '/screenshot.png') }}" />
-                                        </a>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane" id="yourThemes">
+                                @if($currentTheme)
+                                <div class="_fwfl current-activated-theme">
+                                    <div class="screenshot">
+                                        <span class="label label-info"><i class="fa fa-check"></i> {{ _t('theme.curActivated') }}</span>
+                                        <img src="{{ asset('uploads/themes/' . $currentTheme->slug . '/screenshot.png') }}">
                                     </div>
-                                </li>
-                                @endforeach
-                            </ol>
+                                    <div class="_fwfl _mt20 activated-info">
+                                        <a href="{{ route('front_theme_details', ['theme_id' => $currentTheme->id]) }}" data-theme-details class="_fl _btn btn _btn-blue-navy">{{ _t('theme.details') }}</a>
+                                        <button data-event-trigger="#navTabAllThemes" data-event="click|click" class="_fl _btn btn _btn-gray">{{ _t('theme.change') }}</button>
+                                    </div>
+                                </div>
+                                @endif
+                                <div class="_fwfl uploaded-themes">
+                                    <h3>{{ _t('theme.yourUploaded') }}</h3>
+                                    <ol class="_fwfl _lsn _p0 theme-tree" id="uploadedThemeTree">
+                                        @if($uploadedThemes->count())
+                                            @foreach($uploadedThemes as $theme)
+                                                @include('frontend::inc.theme-item', ['theme' => $theme])
+                                            @endforeach
+                                        @endif
+                                    </ol>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane active" id="allThemes">
+                                <ol class="_fwfl _lsn _p0 theme-tree">
+                                    @if($themes->count())
+                                        @foreach($themes as $theme)
+                                            @include('frontend::inc.theme-item', ['theme' => $theme])
+                                        @endforeach
+                                    @endif
+                                </ol>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="popularThemes">Popular themes</div>
                         </div>
                     </div>
                 </div>
@@ -79,12 +102,10 @@
                                                 {{ _t('theme.install') }}
                                             </button>
                                         </form>
-                                        <a href="#" class="btn _btn _btn-gray">Preview</a>
+                                        <a href="#" class="btn _btn _btn-gray">{{ _t('theme.preview') }}</a>
                                     </div>
                                 </div>
-                                <div class="theme-details-desc" id="themeDesc">
-                                    Creative Market is a platform for handcrafted, mousemade design content from independent creatives around the world. We're passionate about making beautiful design simple and accessible to everyone.
-                                </div>
+                                <div class="theme-details-desc" id="themeDesc"></div>
                             </div>
                         </div>
                     </div>
@@ -102,14 +123,14 @@
                         <div class="modal-body">
                             {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'add-theme-form', 'data-save-form' => '', 'data-requires' => 'theme_name|theme_version|theme_desc']) !!}
                                 <div class="settings-field-wrapper">
-                                    <button type="button" class="btn _btn _btn-sm _btn-blue" id="uploadThemeBtn" data-event-trigger="#theme_file_input" data-event="click|click" data-loading="blue24">Upload your theme</button>
+                                    <button type="button" class="btn _btn _btn-sm _btn-blue" id="uploadThemeBtn" data-event-trigger="#theme_file_input" data-event="click|click" data-loading="blue24">{{ _t('theme.upload.addThemebtn') }}</button>
                                     <input type="hidden" name="theme_path"/>
                                 </div>
                                 <div class="settings-field-wrapper">
-                                    {!! Form::text('theme_name', '', ['class' => 'settings-field', 'placeholder' => _t('theme.upload.themename')]) !!}
+                                    {!! Form::text('theme_name', '', ['class' => 'settings-field', 'placeholder' => _t('theme.upload.themename'), 'autocomplete' => 'off']) !!}
                                 </div>
                                 <div class="settings-field-wrapper">
-                                    {!! Form::text('theme_version', '', ['class' => 'settings-field', 'placeholder' => _t('theme.upload.themeversion')]) !!}
+                                    {!! Form::text('theme_version', '', ['class' => 'settings-field', 'placeholder' => _t('theme.upload.themeversion'), 'autocomplete' => 'off']) !!}
                                 </div>
                                 <div class="settings-field-wrapper">
                                     {!! Form::textarea('theme_desc', '', ['class' => 'settings-textarea', 'placeholder' => _t('theme.upload.themedesc')]) !!}
@@ -140,7 +161,7 @@
                                     {!! Form::select('expertise_id[]', $expertises, null, ['id' => 'theme-expertise', 'class' => 'settings-field theme-expertise', 'multiple' => '']) !!}
                                 </div>
                                 <div class="settings-field-wrapper">
-                                    {!! Form::text('theme_tags', '', ['class' => 'settings-field', 'placeholder' => _t('theme.upload.themetags')]) !!}
+                                    {!! Form::text('theme_tags', '', ['class' => 'settings-field', 'placeholder' => _t('theme.upload.themetags'), 'autocomplete' => 'off']) !!}
                                 </div>
                                 
                                 <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
@@ -160,6 +181,22 @@
                 <div class="container">
                     <span class="_fs13 _fwb" id="alertText"></span>
                 </div>
+            </div>
+            <div id="themeItemTemplate" class="_dn">
+                <li> 
+                    <div class="theme-leaf">
+                        <a href="{{ route('front_theme_details', ['theme_id' => 'THEME_ID']) }}" data-theme-details>
+                            <img src="">
+                            <div class="theme-dataOverlay">
+                                <div class="_fwfl view-mode-wrap">
+                                    <ul class="_fr _lsn _m0 _p0 view-mode-list"></ul>
+                                </div>
+                                <h3>Twenty Seventeen</h3>
+                                <span>This is example description ^^!</span>
+                            </div>
+                        </a>
+                    </div>
+                </li>
             </div>
         </main>
         

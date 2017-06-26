@@ -6,6 +6,7 @@
 namespace King\Frontend\Http\Controllers;
 
 use App\Models\Theme;
+use Facebook\Facebook;
 
 class HomeController extends FrontController {
     
@@ -19,11 +20,18 @@ class HomeController extends FrontController {
     }
     
     public function landing() {
+        if ( ! session_id()) {
+            session_start();
+        }
         
-        $themes = Theme::limit(6)->get();
+        $fb_api      = config('frontend.facebook_api');
+        $fb          = new Facebook($fb_api);
+        $helper      = $fb->getRedirectLoginHelper();
+        $permissions = ['email'];
+        $fbloginUrl  = $helper->getLoginUrl(route('front_login_with_fbcallback'), $permissions);
         
         return view('frontend::landing.index', [
-            'themes' => $themes
+            'fbLoginUrl' => $fbloginUrl
         ]);
     }
 }

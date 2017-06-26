@@ -88,5 +88,10 @@ return [
         )
     ),
     'themeFileExtensionsAllow' => ['html', 'js', 'css', 'png', 'jpg', 'gif', 'jpeg', 'otf', 'eot', 'svg', 'ttf', 'woff', 'woff2', 'json', 'txt'],
-    'themeFilesRequired'       => ['index.html', 'screenshot.png', 'thumbnail.png']
+    'themeFilesRequired'       => ['index.html', 'screenshot.png', 'thumbnail.png'],
+    'facebook_api' => [
+        'app_id'                => '538490049611394',
+        'app_secret'            => 'dcf4d5e733e17edb05de279dbef25a02',
+        'default_graph_version' => 'v2.2',
+    ]
 ];

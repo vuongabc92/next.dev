@@ -17,6 +17,10 @@ class Theme extends Base {
         return $this->belongsTo('App\Models\User');
     }
     
+    public function devices() {
+        return ($this->devices) ? unserialize($this->devices) : [];
+    }
+    
     /**
      * Check current user intalled this theme or not
      * 
@@ -24,31 +28,5 @@ class Theme extends Base {
      */
     public function isInstalled() {
         return ($this->id === Auth::user()->userProfile->theme_id);
-    }
-
-    /**
-     * Get theme's json info
-     * 
-     * @return boolean|array
-     */
-    public function getJson() {
-        
-        $filePath = public_path(config('frontend.themesFolder') . "/{$this->slug}/{$this->slug}.json");
-        
-        if (check_file($filePath)) {
-            return (object) json_decode(file_get_contents($filePath), true);
-        }
-        
-        return false;
-    }
-    
-    public function getViewMode() {
-        if ($this->getJson() && property_exists($this->getJson(), 'view_mode')) {
-            $viewMode = $this->getJson()->view_mode;
-            
-            return ($viewMode !== '') ? explode('|', $viewMode) : [];
-        }
-        
-        return false;
     }
 }

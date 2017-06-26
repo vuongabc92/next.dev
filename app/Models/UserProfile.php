@@ -60,6 +60,13 @@ class UserProfile extends Base {
         return $this->belongsTo('App\Models\Ward');
     }
     
+    /**
+     * Get the theme record associated with the user.
+     */
+    public function theme() {
+        return $this->belongsTo('App\Models\Theme');
+    }
+    
     public function avatar($size = 'small') {
         $avatars           = unserialize($this->avatar_image);
         $avatarDefault     = config('frontend.avatarDefault');
@@ -76,5 +83,9 @@ class UserProfile extends Base {
         $coverSizes          = config('frontend.coverSizes');
         
         return isset($cover[$coverSizes[$size]['w']])   ? $coverStoragePath . '/' . $cover[$coverSizes[$size]['w']]    : $coverDefault;
+    }
+    
+    public function cvUrl() {
+        return route('front_cv', ['slug' => $this->slug]);
     }
 }

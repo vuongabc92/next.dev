@@ -45,7 +45,7 @@ class SettingsController extends FrontController {
 //        $wards               = $this->_getWardByDistrictId($userProfile->district_id, $toArray = true);
         $employmentHistories = user()->employmentHistories->sortByDesc('is_current')->sortByDesc('start_date')->all();
         $educations          = user()->educations->sortByDesc('start_date')->all();
-
+        
         if (Gender::all()) {
             foreach (Gender::all() as $gender) {
                 $genders[$gender->id] = $gender->gender_name;
@@ -537,14 +537,19 @@ class SettingsController extends FrontController {
                 'message' => _t('good_job'), 
                 'data'    => [
                     'socials'   => social_profile_list(),
-                    'expertise' => ($save->expertise) ? $save->expertise->name : _t('setting.profile.pickexpertise')
+                    'expertise' => ($save->expertise) ? $save->expertise->name : _t('setting.profile.pickexpertise'),
+                    'cv_url'    => route('front_cv', ['slug' => $save->slug])
             ]];
         } elseif($save instanceof Theme) {
             return [
                 'message' => _t('good_job'), 
                 'data'    => [
-                    'id'   => $save->id,
-                    'slug' => $save->slug,
+                    'id'          => $save->id,
+                    'name'        => $save->name,
+                    'screenshot'  => asset("uploads/themes/{$save->slug}/screenshot.png"),
+                    'url_details' => route('front_theme_details', ['theme_id' => $save->id]),
+                    'desc'        => $save->description,
+                    'devices'     => $save->devices(),
             ]];
         } elseif (true === $save) {
             return ['message' => _t('good_job')];
