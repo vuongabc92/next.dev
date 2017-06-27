@@ -27,7 +27,7 @@ class HomeController extends FrontController {
         $fb_api      = config('frontend.facebook_api');
         $fb          = new Facebook($fb_api);
         $helper      = $fb->getRedirectLoginHelper();
-        $permissions = ['email'];
+        $permissions = ['email', 'public_profile'];
         $fbloginUrl  = $helper->getLoginUrl(route('front_login_with_fbcallback'), $permissions);
         
         return view('frontend::landing.index', [

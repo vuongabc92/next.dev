@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use King\Frontend\Http\Controllers\FrontController;
 use Facebook\Facebook;
+use App\Models\User;
+use App\Models\UserProfile;
+use Log;
 
 class LoginController extends FrontController {
     /*
@@ -43,14 +46,27 @@ class LoginController extends FrontController {
      * @return \Illuminate\Http\Response
      */
     public function showLoginForm() {
-        return view('frontend::auth.login');
+        if ( ! session_id()) {
+            session_start();
+        }
+        
+        $fb_api      = config('frontend.facebook_api');
+        $fb          = new Facebook($fb_api);
+        $helper      = $fb->getRedirectLoginHelper();
+        $permissions = ['email', 'public_profile'];
+        $fbloginUrl  = $helper->getLoginUrl(route('front_login_with_fbcallback'), $permissions);
+        
+        
+        return view('frontend::auth.login', [
+            'fbLoginUrl' => $fbloginUrl
+        ]);
     }
     
     public function loginWithFBCallback() {
-        if (!session_id()) {
+        if ( ! session_id()) {
             session_start();
         }
-
+        
         $fb_api = config('frontend.facebook_api');
         $fb     = new Facebook($fb_api);
         $helper = $fb->getRedirectLoginHelper();
@@ -66,28 +82,34 @@ class LoginController extends FrontController {
         }
 
         if ( ! isset($accessToken)) {
-            if ($helper->getError()) {
-                Log::error('Error: ' . $helper->getError());
-                header('HTTP/1.0 401 Unauthorized');
-                echo "Error: " . $helper->getError() . "\n";
-                echo "Error Code: " . $helper->getErrorCode() . "\n";
-                echo "Error Reason: " . $helper->getErrorReason() . "\n";
-                echo "Error Description: " . $helper->getErrorDescription() . "\n";
-            } else {
-                header('HTTP/1.0 400 Bad Request');
-                echo 'Bad request';
-            }
-            exit;
+            return redirect(route('front_login'));
         }
         
         session('fb_access_token', $accessToken->getValue());
         
         $fb->setDefaultAccessToken($accessToken->getValue());
-        $response = $fb->get('/me?locale=en_US&fields=name,email');
-        $userNode = $response->getGraphUser();
-        var_dump($userNode->getFirstName(),
-            $userNode->getField('email'), $userNode['email']
-        );
+        $response  = $fb->get('/me?locale=en_US&fields=name,email');
+        $userNode  = $response->getGraphUser();
+        $userFBEmail = $userNode->getField('email');
+        
+        if ($userFBEmail) {
+            $userByEmail = User::where('email', $userFBEmail)->first();
+            
+            if ($userByEmail) {
+                auth()->loginUsingId($userByEmail->id);
+            } else {
+                $user        = new User();
+                $user->email = $userFBEmail;
+                $user->save();
+                
+                $userProfile          = new UserProfile();
+                $userProfile->user_id = $user->id;
+                $userProfile->slug    = $this->_randomSlug();
+                $userProfile->save();
+            }
+            
+            return redirect(route('front_settings'));
+        }
     }
 
 
@@ -113,5 +135,18 @@ class LoginController extends FrontController {
             ->withErrors([
                 $this->username() => \Lang::get('auth.failed'),
             ]);
+    }
+    
+    protected function _randomSlug() {
+        
+        $slug        = random_string(16, $available_sets = 'lud');
+        $userProfile = UserProfile::where('slug', $slug)->first();
+        
+        if ($userProfile) {
+            $this->_randomSlug();
+        }
+        
+        return $slug;
+        
     }
 }
