@@ -106,10 +106,14 @@ class LoginController extends FrontController {
                 $userProfile->user_id = $user->id;
                 $userProfile->slug    = $this->_randomSlug();
                 $userProfile->save();
+                
+                auth()->loginUsingId($user->id);
             }
             
             return redirect(route('front_settings'));
         }
+        
+        return redirect(route('front_login'));
     }
 
 

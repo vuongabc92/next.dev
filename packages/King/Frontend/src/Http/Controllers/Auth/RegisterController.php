@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
+use Facebook\Facebook;
 
 class RegisterController extends Controller
 {
@@ -47,7 +48,19 @@ class RegisterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showRegistrationForm() {
-        return view('frontend::auth.register');
+        if ( ! session_id()) {
+            session_start();
+        }
+        
+        $fb_api      = config('frontend.facebook_api');
+        $fb          = new Facebook($fb_api);
+        $helper      = $fb->getRedirectLoginHelper();
+        $permissions = ['email', 'public_profile'];
+        $fbloginUrl  = $helper->getLoginUrl(route('front_login_with_fbcallback'), $permissions);
+        
+        return view('frontend::auth.register', [
+            'fbLoginUrl' => $fbloginUrl
+        ]);
     }
     
     /**

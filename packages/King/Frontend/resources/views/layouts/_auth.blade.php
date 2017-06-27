@@ -7,15 +7,13 @@
         <meta name="msapplication-tap-highlight" content="no"/>
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/bootstrap.css') }}">
-        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/font-awesome.css') }}">
-        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/common.css') }}">
+        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/auth.css') }}">
     </head>
     <body>
         <div class="_fwfl header">
             <div class="_mw970 _ma header-inside">
-                <a href="/" class="logo"><img src="{{ asset('packages/king/frontend/images/logo-blue.png') }}" /></a>
+                <a href="/" class="logo"></a>
                 @yield('button')
             </div>
         </div>
