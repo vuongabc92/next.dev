@@ -200,6 +200,13 @@ var HELPERS = {
         $('#landingRegisterBtn').on('click', function(){
             $('#landingLoginBtn').show();
         });
+    },
+    socialModal: function() {
+        $('#social-modal').on('hide.bs.modal', function(){
+            $('html, body').animate({
+                scrollTop: $('#contactForm').offset().top
+            }, 1000);
+        });
     }
 };
 
@@ -2433,106 +2440,6 @@ var HELPERS = {
 
 }(jQuery, window));
 
-/**
- *  @name Theme Details
- *  @description
- *  @version 1.0
- *  @options
- *    option
- *  @events
- *    event
- *  @methods
- *    init
- *    publicMethod
- *    destroy
- */
-;
-(function($, window, undefined) {
-    var pluginName = 'chatbot-tree';
-
-    function Plugin(element, options) {
-        this.element = $(element);
-        this.options = $.extend({}, $.fn[pluginName].defaults, options);
-        this.init();
-    }
-
-    Plugin.prototype = {
-        init: function() {
-            var current    = this.element,
-                botface    = this.element.find('.botface'),
-                comment    = botface.find('i.fa-comment-o'),
-                commenting = botface.find('i.fa-commenting-o');
-            
-            
-            
-            setTimeout(function(){
-                botface.show(100);
-            }, 1000);
-            
-            setTimeout(function(){
-                comment.show(300);
-            }, 2000);
-            
-            setTimeout(function(){
-                comment.hide();
-                commenting.show();
-            }, 3500);
-            
-            setTimeout(function(){
-                current.find('li:eq(0)').find('.left').animate({opacity: 1}, 300);
-            }, 4500);
-            
-            setTimeout(function(){
-                current.find('li:eq(1)').find('.left').animate({opacity: 1}, 300);
-            }, 6500);
-            
-            setTimeout(function(){
-                current.find('li:eq(2)').find('.left').animate({opacity: 1}, 300);
-            }, 8500);
-            
-            setTimeout(function(){
-                current.find('li:eq(3)').find('.left').animate({opacity: 1}, 300);
-            }, 10500);
-            
-            setTimeout(function(){
-                current.find('li:eq(4)').find('.left').animate({opacity: 1}, 300);
-            }, 12500);
-            
-            setTimeout(function(){
-                current.find('li:eq(5)').find('.left').animate({opacity: 1}, 300);
-                botface.html('^^');
-            }, 14500);
-            
-
-        },
-        destroy: function() {
-            $.removeData(this.element[0], pluginName);
-        }
-    };
-
-    $.fn[pluginName] = function(options, params) {
-        return this.each(function() {
-            var instance = $.data(this, pluginName);
-            if (!instance) {
-                $.data(this, pluginName, new Plugin(this, options));
-            } else if (instance[options]) {
-                instance[options](params);
-            } else {
-                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
-            }
-        });
-    };
-
-    $.fn[pluginName].defaults = {
-        option: 'value'
-    };
-
-    $(function() {
-        $('[data-' + pluginName + ']')[pluginName]();
-    });
-
-}(jQuery, window));
-
-
 HELPERS.homeShowfooter();
 HELPERS.landingToggleForm();
+HELPERS.socialModal();

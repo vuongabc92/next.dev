@@ -14,7 +14,7 @@
                     <button class="settings-expand-btn" data-show-form><i class="fa fa-pencil"></i></button>
                 </div>
             </div>
-            {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form', 'data-save-form' => '', 'data-requires' => '']) !!}
+            {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form', 'id' => 'contactForm', 'data-save-form' => '', 'data-requires' => '']) !!}
             <div class="settings-field-wrapper">
                 {!! Form::kingSelect('country_id', $countries, $userProfile->country_id, ['id' => 'settings-country', 'class' => 'settings-field']) !!}
             </div>
