@@ -87,12 +87,21 @@ trait SaveSettings {
      */
     public function savePassword(Request $request) {
         
-        $validator = validator($request->all(), $this->_savePasswordValidateRules(), $this->_savePasswordValidateMessages());
-        $validator->after(function($validator) use($request) {
-            if ( ! Hash::check($request->get('old_password'), user()->password)) {
-                $validator->errors()->add('old_password', _t('auth.login.pass_wrong'));
-            }
-        });
+        $rules = $this->_savePasswordValidateRules();
+        
+        if (user()->password === null) {
+            $rules = remove_rules($rules, 'old_password');
+        }
+        
+        $validator = validator($request->all(), $rules, $this->_savePasswordValidateMessages());
+        
+        if (user()->password !== null) {
+            $validator->after(function($validator) use($request) {
+                if ( ! Hash::check($request->get('old_password'), user()->password)) {
+                    $validator->errors()->add('old_password', _t('auth.login.pass_wrong'));
+                }
+            });
+        }
         
         if ($validator->fails()) {
             return $validator;

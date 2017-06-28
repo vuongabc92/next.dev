@@ -904,6 +904,16 @@ var HELPERS = {
                     success: function(response){
                         var formType = current.find('[name="type"]').val();
                         
+                        if (formType === '_PASS') {
+                            var firstField = current.find('input[name=old_password]').parents('.settings-field-wrapper');
+                            
+                            if (firstField.hasClass('_dn')) {
+                                firstField.removeClass('_dn');
+                                current.data('requires', current.data('requires') + '|old_password');
+                            }
+                            
+                        }
+                        
                         if (formType === '_SLUG') {
                             var cvUrl       = response.data.cv_url,
                                 currentSlug = $('.current-slug');

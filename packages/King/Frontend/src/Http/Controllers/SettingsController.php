@@ -31,7 +31,7 @@ class SettingsController extends FrontController {
      * 
      * @return Response
      */
-    public function index() {
+    public function index() { 
         $genders             = ['' => _t('setting.profile.sextell')];
         $maritalStatuses     = ['' => _t('setting.profile.marital')];
         $availableSocial     = ['' => _t('setting.profile.social_selector')] + config('frontend.availableSocial');
@@ -74,7 +74,8 @@ class SettingsController extends FrontController {
             'maritalStatuses'     => $maritalStatuses,
             'availableSocial'     => $availableSocial,
             'birthdate'           => birthdate(),
-            'socialList'          => social_profile_list()
+            'socialList'          => social_profile_list(),
+            'fromFb'              => (user()->password === null || user()->password === '')
         ]);
     }
     
