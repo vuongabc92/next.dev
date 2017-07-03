@@ -2281,9 +2281,8 @@ var HELPERS = {
         init: function() {
         
             this.element.on('submit', function(){
-                var btn  = $(this).find('button'),
-                    that = $(this),
-                    form = btn.parent('form');
+                var btn   = $(this).find('button'),
+                    cvUrl = btn.parent('form').find('input[name=cv_url]').val();
                 
                 $.ajax({
                     type: 'post',
@@ -2291,13 +2290,18 @@ var HELPERS = {
                     data: $(this).serialize(),
                     beforeSend: function() {
                         btn.loading();
-                        that.css({opacity: 1});
                     },
                     success: function(response){
                         if (response.status === 'OK') {
                             btn.loading('finish');
-                            form.removeAttr('action').removeAttr('method').removeAttr('data-install-theme').find('input').remove()
-                            form.find('button').attr('type', 'button').css({cursor: 'default'});
+                            
+                            var win = window.open(cvUrl, '_blank');
+                            
+                            if (win) {
+                                win.focus();
+                            } else {
+                                alert('Sorry for this inconvenience. Please allow popups to view your CV.');
+                            }
                         } else {
                             btn.loading('stop');
                         }
@@ -2383,7 +2387,6 @@ var HELPERS = {
                 
                 return false;
             });
-            
         },
         getThemeDetails: function(url){
             var modal = $('#themeDetailsModal'),
@@ -2411,6 +2414,8 @@ var HELPERS = {
             modal.find('#themeDetailsHeader').find('#themeName').html(data.theme_name);
             modal.find('#themeDesc').html(data.description);
             modal.find('#themeAction').find('input[name=theme_id]').val(data.theme_id);
+            modal.find('#themePreviewBtn').attr('href', data.preview_url);
+            modal.find('#themeAction').find('#themePreviewBtn').attr('href', data.preview_url);
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

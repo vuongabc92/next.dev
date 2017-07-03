@@ -16,6 +16,9 @@ return [
     'developers' => 'developers',
     'privacy' => 'Privacy',
     'terms' => 'Terms',
+    'login_with' => 'Login with',
+    'notfoundmsg' => "Sorry, the page you are looking for doesn't exist.",
+    'notfoundbtn' => 'Go to the home page',
     'sure_remove' => 'Are you sure to remove it?',
     'signin.title' => 'Next - Sign in',
     'signin.form.title' => 'Sign In To Next',
@@ -275,4 +278,6 @@ return [
     'theme.details' => 'Theme Details',
     'theme.change' => 'Change theme',
     'theme.yourUploaded' => 'Your uploaded themes',
+    'theme.details_by' => 'by',
+    'theme.details_on' => 'on',
 ];

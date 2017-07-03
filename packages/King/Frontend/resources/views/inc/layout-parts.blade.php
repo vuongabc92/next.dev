@@ -1,4 +1,4 @@
-@section('user_header')
+@section('header')
     <div class="header">
         <div class="container">
             <nav class="navbar navbar-default navbar-master">
@@ -26,6 +26,20 @@
                                     <li><a href="#">Help</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href={{ route('front_logout') }}>Logout</a></li>
+                                </ul>
+                            </li>
+                            @else
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="_mt11 fa fa-bars"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ route('front_about') }}">About us</a></li>
+                                    <li><a href="#">Help</a></li>
+                                    <li><a href="#">Privacy</a></li>
+                                    <li><a href="#">Terms</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Developer</a></li>
                                 </ul>
                             </li>
                             @endif

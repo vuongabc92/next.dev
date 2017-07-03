@@ -10,15 +10,15 @@
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/auth.css') }}">
     </head>
-    <body>
-        <div class="_fwfl header">
+    <body class="auth-page">
+        <header class="_fwfl">
             <div class="_mw970 _ma header-inside">
                 <a href="/" class="logo"></a>
                 @yield('button')
             </div>
-        </div>
+        </header>
 
-        <div class="_fwfl auth-container">
+        <div class="_fwfl auth-wrap">
             @yield('body')
         </div>
         

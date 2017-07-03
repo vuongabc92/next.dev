@@ -24,10 +24,14 @@
                 <div class="container">
                     <ul class="_fwfl _lsn _p0 _m0 theme-filter-list" role="tablist">
                         <li><a href="#"><i class="fa fa-bars"></i></a></li>
+                        @if(auth()->check())
                         <li role="presentation"><a href="#yourThemes" aria-controls="yourThemes" role="tab" data-toggle="tab" id="navTabYourThemes">{{ _t('theme.bar.your') }}</a></li>
+                        @endif
                         <li role="presentation" class="active"><a href="#allThemes" aria-controls="allThemes" role="tab" data-toggle="tab" id="navTabAllThemes">{{ _t('theme.bar.all') }}</a></li>
                         <li role="presentation"><a href="#popularThemes" aria-controls="popularThemes" role="tab" data-toggle="tab">{{ _t('theme.bar.popular') }}</a></li>
+                        @if(auth()->check())
                         <li role="presentation"><a href="#" class="add-theme-btn" data-toggle="modal" data-target="#addThemeModal"><i class="fa fa-plus"></i> {{ _t('theme.bar.add') }}</a></li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -85,26 +89,29 @@
                                 </a>
                                 <h1><span id="themeName"></span> <span class="theme-details-version label label-info" id="themeVersion"></span></h1>
                                 <h2>
-                                    <span class="theme-by">by <a href="#">The Next Team</a></span>
-                                    <span class="theme-date">on <span class="_tgb">May 28, 2017</span></span>
+                                    <span class="theme-by">{{ _t('theme.details_by') }} <a href="#"></a></span>
+                                    <span class="theme-date">{{ _t('theme.details_on') }} <span class="_tgb"></span></span>
                                 </h2>
                             </div>
                             <div class="_fwfl theme-details-content">
                                 <div class="theme-details-screenshot" id="themeScreenshot">
                                     <img src="" />
                                 </div>
+                                @if(auth()->check())
                                 <div class="theme-details-meta">
                                     <div class="_fwfl theme-details-actions" id="themeAction">
                                         <form action="{{ route('front_theme_install') }}" method="post" data-install-theme>
                                             {{ csrf_field() }}
                                             <input type="hidden" name="theme_id" />
+                                            <input type="hidden" name="cv_url" value="{{ user()->userProfile->cvUrl() }}"/>
                                             <button type="submit" class="btn _btn _btn-blue-navy" data-finished-text="{{ _t('theme.installed') }}">
                                                 {{ _t('theme.install') }}
                                             </button>
                                         </form>
-                                        <a href="#" class="btn _btn _btn-gray">{{ _t('theme.preview') }}</a>
+                                        <a href="#" class="btn _btn _btn-gray" target="_blank" id="themePreviewBtn">{{ _t('theme.preview') }}</a>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="theme-details-desc" id="themeDesc"></div>
                             </div>
                         </div>
@@ -112,6 +119,7 @@
                 </div>
             </div>
 
+            @if(auth()->check())
             <!-- Add theme modal -->
             <div class="modal fade king-modal add-theme-modal" id="addThemeModal" tabindex="-1" role="dialog" aria-labelledby="addThemeModalLabel">
                 <div class="modal-dialog" role="document">
@@ -176,6 +184,7 @@
                     </div>
                 </div>
             </div>
+            @endif
             <div class="alert-bar alert fade out" role="alert" id="alertBar">
                 <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="container">
@@ -191,8 +200,8 @@
                                 <div class="_fwfl view-mode-wrap">
                                     <ul class="_fr _lsn _m0 _p0 view-mode-list"></ul>
                                 </div>
-                                <h3>Twenty Seventeen</h3>
-                                <span>This is example description ^^!</span>
+                                <h3></h3>
+                                <span></span>
                             </div>
                         </a>
                     </div>

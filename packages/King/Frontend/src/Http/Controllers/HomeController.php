@@ -30,8 +30,12 @@ class HomeController extends FrontController {
         $permissions = ['email', 'public_profile'];
         $fbloginUrl  = $helper->getLoginUrl(route('front_login_with_fbcallback'), $permissions);
         
-        return view('frontend::landing.index', [
+        return view('frontend::home.landing', [
             'fbLoginUrl' => $fbloginUrl
         ]);
+    }
+    
+    public function about() {
+        return view('frontend::home.about');
     }
 }

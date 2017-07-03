@@ -408,6 +408,13 @@ button._btn-sm{height: 30px;line-height:17px;}
     opacity: .5;
     pointer-events: none;
 }
+.logo {
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    background-color: #000;
+    text-align: center;
+    position: relative;
+}
 
 
 /* Overide bootstap */

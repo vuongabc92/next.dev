@@ -23,13 +23,6 @@ main>.left header {
     height: 60px;
     padding: 13px 0;
 }
-.logo {
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    background-color: #000;
-    text-align: center;
-    position: relative;
-}
 main>.left header .logo {
     width: 34px;
     height: 34px;
@@ -46,87 +39,11 @@ main>.left header button {
 #landingLoginBtn{
     display: none;
 }
-.auth-form-title {
-    font-size: 17px;
-    color: #444;
-    text-transform: uppercase;
-}
-.outworld-auth {
-    margin-top: 20px;
-    border-bottom: solid 1px #ddd;
-    padding-bottom: 40px;
-    margin-bottom: 40px;
-    position: relative;
-}
-.outworld-auth button {
-    min-width: 120px;
-    float: left;
-    margin-right: 9px;
-    color: #fff;
-    position: relative;
-    text-transform: uppercase;
-    line-height: 23px;
-}
-.outworld-auth button:hover,
-.outworld-auth button:focus{
-    color: #fff;
-}
-.outworld-auth button:nth-child(2) {
-    margin-right: 0;
-}
-.outworld-auth .btn-fb {
-    background-color: #5776a8;
-}
-.outworld-auth .btn-google {
-    background-color: #db4437;
-}
-.outworld-auth .auth-or {
-    position: absolute;
-    left: 50%;
-    margin-left: -18px;
-    bottom: -10px;
-    background-color: #fff;
-    padding: 0 10px;
-    color: #777;
-}
-.first-field-group { 
-    margin-top: 20px;
-}
-.auth-field-group {
-    margin-bottom: 20px;
-}
-.auth-field-group:last-child {
-    margin-bottom: 0;
-}
-.auth-field-group>label {
-    height:18px;
-}
-.auth-field {
-    height: 38px;
-    line-height: 34px;
-    vertical-align: middle;
-    padding: 0 15px;
-    color: #555;
-    border: solid 2px #f4f4f4;
-    background-color: #f4f4f4;
-}
-.auth-field:focus {
-    border-color: #007aff;
-}
-.signup-btn {
-    margin-top: 13px;
-}
-.auth-btn {
-    height: 38px;
-}
-.auth-field.error {
-    border-color: #f66;
-}
 
 main>.right {
     position: absolute;
     height: 100%;
-    left: 475px;
+    left: 450px;
     top: 0;
     right: 0;
     bottom: 0;
@@ -224,75 +141,22 @@ main>.left footer {
 .footer-nav>li>a:hover {
     color: #555;
 }
-
-@media screen and (max-width: 1024px) {
-    main>.left {
-        width: 380px;
-    }
+@media screen and (max-width: 480px) {
     main>.left>.left-inner {
-        width: 310px;
-        margin: 0 auto;
-    }
-    .outworld-auth button {
-        text-transform: capitalize
-    }
-    main>.right {
-        left: 380px;
-        padding: 30px;
-    }
-    main>.right>.right-inner {
         width: 100%;
         float: left;
-        margin: 0;
+        padding: 0 15px;
     }
-    .footer-nav {
-        width: 310px;
-    }
-}
-@media screen and (max-width: 768px) {
-    main>.left {
-        width: 50%;
-    }
-    main>.right {
-        width: 50%;
-        left: 50%;
-    }
-    main>.right>.right-inner {
-        width: 100%;
-        float: left;
-        margin: 0;
-    }
-}
-@media screen and (max-width: 680px) {
     main>.left {
         width: 100%;
-        float: left;
     }
-    .auth-wrap {
-        padding-top: 50px;
-        padding-bottom: 50px;
-    }
-    main>.right {
-        display: none;
-    }
-    main>.left>.left-inner {
-        width: 90%;
+    main>.left header {
+        border-bottom: solid 2px #eee;
     }
     .border-dot {
         background-image: none;
     }
-    main>.left footer {
-        display: none;
+    .auth-wrap {
+        margin-top: 15%;
     }
-}
-@media screen and (max-width: 480px) { 
-    main>.left>.left-inner {
-        width: 310px;
-    }
-    .footer-nav {
-        width: 310px;
-    }
-}
-@media screen and (max-width: 320px) {
-    
 }

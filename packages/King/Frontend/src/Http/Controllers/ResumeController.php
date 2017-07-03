@@ -50,6 +50,28 @@ class ResumeController extends FrontController {
     }
     
     /**
+     * Preview theme
+     * 
+     * @param string $slug Theme slug
+     * 
+     * @return Response
+     * 
+     * @throws NotFoundHttpException
+     */
+    public function preview($slug) {
+        
+        if (null === Theme::where('slug', $slug)->first()) {
+            throw new NotFoundHttpException;
+        }
+        
+        $resume   = $this->generateResumeData(user_id());
+        $compiler = new ThemeCompiler(new Filesystem, $resume, $slug);
+        $contents = $compiler->compile();
+        
+        return new Response($contents);
+    }
+    
+    /**
      * Generate resume data for show CV
      * 
      * @param int $user_id

@@ -76,6 +76,7 @@ class ThemeController extends FrontController {
                 'version'     => $theme->version,
                 'description' => $theme->description,
                 'created_at'  => $theme->createdAtFormat('M d, Y'),
+                'preview_url' => route('front_theme_preview', ['slug' => $theme->slug]),
                 'author'      => [
                     'name'   => (empty($userProfile->first_name)) ? $theme->user->username : $userProfile->first_name . ' ' . $userProfile->last_name,
                     'avatar' => $userProfile->avatar()
@@ -208,4 +209,3 @@ class ThemeController extends FrontController {
         ];
     }
 }
-//[themify_button style="blue,large,flat" color="#d00c50" link="http://clearskincareclinics.com.au/birthdaysale2017/" ]CLICK HERE[/themify_button]

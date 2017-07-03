@@ -18,7 +18,7 @@
     <body>
         <main>
             @include('frontend::inc.layout-parts')
-            @yield('user_header')
+            @yield('header')
             <div class="container">
                 <div class="settings">
                     @yield('body')

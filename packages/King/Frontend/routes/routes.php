@@ -19,6 +19,7 @@ Route::group(['middleware' => ['web', 'auth:web']], function ($route) {
     $route->get('settings/search_skill/{keyword?}', 'SettingsController@searchSkill')->name('front_settings_searchskill');
     $route->post('theme/install', 'ThemeController@install')->name('front_theme_install');
     $route->post('theme/add_new', 'ThemeController@addNewTheme')->name('front_theme_add_new');
+    $route->get('theme/{slug}/preview', 'ResumeController@preview')->name('front_theme_preview');
 });
 
 Route::group(['middleware' => 'web'], function ($route) {
@@ -42,6 +43,7 @@ Route::group(['middleware' => 'web'], function ($route) {
     $route->post('password/reset', 'Auth\ResetPasswordController@reset')->name('front_resetpass_post');
     
     Route::get('/', ['as' => 'front_landing', 'uses' => 'HomeController@landing']);
+    Route::get('/about', ['as' => 'front_about', 'uses' => 'HomeController@about']);
     
     Route::get('themes', 'ThemeController@index')->name('front_themes');
     Route::get('theme/{theme_id}/popup_details', 'ThemeController@themeDetails')->name('front_theme_details')->where('theme_id', '[0-9]+');

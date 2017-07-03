@@ -8,6 +8,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/auth.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/landing.css') }}">
     </head>
     <body>
@@ -26,7 +27,7 @@
                     </div>
                     <footer class="_fwfl border-dot">
                         <ul class=" _lsn _p0 _m0 footer-nav">
-                            <li><a href="#">{{ _t('aboutus') }}</a></li>
+                            <li><a href="{{ route('front_about') }}">{{ _t('aboutus') }}</a></li>
                             <li><a href="#">{{ _t('help') }}</a></li>
                             <li><a href="#">{{ _t('developers') }}</a></li>
                             <li><a href="#">{{ _t('privacy') }}</a></li>
@@ -36,7 +37,7 @@
                 </div>
             </div>
             <div class="right">
-                <div class="right-inner">
+<!--                <div class="right-inner">
                     <div class="_fwfl landing-cv">
                         <div class="header">
                             <div class="_fwfl avatar-box">
@@ -58,7 +59,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </main>
         
