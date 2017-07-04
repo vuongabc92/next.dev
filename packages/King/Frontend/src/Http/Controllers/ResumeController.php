@@ -93,7 +93,7 @@ class ResumeController extends FrontController {
         $resume->setMaritalStatus(collect($user->userProfile->maritalStatus));
         $resume->setGender(collect($user->userProfile->gender));
         $resume->setCountry(collect($user->userProfile->country));
-        $resume->setCity(collect($user->userProfile->city));
+        $resume->setCity($user->userProfile->city_name);
         $resume->setDistrict(collect($user->userProfile->district));
         $resume->setWard(collect($user->userProfile->ward));
         $resume->setStreetName($user->userProfile->street_name);

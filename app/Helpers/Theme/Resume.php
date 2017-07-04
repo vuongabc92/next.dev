@@ -359,7 +359,7 @@ class Resume {
     /**
      * Get city
      *
-     * @return \Illuminate\Support\Collection
+     * @return string
      */
     public function getCity() {
         return $this->city;

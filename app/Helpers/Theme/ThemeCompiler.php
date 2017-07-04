@@ -101,6 +101,7 @@ class ThemeCompiler extends Compiler {
         'POSITION',
         'DESCRIPTION',
         'LINK',
+        'LINK_TEXT'
     ];
     
     /**
@@ -333,6 +334,9 @@ class ThemeCompiler extends Compiler {
                             
                         case 'LINK':
                             return $one->company_website;
+                            
+                        case 'LINK_TEXT':
+                            return str_replace('http://', '', $one->company_website);
                             
                         default;
                     }
@@ -662,9 +666,7 @@ class ThemeCompiler extends Compiler {
      * @return string
      */
     protected function compileCity() {
-        $city = $this->resume->getCity();
-        
-        return isset($city['name']) ? $city['name'] : '';
+        return $this->resume->getCity();
     }
     
     /**

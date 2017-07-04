@@ -19,7 +19,7 @@
     <body>
         <main>
             @include('frontend::inc.layout-parts')
-            @yield('user_header')
+            @yield('header')
             <div class="_fwfl theme-filter-bar">
                 <div class="container">
                     <ul class="_fwfl _lsn _p0 _m0 theme-filter-list" role="tablist">

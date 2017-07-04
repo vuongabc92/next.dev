@@ -14,6 +14,9 @@
         <![endif]-->
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/settings.css') }}">
+        <style>
+            @yield('style')
+        </style>
     </head>
     <body>
         <main>
@@ -27,5 +30,8 @@
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap-switch.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/script.js') }}"></script>
+        <script>
+            @yield('script')
+        </script>
     </body>
 </html>

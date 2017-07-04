@@ -42,8 +42,8 @@ Route::group(['middleware' => 'web'], function ($route) {
     $route->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('front_resetpass');
     $route->post('password/reset', 'Auth\ResetPasswordController@reset')->name('front_resetpass_post');
     
-    Route::get('/', ['as' => 'front_landing', 'uses' => 'HomeController@landing']);
-    Route::get('/about', ['as' => 'front_about', 'uses' => 'HomeController@about']);
+    Route::get('/', 'HomeController@landing')->name('front_landing');
+    Route::get('/about', 'HomeController@about')->name('front_about');
     
     Route::get('themes', 'ThemeController@index')->name('front_themes');
     Route::get('theme/{theme_id}/popup_details', 'ThemeController@themeDetails')->name('front_theme_details')->where('theme_id', '[0-9]+');

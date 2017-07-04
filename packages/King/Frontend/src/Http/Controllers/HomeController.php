@@ -5,7 +5,6 @@
 
 namespace King\Frontend\Http\Controllers;
 
-use App\Models\Theme;
 use Facebook\Facebook;
 
 class HomeController extends FrontController {

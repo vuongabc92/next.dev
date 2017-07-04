@@ -24,6 +24,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('front_settings') }}">Settings</a></li>
                                     <li><a href="#">Help</a></li>
+                                    <li><a href="#">Developer</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href={{ route('front_logout') }}>Logout</a></li>
                                 </ul>
@@ -34,10 +35,12 @@
                                     <i class="_mt11 fa fa-bars"></i>
                                 </a>
                                 <ul class="dropdown-menu">
+                                    @if( ! auth()->check())
+                                        <li><a href="{{ route('front_login') }}">Login</a></li>
+                                        <li><a href="{{ route('front_register') }}">Register</a></li>
+                                    @endif
                                     <li><a href="{{ route('front_about') }}">About us</a></li>
                                     <li><a href="#">Help</a></li>
-                                    <li><a href="#">Privacy</a></li>
-                                    <li><a href="#">Terms</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">Developer</a></li>
                                 </ul>

@@ -15,9 +15,14 @@ class RedirectIfAuthenticated
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
-    {
-        if (Auth::guard($guard)->check()) {
+    public function handle($request, Closure $next, $guard = null) {
+        $urls = [
+            route('front_login'),
+            route('front_register'),
+            route('front_landing'),
+        ];
+        
+        if (Auth::guard($guard)->check() && in_array($request->fullUrl(), $urls)) {
             return redirect(route('front_settings'));
         }
 
