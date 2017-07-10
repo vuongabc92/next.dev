@@ -8,6 +8,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/app.css') }}">
         <style>
             main {
                 position: absolute;
@@ -19,17 +20,7 @@
                 margin-left: -202px;
                 font-family: 'Roboto Mono', monospace;
             }
-            .wrapper {
-                width: 100%;
-                float: left;
-            }
-            .wrapper img {
-                width: 100%;
-                float: left;
-            }
             .sorry {
-                width: 100%;
-                float: left;
                 margin-top: 20px;
                 text-align: center;
                 font-size: 17px;
@@ -45,13 +36,45 @@
                 -webkit-border-radius: 2px;
                 text-decoration: none;
             }
+            @media screen and (max-width: 680px) {
+                main {
+                    position: relative;
+                    width: 100%;
+                    height: auto;
+                    float: left;
+                    left: 0;
+                    top: 0;
+                    margin: 0;
+                    margin-top: 20%;
+                }
+                .wrapper {
+                    padding: 15px;
+                }
+            }
+            
+            @media screen and (max-width: 480px) {
+                main {
+                    position: relative;
+                    width: 100%;
+                    height: auto;
+                    float: left;
+                    left: 0;
+                    top: 0;
+                    margin: 0;
+                    margin-top: 20%;
+                }
+                .wrapper {
+                    padding: 15px;
+                }
+            }
+
         </style>
     </head>
     <body>
         <main>
-            <div class="wrapper">
-                <img src="{{ asset('packages/king/frontend/images/404.png') }}" />
-                <div class="sorry">
+            <div class="_fwfl wrapper">
+                <img class="_fwfl" src="{{ asset('packages/king/frontend/images/404.png') }}" />
+                <div class="_fwfl sorry">
                     <p>{{ _t('notfoundmsg') }}</p>
                     <br/>
                     <a href="/" class="gotohomepage-btn">{{ _t('notfoundbtn') }}</a>
