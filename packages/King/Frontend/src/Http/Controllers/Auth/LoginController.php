@@ -5,10 +5,11 @@ namespace King\Frontend\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use King\Frontend\Http\Controllers\FrontController;
-use Facebook\Facebook;
 use App\Models\User;
 use App\Models\UserProfile;
 use Log;
+use App\Helpers\OutWorldAuth;
+use Google_Service_Oauth2_Userinfoplus;
 
 class LoginController extends FrontController {
     /*
@@ -24,6 +25,10 @@ class LoginController extends FrontController {
 
     use AuthenticatesUsers;
 
+    use OutWorldAuth {
+        OutWorldAuth::__construct as private __owaConstruct;
+    }
+    
     /**
      * Where to redirect users after login.
      *
@@ -38,6 +43,7 @@ class LoginController extends FrontController {
      */
     public function __construct() {
         $this->middleware('guest', ['except' => 'logout']);
+        $this->__owaConstruct();
     }
     
     /**
@@ -46,39 +52,34 @@ class LoginController extends FrontController {
      * @return \Illuminate\Http\Response
      */
     public function showLoginForm() {
-        if ( ! session_id()) {
-            session_start();
-        }
         
-        $fb_api      = config('frontend.facebook_api');
-        $fb          = new Facebook($fb_api);
-        $helper      = $fb->getRedirectLoginHelper();
-        $permissions = ['email', 'public_profile'];
-        $fbloginUrl  = $helper->getLoginUrl(route('front_login_with_fbcallback'), $permissions);
-        
+        if ( ! session_id()) session_start();
         
         return view('frontend::auth.login', [
-            'fbLoginUrl' => $fbloginUrl
+            'fbLoginUrl'     => $this->facebookAuthUrl(),
+            'googleLoginUrl' => $this->googleAuthUrl(),
         ]);
     }
     
+    /**
+     * Signup/Login with facebook
+     * 
+     * @return type void
+     */
     public function loginWithFBCallback() {
-        if ( ! session_id()) {
-            session_start();
-        }
+        if ( ! session_id()) session_start();
         
-        $fb_api = config('frontend.facebook_api');
-        $fb     = new Facebook($fb_api);
+        $fb     = $this->facebook();
         $helper = $fb->getRedirectLoginHelper();
 
         try {
             $accessToken = $helper->getAccessToken();
         } catch (Facebook\Exceptions\FacebookResponseException $e) {
             Log::error('Graph returned an error: ' . $e->getMessage());
-            exit;
+            return redirect(route('front_login'));
         } catch (Facebook\Exceptions\FacebookSDKException $e) {
             Log::error('Facebook SDK returned an error: ' . $e->getMessage());
-            exit;
+            return redirect(route('front_login'));
         }
 
         if ( ! isset($accessToken)) {
@@ -88,27 +89,18 @@ class LoginController extends FrontController {
         session('fb_access_token', $accessToken->getValue());
         
         $fb->setDefaultAccessToken($accessToken->getValue());
-        $response  = $fb->get('/me?locale=en_US&fields=name,email');
-        $userNode  = $response->getGraphUser();
-        $userFBEmail = $userNode->getField('email');
         
-        if ($userFBEmail) {
-            $userByEmail = User::where('email', $userFBEmail)->first();
-            
-            if ($userByEmail) {
-                auth()->loginUsingId($userByEmail->id);
-            } else {
-                $user        = new User();
-                $user->email = $userFBEmail;
-                $user->save();
-                
-                $userProfile          = new UserProfile();
-                $userProfile->user_id = $user->id;
-                $userProfile->slug    = $this->_randomSlug();
-                $userProfile->save();
-                
-                auth()->loginUsingId($user->id);
-            }
+        $response  = $fb->get('/me?locale=en_US&fields=email,picture.width(512).height(512),first_name,last_name');
+        $userNode  = $response->getGraphUser();
+        $fbEmail   = $userNode->getField('email');
+        
+        if ($fbEmail) {
+            $this->logUserInFromOutWorld([
+                'email'      => $fbEmail,
+                'avatar'     => $userNode->getField('picture')->getUrl(),
+                'first_name' => $userNode->getField('first_name'),
+                'last_name'  => $userNode->getField('last_name'),
+            ]);
             
             return redirect(route('front_settings'));
         }
@@ -116,7 +108,36 @@ class LoginController extends FrontController {
         return redirect(route('front_login'));
     }
 
-
+    /**
+     * Signup/Login with google
+     * 
+     * @return void
+     */
+    public function loginWithGoogle() {
+        
+        $client = $this->googleClient();
+        
+        if (isset($_GET['code'])) {
+            $client->authenticate($_GET['code']);
+            $client->setAccessToken($client->getAccessToken());
+           
+            $userAuthenticated = $this->googleUserInfo();
+            
+            if ($userAuthenticated instanceof Google_Service_Oauth2_Userinfoplus && $userAuthenticated->email) {
+                $this->logUserInFromOutWorld([
+                    'email'      => $userAuthenticated->email,
+                    'avatar'     => $userAuthenticated->picture,
+                    'first_name' => $userAuthenticated->givenName,
+                    'last_name'  => $userAuthenticated->familyName,
+                ]);
+            
+                return redirect(route('front_settings'));
+            }
+        }  
+        
+        return redirect(route('front_login'));
+    }
+    
     /**
      * Validate the user login request.
      *
@@ -141,6 +162,83 @@ class LoginController extends FrontController {
             ]);
     }
     
+    /**
+     * Login/Signup user by email
+     * 
+     * @param type $data
+     * 
+     * @return void
+     */
+    public function logUserInFromOutWorld($data) {
+        
+        $email     = isset($data['email'])      ? $data['email']      : '';
+        $avatar    = isset($data['avatar'])     ? $data['avatar']     : '';
+        $firstName = isset($data['first_name']) ? $data['first_name'] : '';
+        $lastName  = isset($data['last_name'])  ? $data['last_name']  : '';
+        $user      = User::where('email', $email)->first();
+            
+        if (is_null($user)) {
+            $user        = new User();
+            $user->email = $email;
+            $user->save();
+            
+            $userProfile          = new UserProfile();
+            $userProfile->user_id = $user->id;
+            $userProfile->slug    = $this->_randomSlug();
+            
+            if ($avatar) {
+                $avatar                    = $this->saveOutWorldAvatar($avatar);
+                $userProfile->avatar_image = serialize($avatar);
+            }
+            
+            if ($firstName) {$userProfile->first_name = $firstName;}
+            if ($lastName) {$userProfile->last_name = $lastName;}
+            
+            $userProfile->save();
+        }
+        
+        auth()->loginUsingId($user->id);
+    }
+    
+    /**
+     * Save avatar from social
+     * 
+     * @param type $avatarUrl
+     * @return type
+     */
+    public function saveOutWorldAvatar($avatarUrl) {
+        try {
+            $storagePath = config('frontend.avatarsFolder');
+            $sizes       = config('frontend.avatarSizes');
+            $fileinfo    = pathinfo($avatarUrl, PATHINFO_EXTENSION);
+            $extension   = explode('?', $fileinfo);
+            
+            unset($sizes['original']);
+            
+            foreach ($sizes as $size) {
+                $name = generate_filename($storagePath, $extension[0], [
+                    'prefix' => 'avatar_', 
+                    'suffix' => "_{$size['w']}x{$size['h']}"
+                ]);
+                
+                file_put_contents($storagePath . '/' . $name, file_get_contents($avatarUrl));
+
+                $names[$size['w']] = $name;
+            }
+            
+            return $names;
+        } catch (Exception $ex) {
+            Log::error($ex->getMessage());
+        }
+    }
+    
+    /**
+     * Random slug
+     * 
+     * @param $preslug string
+     * 
+     * @return string
+     */
     protected function _randomSlug() {
         
         $slug        = random_string(16, $available_sets = 'lud');
@@ -151,6 +249,5 @@ class LoginController extends FrontController {
         }
         
         return $slug;
-        
     }
 }

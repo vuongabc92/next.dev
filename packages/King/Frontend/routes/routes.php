@@ -31,6 +31,7 @@ Route::group(['middleware' => 'web'], function ($route) {
     $route->post('login', 'Auth\LoginController@login')->name('front_login_post');
     $route->get('logout', 'Auth\LoginController@logout')->name('front_logout');
     $route->get('facebook-authenticate', 'Auth\LoginController@loginWithFBCallback')->name('front_login_with_fbcallback');
+    $route->get('google-authenticate', 'Auth\LoginController@loginWithGoogle')->name('front_login_with_gcallback');
 
     // Registration Routes.
     $route->get('register', 'Auth\RegisterController@showRegistrationForm')->name('front_register');

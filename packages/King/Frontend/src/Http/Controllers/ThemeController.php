@@ -33,7 +33,7 @@ class ThemeController extends FrontController {
         } else {
             $themes = Theme::where('id', '!=', $currentTheme->theme_id)->get();
         }
-        
+               
         return view('frontend::theme.index', [
             'themes'         => $themes,
             'expertises'     => ['' => _t('theme.upload.themeallExpertises')] + $expertises,

@@ -3,7 +3,7 @@
         <h1 class="_fwfl _m0 _p0 auth-form-title">{{ _t('loginin.form.title') }}</h1>
         <div class="_fwfl outworld-auth auth-field-group first-field-group">
             <button type="button" class="btn _btn btn-fb" onclick="document.location.href='{{ $fbLoginUrl }}'"><span>Login with </span>Facebook</button>
-            <button class="btn _btn btn-google"><span>Login with </span>Google</button>
+            <button type="button" class="btn _btn btn-google" onclick="document.location.href='{{ $googleLoginUrl }}'"><span>Login with </span>Google</button>
             <span class="auth-or">Or</span>
         </div>
         <div class="_fwfl auth-field-group">

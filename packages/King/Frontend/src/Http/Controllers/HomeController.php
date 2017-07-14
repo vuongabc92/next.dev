@@ -5,9 +5,13 @@
 
 namespace King\Frontend\Http\Controllers;
 
-use Facebook\Facebook;
+use App\Helpers\OutWorldAuth;
 
 class HomeController extends FrontController {
+    
+    use OutWorldAuth {
+        OutWorldAuth::__construct as private __owaConstruct;
+    }
     
     /**
      * Create a new controller instance.
@@ -16,6 +20,7 @@ class HomeController extends FrontController {
      */
     public function __construct() {
         $this->middleware('guest', ['except' => 'logout']);
+        $this->__owaConstruct();
     }
     
     public function landing() {
@@ -23,14 +28,9 @@ class HomeController extends FrontController {
             session_start();
         }
         
-        $fb_api      = config('frontend.facebook_api');
-        $fb          = new Facebook($fb_api);
-        $helper      = $fb->getRedirectLoginHelper();
-        $permissions = ['email', 'public_profile'];
-        $fbloginUrl  = $helper->getLoginUrl(route('front_login_with_fbcallback'), $permissions);
-        
         return view('frontend::home.landing', [
-            'fbLoginUrl' => $fbloginUrl
+            'fbLoginUrl'     => $this->facebookAuthUrl(),
+            'googleLoginUrl' => $this->googleAuthUrl(),
         ]);
     }
     

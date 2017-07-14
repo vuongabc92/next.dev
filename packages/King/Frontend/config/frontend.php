@@ -93,5 +93,10 @@ return [
         'app_id'                => '538490049611394',
         'app_secret'            => 'dcf4d5e733e17edb05de279dbef25a02',
         'default_graph_version' => 'v2.2',
+    ],
+    'google_api' => [
+        'client_id'     => '916322774631-d01n4dg7trevpggg1r7ch5kgt93bgt7p.apps.googleusercontent.com',
+        'client_secret' => 'p5Jw7_cEjBkGIRK68MiBIIia',
+        'app_name'      => 'NEXT',
     ]
 ];

@@ -362,7 +362,7 @@ if ( ! function_exists('birthdate')) {
         
         $userProfile = user()->userProfile;
         if (is_null($userProfile)) {
-            $userProfile = new UserProfile();
+            $userProfile = new App\Models\UserProfile();
         }
         
         if (null === $userProfile->day_of_birth) {
