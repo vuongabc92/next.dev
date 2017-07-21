@@ -1,6 +1,6 @@
 <section>
     <div class="_fwfl timeline-container">
-        <div class="timeline employment-timeline" data-update-employment data-remove-employment>
+        <div class="timeline employment-timeline" data-update-employment data-update-employment-url="{{ route('front_settings_employmentbyid') }}" data-remove-employment data-remove-employment-url="{{ route('front_settings_employmentremovebyid') }}">
             <div class="_fwfl timeline-section">
                 <div class="timeline-point"></div>
                 <div class="timeline-content">

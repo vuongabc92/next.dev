@@ -25,11 +25,11 @@
                 {!! Form::text('city_name', $userProfile->city_name, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.cityname')]) !!}
             </div>
 <!--            <div class="settings-field-wrapper">
-                {{-- Form::kingSelect('city', $cities, $userProfile->city_id, ['id' => 'settings-city', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'district']) --}}
+                {{-- Form::kingSelect('city', $cities, $userProfile->city_id, ['id' => 'settings-city', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'district', 'data-select-place-url' => route('front_settings_select_place')]) --}}
             </div>
             <div class="settings-field-wrapper">
                 <span class="_fl _w50 _pr3">
-                    {_-- Form::kingSelect('district', $districts, $userProfile->district_id, ['id' => 'settings-district', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'ward']) --}}
+                    {_-- Form::kingSelect('district', $districts, $userProfile->district_id, ['id' => 'settings-district', 'class' => 'settings-field', 'data-select-place' => '', 'data-target' => 'ward', 'data-select-place-url' => route('front_settings_select_place')]) --}}
                 </span>
                 <span class="_fl _w50 _pl3">
                     {{-- Form::kingSelect('ward', $wards, $userProfile->ward_id, ['id' => 'settings-ward', 'class' => 'settings-field']) --}}
@@ -43,7 +43,7 @@
             </div>
             <div class="settings-field-wrapper">
                 <div class="social-added-list">
-                    <ul data-kill-social data-delete-msg="Delete this social profile?">
+                    <ul data-kill-social data-killsocial-url="{{ route('front_settings_killsocial') }}" data-delete-msg="{{ _t('setting.profile.killsocial') }}">
                         @if(count($socialList))
                             @foreach($socialList as $id => $one)
                             <li>
@@ -70,7 +70,7 @@
             <div class="_fl modal-content">
                 <div class="_fwfl modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="socialModalLabel">{{ _t('setting.profile.add_social_title') }}</h4>
+                    <h4 class="modal-title" id="socialModalLabel" data-modal-title="{{ _t('setting.profile.add_social_title') }}">{{ _t('setting.profile.add_social_title') }}</h4>
                 </div>
                 {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form full', 'data-save-form' => '', 'data-requires' => 'social_type|social_profile']) !!}
                 <div class="_fwfl modal-body">

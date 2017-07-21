@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use App\Helpers\Theme\ThemeCompiler;
 use Illuminate\Filesystem\Filesystem;
-
+use mikehaertl\wkhtmlto\Pdf;
 
 class ResumeController extends FrontController {
     
@@ -67,10 +67,30 @@ class ResumeController extends FrontController {
         $resume   = $this->generateResumeData(user_id());
         $compiler = new ThemeCompiler(new Filesystem, $resume, $slug);
         $contents = $compiler->compile();
-        
+
         return new Response($contents);
     }
-    
+
+    public function download($slug) {
+
+        if (null === Theme::where('slug', $slug)->first()) {
+            throw new NotFoundHttpException;
+        }
+
+        $resume      = $this->generateResumeData(user_id());
+        $compiler    = new ThemeCompiler(new Filesystem, $resume, $slug);
+        $contents    = $compiler->compile();
+        $wkhtmltopdf = config('frontend.wkhtmltopdf');
+        $pdf         = new Pdf($wkhtmltopdf);
+        $fileName    = 'cv_' . $resume->getFirstName() . $resume->getLastName() . '_' . date('dmy') . '.pdf';
+
+        $pdf->addPage($contents);
+        if ( ! $pdf->send($fileName)) {
+            throw new NotFoundHttpException;
+        }
+        exit();
+    }
+
     /**
      * Generate resume data for show CV
      * 

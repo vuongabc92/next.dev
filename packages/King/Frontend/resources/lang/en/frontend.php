@@ -142,6 +142,7 @@ return [
     'settings.contact.social_linkwrog' => "Whoops! Please check the link.",
     'setting.profile.add_social_title' => 'Add A Social Networks',
     'setting.profile.add_social_add' => '+ Add social profile',
+    'setting.profile.killsocial' => 'Delete this social profile?',
     'setting.profile.street' => 'Street name',
     'setting.profile.cityname' => 'City name',
     'setting.profile.phone' => 'Phone number',

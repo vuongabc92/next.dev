@@ -237,7 +237,7 @@ var HELPERS = {
         this.text.html(label)
     } 
 
-    Button.VERSION = '3.3.6'
+    Button.VERSION = '1.0'
 
     Button.DEFAULTS = {
         checkTimeout: 2000,
@@ -297,6 +297,46 @@ var HELPERS = {
 
     $.fn.loading = Plugin
     $.fn.loading.Constructor = Button
+
+}(jQuery);
+
++function ($) {
+    'use strict';
+    
+    var Selecter = function (element, options) {
+        this.$element = $(element);
+        this.options  = $.extend({}, Selecter.DEFAULTS, options);
+        this.label    = this.$element.find('label');
+        this.select   = this.$element.find('select');
+        
+    } ;
+
+    Selecter.VERSION = '1.0';
+    
+    Selecter.DEFAULTS = {};
+
+    Selecter.prototype.reset = function() {
+        this.select.prop('selectedIndex', 0);
+        this.label.html(this.select.find('option:first-child').text());
+    };
+    
+
+    function Plugin(option, _relatedTarget) {
+        return this.each(function () {
+            var $this   = $(this);
+            var data    = $this.data('king.selecter');
+            var options = $.extend({}, Selecter.DEFAULTS, $this.data(), typeof option == 'object' && option);
+            
+            if (!data) $this.data('king.selecter', (data = new Selecter(this, options)))
+            if (option === undefined) data['reset'](_relatedTarget)
+            if (typeof option == 'string') data[option](_relatedTarget)
+            else if (options.state) data[options.state](_relatedTarget)
+            
+        })
+    }
+
+    $.fn.kingSelecter = Plugin;
+    $.fn.kingSelecter.Constructor = Selecter;
 
 }(jQuery);
 
@@ -493,7 +533,7 @@ var HELPERS = {
                     onComplete: function(response){
                         response = $.parseJSON(response);
                         
-                        if (response.status === SETTINGS.AJAX_OK) {
+                        if (response.status === 'OK') {
                             avatar.children('.avatar-img').attr('src', response.avatar_medium);
                         } else {
                             HELPERS.message.error(response.message)
@@ -579,7 +619,7 @@ var HELPERS = {
                     onComplete: function(response){
                         response = $.parseJSON(response);
                         
-                        if (response.status === SETTINGS.AJAX_OK) {
+                        if (response.status === 'OK') {
                             cover.css('background-image', 'url(' + response.cover_medium + ')');
                         } else {
                             HELPERS.message.error(response.message);
@@ -999,12 +1039,16 @@ var HELPERS = {
                         }
                         
                         if (formType === '_CONTACT') {
-                            var data = response.data,
-                                html = '';
-                        
+                            var data  = response.data,
+                                html  = '',
+                                modal = $('#social-modal'),
+                                modalTitle = modal.find('#socialModalLabel').data('modal-title');
+                                
                             if (typeof data !== 'undefined' && typeof data.socials !== 'undefined') {
-                                $('#social-modal').find('form')[0].reset();
-                                $('#social-modal').modal('hide');
+                                modal.find('form')[0].reset();
+                                modal.find('#socialModalLabel').html(modalTitle);
+                                 modal.find('.selecter').kingSelecter('reset');
+                                modal.modal('hide');
                                 
                                 $.each(data.socials, function(k, v){
                                     html = html + '<li><a href="' + v['link'] + '" target="_blank"><i class="fa fa-' + v['icon'] + '"></i></a><span class="kill-social" data-kill-id="' + k + '" >&times;</span></li>';
@@ -1326,19 +1370,21 @@ var HELPERS = {
     function Plugin(element, options) {
         this.element = $(element);
         this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.data    = this.element.data();
         this.init();
     }
 
     Plugin.prototype = {
         init: function() {
             var current = this.element,
-                thiz    = this;
+                thiz    = this,
+                url     = this.data.updateEmploymentUrl;
         
             current.on('click', '.timeline-edit', function(){
                 
                 $.ajax({
                     type: 'GET',
-                    url: SETTINGS.AJAX_GET_EMPLOYMENTBYID + '/' + $(this).attr('data-update-employment-id'),
+                    url: url + '/' + $(this).attr('data-update-employment-id'),
                     dataType: 'json',
                     success: function(response){
                         var data      = response.data,
@@ -1433,23 +1479,26 @@ var HELPERS = {
     function Plugin(element, options) {
         this.element = $(element);
         this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.data    = this.element.data();
         this.init();
     }
 
     Plugin.prototype = {
         init: function() {
-            var current = this.element;
+            var current = this.element,
+                url     = this.data.removeEmploymentUrl;
                 
             current.on('click', '.timeline-remove', function(){
-                var employmentId = $(this).attr('data-remove-employment-id');
+                var employmentId = $(this).attr('data-remove-employment-id'),
+                    msg          = $(this).attr('data-confirm-msg');
                 
-                if ( ! confirm($(this).attr('data-confirm-msg'))) {
+                if (typeof msg !== 'undefined' && ! confirm($(this).attr('data-confirm-msg'))) {
                     return false;
                 }
                 
                 $.ajax({
                     type: 'DELETE',
-                    url: SETTINGS.AJAX_GET_EMPLOYMENTREMOVEBYID,
+                    url: url,
                     data: {id: employmentId},
                     dataType: 'json',
                     success: function(){
@@ -1506,23 +1555,26 @@ var HELPERS = {
     function Plugin(element, options) {
         this.element = $(element);
         this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.data    = this.element.data();
         this.init();
     }
 
     Plugin.prototype = {
         init: function() {
-            var current = this.element;
+            var current = this.element,
+                url     = this.data.removeEducationUrl;
                 
             current.on('click', '.timeline-remove', function(){
-                var educationId = $(this).attr('data-remove-education-id');
+                var educationId = $(this).attr('data-remove-education-id'),
+                    msg         = $(this).attr('data-confirm-msg');
                 
-                if ( ! confirm($(this).attr('data-confirm-msg'))) {
+                if (typeof msg !== 'undefined' && ! confirm(msg)) {
                     return false;
                 }
                 
                 $.ajax({
                     type: 'DELETE',
-                    url: SETTINGS.AJAX_GET_EDUCATIONREMOVEBYID,
+                    url: url,
                     data: {id: educationId},
                     dataType: 'json',
                     success: function(){
@@ -1579,18 +1631,20 @@ var HELPERS = {
     function Plugin(element, options) {
         this.element = $(element);
         this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.data    = this.element.data();
         this.init();
     }
 
     Plugin.prototype = {
         init: function() {
-            var current = this.element;
+            var current = this.element,
+                url     = this.data.updateEducationUrl;
                 
             current.on('click', '.timeline-edit', function(){
                 
                 $.ajax({
                     type: 'GET',
-                    url: SETTINGS.AJAX_GET_EDUCATIONBYID + '/' + $(this).attr('data-update-education-id'),
+                    url: url + '/' + $(this).attr('data-update-education-id'),
                     dataType: 'json',
                     success: function(response){
                         var data = response.data,
@@ -1801,6 +1855,7 @@ var HELPERS = {
         this.element = $(element);
         this.options = $.extend({}, $.fn[pluginName].defaults, options);
         this.maxStar = this.element.data('rating');
+        this.data    = this.element.data();
         this.init();
     }
 
@@ -1822,7 +1877,8 @@ var HELPERS = {
             }
         },
         rate: function() {
-            var maxStar = this.maxStar;
+            var maxStar = this.maxStar,
+                url     = this.data.ratingUrl;
             
             this.element.on('click', '.rating i.fa', function(){
                 var rating = $(this).parents('.rating');
@@ -1840,7 +1896,7 @@ var HELPERS = {
                 if (parseInt(rating.find('.current-rating').val()) > 0) {
                     $.ajax({
                         type: 'POST',
-                        url: SETTINGS.AJAX_SAVE_INFO,
+                        url: url,
                         data: {id: rating.closest('.tag').attr('id'), votes: $(this).index() + 1, type: '_SKILL'},
                         success: function(response){
                             console.log(response);
@@ -1931,18 +1987,20 @@ var HELPERS = {
     function Plugin(element, options) {
         this.element = $(element);
         this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.data    = this.element.data();
         this.init();
     }
 
     Plugin.prototype = {
         init: function() {
-            var thiz = this;
+            var thiz = this,
+                url  = this.data.killtagUrl;
             this.element.on('click', '.tag i.fa-close', function(){
                 var id = parseInt($(this).closest('.tag').attr('id'));
                 
                 $.ajax({
                     type: 'DELETE',
-                    url: SETTINGS.AJAX_KILL_TAG,
+                    url: url,
                     data: {id: id},
                     success: function(){
                         $('#' + id).remove();
@@ -2102,6 +2160,7 @@ var HELPERS = {
     function Plugin(element, options) {
         this.element = $(element);
         this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.data    = this.element.data();
         this.init();
     }
 
@@ -2116,11 +2175,12 @@ var HELPERS = {
             });
         },
         search: function(keyword){
-            var thiz = this;
+            var thiz = this,
+                url  = this.data.autocompleteSkillUrl;
             if (keyword.length >= 3) {
                 $.ajax({
                     type: 'GET',
-                    url: SETTINGS.AJAX_GET_SEARCHSKILL + '/' + keyword,
+                    url: url + '/' + keyword,
                     success: function(response){
                         if (response.total > 0) {
                             thiz.append(response.skills);
@@ -2202,12 +2262,15 @@ var HELPERS = {
     function Plugin(element, options) {
         this.element = $(element);
         this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.data    = this.element.data();
         this.init();
     }
 
     Plugin.prototype = {
         init: function() {
-        
+            
+            var url = this.data.killsocialUrl;
+            
             this.element.on('click', '.kill-social', function(){
                 
                 var socialId = $(this).attr('data-kill-id'),
@@ -2218,7 +2281,7 @@ var HELPERS = {
                 
                 $.ajax({
                     type: 'DELETE',
-                    url: SETTINGS.AJAX_KILL_SOCIAL,
+                    url: url,
                     data: {id: socialId},
                     success: function(){
                         li.remove();

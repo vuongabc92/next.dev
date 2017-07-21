@@ -2,12 +2,12 @@
     {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => '_fwfl skills-form', 'data-add-skill' => '', 'data-required' => 'skill']) !!}
         <h3 class="skills-title">Your Skills</h3>
         <div class="settings-field-wrapper">
-            <div class="skill-field">{!! Form::text('skill', null, ['class' => 'settings-field', 'placeholder' => _t('setting.skill.add'), 'autocomplete' => 'off', 'data-autocomplete-skill']) !!}</div>
+            <div class="skill-field">{!! Form::text('skill', null, ['class' => 'settings-field', 'placeholder' => _t('setting.skill.add'), 'autocomplete' => 'off', 'data-autocomplete-skill', 'data-autocomplete-skill-url' => route('front_settings_searchskill')]) !!}</div>
             <input type="hidden" name="type" value="_SKILL">
             <div class="skill-btn"><button type="submit" class="btn _btn skill-submit"><i class="fa fa-plus"></i></button></div>
             <div class="skill-suggestion"></div>
         </div>
-        <div class="_fwfl _mt12 skill-tags" data-rating="5" data-kill-tag>
+        <div class="_fwfl _mt12 skill-tags" data-rating="5" data-kill-tag data-rating-url="{{ route('front_settings_save_info') }}" data-killtag-url="{{ route('front_settings_killtag') }}">
             @if(user()->skills->count())
                 @foreach(user()->skills as $user_skill)
                 <div class="tag" id="{{ $user_skill->id }}">

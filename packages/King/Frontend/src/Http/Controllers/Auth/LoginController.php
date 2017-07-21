@@ -176,6 +176,7 @@ class LoginController extends FrontController {
         $firstName = isset($data['first_name']) ? $data['first_name'] : '';
         $lastName  = isset($data['last_name'])  ? $data['last_name']  : '';
         $user      = User::where('email', $email)->first();
+        $emailSplit = explode('@', $email);
             
         if (is_null($user)) {
             $user        = new User();
@@ -184,7 +185,7 @@ class LoginController extends FrontController {
             
             $userProfile          = new UserProfile();
             $userProfile->user_id = $user->id;
-            $userProfile->slug    = $this->_randomSlug();
+            $userProfile->slug    = $this->_randomSlug($emailSplit[0]);
             
             if ($avatar) {
                 $avatar                    = $this->saveOutWorldAvatar($avatar);
@@ -235,17 +236,23 @@ class LoginController extends FrontController {
     /**
      * Random slug
      * 
-     * @param $preslug string
+     * @param $prefix string
      * 
      * @return string
      */
-    protected function _randomSlug() {
+    protected function _randomSlug($prefix) {
         
-        $slug        = random_string(16, $available_sets = 'lud');
+        $userProfile = UserProfile::where('slug', $prefix)->first();
+        
+        if ($userProfile === null) {
+            return $prefix;
+        }
+        
+        $slug        = $prefix . random_string(6, $available_sets = 'lud');
         $userProfile = UserProfile::where('slug', $slug)->first();
         
         if ($userProfile) {
-            $this->_randomSlug();
+            $this->_randomSlug($prefix);
         }
         
         return $slug;

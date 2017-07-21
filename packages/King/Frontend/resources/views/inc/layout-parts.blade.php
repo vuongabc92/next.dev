@@ -42,7 +42,7 @@
                                     <li><a href="{{ route('front_about') }}">About us</a></li>
                                     <li><a href="#">Help</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#">Developer</a></li>
+                                    <li><a href="#"><i class="fa fa-gear"></i> Developer</a></li>
                                 </ul>
                             </li>
                             @endif

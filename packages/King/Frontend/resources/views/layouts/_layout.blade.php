@@ -22,7 +22,6 @@
         <main>
             @include('frontend::inc.layout-parts')
             @yield('header')
-            
         </main>
         
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery_v1.11.1.js') }}"></script>

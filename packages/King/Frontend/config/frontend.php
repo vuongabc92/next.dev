@@ -98,5 +98,22 @@ return [
         'client_id'     => '916322774631-d01n4dg7trevpggg1r7ch5kgt93bgt7p.apps.googleusercontent.com',
         'client_secret' => 'p5Jw7_cEjBkGIRK68MiBIIia',
         'app_name'      => 'NEXT',
+    ],
+    'wkhtmltopdf' => [
+        'no-outline',
+        'margin-top'     => 0,
+        'margin-right'   => 0,
+        'margin-bottom'  => 0,
+        'margin-left'    => 0,
+        'binary'         => 'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe',
+        'page-size'      => 'A4',
+        'viewport-size'  => '1920x1080',
+        'ignoreWarnings' => true,
+        'commandOptions' => array(
+            'useExec' => true,
+            'procEnv' => array(
+                'LANG' => 'en_US.utf-8',
+            ),
+        )
     ]
 ];

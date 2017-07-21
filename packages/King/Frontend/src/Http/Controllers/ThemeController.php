@@ -11,6 +11,7 @@ use App\Models\Expertise;
 use Validator;
 use File;
 
+
 class ThemeController extends FrontController {
     
     /**
@@ -33,7 +34,11 @@ class ThemeController extends FrontController {
         } else {
             $themes = Theme::where('id', '!=', $currentTheme->theme_id)->get();
         }
-               
+        
+        if ($currentTheme === null) {
+            $currentTheme = Theme::where('slug', config('frontend.defaultThemeName'))->first();
+        }
+        
         return view('frontend::theme.index', [
             'themes'         => $themes,
             'expertises'     => ['' => _t('theme.upload.themeallExpertises')] + $expertises,

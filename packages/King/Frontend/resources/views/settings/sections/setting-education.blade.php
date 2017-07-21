@@ -1,6 +1,6 @@
 <section>
     <div class="_fwfl timeline-container">
-        <div class="timeline education-timeline" data-update-education data-remove-education>
+        <div class="timeline education-timeline" data-update-education data-update-education-url="{{ route('front_settings_educationbyid') }}" data-remove-education data-remove-education-url="{{ route('front_settings_educationremovebyid') }}">
             @if (count($educations))
                 @foreach($educations as $education)
                     <div class="_fwfl timeline-section" id="timeline-section-{{ $education->id }}">

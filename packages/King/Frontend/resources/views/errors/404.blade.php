@@ -34,6 +34,10 @@
                 color: #fff;
                 border-radius: 2px;
                 -webkit-border-radius: 2px;
+            }
+            .gotohomepage-btn:hover,
+            .gotohomepage-btn:focus {
+                color: #ddd;
                 text-decoration: none;
             }
             @media screen and (max-width: 680px) {

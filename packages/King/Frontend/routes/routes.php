@@ -20,6 +20,7 @@ Route::group(['middleware' => ['web', 'auth:web']], function ($route) {
     $route->post('theme/install', 'ThemeController@install')->name('front_theme_install');
     $route->post('theme/add_new', 'ThemeController@addNewTheme')->name('front_theme_add_new');
     $route->get('theme/{slug}/preview', 'ResumeController@preview')->name('front_theme_preview');
+    $route->get('theme/{slug}/download', 'ResumeController@download')->name('front_theme_download');
 });
 
 Route::group(['middleware' => 'web'], function ($route) {
