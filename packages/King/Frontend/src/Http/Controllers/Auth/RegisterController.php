@@ -57,7 +57,7 @@ class RegisterController extends Controller
     public function showRegistrationForm() {
        if ( ! session_id()) session_start();
         
-        return view('frontend::auth.login', [
+        return view('frontend::auth.register', [
             'fbLoginUrl'     => $this->facebookAuthUrl(),
             'googleLoginUrl' => $this->googleAuthUrl(),
         ]);

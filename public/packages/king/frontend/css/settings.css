@@ -1,6 +1,8 @@
 body {background-color:#f5f8fa;}
 .wrapper{margin:20px 0;}
-
+.logo-header {
+    margin-top: 13px;
+}
 /* Vartical navigation */
 .setting-vertical-nav>li {
     width:100%;

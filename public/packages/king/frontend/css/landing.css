@@ -22,6 +22,7 @@ main>.left>.left-inner {
 main>.left header {
     height: 60px;
     padding: 13px 0;
+    border-bottom: solid 2px #eee;
 }
 main>.left header .logo {
     width: 34px;

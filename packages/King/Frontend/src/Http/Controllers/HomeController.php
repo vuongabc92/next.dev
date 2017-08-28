@@ -5,14 +5,10 @@
 
 namespace King\Frontend\Http\Controllers;
 
-use App\Helpers\OutWorldAuth;
+use App\Models\Theme;
 
 class HomeController extends FrontController {
-    
-    use OutWorldAuth {
-        OutWorldAuth::__construct as private __owaConstruct;
-    }
-    
+       
     /**
      * Create a new controller instance.
      *
@@ -20,17 +16,13 @@ class HomeController extends FrontController {
      */
     public function __construct() {
         $this->middleware('guest', ['except' => 'logout']);
-        $this->__owaConstruct();
     }
     
     public function landing() {
-        if ( ! session_id()) {
-            session_start();
-        }
+        $themes = Theme::all();
         
         return view('frontend::home.landing', [
-            'fbLoginUrl'     => $this->facebookAuthUrl(),
-            'googleLoginUrl' => $this->googleAuthUrl(),
+            'themes' => $themes
         ]);
     }
     

@@ -175,7 +175,7 @@
                                 </div>
                                 
                                 <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
-                                <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>
+                                <button type="reset" class="btn _btn _btn-sm _btn-gray" data-dismiss="modal">{{ _t('cancel') }}</button>
                                 <input type="hidden" name="type" value="_THEME"/>
                             {!! Form::close() !!}
                             
@@ -210,49 +210,10 @@
                 </li>
             </div>
         </main>
-<!--        <script src="{{ asset('packages/king/frontend/js/require.js') }}"></script>
-        <script src="{{ asset('packages/king/frontend/js/main.js') }}"></script>
-        <script>
-            requirejs(['jquery', 'jqueryui', 'bootstrap', 'bootstrap_switch', 'script']);
-            
-            requirejs(['pdfkit']);
-            
-            doc = new PDFDocument();
-            
-        </script>-->
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery_v1.11.1.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery-ui-1.11.4.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap-switch.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/pdfkit.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/blob-stream-v0.1.2.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/frontend/js/script.js') }}"></script>
-        <script>
-//            var doc = new PDFDocument();
-//            var stream = doc.pipe(blobStream());
-//
-//
-//            doc.text('<h1>Vuong</h1>');
-//            doc.end();
-//            var saveData = (function () {
-//                var a = document.createElement("a");
-//                document.body.appendChild(a);
-//                a.style = "display: none";
-//                return function (blob, fileName) {
-//                    var url = window.URL.createObjectURL(blob);
-//                    a.href = url;
-//                    a.download = fileName;
-//                    a.click();
-//                    window.URL.revokeObjectURL(url);
-//                };
-//            }());
-//
-//            stream.on('finish', function () {
-//
-//                var blob = stream.toBlob('application/pdf');
-//                saveData(blob, 'aa.pdf');
-//
-//            });
-        </script>
     </body>
 </html>

@@ -1,75 +1,112 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>LienK - Professional CV For All</title>
-        <meta charset="UTF-8">
-        <meta id="viewport" name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
-        <meta name="msapplication-tap-highlight" content="no"/>
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/app.css') }}">
-        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/auth.css') }}">
-        <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/landing.css') }}">
-    </head>
-    <body>
-        <main class="_fwfl">
-            <div class="left border-dot">
-                <div class="left-inner">
-                    <header class="_fwfl">
-                        <a href="/"><span class="logo"></span></a>
-                        <button class="btn _btn _btn-blue-navy" id="landingLoginBtn">{{ _t('login') }}</button>
-                        <button class="btn _btn _btn-blue-navy" id="landingRegisterBtn">{{ _t('register') }}</button>
-                    </header>
-                    <div class="_fwfl auth-wrap">
-                        @include('frontend::inc.auth')
-                        @yield('auth_login')
-                        @yield('auth_register')
+@extends('frontend::layouts._layout')
+
+@section('body')
+<div class="_fwfl magic-show">
+    @if( ! auth()->check())
+    <div class="_fwfl text-center welcome-bar">
+        <span class="_fwfl welcome-msg">What are you looking for? NEXT is where a lot of beautiful CV are created.</span>
+        <a href="{{ route('front_register') }}" class="btn _btn _btn-blue-navy">Continue &RightArrow;</a>
+    </div>
+    @endif
+    <div class="_fwfl filter-wrap{{ (auth()->check()) ? ' authfilter-wrap' : '' }}">
+        <div class="filter-inside">
+            <nav class="navbar navbar-expand-lg filter-nav">
+                <ul class="nav filter-list justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">All</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Newest</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Latest</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Experience</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">In college</a>
+                            <a class="dropdown-item" href="#">No experiences</a>
+                            <a class="dropdown-item" href="#">1 - 3 years</a>
+                            <a class="dropdown-item" href="#">> 3 years</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Color</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Dark</a>
+                            <a class="dropdown-item" href="#">Light</a>
+                            <a class="dropdown-item" href="#">Colored</a>
+                            <a class="dropdown-item" href="#">Black and white</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline ml-auto">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                </form>
+            </nav>
+        </div>
+    </div>
+    <div class="_fwfl themes-wrapper">
+        <div class="themes-inside">
+            @if($themes->count())
+                <ul class="_fwfl _lsn _p0 _m0 theme-tree">
+                @foreach($themes as $theme)
+                    <li>
+                        <a href="{{ route('front_theme_details', ['theme_id' => $theme->id]) }}" data-theme-details>
+                        <div class="theme-leaf">
+                            <img src="{{ asset('uploads/themes/' . $theme->slug . '/screenshot.png') }}" class="screenshot"/>
+                            <div class="quick-info">
+                                <h5>{{ $theme->name }}</h5>
+                                <div>{{ str_limit($theme->description, 100) }}</div>
+                            </div>
+                        </div>
+                        </a>
+                    </li>
+                @endforeach
+                </ul>
+            @endif
+            
+        </div>
+    </div>
+</div>
+<!-- Theme details modal -->
+<div class="modal fade modal-theme-details" id="themeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="themeDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="_fwfl theme-details-header" id="themeDetailsHeader">
+                    <a href="#" id="themeAuthorAvatar">
+                        <img class="_r50" src="" />
+                    </a>
+                    <h1><span id="themeName"></span> <span class="theme-details-version badge badge-secondary" id="themeVersion"></span></h1>
+                    <h2>
+                        <span class="theme-by">{{ _t('theme.details_by') }} <a href="#"></a></span>
+                        <span class="theme-date">{{ _t('theme.details_on') }} <span class="_tgb"></span></span>
+                    </h2>
+                </div>
+                <div class="_fwfl theme-details-content">
+                    <div class="theme-details-screenshot" id="themeScreenshot">
+                        <img src="" />
                     </div>
-                    <footer class="_fwfl border-dot">
-                        <ul class=" _lsn _p0 _m0 footer-nav">
-                            <li><a href="{{ route('front_about') }}">{{ _t('aboutus') }}</a></li>
-                            <li><a href="#">{{ _t('help') }}</a></li>
-                            <li><a href="#">{{ _t('developers') }}</a></li>
-                            <li><a href="#">{{ _t('privacy') }}</a></li>
-                            <li><a href="#">{{ _t('terms') }}</a></li>
-                        </ul>
-                    </footer>
+                    @if(auth()->check())
+                    <div class="theme-details-meta">
+                        <div class="_fwfl theme-details-actions" id="themeAction">
+                            <form action="{{ route('front_theme_install') }}" method="post" data-install-theme>
+                                {{ csrf_field() }}
+                                <input type="hidden" name="theme_id" />
+                                <input type="hidden" name="cv_url" value="{{ user()->userProfile->cvUrl() }}"/>
+                                <button type="submit" class="btn _btn _btn-blue-navy" data-finished-text="{{ _t('theme.installed') }}">
+                                    {{ _t('theme.install') }}
+                                </button>
+                            </form>
+                            <a href="#" class="btn _btn _btn-gray" target="_blank" id="themePreviewBtn">{{ _t('theme.preview') }}</a>
+                        </div>
+                    </div>
+                    @endif
+                    <div class="theme-details-desc" id="themeDesc"></div>
                 </div>
             </div>
-            <div class="right">
-<!--                <div class="right-inner">
-                    <div class="_fwfl landing-cv">
-                        <div class="header">
-                            <div class="_fwfl avatar-box">
-                                <span class="logo avatar"></span>
-                            </div>
-                            <h1 class="_fwfl name">Next.Com</h1>
-                            <h3 class="_fwfl job">Free CV For Everyone</h3>
-                        </div>
-                        <div class="_fwfl cv-body">
-                            <div class="_fwfl content-box">
-                                <h1 class="title">Profile</h1>
-                                <div class="content">
-                                    <p>HELLO THERE!!</p> 
-                                    <p>Are you looking for a GREAT CV? If so you are in the RIGHT PLACE.</p> 
-                                    <p>We have HUNDREDS OF BEAUTIFUL CV that make you go crazy at the first time looking at them, because they are all too good, it's so hard to pick one ^^!</p>
-                                    <p>Enough talk! Let's explore moreeeeee....</p>
-                                    <a href="#" class="explode-btn">Explore</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
-            </div>
-        </main>
-        
-        <!--[if lt IE 9]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery_v1.11.1.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/jquery-ui-1.11.4.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/bootstrap-switch.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('packages/king/frontend/js/script.js') }}"></script>
-    </body>
-</html>
+        </div>
+    </div>
+</div>
+@stop

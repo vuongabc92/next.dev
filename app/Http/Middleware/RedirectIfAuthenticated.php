@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
         $urls = [
             route('front_login'),
             route('front_register'),
-            route('front_landing'),
+            //route('front_landing'),
         ];
         
         if (Auth::guard($guard)->check() && in_array($request->fullUrl(), $urls)) {

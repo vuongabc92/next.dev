@@ -105,7 +105,7 @@ return [
         'margin-right'   => 0,
         'margin-bottom'  => 0,
         'margin-left'    => 0,
-        'binary'         => 'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe',
+        'binary'         => 'wkhtmltopdf\bin\wkhtmltopdf.exe',
         'page-size'      => 'A4',
         'viewport-size'  => '1920x1080',
         'ignoreWarnings' => true,

@@ -9,6 +9,7 @@ return [
     'delete' => 'Delete',
     'signin' => 'Sign in',
     'login' => 'Log in',
+    'logout' => 'Log out',
     'register' => 'Register',
     'aboutus' => 'About us',
     'feedback' => 'Feedback',

@@ -10,7 +10,7 @@
                             <span class="icon-bar"></span>
                         </button>
                         <a class="navbar-brand" href="{{ route('front_settings') }}">
-                            <span class="logo"></span>
+                            <span class="logo logo-header"></span>
                         </a>
                     </div>
 
