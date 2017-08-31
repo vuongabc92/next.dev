@@ -9,7 +9,7 @@
 @section('body')
     <div class="container">
         <div class="_fwfl add-theme-row">
-            <button class="btn _btn _btn-blue" data-toggle="modal" data-target="#addThemeModal"><i class="fa fa-plus"></i> ADD NEW THEME</button>
+            <button class="btn _btn _btn-blue" data-toggle="modal" data-target="#addThemeModal"><i class="fa fa-plus"></i> UPLOAD NEW THEME</button>
         </div>
         @if($currentTheme)
         <div class="_fwfl current-activated-theme">

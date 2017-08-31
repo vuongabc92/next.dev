@@ -29,4 +29,8 @@ class HomeController extends FrontController {
     public function about() {
         return view('frontend::home.about');
     }
+    
+    public function contact() {
+        return view('frontend::home.contact');
+    }
 }

@@ -46,6 +46,7 @@ Route::group(['middleware' => 'web'], function ($route) {
     
     Route::get('/', 'HomeController@landing')->name('front_landing');
     Route::get('/about', 'HomeController@about')->name('front_about');
+    Route::get('/contact', 'HomeController@contact')->name('front_contact');
     
     Route::get('themes', 'ThemeController@index')->name('front_themes');
     Route::get('theme/{theme_id}/popup_details', 'ThemeController@themeDetails')->name('front_theme_details')->where('theme_id', '[0-9]+');

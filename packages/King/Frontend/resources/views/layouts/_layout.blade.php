@@ -48,13 +48,13 @@
             <div class="_fwfl footer-navs">
                 <ul class="nav justify-content-center">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">{{ _t('aboutus') }}</a>
+                        <a class="nav-link active" href="{{ route('front_about') }}">{{ _t('aboutus') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">{{ _t('help') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{{ _t('contact') }}</a>
+                        <a class="nav-link" href="{{ route('front_contact') }}">{{ _t('contact') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">{{ _t('feedback') }}</a>

@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700');
+.aboutus-wrap {
+    max-width: 500px;
+    margin: auto;
+}
+.about-us {
+    margin: 70px 0 100px;
+}
+.chat-tree>li {
+    width: 100%;
+    float: left;
+    margin-bottom: 15px;
+}
+.chat-left {
+    width: 12%;
+    float: left;
+}
+.chat-right {
+    width: 88%;
+    float: left;
+}
+.chatbox {
+    position: relative;
+    width: 100%;
+    float: left;
+    padding:15px 20px;
+    border-radius: 3px;
+    background-color: #eee;
+    font-family: 'Roboto Mono', monospace;
+}
+.chatbox>i {
+    position: absolute;
+    left: -10px;
+    top: 5px;
+    font-size: 30px;
+    color: #eee;
+}
+.chatbot {
+    width: 40px;
+    height: 40px;
+    float: left;
+    background-color: #000;
+    border-radius: 50%;
+    text-align: center;
+    color: #fff;
+    line-height: 37px;
+}
+
+@media screen and (max-width: 480px) {
+    .chat-left {
+        width: 17%;
+    }
+    .chat-right {
+        width: 83%;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .chat-left {
+        width: 20%;
+    }
+    .chat-right {
+        width: 80%;
+    }
+}

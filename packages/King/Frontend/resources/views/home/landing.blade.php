@@ -20,7 +20,6 @@
                 <li class="dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Experience</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">In college</a>
                         <a class="dropdown-item" href="#">No experiences</a>
                         <a class="dropdown-item" href="#">1 - 3 years</a>
                         <a class="dropdown-item" href="#">> 3 years</a>
