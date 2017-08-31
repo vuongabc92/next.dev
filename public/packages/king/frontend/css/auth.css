@@ -20,12 +20,14 @@
     margin: 0 auto;
 }
 .login-box {
-    height: 320px;
+    height: 430px;
     margin-top: 10%;
+    margin-bottom: 50px;
 }
 .register-box {
-    height: 395px;
+    height: 480px;
     margin-top: 8%;
+    margin-bottom: 50px;
 }
 .auth-form-title {
     font-size: 17px;
@@ -75,7 +77,6 @@
     color: #fff;
     position: relative;
     text-transform: uppercase;
-    line-height: 23px;
 }
 .outworld-auth button:hover,
 .outworld-auth button:focus{
@@ -103,6 +104,22 @@
     background-color: #fff;
     padding: 0 10px;
     color: #777;
+}
+footer.main-footer {
+    position: fixed;
+    bottom: 0;
+}
+@media screen and (max-width: 768px) {
+    .login-box,
+    .register-box {
+        margin-top: 20%;
+    }
+}
+@media screen and (max-width: 767px) {
+    footer.main-footer {
+        position: relative;
+        bottom: 0;
+    }
 }
 @media screen and (max-width: 480px) {
     .outworld-auth button {

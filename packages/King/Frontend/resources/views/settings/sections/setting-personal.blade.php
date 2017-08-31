@@ -42,7 +42,7 @@
                 {!! Form::text('hobbies', $userProfile->hobbies, ['class' => 'settings-field', 'placeholder' => _t('setting.profile.hobby_help')]) !!}
             </div>
             <div class="settings-field-wrapper">
-                {!! Form::textarea('about_me', $userProfile->about_me, ['class' => 'settings-textarea', 'placeholder' => _t('setting.profile.aboutme'), 'maxlength' => 500]) !!}
+                {!! Form::textarea('about_me', $userProfile->about_me, ['class' => 'settings-textarea', 'placeholder' => _t('setting.profile.aboutme'), 'maxlength' => 500, 'rows' => 5]) !!}
             </div>
             <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
             <button type="reset" class="btn _btn _btn-sm _btn-gray" data-hide-form>{{ _t('cancel') }}</button>

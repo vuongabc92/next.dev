@@ -65,6 +65,36 @@
         </div>
     </div>
     
+    <div class="modal fade" id="social-modal" tabindex="-1" role="dialog" aria-labelledby="socialModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="socialModalLabel" data-modal-title="{{ _t('setting.profile.add_social_title') }}">{{ _t('setting.profile.add_social_title') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form full', 'data-save-form' => '', 'data-requires' => 'social_type|social_profile']) !!}
+                <div class="modal-body">
+                    <div class="settings-field-wrapper">
+                        {!! Form::kingSelect('social_type', $availableSocial, null, ['id' => 'settings-available-social', 'class' => 'settings-field']) !!}
+                    </div>
+                    <div class="settings-field-wrapper">
+                        {!! Form::text('social_profile', '', ['class' => 'settings-field', 'placeholder' => _t('setting.profile.social_profile')]) !!}
+                    </div>
+                    <input type="hidden" name="type" value="_CONTACT"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn _btn _btn-sm _btn-gray" data-dismiss="modal">{{ _t('cancel') }}</button>
+                    <button type="submit" class="btn _btn _btn-sm _btn-blue-navy">{{ _t('save') }}</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+    
+    
+    
     <div class="modal modal-social fade" id="social-modal" tabindex="-1" role="dialog" aria-labelledby="socialModalLabel">
         <div class="modal-dialog modal-sm" role="document">
             <div class="_fl modal-content">

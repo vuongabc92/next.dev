@@ -29,18 +29,11 @@ class ThemeController extends FrontController {
             $uploadedThemes = user()->themes;
         }
         
-        if (null === $currentTheme) {
-            $themes = Theme::all();
-        } else {
-            $themes = Theme::where('id', '!=', $currentTheme->theme_id)->get();
-        }
-        
         if ($currentTheme === null) {
             $currentTheme = Theme::where('slug', config('frontend.defaultThemeName'))->first();
         }
         
         return view('frontend::theme.index', [
-            'themes'         => $themes,
             'expertises'     => ['' => _t('theme.upload.themeallExpertises')] + $expertises,
             'uploadedThemes' => $uploadedThemes,
             'currentTheme'   => $currentTheme,

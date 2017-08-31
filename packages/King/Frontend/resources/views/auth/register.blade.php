@@ -1,16 +1,18 @@
-@extends('frontend::layouts._auth')
+@extends('frontend::layouts._layout')
 
 @section('title')
     {{ _t('signup.title') }}
 @stop
 
-@section('button')
-    <a href="{{ route('front_login') }}" class="_fr btn _btn _btn-white-link signup-btn">{{ _t('signin') }}</a>
+@section('link_style')
+    <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/auth.css') }}">
 @stop
 
 @section('body')
+<div class="container">
     <div class="auth-box register-box">
         @include('frontend::inc.auth')
         @yield('auth_register')
     </div>
+</div>
 @stop

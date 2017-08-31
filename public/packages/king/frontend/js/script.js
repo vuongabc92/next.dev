@@ -155,7 +155,7 @@ var HELPERS = {
         },
         display: function(message) {
             this.messageTxt.html(message);
-            this.messageBar.show(300).removeClass('out').addClass('in');
+            this.messageBar.show(300).addClass('show');
             this.hide();
         },
         hide: function() {
@@ -170,7 +170,7 @@ var HELPERS = {
             });
         },
         fade: function(alertBar) {
-            alertBar.removeClass('in').addClass('out');
+            alertBar.removeClass('show');
                
             setTimeout(function(){
                 alertBar.hide();
@@ -206,6 +206,15 @@ var HELPERS = {
             $('html, body').animate({
                 scrollTop: $('#contactForm').offset().top
             }, 1000);
+        });
+    },
+    showSearchThemeForm: function() {
+        $('.search-theme-btn').on('click', function(){
+            $('.search-theme-frm').show();
+        });
+
+        $('.close-search-btn').on('click', function(){
+            $('.search-theme-frm').hide();
         });
     }
 };
@@ -771,7 +780,7 @@ var HELPERS = {
                 current.on('click', function(){
                     var section = current.closest('section');
                     
-                    $('.settings section').addClass('_disable');
+                    $('.settings-left section').addClass('_disable');
                     section.removeClass('_disable');
                     section.find('.settings-show').hide();
                     section.find('form.settings-form').show();
@@ -851,7 +860,7 @@ var HELPERS = {
                     });
                 }
 
-                $('.settings section').removeClass('_disable');
+                $('.settings-left section').removeClass('_disable');
                 section.find('.settings-show').show();
                 settingsForm.hide();
 
@@ -1728,7 +1737,7 @@ var HELPERS = {
             current.on('click', function(){
                 $(this).parents('ul').find('li a').removeClass('active');
                 $(this).addClass('active');
-                $('.settings section').removeClass('_disable');
+                $('.settings-left section').removeClass('_disable');
                 $('.settings-page').hide();
                 if ('employment' === target || 'education' === target) {
                     $('body').css('background-color', '#ffffff');
@@ -2511,3 +2520,4 @@ var HELPERS = {
 HELPERS.homeShowfooter();
 HELPERS.landingToggleForm();
 HELPERS.socialModal();
+HELPERS.showSearchThemeForm();

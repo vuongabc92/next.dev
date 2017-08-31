@@ -12,6 +12,7 @@ return [
     'logout' => 'Log out',
     'register' => 'Register',
     'aboutus' => 'About us',
+    'contact' => 'Contact',
     'feedback' => 'Feedback',
     'help' => 'Help',
     'developers' => 'developers',
