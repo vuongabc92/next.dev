@@ -124,7 +124,8 @@ class ThemeCompiler extends Compiler {
      */
     protected $skillProperties = [
         'NAME',
-        'RATES'
+        'RATES',
+        'PERCENT'
     ];
     
     /**
@@ -404,24 +405,33 @@ class ThemeCompiler extends Compiler {
     protected function compileSkill($skillRaw) {
         $skills  = $this->resume->getSkills();
         $content = '';
+        $total   = 0;
         
-        foreach ($skills as $one) {
-            $content .= preg_replace_callback('/\[\[(.*?)\]\]/s', function($matches) use($one) {
-                $skillProperty = trim($matches[1]);
-                
-                if (in_array($skillProperty, $this->skillProperties)) {
-                    switch($skillProperty) {
-                        case 'NAME':
-                            return $one->skill->name;
-                            
-                        case 'RATES':
-                            return $one->votes;
-                            
-                        default;
+        if (count($skills)) {
+            foreach ($skills as $one) {
+                $total += $one->votes;
+            }
+            
+            foreach ($skills as $one) {
+                $content .= preg_replace_callback('/\[\[(.*?)\]\]/s', function($matches) use($one, $total) {
+                    $skillProperty = trim($matches[1]);
+
+                    if (in_array($skillProperty, $this->skillProperties)) {
+                        switch($skillProperty) {
+                            case 'NAME':
+                                return $one->skill->name;
+
+                            case 'RATES':
+                                return $one->votes;
+
+                            case 'PERCENT':
+                                return round(($one->votes*100)/$total);
+                            default;
+                        }
                     }
-                }
-            }, $skillRaw);
-        }
+                }, $skillRaw);
+            }
+            }
         
         return $content;
     }

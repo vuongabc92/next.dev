@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ FIRST_NAME }} {{ LAST_NAME }}</title>
+        <link rel="stylesheet" href="{{ ASSET }}/css/app.css">
+        <link rel="stylesheet" href="{{ ASSET }}/css/style.css">
+    </head>
+
+    <body>
+        <main>
+            <div class="wrapper">
+                <ul class="_fwfl _lsn rainbow-line">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <div class="_fwfl wrapper-inside">
+                    <div class="_fwfl main-container">
+                        <header class="_fwfl">
+                            <div class="personal-logo">
+                                <div class="personal-logo-inside">
+                                    <div class="personal-logo-dotted">
+                                        VB
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_fwfl personal-info">
+                                <h1>{{FIRST_NAME}} {{LAST_NAME}}</h1>
+                                <h4>{{EXPECTED_JOB}}</h4>
+                                <ul class="_fwfl _lsn contact-info">
+                                    <li><i class="fa fa-map-marker"></i> {{ CITY }}</li>
+                                    <li><i class="fa fa-envelope-o"></i> {{ EMAIL }}</li>
+                                    <li><i class="fa fa-phone"></i> {{ PHONE_NUMBER }}</li>
+                                </ul>
+                                <div class="_fwfl social-wrap">
+                                    <ul class="_lsn social-list">
+                                        {% foreach(socials) %}
+                                        <li><a href="http://[[ LINK ]]" target="_blank"><i class="fa fa-[[ ICON ]]"></i></a></li>
+                                        {% endforeach %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </header>
+                        <section class="_fwfl content-wrap">
+                            <div class="title">
+                                <div class="_fwfl title-bg">
+                                    <h4>Skills</h4>
+                                </div>
+                            </div>
+                            <div class="content-box">
+                                
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+    </body>
+
+</html>
