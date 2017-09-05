@@ -25,7 +25,7 @@
                             <div class="personal-logo">
                                 <div class="personal-logo-inside">
                                     <div class="personal-logo-dotted">
-                                        VB
+                                        LN
                                     </div>
                                 </div>
                             </div>
@@ -52,8 +52,37 @@
                                     <h4>Skills</h4>
                                 </div>
                             </div>
-                            <div class="content-box">
-                                
+                            <div class="_fwfl content-box">
+                                <div class="skill-wrap">
+                                    <ul class="_fwfl _lsn skill-list">
+                                        {% foreach(skills) %}
+                                        <li>
+                                            <span>[[ NAME ]]</span>
+                                            <b><i class="rate-[[ RATES ]]"></i></b>
+                                        </li>
+                                        {% endforeach %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="_fwfl content-wrap">
+                            <div class="title">
+                                <div class="_fwfl title-bg">
+                                    <h4>Experiences</h4>
+                                </div>
+                            </div>
+                            <div class="_fwfl content-box">
+                                <div class="exp-wrap">
+                                    <ul class="_fwfl _lsn history-list">
+                                        {% foreach(experiences) %}
+                                        <li>
+                                            <h4>[[POSITION]] <span class="separator">//</span> [[COMPANY_NAME]] <span class="time"><i class="fa fa-calendar"></i> [[TIME_LETTER]]</span></h4>
+                                            <div>[[DESCRIPTION]]</div>
+                                            <div class="exp-border"></div>
+                                        </li>
+                                        {% endforeach %}
+                                    </ul>
+                                </div>
                             </div>
                         </section>
                     </div>

@@ -158,6 +158,12 @@ header {
     -webkit-border-radius: 50%;
     z-index: 10;
 }
+.content-wrap {
+    margin-bottom: 50px;
+}
+.content-wrap:last-child {
+    margin-bottom: 0;
+}
 .content-wrap>.title {
     width: 500px;
     margin: auto;
@@ -175,4 +181,92 @@ header {
     padding: 0px 5px;
     text-transform: uppercase;
     font-weight: 700;
+    line-height: 24px;
+}
+.skill-wrap {
+    max-width: 650px;
+    margin: auto;
+}
+.skill-list {
+    margin-top: 30px;
+}
+.skill-list>li {
+    width: 100%;
+    float: left;
+    margin-bottom: 17px;
+}
+.skill-list>li:last-child {
+    margin-bottom: 0;
+}
+.skill-list>li>span {
+    width: 100%;
+    float: left;
+    text-align: center;
+}
+.skill-list>li>b {
+    width: 100%;
+    float: left;
+    margin-top: 5px;
+    height: 6px;
+    background-color: #eae1d7;
+}
+.skill-list>li>b>i {
+    display: block;
+    height: 6px;
+    margin: auto;
+}
+.skill-list>li>b>i.rate-1 {width: 20%;}
+.skill-list>li>b>i.rate-2 {width: 40%;}
+.skill-list>li>b>i.rate-3 {width: 60%;}
+.skill-list>li>b>i.rate-4 {width: 80%;}
+.skill-list>li>b>i.rate-5 {width: 100%;}
+
+.skill-list>li:nth-child(1)>b>i {background-color: #79c7de;}
+.skill-list>li:nth-child(2)>b>i {background-color: #a1d0ca;}
+.skill-list>li:nth-child(3)>b>i {background-color: #bfad63;}
+.skill-list>li:nth-child(4)>b>i {background-color: #ec94c7;}
+.skill-list>li:nth-child(5)>b>i {background-color: #cc91d6;}
+.skill-list>li:nth-child(6)>b>i {background-color: #deb18b;}
+.skill-list>li:nth-child(7)>b>i {background-color: #5eb986;}
+.skill-list>li:nth-child(8)>b>i {background-color: #5c70f5;}
+.skill-list>li:nth-child(9)>b>i {background-color: #cc8ebf;}
+.skill-list>li:nth-child(10)>b>i {background-color: #79c7de;}
+.skill-list>li:nth-child(11)>b>i {background-color: #a1d0ca;}
+.skill-list>li:nth-child(12)>b>i {background-color: #bfad63;}
+.skill-list>li:nth-child(13)>b>i {background-color: #e8c7da;}
+.skill-list>li:nth-child(14)>b>i {background-color: #ccb3d0;}
+.skill-list>li:nth-child(15)>b>i {background-color: #deb18b;}
+.skill-list>li:nth-child(16)>b>i {background-color: #5eb986;}
+.skill-list>li:nth-child(17)>b>i {background-color: #5c70f5;}
+.skill-list>li:nth-child(18)>b>i {background-color: #cc8ebf;}
+.skill-list>li:nth-child(19)>b>i {background-color: #79c7de;}
+.skill-list>li:nth-child(20)>b>i {background-color: #a1d0ca;}
+
+.exp-wrap {
+    width: 700px;
+    margin: auto;
+}
+.history-list {
+    margin-top: 20px;
+    text-align: center;
+}
+.history-list>li {
+    margin-bottom: 17px;
+}
+.history-list>li>.exp-border {
+    width: 200px;
+    height: 2px;
+    margin: auto;
+    margin-top: 15px;
+    border-top: dotted 2px #9c938a;
+}
+.history-list>li>h4 {
+    font-size: 16px;
+    text-transform: uppercase;
+}
+.history-list>li>h4>.time {
+    margin-left: 10px;
+}
+.history-list .separator {
+    letter-spacing: -4px;
 }
