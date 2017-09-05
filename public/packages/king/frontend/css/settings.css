@@ -899,6 +899,6 @@ body {background-color:#f5f8fa;}
         margin-right: 15px;
     }
     .timeline-content {
-        width: 80%;
+        width: 80% !important;
     }
 }
