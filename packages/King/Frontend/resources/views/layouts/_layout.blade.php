@@ -70,6 +70,7 @@
                     </li>
                 </ul>
             </div>
+            <div class="_fwfl _tc _tga copyright">&COPY; {{ date('Y') }} NEXT. All rights reserved.</div>
         </footer>
         
         <div class="alert alert-bar fade _dn" role="alert" id="alertBar">

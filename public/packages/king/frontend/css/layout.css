@@ -50,14 +50,16 @@
     float: left;
 }
 .footer-navs ul>li>a {
-    color: #777;
+    color: #888;
 }
 .footer-navs {
     margin-bottom: 5px;
 }
 .footer-navs ul>li>a:hover {
     color: #007bff;
-    border-bottom: solid 1px #007bff;
+}
+.copyright {
+    margin: 10px 0;
 }
 
 .alert-bar {
