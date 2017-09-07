@@ -49,11 +49,9 @@ main {
 .main-container {
     padding: 15px;
     border: dotted 2px #e2dbd1;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
 }
 .rainbow-line>li {
-    width: 16.66666666666667%;
+    width: 12.5%;
     height: 8px;
     float: left;
     display: inline;
@@ -64,6 +62,8 @@ main {
 .rainbow-line>li:nth-child(4) {background-color: #f1c9e0;}
 .rainbow-line>li:nth-child(5) {background-color: #d3b9d9;}
 .rainbow-line>li:nth-child(6) {background-color: #a69f99;}
+.rainbow-line>li:nth-child(7) {background-color: #a0d5d2;}
+.rainbow-line>li:nth-child(8) {background-color: #f2ecd2;}
 header {
     margin-bottom: 50px;
 }
@@ -184,7 +184,7 @@ header {
     line-height: 24px;
 }
 .skill-wrap {
-    max-width: 650px;
+    max-width: 500px;
     margin: auto;
 }
 .skill-list {
@@ -253,12 +253,18 @@ header {
 .history-list>li {
     margin-bottom: 17px;
 }
+.history-list>li:last-child {
+    margin-bottom: 0;
+}
 .history-list>li>.exp-border {
     width: 200px;
     height: 2px;
     margin: auto;
     margin-top: 15px;
     border-top: dotted 2px #9c938a;
+}
+.history-list>li:last-child>.exp-border {
+    border: none;
 }
 .history-list>li>h4 {
     font-size: 16px;
