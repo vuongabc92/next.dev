@@ -37,6 +37,17 @@
                 @endif
             </tbody>
         </table>
-        <a href="{{ route('back_users') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Back</a>
+        <div class="_fwfl">
+            <a href="{{ route('back_users') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Back</a>
+            <form action="{{ route('back_user_status') }}" method="post" class="d-inline">
+                {{ csrf_field() }}
+                @if($user->activated)
+                    <button type="submit" class="btn btn-danger">Deactivate user</button>
+                @else
+                    <button type="submit" class="btn btn-success">Active user</button>
+                @endif
+                <input type="hidden" name="user_id" value="{{ $user->id }}" />
+            </form>
+        </div>
     </div>
 @stop

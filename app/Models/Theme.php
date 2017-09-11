@@ -21,6 +21,10 @@ class Theme extends Base {
         return ($this->devices) ? unserialize($this->devices) : [];
     }
     
+    public function expertises() {
+        return ($this->expertises) ? unserialize($this->expertises) : [];
+    }
+    
     /**
      * Check current user intalled this theme or not
      * 
@@ -28,5 +32,17 @@ class Theme extends Base {
      */
     public function isInstalled() {
         return ($this->id === Auth::user()->userProfile->theme_id);
+    }
+    
+    public function getThumbnail() {
+        $themesFolder = config('frontend.themesFolder');
+        
+        return $themesFolder . '/' . $this->slug . '/thumbnail.png';
+    }
+    
+    public function getScreenshot() {
+        $themesFolder = config('frontend.themesFolder');
+        
+        return $themesFolder . '/' . $this->slug . '/screenshot.png';
     }
 }

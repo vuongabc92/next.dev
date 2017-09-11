@@ -70,7 +70,7 @@ class ThemeController extends FrontController {
             return pong(['data' => [
                 'theme_id'   => $theme->id,
                 'theme_name'  => $theme->name,
-                'screenshot'  => asset(config('frontend.themesFolder') . '/' . $theme->slug . '/screenshot.png'),
+                'screenshot'  => '/' . $theme->getScreenshot(),
                 'version'     => $theme->version,
                 'description' => $theme->description,
                 'created_at'  => $theme->createdAtFormat('M d, Y'),

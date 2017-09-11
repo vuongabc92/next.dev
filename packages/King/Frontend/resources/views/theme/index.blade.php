@@ -16,7 +16,7 @@
             <h3 class="user-themes-title">Your current theme</h3>
             <div class="screenshot">
                 <span class="badge badge-info badge-current-theme"><i class="fa fa-check"></i> {{ _t('theme.curActivated') }}</span>
-                <img src="{{ asset('uploads/themes/' . $currentTheme->slug . '/screenshot.png') }}">
+                <img src="/{{ $currentTheme->getScreenshot() }}">
             </div>
             <div class="_fwfl _mt20 activated-info">
                 <a href="{{ route('front_theme_details', ['theme_id' => $currentTheme->id]) }}" data-theme-details class="_fl _btn btn _btn-blue-navy">{{ _t('theme.details') }}</a>
@@ -33,7 +33,7 @@
                 <li>
                     <a href="{{ route('front_theme_details', ['theme_id' => $theme->id]) }}" data-theme-details>
                         <div class="theme-leaf">
-                            <img src="{{ asset('uploads/themes/' . $theme->slug . '/thumbnail.png') }}" class="screenshot"/>
+                            <img src="/{{ $theme->getThumbnail() }}" class="screenshot"/>
                             <div class="quick-info">
                                 <h5>{{ $theme->name }}</h5>
                                 <div>{{ str_limit($theme->description, 100) }}</div>

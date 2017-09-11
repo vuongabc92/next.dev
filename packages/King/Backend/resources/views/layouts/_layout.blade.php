@@ -23,7 +23,8 @@
         
         <header class="_fwfl">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">NeXt</a>
+                <div class="container">
+                    <a class="navbar-brand" href="#">NeXt</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -36,7 +37,7 @@
                             <a class="nav-link" href="{{ route('back_users') }}">Users <i class="fa fa-heart-o"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Themes</a>
+                            <a class="nav-link" href="{{ route('back_themes') }}">Themes</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -49,6 +50,7 @@
                             </div>
                         </li>
                     </ul>
+                </div>
                 </div>
             </nav>
         </header>
