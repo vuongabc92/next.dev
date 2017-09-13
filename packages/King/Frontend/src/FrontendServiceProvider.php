@@ -4,6 +4,8 @@ namespace King\Frontend;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
+use App\Models\User;
+use Validator;
 
 class FrontendServiceProvider extends ServiceProvider {
     
@@ -33,6 +35,8 @@ class FrontendServiceProvider extends ServiceProvider {
         $this->publishes([
             __DIR__ . '/../public' => public_path('packages/king/frontend'),
         ], 'public');
+        
+        $this->customValidation();
     }
 
     /**
@@ -64,6 +68,22 @@ class FrontendServiceProvider extends ServiceProvider {
     private function registerFrontend() {
         $this->app->bind('frontend', function($app) {
             return new Frontend($app);
+        });
+    }
+    
+    protected function customValidation() {
+        Validator::extend('activated', function ($attribute, $value, $parameters, $validator) {
+            $user = User::where('email', $value)->first();
+            
+            if (null === $user) {
+                return false;
+            }
+            
+            return $user->activated;
+        });
+        
+        Validator::replacer('activated', function ($message, $attribute, $rule, $parameters) {
+            return _t('auth.email.activated');
         });
     }
 }

@@ -42,6 +42,7 @@ return [
     'common.uname' => 'User name',
     'common.yearsold' => 'years old',
     'auth.email.required' => 'Email is required.',
+    'auth.email.activated' => 'Sorry!! Your account have been deactivated.',
     'auth.pass.required' => 'Password is required.',
     'auth.login.throttles' => 'You gotta kidding me. Please try again in :second.',
     'auth.login.failed' => 'These credentials do not match our records.',

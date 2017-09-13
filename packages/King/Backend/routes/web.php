@@ -11,6 +11,7 @@ Route::group(['middleware' => ['web', 'auth:web'], 'prefix' => 'kamehameha'], fu
     $route->get('themes', 'ThemeController@index')->name('back_themes');
     $route->get('theme/{id}/view', 'ThemeController@view')->name('back_theme_view');
     $route->get('theme/{id}/edit', 'ThemeController@edit')->name('back_theme_edit');
+    $route->post('theme/save', 'ThemeController@save')->name('back_theme_save');
     $route->post('theme/update_status', 'ThemeController@updateStatus')->name('back_theme_status');
     $route->post('theme/remove', 'ThemeController@remove')->name('back_theme_remove');
 });

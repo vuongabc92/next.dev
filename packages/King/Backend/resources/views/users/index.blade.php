@@ -5,6 +5,17 @@
     </div>
     
     <div class="_fwfl _mt20">
+        <form class="_fwfl _mb20 form-inline" action="{{ route('back_users') }}" method="get">
+            <div class="form-group">
+                {!! Form::text('q', $filterQ, ['class' => 'form-control', 'placeholder' => 'Search...']) !!}
+            </div>
+            <div class="form-group mx-sm-3">
+                {!! Form::select('status', ['' => 'Status', '0' => 'Deactivated', '1' => 'Activated'], $filterStat, ['class' => 'custom-select']) !!}
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-secondary">Filter</button>
+            </div>
+        </form>
         <table class="table table-bordered table-striped table-hover table-responsive">
             <thead>
                 <tr>
@@ -31,6 +42,7 @@
                                     <span class="badge badge-danger">Deactivated</span>
                                 @endif
                             </td>
+                            
                             <td class="text-center">
                                 <a href="{{ route('back_user_view', ['id' => $user->id]) }}" class="btn btn-secondary btn-sm">view</a>
                                 <form action="{{ route('back_user_remove') }}" method="post" class="d-inline" onsubmit="return confirm('Delete this user???')">

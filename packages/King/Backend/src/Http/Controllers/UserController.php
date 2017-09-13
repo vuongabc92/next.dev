@@ -6,27 +6,56 @@
 namespace King\Backend\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Http\Request;
 
 class UserController extends BackController {
-       
+     
+    public $user;
+
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct(User $user) {
+        $this->user = $user;
         $this->middleware('guest', ['except' => 'logout']);
     }
     
-    public function index() {
-        
+    public function index(Request $request) {
         $maxPerPage = config('backend.pagination.max_per_page');
-        $users      = User::paginate($maxPerPage);
+        $filter     = $request->query();
         
-        return view('backend::users.index',[
+        if (count($filter)) {
+            $users = $this->user;
+            
+            if (isset($filter['q']) && $filter['q'] !== '') {
+                $users = $users->join('user_profile', 'user_profile.user_id', '=', 'users.id')
+                               ->where(function($query) use($filter) {
+                                   $query->where('user_profile.slug', 'like',  '%' . $filter['q'] . '%')
+                                         ->orWhere('users.email', 'like', '%' . $filter['q'] . '%')
+                                         ->orWhere('users.username', 'like', '%' . $filter['q'] . '%');
+                               });
+                      
+            }
+            
+            if (isset($filter['status']) && $filter['status'] !== '') {
+                $users = $users->where('users.activated', $filter['status']);
+            }
+            
+            $users = $users->select('users.id', 'users.username', 'users.email', 'users.activated')->paginate($maxPerPage);
+            $users->appends(['q' => $filter['q'], 'status' => $filter['status']]);
+        } else {
+            $users = User::paginate($maxPerPage);
+        }
+        
+        return view('backend::users.index', [
             'users'      => $users,
-            'maxPerPage' => $maxPerPage
+            'maxPerPage' => $maxPerPage,
+            'filterQ'    => isset($filter['q'])      ? $filter['q']      : null,
+            'filterStat' => isset($filter['status']) ? $filter['status'] : null,
         ]);
     }
     

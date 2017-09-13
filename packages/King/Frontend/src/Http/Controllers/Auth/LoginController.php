@@ -95,6 +95,11 @@ class LoginController extends FrontController {
         $fbEmail   = $userNode->getField('email');
         
         if ($fbEmail) {
+            
+            if ( ! $this->allowLogin($fbEmail)) {
+                return redirect(route('front_login'))->withErrors(['email' => _t('auth.email.activated')]);
+            }
+            
             $this->logUserInFromOutWorld([
                 'email'      => $fbEmail,
                 'avatar'     => $userNode->getField('picture')->getUrl(),
@@ -124,6 +129,11 @@ class LoginController extends FrontController {
             $userAuthenticated = $this->googleUserInfo();
             
             if ($userAuthenticated instanceof Google_Service_Oauth2_Userinfoplus && $userAuthenticated->email) {
+                
+                if ( ! $this->allowLogin($userAuthenticated->email)) {
+                    return redirect(route('front_login'))->withErrors(['email' => _t('auth.email.activated')]);
+                }
+                
                 $this->logUserInFromOutWorld([
                     'email'      => $userAuthenticated->email,
                     'avatar'     => $userAuthenticated->picture,
@@ -145,7 +155,7 @@ class LoginController extends FrontController {
      * @return void
      */
     protected function validateLogin(Request $request) {
-        $this->validate($request, ['email' => 'required', 'password' => 'required'], ['email.required' => _t('auth.email.required'), 'password.required' => _t('auth.pass.required')]);
+        $this->validate($request, ['email' => 'required|activated', 'password' => 'required'], ['email.required' => _t('auth.email.required'), 'password.required' => _t('auth.pass.required')]);
     }
     
     /**
@@ -171,11 +181,11 @@ class LoginController extends FrontController {
      */
     public function logUserInFromOutWorld($data) {
         
-        $email     = isset($data['email'])      ? $data['email']      : '';
-        $avatar    = isset($data['avatar'])     ? $data['avatar']     : '';
-        $firstName = isset($data['first_name']) ? $data['first_name'] : '';
-        $lastName  = isset($data['last_name'])  ? $data['last_name']  : '';
-        $user      = User::where('email', $email)->first();
+        $email      = isset($data['email'])      ? $data['email']      : '';
+        $avatar     = isset($data['avatar'])     ? $data['avatar']     : '';
+        $firstName  = isset($data['first_name']) ? $data['first_name'] : '';
+        $lastName   = isset($data['last_name'])  ? $data['last_name']  : '';
+        $user       = User::where('email', $email)->first();
         $emailSplit = explode('@', $email);
             
         if (is_null($user)) {
@@ -256,5 +266,15 @@ class LoginController extends FrontController {
         }
         
         return $slug;
+    }
+    
+    protected function allowLogin($email) {
+        $user = User::where('email', $email)->first();
+        
+        if (null === $user) {
+            return false;
+        }
+        
+        return $user->activated;
     }
 }

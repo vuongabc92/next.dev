@@ -35,6 +35,10 @@
                     <td><a href="{{ $user->userProfile->website }}" target="_blank">{{ $user->userProfile->website }}</a></td>
                 </tr>
                 @endif
+                <tr>
+                    <td>Themes</td>
+                    <td><a href="{{ route('back_themes', ['user' => $user->id]) }}" target="_blank"><i class="fa fa-link"></i></a></td>
+                </tr>
             </tbody>
         </table>
         <div class="_fwfl">
