@@ -5,6 +5,9 @@
 
 namespace King\Backend\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Theme;
+
 class DashboardController extends BackController {
        
     /**
@@ -17,7 +20,11 @@ class DashboardController extends BackController {
     }
     
     public function index() {
-        return view('backend::dashboard.index');
+        
+        return view('backend::dashboard.index', [
+            'totalUser'  => User::all()->count(),
+            'totalTheme' => Theme::all()->count()
+        ]);
     }
     
 }

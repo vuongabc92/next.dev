@@ -5,7 +5,7 @@
     </div>
     
     <div class="_fwfl _mt20">
-        {!! Form::open(['route' => 'back_theme_save', 'method' => 'post']) !!}
+        {!! Form::open(['route' => 'back_theme_save', 'method' => 'post', 'files' => true]) !!}
             @if (count($errors) > 0)
             <div class="form-group">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -27,14 +27,14 @@
                 <hr>
             </div>
             <div class="form-group">
-                <label>Theme thumbnail</label>
+                <label>Theme thumbnail (w:200, h:150)</label>
                 <label class="_fw custom-file">
                     <input name="thumbnail" type="file" id="file" class="custom-file-input">
                     <span class="custom-file-control"></span>
                 </label>
             </div>
             <div class="form-group">
-                <label>Theme screenshot</label>
+                <label>Theme screenshot (w:800, h:600)</label>
                 <label class="_fw custom-file">
                     <input name="screenshot" type="file" id="file" class="custom-file-input">
                     <span class="custom-file-control"></span>
@@ -46,7 +46,7 @@
             </div>
             <div class="form-group">
                 <label for="themeSlug">Theme slug</label>
-                {!! Form::text('theme_slug', $theme->slug, ['class' => 'form-control', 'id' => 'themeSlug', 'placeholder' => 'Theme slug']) !!}
+                {!! Form::text('theme_slug', $theme->slug, ['class' => 'form-control', 'id' => 'themeSlug', 'placeholder' => 'Theme slug', 'readonly' => '']) !!}
             </div>
             <div class="form-group">
                 <label for="themeVersion">Theme version</label>
@@ -87,6 +87,7 @@
                 {!! Form::text('theme_tags', $theme->tags, ['class' => 'form-control', 'id' => 'themeTag', 'placeholder' => 'Theme tags']) !!}
             </div>
             {!! Form::hidden('theme_id', $theme->id) !!}
+            <a href="{{ route('back_themes') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Back</a>
             <button type="submit" class="btn btn-primary">Save</button>
         {!! Form::close() !!}
         

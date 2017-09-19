@@ -31,7 +31,7 @@
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/">Dashboard</a>
+                            <a class="nav-link" href="{{ route('back_dashboard') }}">Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('back_users') }}">Users <i class="fa fa-heart-o"></i></a>

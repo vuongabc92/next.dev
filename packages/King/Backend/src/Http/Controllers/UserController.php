@@ -46,7 +46,15 @@ class UserController extends BackController {
             }
             
             $users = $users->select('users.id', 'users.username', 'users.email', 'users.activated')->paginate($maxPerPage);
-            $users->appends(['q' => $filter['q'], 'status' => $filter['status']]);
+            
+            if (isset($filter['q'])) {
+                $users->appends(['q' => $filter['q']]);
+            }
+            
+            if (isset($filter['status'])) {
+                $users->appends(['status' => $filter['status']]);
+            }
+            
         } else {
             $users = User::paginate($maxPerPage);
         }

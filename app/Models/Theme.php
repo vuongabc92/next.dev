@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Auth;
+use App\Models\Expertise;
 
 class Theme extends Base {
     
@@ -23,6 +24,22 @@ class Theme extends Base {
     
     public function expertises() {
         return ($this->expertises) ? unserialize($this->expertises) : [];
+    }
+    
+    public function expertiseNames() {
+        $expertises = [];
+        
+        if (count($this->expertises())) {
+            foreach($this->expertises() as $one) {
+                $expertise = Expertise::find($one);
+                
+                if ($expertise) {
+                    $expertises[] = $expertise->name;
+                }
+            }
+        }
+        
+        return $expertises;
     }
     
     /**

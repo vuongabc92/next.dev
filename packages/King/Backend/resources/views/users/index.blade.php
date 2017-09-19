@@ -45,11 +45,7 @@
                             
                             <td class="text-center">
                                 <a href="{{ route('back_user_view', ['id' => $user->id]) }}" class="btn btn-secondary btn-sm">view</a>
-                                <form action="{{ route('back_user_remove') }}" method="post" class="d-inline" onsubmit="return confirm('Delete this user???')">
-                                    {{ csrf_field() }}
-                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                                    <input type="hidden" name="user_id" value="{{ $user->id }}" />
-                                </form>
+                                <a href="{{ route('front_cv', ['slug' => $user->userProfile->slug]) }}" class="btn btn-info btn-sm">Resume</a>
                             </td>
                         </tr>
                     @endforeach

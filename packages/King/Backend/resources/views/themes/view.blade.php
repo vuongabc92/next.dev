@@ -39,7 +39,7 @@
                     <td>Expertise</td>
                     <td>
                         @if(count($theme->expertises()))
-                        <span class="text-info">{{ implode(', ', $theme->expertises()) }}</span>
+                        <span class="text-info">{{ implode(', ', $theme->expertiseNames()) }}</span>
                         @else
                             <span class="text-success">For all expertise</span>
                         @endif
@@ -73,9 +73,9 @@
                 @endif
                 <input type="hidden" name="theme_id" value="{{ $theme->id }}" />
             </form>
-            <form action="{{ route('back_theme_remove') }}" method="post" class="d-inline" onsubmit="return confirm('Delete this theme???')">
+            <form action="{{ route('back_theme_remove') }}" method="post" class="d-inline float-right" onsubmit="return confirm('Delete this theme???')">
                 {{ csrf_field() }}
-                <button type="submit" class="btn btn-danger">Remove</button>
+                <button type="submit" class="btn btn-danger" disabled><i class="fa fa-remove"></i> Remove</button>
                 <input type="hidden" name="theme_id" value="{{ $theme->id }}" />
             </form>
         </div>

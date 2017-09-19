@@ -37,7 +37,7 @@
                 @endif
                 <tr>
                     <td>Themes</td>
-                    <td><a href="{{ route('back_themes', ['user' => $user->id]) }}" target="_blank"><i class="fa fa-link"></i></a></td>
+                    <td><a href="{{ route('back_themes', ['user_id' => $user->id]) }}" target="_blank"><i class="fa fa-link"></i></a></td>
                 </tr>
             </tbody>
         </table>
@@ -50,6 +50,11 @@
                 @else
                     <button type="submit" class="btn btn-success">Active user</button>
                 @endif
+                <input type="hidden" name="user_id" value="{{ $user->id }}" />
+            </form>
+            <form action="{{ route('back_user_remove') }}" method="post" class="d-inline  float-right" onsubmit="return confirm('Delete this user???')">
+                {{ csrf_field() }}
+                <button type="submit" class="btn btn-danger" disabled><i class="fa fa-remove"></i> Remove</button>
                 <input type="hidden" name="user_id" value="{{ $user->id }}" />
             </form>
         </div>
