@@ -20,26 +20,29 @@
         </style>
     </head>
     <body>
-        <header class="main-header">
-            <nav class="navbar navbar-expand-lg navbar-main">
-                <a class="navbar-brand" href="/"><span class="logo logo-header"></span></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <ul class="navbar-nav navbar-auth ml-auto">
-                    @if(auth()->check())
-                        <li><a href="{{ route('front_settings') }}"><img src="{{ user()->userProfile->avatar() }}" class="avatar" /></a></li>
-                        <li><a class="btn _btn" href="{{ route('front_logout') }}">{{ _t('logout') }}</a></li>
-                    @else
-                        <li><a class="btn _btn btn-primary" href="{{ route('front_login') }}">{{ _t('login') }}</a></li>
-                        <li><a class="btn _btn" href="{{ route('front_register') }}">{{ _t('register') }}</a></li>
+        <header class="_fwfl header">
+            <div class="header-inside">
+                <nav class="header-nav">
+                    @if ( ! auth()->check())
+                        <a href="{{ route('front_register') }}" class="_fr btn _btn _btn-blue header-register-btn">{{ _t('register') }}</a>
                     @endif
-                </ul>
-            </nav>
+                    <ul class="_fr _lsn _p0 _m0 navlist">
+                        <li><a href="{{ route('front_contact') }}"><span>{{ _t('contact') }}</span></a></li>
+                        <li><a href="{{ route('front_developer') }}"><span><i class="fa fa-cog"></i> {{ _t('developer') }}</span></a></li>
+                        
+                        @if ( ! auth()->check())
+                            <li><a href="{{ route('front_login') }}"><span>{{ _t('login') }}</span></a></li>
+                        @else
+                            <li><a href="{{ route('front_logout') }}"><span>{{ _t('logout') }}</span></a></li>
+                            <li><a href="{{ route('front_settings') }}"><img src="{{ user()->userProfile->avatar() }}" class="avatar" /></a></li>
+                        @endif
+                    </ul>
+                </nav>
+
+            </div>
         </header>
         @yield('body')
-        <footer class="_fwfl main-footer">
+<!--        <footer class="_fwfl main-footer">
             <div class="footer-logo-wrap">
                 <a href="/">
                     <span class="logo logo-footer"></span>
@@ -50,14 +53,14 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('front_about') }}">{{ _t('aboutus') }}</a>
                     </li>
-<!--                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ _t('help') }}</a>
-                    </li>-->
-<!--                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ _t('feedback') }}</a>
-                    </li>-->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('front_developer') }}"><i class="fa fa-cog _fs13"></i> {{ _t('developers') }}</a>
+                        <a class="nav-link" href="#">{{ _t('help') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">{{ _t('feedback') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa fa-cog _fs13"></i> {{ _t('developers') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('front_terms') }}">{{ _t('privacy') }}</a>
@@ -71,7 +74,7 @@
                 </ul>
             </div>
             <div class="_fwfl _tc _tga copyright"><i class="fa fa-heart-o"></i> With love &COPY; {{ date('Y') }} NEXT. All rights reserved.</div>
-        </footer>
+        </footer>-->
         
         <div class="alert alert-bar fade _dn" role="alert" id="alertBar">
             <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>

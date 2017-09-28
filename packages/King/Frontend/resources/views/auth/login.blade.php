@@ -9,8 +9,10 @@
 @stop
 
 @section('body')
+<div class="_fwfl">
     <div class="auth-box login-box">
         @include('frontend::inc.auth')
         @yield('auth_login')
     </div>
+</div>
 @stop

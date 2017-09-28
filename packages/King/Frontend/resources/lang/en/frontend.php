@@ -15,7 +15,7 @@ return [
     'contact' => 'Contact',
     'feedback' => 'Feedback',
     'help' => 'Help',
-    'developers' => 'developers',
+    'developer' => 'Developer',
     'privacy' => 'Privacy',
     'terms' => 'Terms',
     'login_with' => 'Login with',

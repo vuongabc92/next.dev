@@ -7,7 +7,7 @@
 
 @section('body')
 <div class="_fwfl magic-show">
-    @if( ! auth()->check())
+<!--    @if( ! auth()->check())
     <div class="_fwfl text-center welcome-bar">
         <span class="_fwfl welcome-msg">What are you looking for? NEXT is where a lot of beautiful CV are created.</span>
         <a href="{{ route('front_register') }}" class="btn _btn _btn-blue-navy">Continue &RightArrow;</a>
@@ -41,7 +41,7 @@
                 <i class="fa fa-remove close-search-btn"></i>
             </form>
         </div>
-    </div>
+    </div>-->
     <div class="_fwfl themes-wrapper">
         <div class="_fwfl themes-inside">
             @if($themes->count())
