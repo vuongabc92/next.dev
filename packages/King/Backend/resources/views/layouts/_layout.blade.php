@@ -44,9 +44,11 @@
                                 Pages
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="{{ route('back_page_aboutus') }}">About us</a>
+                                <a class="dropdown-item" href="{{ route('back_page_contact') }}">Contact</a>
+                                <a class="dropdown-item" href="{{ route('back_page_developer') }}"><i class="fa fa-cog"></i> Developer</a>
+                                <a class="dropdown-item" href="{{ route('back_page_privacy') }}">Privacy</a>
+                                <a class="dropdown-item" href="{{ route('back_page_terms') }}">Terms</a>
                             </div>
                         </li>
                     </ul>
@@ -66,8 +68,6 @@
         <script type="text/javascript" src="{{ asset('packages/king/backend/js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/backend/js/bootstrap-switch.js') }}"></script>
         <script type="text/javascript" src="{{ asset('packages/king/backend/js/script.js') }}"></script>
-        <script>
-            @yield('script')
-        </script>
+        @yield('script')
     </body>
 </html>

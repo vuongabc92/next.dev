@@ -50,23 +50,23 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('front_about') }}">{{ _t('aboutus') }}</a>
                     </li>
-                    <li class="nav-item">
+<!--                    <li class="nav-item">
                         <a class="nav-link" href="#">{{ _t('help') }}</a>
+                    </li>-->
+<!--                    <li class="nav-item">
+                        <a class="nav-link" href="#">{{ _t('feedback') }}</a>
+                    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('front_developer') }}"><i class="fa fa-cog _fs13"></i> {{ _t('developers') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('front_terms') }}">{{ _t('privacy') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('front_privacy') }}">{{ _t('terms') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('front_contact') }}">{{ _t('contact') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ _t('feedback') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ _t('developers') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ _t('privacy') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ _t('terms') }}</a>
                     </li>
                 </ul>
             </div>
