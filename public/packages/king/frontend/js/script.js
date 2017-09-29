@@ -2517,6 +2517,79 @@ var HELPERS = {
 
 }(jQuery, window));
 
+/**
+ *  @name go-lazy
+ *  @description Lazy loading themes
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'go-lazy';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            
+            var el  = this.element,
+                url = el.data('url');
+            
+            $(window).scroll(function() {
+                if($(window).scrollTop() + $(window).height() == $(document).height()) {
+                    var next = parseInt(el.attr('data-current')) + 1;
+                    
+                    $.ajax({
+                        type: 'get',
+                        url: url,
+                        data: {page: next},
+                        beforeSend: function(){},
+                        success: function() {
+                            el.attr('data-current', next);
+                        }
+                    });
+                }
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
 HELPERS.homeShowfooter();
 HELPERS.landingToggleForm();
 HELPERS.socialModal();

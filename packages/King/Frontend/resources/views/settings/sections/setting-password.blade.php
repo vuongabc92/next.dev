@@ -6,7 +6,7 @@
         <div class="_fl col-md-9 col-xs-12">
             <div class="settings-show">
                 <span class="settings-help-text">{{ _t('setting.profile.pass_note') }}</span>
-                <span class="_fl btn _btn _btn-red _mt10" data-show-form>{{ _t('setting.profile.pass_btn') }}</span>
+                <span class="_fl _cp btn _btn _btn-red _mt10" data-show-form>{{ _t('setting.profile.pass_btn') }}</span>
             </div>
             {!! Form::open(['route' => 'front_settings_save_info', 'method' => 'POST', 'class' => 'settings-form', 'data-save-form' => '', 'data-requires' => (($fromFb) ? '' : 'old_password|') . 'new_password|new_password_confirmation']) !!}
             <div class="settings-field-wrapper{{ ($fromFb ? ' _dn' : '') }}">

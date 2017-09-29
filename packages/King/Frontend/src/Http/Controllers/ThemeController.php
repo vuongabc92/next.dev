@@ -129,6 +129,16 @@ class ThemeController extends FrontController {
         }
     }
     
+    public function lazyLoadTheme(Request $request) {
+        $perPage  = config('frontend.lazy_loading.per_page');
+        $page     = (int) $request->query('page');
+        $skip     = $perPage * ($page - 1);
+        $themes   = Theme::skip($skip)->take($perPage)->get();
+        $nextPage = Theme::skip($skip + $perPage)->take(1)->get();
+        
+        return pong(['themes' => $themes, 'is_next' => $nextPage->count()]);
+    }
+    
     /**
      * Check is the uploaded theme correct
      * 

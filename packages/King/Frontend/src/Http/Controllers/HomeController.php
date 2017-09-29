@@ -20,7 +20,8 @@ class HomeController extends FrontController {
     }
     
     public function landing() {
-        $themes = Theme::all();
+        $perPage = config('frontend.lazy_loading.per_page');
+        $themes  = Theme::paginate($perPage);
         
         return view('frontend::home.landing', [
             'themes' => $themes

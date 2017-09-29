@@ -51,7 +51,8 @@ Route::group(['middleware' => 'web'], function ($route) {
     Route::get('/terms', 'HomeController@terms')->name('front_terms');
     Route::get('/privacy', 'HomeController@privacy')->name('front_privacy');
     
-    Route::get('themes', 'ThemeController@index')->name('front_themes');
+    Route::get('your-themes', 'ThemeController@index')->name('front_themes');
+    Route::get('themes', 'ThemeController@lazyLoadTheme')->name('front_themes_lazy');
     Route::get('theme/{theme_id}/popup_details', 'ThemeController@themeDetails')->name('front_theme_details')->where('theme_id', '[0-9]+');
     
     

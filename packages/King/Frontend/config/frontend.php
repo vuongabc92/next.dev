@@ -115,5 +115,8 @@ return [
                 'LANG' => 'en_US.utf-8',
             ),
         )
+    ],
+    'lazy_loading' => [
+        'per_page' => 5
     ]
 ];

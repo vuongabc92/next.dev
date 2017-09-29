@@ -45,7 +45,7 @@
     <div class="_fwfl themes-wrapper">
         <div class="_fwfl themes-inside">
             @if($themes->count())
-                <ol class="_lsn _p0 _m0 theme-tree">
+                <ol class="_lsn _p0 _m0 theme-tree" data-go-lazy data-current="1" data-url="{{ route('front_themes_lazy') }}">
                 @foreach($themes as $theme)
                     <li>
                         <a href="{{ route('front_theme_details', ['theme_id' => $theme->id]) }}" data-theme-details>

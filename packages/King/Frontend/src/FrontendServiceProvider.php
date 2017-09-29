@@ -57,7 +57,7 @@ class FrontendServiceProvider extends ServiceProvider {
      */
     public function setupRoutes(Router $router) {
         $router->group(['namespace' => 'King\Frontend\Http\Controllers'], function($router) {
-            require __DIR__ . '/../routes/routes.php';
+            require __DIR__ . '/../routes/web.php';
         });
     }
     
