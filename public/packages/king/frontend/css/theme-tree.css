@@ -62,23 +62,29 @@
     margin: 0 auto;
     padding: 12px;
     font-weight: 500;
-    box-sizing: border-box;
-    background-color: #007bff;
     border-radius: 3px;
     -webkit-border-radius: 3px;
+    box-sizing: border-box;
+    background-color: #bbb;
     color: #fff;
+    font-weight: bold;
 }
 .load-more-btn:hover {
     color: #fff;
-    background-color: #056bd8;
+    background-color: #ccc;
     text-decoration: none;
 }
-.load-more-signin {
-    color: #666;
-    font-weight: bold;
-    font-size: 13px;
-}
+.loading-more {
+    display: none;
+    padding: 10px 20px 10px 57px;
+    color: #999;
+    font-size: 14px;
+    background-image: url(/packages/king/frontend/images/loading_more_24x24.gif);
+    background-repeat: no-repeat;
+    background-position: 20px 6px;
+    background-color: #fff;
 
+}
 /* Theme details popup */
 .modal-theme-details .modal-content {
     background: #f4f4f4;

@@ -19,6 +19,10 @@
     margin-left: 25px;
     display: inline;
 }
+.navlist li.headnav-contact,
+.navlist li.headnav-dev {
+    display: none;
+}
 .navlist>li>a {
     position: relative;
     height: 34px;
@@ -117,4 +121,26 @@
 .alert-bar button.close:hover {
     color: #fdfdfd;
     opacity: .9;
+}
+.page-container {
+    max-width: 1220px;
+    margin: auto;
+}
+@media screen and (max-width: 1024px) {
+    .header-inside {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+@media screen and (max-width: 480px) {
+    .header-inside {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+@media screen and (min-width: 600px) {
+    .navlist li.headnav-contact,
+    .navlist li.headnav-dev {
+        display: inline;
+    }
 }

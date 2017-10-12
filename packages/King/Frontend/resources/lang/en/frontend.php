@@ -19,6 +19,7 @@ return [
     'privacy' => 'Privacy',
     'terms' => 'Terms',
     'login_with' => 'Login with',
+    'load_more' => 'Load more...',
     'notfoundmsg' => "Sorry, the page you are looking for doesn't exist.",
     'notfoundbtn' => 'Go to the home page',
     'sure_remove' => 'Are you sure to remove it?',

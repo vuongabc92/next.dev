@@ -27,8 +27,8 @@
                         <a href="{{ route('front_register') }}" class="_fr btn _btn _btn-blue header-register-btn">{{ _t('register') }}</a>
                     @endif
                     <ul class="_fr _lsn _p0 _m0 navlist">
-                        <li><a href="{{ route('front_contact') }}"><span>{{ _t('contact') }}</span></a></li>
-                        <li><a href="{{ route('front_developer') }}"><span><i class="fa fa-cog"></i> {{ _t('developer') }}</span></a></li>
+                        <li class="headnav-contact"><a href="{{ route('front_contact') }}"><span>{{ _t('contact') }}</span></a></li>
+                        <li class="headnav-dev"><a href="{{ route('front_developer') }}"><span><i class="fa fa-cog"></i> {{ _t('developer') }}</span></a></li>
                         
                         @if ( ! auth()->check())
                             <li><a href="{{ route('front_login') }}"><span>{{ _t('login') }}</span></a></li>

@@ -1,15 +1,15 @@
-@extends('frontend::layouts._auth')
+@extends('frontend::layouts._layout')
+
+@section('link_style')
+    <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/auth.css') }}">
+@stop
 
 @section('title')
     {{ _t('signin.title') }}
 @stop
 
-@section('button')
-    <a href="{{ route('front_register') }}" class="_fr btn _btn _btn-white-link signup-btn">{{ _t('signup') }}</a>
-    <a href="{{ route('front_login') }}" class="_fr _mr10 btn _btn _btn-white-link signup-btn">{{ _t('signin') }}</a>
-@stop
-
 @section('body')
+<div class="_fwfl">
     <div class="auth-box login-box">
         {!! Form::open(['route' => 'front_forgotpass_post', 'method' => 'POST', 'class' => '_fwfl auth-form']) !!}
             <h1 class="_fwfl _m0 _p0 auth-form-title">{{ _t('password.form.forgot_title') }}</h1>
@@ -32,4 +32,5 @@
             </div>
         {!! Form::close() !!}
     </div>
+</div>
 @stop

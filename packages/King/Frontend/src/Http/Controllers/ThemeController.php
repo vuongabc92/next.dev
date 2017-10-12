@@ -136,7 +136,7 @@ class ThemeController extends FrontController {
         $themes   = Theme::skip($skip)->take($perPage)->get();
         $nextPage = Theme::skip($skip + $perPage)->take(1)->get();
         
-        return pong(['themes' => $themes, 'is_next' => $nextPage->count()]);
+        return pong(['html' => view('frontend::theme.theme-item', ['themes' => $themes])->render(), 'is_next' => $nextPage->count()]);
     }
     
     /**

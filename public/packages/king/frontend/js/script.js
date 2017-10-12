@@ -2444,6 +2444,14 @@ var HELPERS = {
             var that      = this,
                 themeTree = $('.theme-tree');
         
+            this.element.on('click', 'li a', function(){
+                var url = $(this).attr('href');
+                    
+                that.getThemeDetails(url)
+                
+                return false;
+            });
+            
             this.element.on('click', function(){
                 var url = $(this).attr('href');
                     
@@ -2543,24 +2551,138 @@ var HELPERS = {
     Plugin.prototype = {
         init: function() {
             
-            var el  = this.element,
-                url = el.data('url');
+            var el       = this.element,
+                url      = el.data('url'),
+                distance = 300,
+                loading  = $('.loading-more'),
+                processing;
             
-            $(window).scroll(function() {
-                if($(window).scrollTop() + $(window).height() == $(document).height()) {
-                    var next = parseInt(el.attr('data-current')) + 1;
+            $(document).scroll(function() {
+                if (processing)
+                    return false;
+                
+                if ($(window).scrollTop() >= ($(document).height() - $(window).height()) - distance) {
+                    
+                    processing = true;
+                    
+                    var current = parseInt(el.attr('data-current')),
+                        next    = current + 1;
+                        
+                    if (current) {
+                        $.ajax({
+                            type: 'get',
+                            url: url,
+                            data: {page: next},
+                            beforeSend: function() {
+                                loading.show(100);
+                            },
+                            success: function(r) {
+                                if (r.is_next) {
+                                    el.attr('data-current', next);
+                                } else {
+                                    el.attr('data-current', r.is_next);
+                                }
+
+                                $(r.html).insertAfter(el.find('li:last-child'));
+                                
+                                processing = false;
+                                loading.hide();
+                            }
+                        });
+                        
+                        return false;
+                    }
+                    
+                    processing = false;
+                }
+            });
+        },
+        destroy: function() {
+            $.removeData(this.element[0], pluginName);
+        }
+    };
+
+    $.fn[pluginName] = function(options, params) {
+        return this.each(function() {
+            var instance = $.data(this, pluginName);
+            if (!instance) {
+                $.data(this, pluginName, new Plugin(this, options));
+            } else if (instance[options]) {
+                instance[options](params);
+            } else {
+                window.console && console.log(options ? options + ' method is not exists in ' + pluginName : pluginName + ' plugin has been initialized');
+            }
+        });
+    };
+
+    $.fn[pluginName].defaults = {
+        option: 'value'
+    };
+
+    $(function() {
+        $('[data-' + pluginName + ']')[pluginName]();
+    });
+
+}(jQuery, window));
+
+/**
+ *  @name go-lazy
+ *  @description Lazy loading themes
+ *  @version 1.0
+ *  @options
+ *    option
+ *  @events
+ *    event
+ *  @methods
+ *    init
+ *    publicMethod
+ *    destroy
+ */
+;
+(function($, window, undefined) {
+    var pluginName = 'load-more';
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, $.fn[pluginName].defaults, options);
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            
+            var el      = this.element,
+                target  = $(el.data('target')),
+                url     = target.data('url'),
+                loading = $('.loading-more');
+                        
+                el.on('click', function(e){
+                    e.preventDefault();
+                    
+                    var current = parseInt(target.attr('data-current')),
+                        next    = current + 2;
                     
                     $.ajax({
                         type: 'get',
                         url: url,
                         data: {page: next},
-                        beforeSend: function(){},
-                        success: function() {
-                            el.attr('data-current', next);
+                        beforeSend: function(){
+                            el.remove();
+                            loading.show();
+                        },
+                        success: function(r) {
+                            if (r.is_next) {
+                                target.attr('data-current', next);
+                            } else {
+                                target.attr('data-current', r.is_next);
+                            }
+
+                            $(r.html).insertAfter(target.find('li:last-child'));
+
+                            loading.hide();
                         }
                     });
-                }
-            });
+                })
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

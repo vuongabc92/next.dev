@@ -24,20 +24,9 @@
                 {!! Form::text('slug', $slug, ['class' => 'form-control', 'placeholder' => 'Page slug', 'disabled' => '']) !!}
                 <small class="form-text text-muted">Page slug will be used as page id when render on front page.</small>
             </div>
-            @if(null !== $contact->content && count($contact->getContent()))
-                @foreach($contact->getContent() as $one)
-                <div class="form-group">
-                    <textarea name="content[]" class="form-control">{{ $one }}</textarea>
-                </div>
-                @endforeach
-                <div class="form-group">
-                    <textarea name="content[]" class="form-control"></textarea>
-                </div>
-            @else
-                <div class="form-group">
-                    <textarea name="content[]" class="form-control"></textarea>
-                </div>
-            @endif
+            <div class="form-group">
+                {!! Form::textarea('content', $contact->content, ['class' => 'form-control']) !!}
+            </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-secondary">Save</button>
             </div>

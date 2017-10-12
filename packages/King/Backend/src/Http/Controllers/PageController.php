@@ -56,7 +56,7 @@ class PageController extends BackController {
             
             $page->name    = $request->get('name');
             $page->slug    = $configSlug;
-            $page->content = serialize(array_filter($request->get('content')));
+            $page->content = $request->get('content');
             $page->save();
             
             return back()->with('success', 'Saved!');

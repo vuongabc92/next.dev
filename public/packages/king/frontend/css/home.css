@@ -1,0 +1,36 @@
+.root {
+    overflow-x: hidden;
+}
+.header {
+    height: 80px;
+    border-bottom: solid 1px #007aff;
+}
+.header-inside {
+    width: 1220px;
+    margin: auto;
+}
+.header .navbar-header {
+    height: 40px;
+    margin-top: 20px;
+}
+.header .nav-home {
+    text-decoration: none;
+}
+.header .nav-home .logo {
+    height: 40px;
+    line-height: 40px;
+    color: #000;
+    font-size: 26px;
+    font-weight: bold;
+}
+.header-btn {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px; 
+}
+.register-btn {
+    background-color: #007bff;
+    color: #fff;
+}

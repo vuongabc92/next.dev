@@ -463,3 +463,9 @@ if ( ! function_exists('asset_img') ) {
         return asset("packages/king/frontend/images/{$file_name}");
     }
 }
+
+if ( ! function_exists('random_page_header_image')) {
+    function ramdon_user_banner() {
+        str_random($length);
+    }
+}

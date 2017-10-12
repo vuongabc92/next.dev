@@ -9,7 +9,7 @@
 @stop
 
 @section('body')
-<div class="container">
+<div class="_fwfl">
     <div class="auth-box register-box">
         @include('frontend::inc.auth')
         @yield('auth_register')

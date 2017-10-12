@@ -42,7 +42,7 @@ class HomeController extends FrontController {
         $contact    = Page::where('slug', $configSlug)->first();
         
         return view('frontend::home.contact', [
-            'contact' => (null !== $contact) ? $contact->getContent() : []
+            'page' => $contact
         ]);
     }
     

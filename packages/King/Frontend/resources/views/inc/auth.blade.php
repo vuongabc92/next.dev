@@ -32,9 +32,10 @@
             </div>
         </div>
         <div class="_fwfl auth-field-group">
-            <label>
-                {!! Form::checkbox('remember', '1', true, ['class' => '_fl _mr5']) !!}
-                <span class="_fl _ml5 _fwn">{{ _t('signin.remember') }}</span>
+            <label class="custom-control custom-checkbox login-remember-chbox">
+                {!! Form::checkbox('remember', '1', true, ['class' => 'custom-control-input']) !!}
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{ _t('signin.remember') }}</span>
             </label>
         </div>
         <div class="_fwfl auth-field-group">
