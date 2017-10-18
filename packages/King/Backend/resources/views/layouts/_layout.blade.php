@@ -44,7 +44,7 @@
                                 Pages
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{{ route('back_page_aboutus') }}">About us</a>
+                                <a class="dropdown-item" href="{{ route('back_page_home') }}">Home</a>
                                 <a class="dropdown-item" href="{{ route('back_page_contact') }}">Contact</a>
                                 <a class="dropdown-item" href="{{ route('back_page_developer') }}"><i class="fa fa-cog"></i> Developer</a>
                                 <a class="dropdown-item" href="{{ route('back_page_privacy') }}">Privacy</a>

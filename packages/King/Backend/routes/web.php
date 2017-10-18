@@ -15,8 +15,8 @@ Route::group(['middleware' => ['web', 'auth:web'], 'prefix' => 'kamehameha'], fu
     $route->post('theme/update_status', 'ThemeController@updateStatus')->name('back_theme_status');
     $route->post('theme/remove', 'ThemeController@remove')->name('back_theme_remove');
     
-    $route->get('page/about-us', 'PageController@aboutus')->name('back_page_aboutus');
-    $route->post('page/about-us/save', 'PageController@saveAboutus')->name('back_page_saveaboutus');
+    $route->get('page/home', 'PageController@home')->name('back_page_home');
+    $route->post('page/home/save', 'PageController@saveHome')->name('back_page_savehome');
     $route->get('page/contact', 'PageController@contact')->name('back_page_contact');
     $route->post('page/contact/save', 'PageController@saveContact')->name('back_page_savecontact');
     $route->get('page/developer', 'PageController@developer')->name('back_page_developer');

@@ -6,11 +6,12 @@ return [
     ],
     'page' => [
         'slug' => [
-            'about_us'  => 'about-us',
+            'home'  => 'home',
             'contact'   => 'contact',
             'developer' => 'developer',
             'privacy'   => 'privacy',
             'terms'     => 'terms'
-        ]
+        ],
+        'upload' => 'uploads/pages'
     ]
 ];

@@ -16,42 +16,39 @@ class PageController extends BackController {
         $this->middleware('guest', ['except' => 'logout']);
     }
     
-    public function aboutus() {
-        $configSlug = config('backend.page.slug.about_us');
+    public function home() {
+        $configSlug = config('backend.page.slug.home');
         $page       = Page::where('slug', $configSlug)->first();
-        $default    =  $this->defaultPageClass();
+        $default    = $this->defaultPageClass();
         
-        return view('backend::pages.aboutus', [
-            'aboutus' => ($page) ? $page : $default,
-            'slug'    => $configSlug
+        return view('backend::pages.home', [
+            'home' => ($page) ? $page : $default,
+            'slug' => $configSlug
         ]);
     }
     
-    public function saveAboutus(Request $request) {
+    public function saveHome(Request $request) {
         if ($request->isMethod('post')) {
-            $configSlug = config('backend.page.slug.about_us');
-            $page       = Page::where('slug', $configSlug)->first();
+            $configSlug  = config('backend.page.slug.home');
+            $page        = Page::where('slug', $configSlug)->first();
+            $storagePath = config('backend.page.upload');
             
             if (null === $page) {
                 $page = new Page;
             }
             
-            $page->name    = $request->get('name');
-            $page->slug    = $configSlug;
-            $page->content = serialize(array_filter($request->get('content')));
-            $page->save();
-            
-            return back()->with('success', 'Saved!');
-        }
-    }
-    
-    public function saveContact(Request $request) {
-        if ($request->isMethod('post')) {
-            $configSlug = config('backend.page.slug.contact');
-            $page       = Page::where('slug', $configSlug)->first();
-            
-            if (null === $page) {
-                $page = new Page;
+            if ($request->file('banner')) {
+                $upload = $this->uploadBannerImg([
+                    'old_file'     => $page->banner,
+                    'file'         => $request->file('banner'),
+                    'storage_path' => $storagePath
+                ]);
+
+                if ( ! $upload) {
+                    return back()->with('error', 'Could not upload image!!!');
+                }
+
+                $page->banner  = $upload;
             }
             
             $page->name    = $request->get('name');
@@ -74,6 +71,39 @@ class PageController extends BackController {
         ]);
     }
     
+    public function saveContact(Request $request) {
+        if ($request->isMethod('post')) {
+            $configSlug  = config('backend.page.slug.contact');
+            $page        = Page::where('slug', $configSlug)->first();
+            $storagePath = config('backend.page.upload');
+            
+            if (null === $page) {
+                $page = new Page;
+            }
+            
+            if ($request->file('banner')) {
+                $upload = $this->uploadBannerImg([
+                    'old_file'     => $page->banner,
+                    'file'         => $request->file('banner'),
+                    'storage_path' => $storagePath
+                ]);
+
+                if ( ! $upload) {
+                    return back()->with('error', 'Could not upload image!!!');
+                }
+
+                $page->banner  = $upload;
+            }
+            
+            $page->name    = $request->get('name');
+            $page->slug    = $configSlug;
+            $page->content = $request->get('content');
+            $page->save();
+            
+            return back()->with('success', 'Saved!');
+        }
+    }
+    
     public function developer() {
         $configSlug = config('backend.page.slug.developer');
         $page       = Page::where('slug', $configSlug)->first();
@@ -87,11 +117,26 @@ class PageController extends BackController {
     
     public function saveDeveloper(Request $request) {
         if ($request->isMethod('post')) {
-            $configSlug = config('backend.page.slug.developer');
-            $page       = Page::where('slug', $configSlug)->first();
+            $configSlug  = config('backend.page.slug.developer');
+            $page        = Page::where('slug', $configSlug)->first();
+            $storagePath = config('backend.page.upload');
             
             if (null === $page) {
                 $page = new Page;
+            }
+            
+            if ($request->file('banner')) {
+                $upload = $this->uploadBannerImg([
+                    'old_file'     => $page->banner,
+                    'file'         => $request->file('banner'),
+                    'storage_path' => $storagePath
+                ]);
+
+                if ( ! $upload) {
+                    return back()->with('error', 'Could not upload image!!!');
+                }
+
+                $page->banner  = $upload;
             }
             
             $page->name    = $request->get('name');
@@ -169,12 +214,31 @@ class PageController extends BackController {
         
         return $default;
     }
-}
+    
+    protected function uploadBannerImg($options = []) {
+        $file        = isset($options['file'])         ? $options['file']         : '';
+        $oldFile     = isset($options['old_file'])     ? $options['old_file']     : '';
+        $storagePath = isset($options['storage_path']) ? $options['storage_path'] : '';
 
-//CREATE TABLE `king_pages` (
-//  `id` int(11) NOT NULL AUTO_INCREMENT,
-//  `name` varchar(250) DEFAULT NULL,
-//  `slug` varchar(250) DEFAULT NULL,
-//  `content` longtext,
-//  PRIMARY KEY (`id`)
-//) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+        if($file && $file->isValid()) {
+
+            $fileStr   = random_string(16, $available_sets = 'lud');
+            $fileExt   = $file->getClientOriginalExtension();
+            $fileName  = $fileStr . '.' . $fileExt;
+
+            try {
+                if ($file->move($storagePath, $fileName)) {
+                    delete_file($storagePath . '/' . $oldFile);
+                    
+                    return $fileName;
+                }
+            } catch (Exception $ex) {
+                Log::error($ex->getMessage());
+            }
+            
+            return false;
+        }
+        
+        return false;
+    }
+}

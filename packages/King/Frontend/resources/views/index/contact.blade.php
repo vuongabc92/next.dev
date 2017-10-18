@@ -1,14 +1,14 @@
 @extends('frontend::layouts._layout')
 
 @section('link_style')
-    <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/contact.css') }}">
+    <link rel="stylesheet" href="{{ asset('packages/king/frontend/css/page.css') }}">
 @stop
 
 @section('body')
 <div class="_fwfl">
-    <header class="page-header" style="background-image: url({{ user()->userProfile->cover('big') }})">
+    <header class="page-header" style="background-image: url({{ asset(($page) ? $page->getBannerImage() : '') }})">
         <div class="constraint">
-            <h1>Contact</h1>
+            <h1>{{ ($page) ? $page->name : 'Contact' }}</h1>
         </div>
     </header>
     

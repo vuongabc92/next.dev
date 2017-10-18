@@ -42,39 +42,6 @@
             </div>
         </header>
         @yield('body')
-<!--        <footer class="_fwfl main-footer">
-            <div class="footer-logo-wrap">
-                <a href="/">
-                    <span class="logo logo-footer"></span>
-                </a>
-            </div>
-            <div class="_fwfl footer-navs">
-                <ul class="nav justify-content-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('front_about') }}">{{ _t('aboutus') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ _t('help') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">{{ _t('feedback') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fa fa-cog _fs13"></i> {{ _t('developers') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('front_terms') }}">{{ _t('privacy') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('front_privacy') }}">{{ _t('terms') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('front_contact') }}">{{ _t('contact') }}</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="_fwfl _tc _tga copyright"><i class="fa fa-heart-o"></i> With love &COPY; {{ date('Y') }} NEXT. All rights reserved.</div>
-        </footer>-->
         
         <div class="alert alert-bar fade _dn" role="alert" id="alertBar">
             <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -609,7 +609,7 @@ class ThemeCompiler extends Compiler {
      * @return string 
      */
     protected function compileCover1200() {
-        return $this->getCover(1200);
+        return $this->getCover(1220);
     }
     
     /**

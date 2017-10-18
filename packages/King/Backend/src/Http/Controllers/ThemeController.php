@@ -127,7 +127,6 @@ class ThemeController extends BackController {
 
             if ($themeName === $theme->name) {
                 $rules = remove_rules($rules, 'theme_name.unique:themes,name');
-                
             }
             
             $validator = validator($request->all(), $rules, $this->saveThemeValidateMessages());

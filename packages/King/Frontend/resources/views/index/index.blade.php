@@ -8,12 +8,12 @@
 @section('body')
 <div class="_fwfl magic-show">
     @if ( ! auth()->check())
-    <div class="_fwfl banner-wrap">
-        <div class="banner-inside">
-            <div class="_fwfl banner" style="background-image: url({{ asset('packages/king/frontend/images/landing-banner.jpg') }})">
-                <h1 class="_fwfl">Free CV For Everyone</h1>
+    <div class="page-header-wrap">
+        <header class="page-header" style="background-image: url({{ $page->getBannerImage() }})">
+            <div class="constraint">
+                <h1>{{ $page->name }}</h1>
             </div>
-        </div>
+        </header>
     </div>
     @endif
     <div class="_fwfl themes-wrapper">

@@ -25,24 +25,27 @@
         </div>
         @endif
         
-        @if($uploadedThemes->count())
+        @if($themes->count())
         <div class="_fwfl uploaded-themes">
             <h3 class="user-themes-title">{{ _t('theme.yourUploaded') }}</h3>
-            <ol class="_lsn _p0 _m0 theme-tree">
-                @foreach($uploadedThemes as $theme)
-                <li>
-                    <a href="{{ route('front_theme_details', ['theme_id' => $theme->id]) }}" data-theme-details>
-                        <div class="theme-leaf">
-                            <img src="/{{ $theme->getThumbnail() }}" class="screenshot"/>
-                            <div class="quick-info">
-                                <h5>{{ $theme->name }}</h5>
-                                <div>{{ str_limit($theme->description, 100) }}</div>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                @endforeach
-            </ol>
+            @if($themes->count())
+                <ol class="_lsn _p0 _m0 theme-tree" @if (auth()->check()) data-go-lazy data-current="0" data-url="{{ route('front_themes_lazy') }}" @endif data-theme-details>
+                    @include('frontend::theme.theme-item')
+                </ol>
+            @endif
+            
+            <div class="_fwfl text-center loadmore-wrap">
+                <div class="_fwfl">
+                    <span class="loading-more">Loading more...</span>
+                </div>
+                <div class="_fwfl">
+                    @if (auth()->check())
+                        <a href="#" class="load-more-btn" data-load-more data-target=".theme-tree">{{ _t('load_more') }}</a>
+                    @else
+                        <a href="{{ route('front_login') }}" class="load-more-btn">{{ _t('load_more') }}</a>
+                    @endif
+                </div>
+            </div>
         </div>
         @endif
     </div>

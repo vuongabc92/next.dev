@@ -1,4 +1,4 @@
-@font-face {
+/*@font-face {
     font-family: "AtlasGroteskRegular";
     font-weight: 400;
     font-style: normal;
@@ -11,20 +11,20 @@
     font-style: normal;
     font-stretch: normal;
     src: local("AtlasGrotesk-Bold"), url("../fonts/atlas-grotesk/bold/AtlasGrotesk-Bold-Web.eot?#iefix") format("embedded-opentype"), url("../fonts/atlas-grotesk/bold/AtlasGrotesk-Bold-Web.woff") format("woff"), url("../fonts/atlas-grotesk/bold/AtlasGrotesk-Bold-Web.ttf") format("truetype")
-}
+}*/
+/*@font-face {
+    font-family: AtlasGroteskLight;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    src: local("AtlasGrotesk-Light"), url("../fonts/atlas-grotesk/light/AtlasGrotesk-Light-Web.eot?#iefix") format("embedded-opentype"), url("../fonts/atlas-grotesk/light/AtlasGrotesk-Light-Web.woff") format("woff"), url("../fonts/atlas-grotesk/light/AtlasGrotesk-Light-Web.ttf") format("truetype")
+}*/
 @font-face {
     font-family: "AtlasGroteskBlack";
     font-weight: 900;
     font-style: normal;
     font-stretch: normal;
     src: local("AtlasGrotesk-Black"), url("../fonts/atlas-grotesk/black/AtlasGrotesk-Black-Web.eot?#iefix") format("embedded-opentype"), url("../fonts/atlas-grotesk/black/AtlasGrotesk-Black-Web.woff") format("woff"), url("../fonts/atlas-grotesk/black/AtlasGrotesk-Black-Web.ttf") format("truetype")
-}
-@font-face {
-    font-family: AtlasGroteskLight;
-    font-style: normal;
-    font-weight: 400;
-    font-stretch: normal;
-    src: local("AtlasGrotesk-Light"), url("../fonts/atlas-grotesk/light/AtlasGrotesk-Light-Web.eot?#iefix") format("embedded-opentype"), url("../fonts/atlas-grotesk/light/AtlasGrotesk-Light-Web.woff") format("woff"), url("../fonts/atlas-grotesk/light/AtlasGrotesk-Light-Web.ttf") format("truetype")
 }
 /* Typography Bible -------------------
 * Atlas Grotesk Regular (400)
@@ -66,10 +66,54 @@ handle italics with font-style: italic (no italics available for Black)
 }
 .page-content {
     margin-top: 50px;
-    font-size: 18px;
-    font-family: "AtlasGroteskRegular", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif;
+    font-size: 20px;
+}
+.page-inside {
+    padding: 0 20px;
 }
 .page-left {
-    max-width: 700px;
+    max-width: 750px;
     float: left;
+}
+
+@media screen and (min-width: 1220px) {
+    .page-inside {
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .page-header {
+        padding-bottom: 40%;
+    }
+    .page-header .constraint h1 {
+        font-size: 7rem;
+    }
+    .page-content {
+        margin-top: 0;
+    }
+    .page-left {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .page-header {
+        padding-bottom: 44%;
+    }
+    .page-header .constraint h1 {
+        font-size: 5rem;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .page-header .constraint h1 {
+        font-size: 5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .page-header .constraint h1 {
+        font-size: 3.5rem;
+    }
 }

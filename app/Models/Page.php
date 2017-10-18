@@ -15,4 +15,10 @@ class Page extends Base {
         
         return $content;
     }
-}
+    
+    public function getBannerImage() {
+        $storagePath = config('backend.page.upload');
+        
+        return $storagePath . '/' . $this->banner;
+    }
+ }

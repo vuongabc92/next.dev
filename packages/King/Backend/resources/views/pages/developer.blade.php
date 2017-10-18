@@ -6,7 +6,7 @@
     </div>
     
     <div class="_fwfl _mt20">
-        {!! Form::open(['route' => 'back_page_savedeveloper', 'method' => 'post']) !!}
+        {!! Form::open(['route' => 'back_page_savedeveloper', 'method' => 'post', 'files' => true]) !!}
             @if (session('success'))
                 <div class="form-group">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -17,6 +17,27 @@
                     </div>
                 </div>
             @endif
+            @if (session('error'))
+                <div class="form-group">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ session('error') }}
+                    </div>
+                </div>
+            @endif
+            <div class="form-group">
+                <img src="/{{ $developer->getBannerImage() }}" alt="{{ $developer->name }}" class="img-thumbnail">
+                <hr>
+            </div>
+            <div class="form-group">
+                <label>Banner</label>
+                <label class="_fw custom-file">
+                    <input name="banner" type="file" id="file" class="custom-file-input">
+                    <span class="custom-file-control"></span>
+                </label>
+            </div>
             <div class="form-group">
                 {!! Form::text('name', $developer->name, ['class' => 'form-control', 'placeholder' => 'Page name']) !!}
             </div>

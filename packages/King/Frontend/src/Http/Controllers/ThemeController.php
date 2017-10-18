@@ -20,23 +20,22 @@ class ThemeController extends FrontController {
      * @return void
      */
     public function index() {
-        $currentTheme   = null;
-        $expertises     = Expertise::all()->sortBy('name')->pluck('name', 'id')->toArray();
-        $uploadedThemes = collect([]);
         
-        if(auth()->check()) {
-            $currentTheme   = user()->userProfile->theme;
-            $uploadedThemes = user()->themes;
-        }
+        $expertises   = Expertise::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        $currentTheme = user()->userProfile->theme;
+        $perPage      = config('frontend.lazy_loading.per_page');
+        $themes       = Theme::where('user_id', user()->id)->paginate($perPage);
         
         if ($currentTheme === null) {
             $currentTheme = Theme::where('slug', config('frontend.defaultThemeName'))->first();
         }
         
+        
+        
         return view('frontend::theme.index', [
-            'expertises'     => ['' => _t('theme.upload.themeallExpertises')] + $expertises,
-            'uploadedThemes' => $uploadedThemes,
-            'currentTheme'   => $currentTheme,
+            'expertises'   => ['' => _t('theme.upload.themeallExpertises')] + $expertises,
+            'themes'       => $themes,
+            'currentTheme' => $currentTheme,
         ]);
     }
     
