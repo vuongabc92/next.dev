@@ -93,7 +93,7 @@
             </div>
         </div>
         <div class="_fwfl _tg5 auth-field-group">
-        {!! _t('signup.agree', ['termsUrl' => '#']) !!}
+        {!! _t('signup.agree', ['privacyUrl' => route('front_privacy_policy'), 'termsUrl' => route('front_terms_conditions')]) !!}
         </div>
         <div class="_fwfl auth-field-group">
             <button class="_fwfl btn _btn _btn-blue auth-btn"><i class="fa fa-arrow-right"></i></button>

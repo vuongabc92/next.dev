@@ -17,7 +17,7 @@ class User extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password',
+        'username', 'email', 'password', 'role_id',
     ];
 
     /**
@@ -79,6 +79,10 @@ class User extends Authenticatable {
     }
     
     public function isAdmin() {
-        return (user()->role->slug === 'admin');
+        if (user()->role) {
+            return (user()->role->slug === 'admin');
+        }
+        
+        return false;
     }
 }

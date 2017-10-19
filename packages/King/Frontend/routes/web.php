@@ -46,6 +46,8 @@ Route::group(['middleware' => 'web'], function ($route) {
     $route->get('/', 'IndexController@index')->name('front_index');
     $route->get('/contact', 'IndexController@contact')->name('front_contact');
     $route->get('/developer', 'IndexController@developer')->name('front_developer');
+    $route->get('/privacy-policy', 'IndexController@privacyPolicy')->name('front_privacy_policy');
+    $route->get('/terms-and-conditions', 'IndexController@termsAndConditions')->name('front_terms_conditions');
     
     $route->get('themes', 'ThemeController@lazyLoadTheme')->name('front_themes_lazy');
     $route->get('theme/{theme_id}/popup_details', 'ThemeController@themeDetails')->name('front_theme_details')->where('theme_id', '[0-9]+');

@@ -161,11 +161,26 @@ class PageController extends BackController {
     
     public function savePrivacy(Request $request) {
         if ($request->isMethod('post')) {
-            $configSlug = config('backend.page.slug.privacy');
-            $page       = Page::where('slug', $configSlug)->first();
+            $configSlug  = config('backend.page.slug.privacy');
+            $page        = Page::where('slug', $configSlug)->first();
+            $storagePath = config('backend.page.upload');
             
             if (null === $page) {
                 $page = new Page;
+            }
+            
+            if ($request->file('banner')) {
+                $upload = $this->uploadBannerImg([
+                    'old_file'     => $page->banner,
+                    'file'         => $request->file('banner'),
+                    'storage_path' => $storagePath
+                ]);
+
+                if ( ! $upload) {
+                    return back()->with('error', 'Could not upload image!!!');
+                }
+
+                $page->banner  = $upload;
             }
             
             $page->name    = $request->get('name');
@@ -190,11 +205,26 @@ class PageController extends BackController {
     
     public function saveTerms(Request $request) {
         if ($request->isMethod('post')) {
-            $configSlug = config('backend.page.slug.terms');
-            $page       = Page::where('slug', $configSlug)->first();
+            $configSlug  = config('backend.page.slug.terms');
+            $page        = Page::where('slug', $configSlug)->first();
+            $storagePath = config('backend.page.upload');
             
             if (null === $page) {
                 $page = new Page;
+            }
+            
+            if ($request->file('banner')) {
+                $upload = $this->uploadBannerImg([
+                    'old_file'     => $page->banner,
+                    'file'         => $request->file('banner'),
+                    'storage_path' => $storagePath
+                ]);
+
+                if ( ! $upload) {
+                    return back()->with('error', 'Could not upload image!!!');
+                }
+
+                $page->banner  = $upload;
             }
             
             $page->name    = $request->get('name');

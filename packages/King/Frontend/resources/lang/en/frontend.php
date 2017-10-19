@@ -36,7 +36,7 @@ return [
     'signup' => 'Sign up',
     'signup.title' => 'Next - Sign up',
     'signup.form.title' => 'Create Next Account',
-    'signup.agree' => 'By clicking on register button, I have read and accept <a href=":termsUrl">Privacy Policy</a> and <a href=":termsUrl">Terms of Use</a>',
+    'signup.agree' => 'By clicking on register button, I have read and accept <a href=":privacyUrl">Privacy Policy</a> and <a href=":termsUrl">Terms & Conditions</a>',
     'common.email' => 'Email',
     'common.pass' => 'Password',
     'common.passconfirm' => 'Password confirmation',

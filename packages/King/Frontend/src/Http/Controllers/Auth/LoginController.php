@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use King\Frontend\Http\Controllers\FrontController;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\UserProfile;
 use Log;
 use App\Helpers\OutWorldAuth;
@@ -189,8 +190,10 @@ class LoginController extends FrontController {
         $emailSplit = explode('@', $email);
             
         if (is_null($user)) {
-            $user        = new User();
-            $user->email = $email;
+            $roleMember    = Role::where('slug', 'member')->first();
+            $user          = new User();
+            $user->email   = $email;
+            $user->role_id = ($roleMember) ? $roleMember->id : 2;
             $user->save();
             
             $userProfile          = new UserProfile();
@@ -272,7 +275,7 @@ class LoginController extends FrontController {
         $user = User::where('email', $email)->first();
         
         if (null === $user) {
-            return false;
+            return true;
         }
         
         return $user->activated;

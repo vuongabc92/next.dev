@@ -49,4 +49,22 @@ class IndexController extends FrontController {
         ]);
     }
     
+    public function privacyPolicy() {
+        $configSlug = config('backend.page.slug.privacy');
+        $page       = Page::where('slug', $configSlug)->first();
+        
+        return view('frontend::index.privacy', [
+            'page' => $page
+        ]);
+    }
+    
+    public function termsAndConditions() {
+        $configSlug = config('backend.page.slug.terms');
+        $page       = Page::where('slug', $configSlug)->first();
+        
+        return view('frontend::index.terms', [
+            'page' => $page
+        ]);
+    }
+    
 }

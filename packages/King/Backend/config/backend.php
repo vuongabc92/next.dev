@@ -6,7 +6,7 @@ return [
     ],
     'page' => [
         'slug' => [
-            'home'  => 'home',
+            'home'      => 'home',
             'contact'   => 'contact',
             'developer' => 'developer',
             'privacy'   => 'privacy',

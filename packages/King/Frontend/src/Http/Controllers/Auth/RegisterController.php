@@ -9,9 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
-use Facebook\Facebook;
 use App\Helpers\OutWorldAuth;
-use Google_Service_Oauth2_Userinfoplus;
+use App\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -105,10 +104,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data) {
         
-        $user = User::create([
+        $roleMember = Role::where('slug', 'member')->first();
+        $user       = User::create([
             'email'    => $data['email'],
             'username' => $data['username'],
             'password' => bcrypt($data['password']),
+            'role_id'  => ($roleMember) ? $roleMember->id : 2
         ]);
         
         $userProfile          = new UserProfile();
