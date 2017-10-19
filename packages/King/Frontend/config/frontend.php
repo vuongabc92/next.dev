@@ -101,9 +101,9 @@ return [
     ],
     'wkhtmltopdf' => [
         'no-outline',
-        'margin-top'     => 0,
+        'margin-top'     => 10,
         'margin-right'   => 0,
-        'margin-bottom'  => 0,
+        'margin-bottom'  => 10,
         'margin-left'    => 0,
         'binary'         => 'wkhtmltopdf\bin\wkhtmltopdf.exe',
         'page-size'      => 'A4',

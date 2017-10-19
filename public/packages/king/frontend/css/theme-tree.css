@@ -41,13 +41,13 @@
     -webkit-transition: opacity 0.3s;
     transition: opacity 0.3s;
 }
-.theme-tree>li .quick-info h5{
+.theme-tree>li .quick-info h5 {
     width: 100%;
     float: left;
     font-size: 18px;
     color: #555;
 }
-.theme-tree>li .quick-info div{
+.theme-tree>li .quick-info div {
     width: 100%;
     float: left;
     font-size: 14px;
@@ -93,6 +93,9 @@
 }
 .modal-theme-details .modal-body {
     padding: 40px 30px;
+}
+.theme-details-header {
+    position: relative;
 }
 .theme-details-header img {
     width: 48px;
@@ -162,6 +165,13 @@
     position: relative;
     font-size: 10px;
     top: -3px;
+}
+.theme-popup-close {
+    position: absolute;
+    top: 9px;
+    right: 0;
+    font-size: 30px;
+    display: none;
 }
 
 /*@media screen and (max-width: 2059px) {
@@ -257,5 +267,22 @@
     }
     .load-more-btn {
         padding: 12px 12px;
+    }
+    .theme-tree>li .quick-info div {
+        display: none;
+    }
+    .modal-theme-details .modal-content {
+        border-radius: 0;
+        height: 100%;
+    }
+    .modal-theme-details .modal-body {
+        padding: 15px;
+    }
+    .modal-theme-details .modal-dialog {
+        margin: 0;
+        height: 100%;
+    }
+    .theme-popup-close {
+        display: block;
     }
 }

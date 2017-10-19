@@ -42,11 +42,13 @@ class ResumeController extends FrontController {
             }
         }
         
-        $resume   = $this->generateResumeData($userProfile->user_id);
-        $compiler = new ThemeCompiler(new Filesystem, $resume, $themeName);
-        $contents = $compiler->compile();
+        $resume     = $this->generateResumeData($userProfile->user_id);
+        $compiler   = new ThemeCompiler(new Filesystem, $resume, $themeName);
+        $contents   = $compiler->compile();
+        $injectHtml = view('frontend::resume.html-injection', ['slug' => $themeName])->render();
+        $response   = str_replace('</body>', $injectHtml . '</body>', $contents );
         
-        return new Response($contents);
+        return new Response($response);
     }
     
     /**
@@ -64,12 +66,13 @@ class ResumeController extends FrontController {
             throw new NotFoundHttpException;
         }
         
-        $resume   = $this->generateResumeData(user_id());
-        $compiler = new ThemeCompiler(new Filesystem, $resume, $slug);
-        $contents = $compiler->compile();
-        $contents  = str_replace('</body>', $this->HtmlInjection(['slug' => $slug]), $contents . '</body>');
+        $resume     = $this->generateResumeData(user_id());
+        $compiler   = new ThemeCompiler(new Filesystem, $resume, $slug);
+        $contents   = $compiler->compile();
+        $injectHtml = view('frontend::resume.html-injection', ['slug' => $slug])->render();
+        $response   = str_replace('</body>', $injectHtml . '</body>', $contents );
 
-        return new Response($contents);
+        return new Response($response);
     }
 
     /**
@@ -87,7 +90,7 @@ class ResumeController extends FrontController {
 
         $resume      = $this->generateResumeData(user_id());
         $compiler    = new ThemeCompiler(new Filesystem, $resume, $slug);
-        $contents    = $compiler->compile();
+        $contents    = $compiler->compileDownload();
         $wkhtmltopdf = config('frontend.wkhtmltopdf');
         $pdf         = new Pdf($wkhtmltopdf);
         $fileName    = 'cv_' . $resume->getFirstName() . $resume->getLastName() . '_' . date('dmy') . '.pdf';
@@ -139,18 +142,4 @@ class ResumeController extends FrontController {
         return $resume;
     }
     
-    /**
-     * Extra menu on preview CV page
-     * 
-     * @param array $options
-     * 
-     * @return string
-     */
-    protected function HtmlInjection($options = array()) {
-        $settingsUrl = route('front_settings');
-        $themesUrl   = route('front_themes');
-        $downloadUrl = route('front_theme_download', ['slug' => isset($options['slug']) ? $options['slug'] : '#']);
-        
-        return '<link rel="stylesheet" href="/packages/king/frontend/css/lordoftherings.css"><div class="lordoftherings"><ul><li><a href="' . $settingsUrl . '" title="Settings"><i class="fa fa-cog"></i></a></li><li><a href="' . $themesUrl . '" title="Themes"><i class="fa fa-th"></i></a></li><li><a href="' . $downloadUrl . '" title="Download as PDF"><i class="fa fa-download"></i></a></li></ul></div>';
-    }
 }

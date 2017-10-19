@@ -1,64 +1,66 @@
 body {background-color:#f5f8fa;}
 .settings-wrapper {
-    max-width: 1000px;
+    max-width: 1220px;
     margin: 30px auto;
-    padding: 0 15px;
 }
 .settings-left {
-    width: 75%;
+    width: 70%;
     float: left;
 }
 .settings-right {
-    width: 25%;
+    width: 30%;
     float: left;
-    padding-left: 20px;
+    padding-left: 30px;
 }
 
 /* Vartical navigation */
+.setting-vertical-nav {
+    padding: 5px 0;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
 .setting-vertical-nav>li {
-    width:100%;
-    float:left;
-    border-bottom:solid 1px #e5e5e5;
+    width: 100%;
+    float: left;
+    border-bottom: solid 1px #e5e5e5;
 }
 .setting-vertical-nav>li.nav-link-last {
-    border:none;
+    border: none;
 }
 .setting-vertical-nav>li>a {
-    width:100%;
-    float:left;
-    padding:9px 5px;
-    color:#888;
-    font-size:15px;
-    text-decoration:none;
+    width: 100%;
+    float: left;
+    padding: 15px 25px;
+    color: #888;
+    font-size: 15px;
+    text-decoration: none;
 }
 .setting-vertical-nav>li>a:hover,
 .setting-vertical-nav>li>a.active {
-    color:#007aff;
+    color: #007aff;
 }
 .setting-vertical-nav>li>a:hover>span,
 .setting-vertical-nav>li>a.active>span {
-    color:#007aff !important;
+    color: #007aff !important;
 }
 .setting-vertical-nav>li>a>span {
-    width:100%;
-    float:left;
+    width: 100%;
+    float: left;
 }
 .setting-vertical-nav>li>a>span.nav-link-help{
-    font-size:13px;
-    color:#aaa;
-    margin-top:2px;
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 2px;
 }
 
 /* Settings */
 .settings-page {
-    min-height: 400px;
+    min-height: 500px;
     margin-bottom: 30px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-.settings-page.employment,
-.settings-page.education{
-    box-shadow: none;
 }
 .col-no-padding {
     padding-left: 0;
@@ -66,6 +68,11 @@ body {background-color:#f5f8fa;}
 }
 .settings-left .settings-page {
     background-color: #fff;
+}
+.settings-page.employment,
+.settings-page.education{
+    box-shadow: none;
+    background-color: #f5f8fa;
 }
 .settings-left .profile {
     background-color: #fff;
@@ -426,7 +433,7 @@ body {background-color:#f5f8fa;}
     left: 18px;
     margin-left: -13px;
     margin-top: 16px;
-    border: solid 5px #fff;
+    border: solid 5px #f5f8fa;
     background-color: #57bad0;
     border-radius: 50%;
     -webkit-border-radius: 50%;
@@ -606,57 +613,29 @@ body {background-color:#f5f8fa;}
     background-color: #fff;
     padding: 15px;
 }
-.skills-form .skills-title {
-    font-size: 20px;
-    color: #777;
-    border-bottom: solid 1px #ccc;
-    padding-bottom: 10px;
-    width: auto;
-}
 .settings-page.skills .settings-field-wrapper {
     margin-top: 10px;
     position: relative;
 }
-.skill-field {
-    width: 60%;
-    float: left;
-}
-.skill-field input{
-    border-color: #d5d5d5 !important;
-}
-.skill-btn {
-    float: left;
-    margin-left: -2px;
-}
-.skill-submit {
-    width: 65px;
-    border: solid 1px #ccc;
-    background: #fff;
-    font-size: 18px;
-    color: #999;
-    padding: 6px 0;
-    border-radius: 2px;
-    text-align: center;
-}
-.skill-submit:hover {
-    color: #007aff;
-}
-.skill-submit img {
-    margin-top: -4px;
-}
-.skill-field .settings-field:focus {
-    border-color: #d5d5d5;
+.skills-field {
+    height: 40px;
+    font-size: 15px;
+    font-weight: normal;
+    background-color: #eee;
+    border: solid 2px #d5d5d5;
 }
 .skill-suggestion {
     position: absolute;
-    width: 399px;
+    width: 100%;
+    top: 41px;
     background-color: #fff;
     border: solid 1px #ddd;
-    top: 33px;
-    z-index: 10;
     border-bottom-left-radius: 2px; 
     border-bottom-right-radius: 2px;
     display: none;
+    z-index: 10;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 .skill-suggestion ul {
     width: 100%;
@@ -669,11 +648,10 @@ body {background-color:#f5f8fa;}
     float: left;
     display: inline-block;
     border-bottom: solid 1px #e5e5e5;
-    padding: 3px 10px;
+    padding: 5px 10px;
     color: #777;
     font-size: 13px;
     line-height: 20px;
-    height: 25px;
     cursor: pointer;
 }
 .skill-suggestion ul li:hover {
@@ -703,9 +681,20 @@ body {background-color:#f5f8fa;}
     font-weight: bold;
     background-color: #eee;
     color: #555;
-    padding: 0 10px;
+    padding: 0 12px;
     margin-right: 15px;
     
+}
+.tag-container:before {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    top: 11px;
+    left: 8px;
+    border-radius: 3px;
+    background-color: #fff;
+    margin-right: 10px;
+    content: '';
 }
 .tag .tag-container i.fa.fa-close {
     float: right;
@@ -718,6 +707,7 @@ body {background-color:#f5f8fa;}
 }
 .tag-name {
     float: left;
+    padding-left: 7px;
 }
 .tag .tag-container:hover .rating{
     visibility: visible;
@@ -882,6 +872,24 @@ body {background-color:#f5f8fa;}
     }
     .profile .cover {
         border-radius: 0;
+    }
+    .settings-left .profile {
+        margin-top: 0;
+        padding-top: 10px;
+    }
+    .settings-page {
+        margin-top: 10px;
+        padding-top: 20px;
+    }
+    .profile .cover .edit-btn,
+    .profile .avatar .edit-btn {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+@media screen and (max-width: 768px) { 
+    .settings-wrapper {
+        padding: 0 15px;
     }
 }
 @media screen and (max-width: 480px) {

@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => ['web', 'auth:web'], 'prefix' => 'kamehameha'], function ($route) {
+Route::group(['middleware' => ['web', 'master', 'auth:web', ], 'prefix' => 'kamehameha'], function ($route) {
     $route->get('/', 'DashboardController@index')->name('back_dashboard');
     
     $route->get('users', 'UserController@index')->name('back_users');

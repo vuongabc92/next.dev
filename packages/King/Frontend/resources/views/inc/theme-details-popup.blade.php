@@ -12,6 +12,9 @@
                         <span class="theme-by">{{ _t('theme.details_by') }} <a href="#"></a></span>
                         <span class="theme-date">{{ _t('theme.details_on') }} <span class="_tgb"></span></span>
                     </h2>
+                    <button type="button" class="close theme-popup-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="_fwfl theme-details-content">
                     <div class="theme-details-screenshot" id="themeScreenshot">

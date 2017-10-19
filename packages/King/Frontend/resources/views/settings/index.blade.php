@@ -7,7 +7,7 @@
 @section('body')
 <div class="_fwfl">
     <div class="settings-wrapper">
-        <div class="settings-inside" data-settings-page-view>
+        <div class="_fwfl settings-inside" data-settings-page-view>
             <div class="settings-left">
                 <div class="_fwfl settings-page profile" id="profile">
                     @include('frontend::settings.sections.setting-header')

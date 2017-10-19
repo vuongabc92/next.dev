@@ -211,7 +211,7 @@ return [
     'setting.education.qualif_req' => 'Qualification is required.',
     'setting.education.qualif_exi' => 'Qualification is incorrect.',
     'setting.education.datecompare' => "Start date couldn't be greater than end date",
-    'setting.skill.add' => 'Add your skills.',
+    'setting.skill.add' => 'Add skill and press enter.',
     'setting.skill.req' => 'Skill is required.',
     'setting.skill.max' => 'Skill is too long.',
     'setting.skill.exi' => 'Hummm! Bad idea.',
@@ -285,4 +285,7 @@ return [
     'theme.yourUploaded' => 'Your uploaded themes',
     'theme.details_by' => 'by',
     'theme.details_on' => 'on',
+    'theme.download.settings' => 'Settings',
+    'theme.download.themes' => 'Themes',
+    'theme.download.downpdf' => 'Download as PDF',
 ];

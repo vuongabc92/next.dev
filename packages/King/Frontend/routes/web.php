@@ -18,14 +18,13 @@ Route::group(['middleware' => ['web', 'auth:web']], function ($route) {
     $route->delete('settings/kill_social', 'SettingsController@killSocial')->name('front_settings_killsocial');
     $route->get('settings/search_skill/{keyword?}', 'SettingsController@searchSkill')->name('front_settings_searchskill');
     $route->post('theme/install', 'ThemeController@install')->name('front_theme_install');
-    $route->post('theme/add_new', 'ThemeController@addNewTheme')->name('front_theme_add_new');
+    $route->post('theme/add_new', 'ThemeController@addNewTheme')->name('front_theme_add_new')->middleware('master');
     $route->get('theme/{slug}/preview', 'ResumeController@preview')->name('front_theme_preview');
     $route->get('theme/{slug}/download', 'ResumeController@download')->name('front_theme_download');
+    $route->get('your-themes', 'ThemeController@index')->name('front_themes');
 });
 
 Route::group(['middleware' => 'web'], function ($route) {
-
-    $route->get('developer', 'Auth\LoginController@showLoginForm')->name('front_developer');
     
     // Authentication Routes.
     $route->get('login', 'Auth\LoginController@showLoginForm')->name('front_login');
@@ -44,14 +43,12 @@ Route::group(['middleware' => 'web'], function ($route) {
     $route->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('front_resetpass');
     $route->post('password/reset', 'Auth\ResetPasswordController@reset')->name('front_resetpass_post');
     
-    Route::get('/', 'IndexController@index')->name('front_index');
-    Route::get('/contact', 'IndexController@contact')->name('front_contact');
-    Route::get('/developer', 'IndexController@developer')->name('front_developer');
+    $route->get('/', 'IndexController@index')->name('front_index');
+    $route->get('/contact', 'IndexController@contact')->name('front_contact');
+    $route->get('/developer', 'IndexController@developer')->name('front_developer');
     
-    Route::get('your-themes', 'ThemeController@index')->name('front_themes');
-    Route::get('themes', 'ThemeController@lazyLoadTheme')->name('front_themes_lazy');
-    Route::get('theme/{theme_id}/popup_details', 'ThemeController@themeDetails')->name('front_theme_details')->where('theme_id', '[0-9]+');
+    $route->get('themes', 'ThemeController@lazyLoadTheme')->name('front_themes_lazy');
+    $route->get('theme/{theme_id}/popup_details', 'ThemeController@themeDetails')->name('front_theme_details')->where('theme_id', '[0-9]+');
     
-    
-    Route::get('i/{slug?}', 'ResumeController@index')->name('front_cv');
+    $route->get('i/{slug?}', 'ResumeController@index')->name('front_cv');
 });

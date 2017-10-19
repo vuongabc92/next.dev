@@ -9,7 +9,9 @@
 @section('body')
     <div class="container">
         <div class="_fwfl add-theme-row">
+            @if(user()->isAdmin())
             <button class="btn _btn _btn-blue" data-toggle="modal" data-target="#addThemeModal"><i class="fa fa-plus"></i> UPLOAD NEW THEME</button>
+            @endif
         </div>
         @if($currentTheme)
         <div class="_fwfl current-activated-theme">
@@ -50,7 +52,10 @@
         @endif
     </div>
     @include('frontend::inc.theme-details-popup')
-    @include('frontend::inc.add-theme-popup')
+    
+    @if(user()->isAdmin())
+        @include('frontend::inc.add-theme-popup')
+    @endif
 
     
     <div id="themeItemTemplate" class="_dn">

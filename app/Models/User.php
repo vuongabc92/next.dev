@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use King\Frontend\Notifications\ResetPassword as ResetPasswordNotification;
+use App\Models\Role;
 
 class User extends Authenticatable {
     
@@ -63,6 +64,10 @@ class User extends Authenticatable {
         return $this->hasMany('App\Models\Theme');
     }
     
+    public function role() {
+        return $this->belongsTo(Role::class);
+    }
+    
     /**
      * Send the password reset notification.
      *
@@ -71,5 +76,9 @@ class User extends Authenticatable {
      */
     public function sendPasswordResetNotification($token) {
         $this->notify(new ResetPasswordNotification($token));
+    }
+    
+    public function isAdmin() {
+        return (user()->role->slug === 'admin');
     }
 }

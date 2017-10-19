@@ -18,6 +18,13 @@ class ThemeCompiler extends Compiler {
      * @var string 
      */
     protected $filename = 'index.html';
+    
+    /**
+     * The downdload file name.
+     *  
+     * @var string 
+     */
+    protected $download = 'download.html';
 
     /**
      * Folder name that container all themes
@@ -192,16 +199,25 @@ class ThemeCompiler extends Compiler {
     /**
      * Compile the view at the given path.
      *
-     * @param  string  $path
-     * @return void
+     * @param bool $isDownload Compile for download or preview.
+     * 
+     * @return string
      */
-    public function compile() {
+    public function compile($isDownload = false) {
         
-        $file     = $this->generateFilenamePath();
+        $file     = $this->generateFilenamePath($isDownload);
         $contents = $this->compileString($this->files->get($file));
-        $contents = $this->compileFunctions($contents);
         
-        return $contents;
+        return $this->compileFunctions($contents);
+    }
+    
+    /**
+     * Reuse function compile
+     * 
+     * @return string
+     */
+    public function compileDownload() {
+        return $this->compile($isDownload = true);
     }
     
     /**
@@ -835,10 +851,20 @@ class ThemeCompiler extends Compiler {
     /**
      * Generate the path to the file currently being compiled
      * 
+     * @param bool $isDownload Get the html template for download or for preview.
+     * 
      * @return string
      */
-    protected function generateFilenamePath() {
-        return base_path($this->publicFolder . '/' . $this->themesFolder . '/' . $this->getThemeName() . '/' . $this->filename);
+    protected function generateFilenamePath($isDownload = false) {
+        
+        $themePath = base_path($this->publicFolder . '/' . $this->themesFolder . '/' . $this->getThemeName() . '/');
+        $fileName  = $this->filename;
+        
+        if ($isDownload && check_file($themePath . $this->download)) {
+            $fileName = $this->download;
+        }
+        
+        return $themePath . $fileName;
     }
     
     /**

@@ -28,8 +28,6 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 .page-header .constraint h1 {
-    padding-right: 10%;
-    padding-left: 10%;
     font-family: "AtlasGroteskBlack", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif;
     font-size: 5.4rem;
     line-height: 5.4rem;
@@ -53,5 +51,12 @@
     .header-inside {
         padding-left: 15px;
         padding-right: 15px;
+    }
+    .page-header {
+        padding-bottom: 60%;
+    }
+    .page-header .constraint h1 {
+        font-size: 3rem;
+        line-height: 3rem;
     }
 }

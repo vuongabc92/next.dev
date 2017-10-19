@@ -1737,13 +1737,10 @@ var HELPERS = {
             current.on('click', function(){
                 $(this).parents('ul').find('li a').removeClass('active');
                 $(this).addClass('active');
+                
                 $('.settings-left section').removeClass('_disable');
                 $('.settings-page').hide();
-                if ('employment' === target || 'education' === target) {
-                    $('body').css('background-color', '#ffffff');
-                } else {
-                    $('body').css('background-color', '#f5f8fa');
-                }
+                
                 targetObj.show();
             });
         },
@@ -1810,9 +1807,7 @@ var HELPERS = {
             });
             
             $('.setting-vertical-nav li a[data-nav-settings=' + hashText + ']').addClass('active')
-            if ('#employment' === hashPage || '#education' === hashPage) {
-                $('body').css('background-color', '#ffffff');
-            }
+            
             settingsPageObj.show();
         },
         destroy: function() {

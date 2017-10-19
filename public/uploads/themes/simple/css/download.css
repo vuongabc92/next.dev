@@ -1,0 +1,9 @@
+main {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.wrapper {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    margin-bottom: 0;
+}
