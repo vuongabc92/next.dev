@@ -205,7 +205,12 @@ class ThemeCompiler extends Compiler {
      */
     public function compile($isDownload = false) {
         
-        $file     = $this->generateFilenamePath($isDownload);
+        $file = $this->generateFilenamePath($isDownload);
+        
+        if ( ! check_file($file)) {
+            return false;
+        }
+        
         $contents = $this->compileString($this->files->get($file));
         
         return $this->compileFunctions($contents);

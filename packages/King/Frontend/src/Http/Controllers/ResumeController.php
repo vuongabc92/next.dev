@@ -45,6 +45,11 @@ class ResumeController extends FrontController {
         $resume     = $this->generateResumeData($userProfile->user_id);
         $compiler   = new ThemeCompiler(new Filesystem, $resume, $themeName);
         $contents   = $compiler->compile();
+        
+        if ( ! $contents) {
+            abort(404);
+        }
+        
         $injectHtml = view('frontend::resume.html-injection', ['slug' => $themeName])->render();
         $response   = str_replace('</body>', $injectHtml . '</body>', $contents );
         
