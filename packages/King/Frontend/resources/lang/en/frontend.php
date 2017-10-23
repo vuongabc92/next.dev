@@ -232,6 +232,7 @@ return [
     'setting.nav.theme' => 'Theme',
     'setting.nav.theme_help' => 'Settings for your theme',
     'setting.theme.pickexpertise' => "Select theme's expertise",
+    'setting.theme.addnewtheme' => "Add new theme",
     'no_file' => 'No file was chosen.',
     'file_not_image' => "It's not even an image.",
     'file_image_mimes' => 'The file must be a file of type: jpg, png, jpeg, gif.',
@@ -286,6 +287,6 @@ return [
     'theme.details_by' => 'by',
     'theme.details_on' => 'on',
     'theme.download.settings' => 'Settings',
-    'theme.download.themes' => 'Themes',
+    'theme.download.home' => 'Home',
     'theme.download.downpdf' => 'Download as PDF',
 ];

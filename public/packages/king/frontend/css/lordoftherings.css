@@ -9,7 +9,7 @@
 .lordoftherings{position:fixed;top:0;right:0;}
 .lordoftherings>ul{list-style:none;padding:0;margin:0;}
 .lordoftherings>ul>li{width: auto;float:left;display:inline;}
-.lordoftherings>ul>li>a{float:left;width:60px;height:60px;line-height:60px;text-align:center;display:inline;background-color:rgba(0, 0, 0, 0.6);color:#fff;margin-left:1px;}
+.lordoftherings>ul>li>a{float:left;width:55px;height:55px;line-height:55px;text-align:center;display:inline;background-color:rgba(0, 0, 0, 0.6);color:#fff;margin-left:1px;font-size: 17px;}
 .lordoftherings>ul>li:first-child>a{margin-left:0;}
 @media screen and (max-width: 1024px) {
     .lordoftherings{position:absolute;}

@@ -539,10 +539,19 @@ body {background-color:#f5f8fa;}
     color: #666;
 }
 .timeline-section .timeline-content .timeline-remove {
-    right: 28px;
+    right: 29px;
 }
 .timeline-section .timeline-content .timeline-remove:hover{
     color: #f66;
+}
+.settings-field-wrapper .current-co-chbox input {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+}
+.settings-field-wrapper .current-co-chbox label {
+    font-size: 15px;
+    margin-top: 1px;
 }
 /* Bootstrap switcher */
 .bootstrap-switch {
@@ -726,78 +735,137 @@ body {background-color:#f5f8fa;}
 .rating>i {
     cursor: pointer;
 }
-
-/* Projects */
-.settings-page.projects {
+/* Settings Theme */
+.settings-theme-wrap {
+    width: 1220px;
+    margin: auto;
+}
+.add-new-theme-btn {
+    width: 100%;
+    height: 50px;
+    border-radius: 3px;
+    background-color: #ccc;
+    color: #fff;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+.add-new-theme-btn:focus {
+    outline: none;
+}
+.badge-current-theme {
+    position: absolute;
+    right: 30px;
+    border-radius: 0;
+}
+.current-activated-theme .screenshot {
+    width: 100%;
+    float: left;
+    padding: 30px;
     background-color: #fff;
-    padding: 15px;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-.settings-page.projects .skills-title {
-    font-size: 20px;
-    color: #777;
-    border-bottom: solid 1px #ccc;
-    padding-bottom: 10px;
-    width: auto;
+.current-activated-theme .screenshot img {
+    width: 100%;
+    float: left;
 }
-.project-list {
-    width: 40%;
-    margin-top: 20px;
+.activated-info .btn {
+    margin-right: 10px;
 }
-.project-list li {
+.settings-field-wrapper {
     width: 100%;
     float: left;
     margin-bottom: 10px;
 }
-.project-list li:last-child {
-    margin-bottom: 0;
-}
-.project-list li a {
+.settings-field {
     width: 100%;
     float: left;
+    height: 34px;
+    border: solid 1px #d5d5d5;
+    outline: none;
+    padding: 0 10px;
+    font-size: 13px;
+    color: #777;
+    font-weight: bold;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+}
+.settings-field:focus {
+    border-color: #007aff;
+}
+.settings-textarea {
+    width: 100%;
+    resize: vertical;
     padding: 10px;
     color: #777;
-    font-size: 17px;
-    border: solid 2px #eee;
-    border-radius: 3px;
-    -webkit-border-radius: 5px;
-    text-decoration: none;
+    border: solid 1px #d5d5d5;
+    border-radius: 2px;
+    outline: none;
 }
-.project-list li a:hover {
-    background-color: #9edee7;
-    border-color: #9edee7;
-    color: #538692;
-    text-decoration: none;
+.settings-textarea:focus {
+    border-color: #007aff
 }
-.project-list li a:hover>i {
-    color: #568692;
-}
-.project-list li a i {
-    float: right;
-    margin-top: 4px;
-    color: #fff;
-}
-.project-form-wrap {
-    width: 60%;
-    float: left;
-    margin-top: 20px;
-    padding-left: 20px;
-}
-.project-img-btn {
-    padding: 12px 0;
-    color: #777;
-    border: dotted 2px #aaa;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-}
-.project-img-btn:hover {
-    color: #555;
-    border-color: #555;
-}
-.add-project-title {
-    padding-bottom: 5px;
+.add-theme-form {
     margin-bottom: 20px;
+}
+.add-theme-form .devices-field {
+    border-bottom: solid 2px #aaa;
+}
+.add-theme-form .devices-col {
+    width: 33.33333333%;
+    float: left;
+}
+.add-theme-form .devices-col label {
+    float: left;
+    font-weight: normal;
+    cursor: pointer;
+}
+.add-theme-form .devices-col .custom-control-indicator {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+}
+.add-theme-form .devices-col .custom-control-description {
     color: #555;
+    font-size: 15px;
+    margin-top: 1px;
+}
+.add-theme-form .theme-expertise {
+    min-height: 155px;
+    padding: 5px 0;
+}
+.add-theme-form .theme-expertise option {
+    padding: 3px 10px;
+    color: #555;
+}
+.settings-theme-tree {
+    max-width: 1250px;
+    margin: auto;
+}
+.ur-theme-title-wrap {
+    max-width: 1220px;
+    margin: 60px auto;
+}
+.ur-theme-title-inside {
+    margin-bottom: 60px;
+    position: relative;
     border-bottom: solid 2px #ccc;
+}
+.ur-theme-title-inside>h3 {
+    position: absolute;
+    width: 320px;
+    left: 50%;
+    margin-left: -160px;
+    margin-top: -12px;
+    text-align: center;
+    background-color: #f5f8fa;
+    font-size: 22px;
+    text-transform: uppercase;
+    color: #999;
 }
 @media (min-width: 769px) {
     /* Timeline */
@@ -901,12 +969,80 @@ body {background-color:#f5f8fa;}
         padding-right: 15px;
     }
 }
-
 @media screen and (max-width: 320px) {
     .settings-right ul>li {
         margin-right: 15px;
     }
     .timeline-content {
         width: 80% !important;
+    }
+}
+@media screen and (max-width: 1059px) {
+    .theme-tree {
+        max-width: 750px;
+    }
+    .theme-tree>li {
+        width: calc(100% / 3 - 30px);
+    }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1) and (max-device-width: 1024px) and (min-device-width: 768px) and (orientation: landscape) and (width: 1024px) {
+    .theme-tree {
+        max-width: 100%;
+    }
+    .theme-tree>li {
+        width: 212px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .current-activated-theme .screenshot {
+        width: 75%;
+    }
+}
+@media only screen and (max-width: 959px) {
+    .themes-inside {
+        padding: 15px;
+    }
+}
+@media screen and (max-width: 809px) {
+    .theme-tree {
+        max-width: 500px;
+    }
+    .theme-tree>li {
+        width: calc(100% / 2 - 30px);
+    }
+    .current-activated-theme .screenshot {
+        width: 100%;
+    }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1) and (max-device-width: 1024px) and (min-device-width: 768px) and (orientation: portrait) and (width: 768px) {
+    ol.theme-tree {
+        max-width: 100%;
+    }
+    ol.theme-tree>li {
+        width: 210px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+@media screen and (max-width: 530px) {
+    .theme-tree {
+        max-width: 545px;
+        margin: 0 auto;
+    }
+    .theme-tree>li {
+        width: 47.5%;
+        margin: 0 5% 5% 0;
+    }
+    .theme-tree>li:nth-of-type(2n) {
+        margin-right: 0;
+    }
+    .theme-tree>li>a>div.theme-leaf {
+        padding: 5px;
+    }
+    form.search-theme-frm>input {
+        width: 80%;
+    }
+    .load-more-btn {
+        padding: 12px 12px;
     }
 }

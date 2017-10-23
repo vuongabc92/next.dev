@@ -34,7 +34,7 @@
                             <li><a href="{{ route('front_login') }}"><span>{{ _t('login') }}</span></a></li>
                         @else
                             <li><a href="{{ route('front_logout') }}"><span>{{ _t('logout') }}</span></a></li>
-                            <li><a href="{{ route('front_settings') }}"><img src="{{ user()->userProfile->avatar() }}" class="avatar" /></a></li>
+                            <li><a href="{{ route('front_settings') }}"><img src="/{{ user()->userProfile->avatar() }}" class="avatar" /></a></li>
                         @endif
                     </ul>
                 </nav>

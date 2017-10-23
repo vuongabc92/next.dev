@@ -27,21 +27,24 @@
                 <div class="settings-field-wrapper devices-field">
                     <span class="_fwfl _tg5 _mb10 devices-title">{{ _t('theme.upload.themedevices') }}</span>
                     <div class="devices-col">
-                        <label>
-                            <input type="checkbox" name="devices[]" value="desktop"/>
-                            <span>{{ _t('theme.upload.themedesktop') }}</span>
+                        <label class="custom-control custom-checkbox current-co-chbox">
+                            <input type="checkbox" name="devices[]" value="desktop" class="custom-control-input"/>
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">{{ _t('theme.upload.themedesktop') }}</span>
                         </label>
                     </div>
                     <div class="devices-col">
-                        <label>
-                            <input type="checkbox" name="devices[]" value="tablet"/>
-                            <span>{{ _t('theme.upload.themetablet') }}</span>
+                        <label class="custom-control custom-checkbox current-co-chbox">
+                            <input type="checkbox" name="devices[]" value="tablet" class="custom-control-input"/>
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">{{ _t('theme.upload.themetablet') }}</span>
                         </label>
                     </div>
                     <div class="devices-col">
-                        <label>
-                            <input type="checkbox" name="devices[]" value="mobile"/>
-                            <span>{{ _t('theme.upload.thememobile') }}</span>
+                        <label class="custom-control custom-checkbox current-co-chbox">
+                            <input type="checkbox" name="devices[]" value="mobile" class="custom-control-input"/>
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">{{ _t('theme.upload.thememobile') }}</span>
                         </label>
                     </div>
                 </div>

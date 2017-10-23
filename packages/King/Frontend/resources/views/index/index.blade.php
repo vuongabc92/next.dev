@@ -20,7 +20,7 @@
         <div class="_fwfl themes-inside">
             @if($themes->count())
                 <ol class="_lsn _p0 _m0 theme-tree" @if (auth()->check()) data-go-lazy data-current="0" data-url="{{ route('front_themes_lazy') }}" @endif data-theme-details>
-                    @include('frontend::theme.theme-item')
+                    @include('frontend::settings.theme-item')
                 </ol>
             @endif
             

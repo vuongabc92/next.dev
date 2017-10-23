@@ -67,7 +67,11 @@
                             {!! Form::textarea('achievement', '', ['class' => 'settings-textarea', 'placeholder' => _t('setting.employment.achievement'), 'maxlength' => 500, 'rows' => 5]) !!}
                         </div>
                         <div class="settings-field-wrapper">
-                            {!! Form::checkbox('current_company', 1, 0, ['class' => '_fl _mr5', 'id' => 'current-company']) !!} <label class="_fwn _fl _ml5 settings-label" for="current-company">{{ _t('setting.employment.curcompany') }}</label>
+                            <label class="custom-control custom-checkbox current-co-chbox">
+                                {!! Form::checkbox('current_company', 1, 0, ['class' => 'custom-control-input', 'id' => 'current-company']) !!} 
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">{{ _t('setting.employment.curcompany') }}</span>
+                            </label>
                         </div>
                         
                         <button type="submit" class="btn _btn _btn-sm _btn-blue-navy _mr8">{{ _t('save') }}</button>
