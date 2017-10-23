@@ -737,7 +737,7 @@ body {background-color:#f5f8fa;}
 }
 /* Settings Theme */
 .settings-theme-wrap {
-    width: 1220px;
+    max-width: 1220px;
     margin: auto;
 }
 .add-new-theme-btn {
@@ -756,6 +756,9 @@ body {background-color:#f5f8fa;}
     position: absolute;
     right: 30px;
     border-radius: 0;
+}
+.current-activated-theme {
+    position: relative;
 }
 .current-activated-theme .screenshot {
     width: 100%;
@@ -954,6 +957,13 @@ body {background-color:#f5f8fa;}
         visibility: visible;
         opacity: 1;
     }
+    .settings-theme-wrap {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .current-activated-theme .settings-left {
+        margin-top: 52px;
+    }
 }
 @media screen and (max-width: 768px) { 
     .settings-wrapper {
@@ -993,9 +1003,6 @@ body {background-color:#f5f8fa;}
         width: 212px;
         margin-left: 10px;
         margin-right: 10px;
-    }
-    .current-activated-theme .screenshot {
-        width: 75%;
     }
 }
 @media only screen and (max-width: 959px) {
