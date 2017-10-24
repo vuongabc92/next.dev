@@ -39,5 +39,5 @@
         </div>
     </div>
 </div>
-@include('frontend::inc.theme-details-popup')
+@include('frontend::inc.popup-theme-details')
 @stop

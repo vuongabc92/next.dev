@@ -448,7 +448,7 @@ trait SaveSettings {
         $themePath   = $request->get('theme_path');
         $themeFolder = config('frontend.themesFolder');
         $themeName   = $request->get('theme_name');
-        $themeSlug   = str_slug($themeName, '_');
+        $themeSlug   = str_slug($themeName, '-');
         $devices     = $request->get('devices');
         $expertises  = array_filter($request->get('expertise_id'));
         $formData    = $request->all();
@@ -459,8 +459,7 @@ trait SaveSettings {
         }
         
         $formData['expertise_id'] = $expertises;
-        
-        $validator = validator($formData, $rules, $messages);
+        $validator                = validator($formData, $rules, $messages);
         
         $validator->after(function($validator) use($themePath, $themeFolder, $themeSlug, $devices) {
             if ( ! File::exists($themePath)) {
@@ -468,7 +467,7 @@ trait SaveSettings {
             }
             
             if (File::exists($themeFolder . '/' . $themeSlug)) {
-                $validator->errors()->add('theme_path', _t('theme.validate.themenameexi'));
+                $validator->errors()->add('theme_path', _t('theme.validate.themeslugexisted'));
             }
             
             if (is_array($devices) && count($devices)) {

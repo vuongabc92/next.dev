@@ -50,7 +50,7 @@ Route::group(['middleware' => 'web'], function ($route) {
     $route->get('/terms-and-conditions', 'IndexController@termsAndConditions')->name('front_terms_conditions');
     
     $route->get('themes', 'SettingsController@lazyLoadTheme')->name('front_themes_lazy');
-    $route->get('theme/{theme_id}/popup_details', 'SettingsController@themeDetails')->name('front_theme_details')->where('theme_id', '[0-9]+');
+    $route->get('theme/{slug}/details', 'SettingsController@themeDetails')->name('front_theme_details');
     
     $route->get('i/{slug?}', 'ResumeController@index')->name('front_cv');
 });

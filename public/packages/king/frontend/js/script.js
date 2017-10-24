@@ -349,6 +349,71 @@ var HELPERS = {
 
 }(jQuery);
 
++function ($) {
+    'use strict';
+    
+    var InstallTheme = function (el) {
+        var that = this;
+        $(el).on('submit', function(e){
+            
+            that.install;
+            e.preventDefault();
+        });
+    };
+
+    InstallTheme.VERSION = '1.0';
+
+    InstallTheme.prototype.install = function(e) {
+        
+        var $this = $(this),
+            btn   = $this.find('button'),
+            cvUrl = $this.find('input[name=cv_url]').val();
+            
+        $.ajax({
+            type: 'post',
+            url: $this.attr('action'),
+            data: $this.serialize(),
+            beforeSend: function() {
+                btn.loading();
+            },
+            success: function(response){
+                if (response.status === 'OK') {
+                    btn.loading('finish');
+
+                    var win = window.open(cvUrl, '_blank');
+
+                    if (win) {
+                        win.focus();
+                    } else {
+                        alert('Sorry for this inconvenience. Please allow popups to view your CV.');
+                    }
+                } else {
+                    btn.loading('stop');
+                }
+            },
+            error: function(xhr, status, error) {
+                btn.loading('stop');
+                HELPERS.message.error($.parseJSON(xhr.responseText).message);
+            }
+        });
+    };
+
+    function Plugin(option, _relatedTarget) {
+        return this.each(function () {
+            var $this = $(this)
+            var data  = $this.data('install-theme')
+            
+            if (!data) $this.data('install-theme', (data = new InstallTheme(this)))
+            if (option === undefined) data['install'](_relatedTarget)
+            if (typeof option == 'string') data[option](_relatedTarget)
+        });
+    }
+
+    $.fn.installTheme             = Plugin;
+    $.fn.installTheme.Constructor = InstallTheme;
+
+}(jQuery);
+
 /**
  *  @name Required
  *  @description
@@ -1056,7 +1121,7 @@ var HELPERS = {
                             if (typeof data !== 'undefined' && typeof data.socials !== 'undefined') {
                                 modal.find('form')[0].reset();
                                 modal.find('#socialModalLabel').html(modalTitle);
-                                 modal.find('.selecter').kingSelecter('reset');
+                                modal.find('.selecter').kingSelecter('reset');
                                 modal.modal('hide');
                                 
                                 $.each(data.socials, function(k, v){
@@ -1068,37 +1133,12 @@ var HELPERS = {
                         }
                         
                         if (formType === '_THEME') {
-                            var addThemeModal = $('#addThemeModal'),
-                                tabYourThemes = $('#navTabYourThemes'),
-                                themeLeafHtml = $('#themeItemTemplate'),
-                                themeDetails  = response.data,
-                                viewModeItems = '';
+                            var addThemeModal = $('#addThemeModal');
                         
                             addThemeModal.find('#uploadThemeBtn').removeClass('_btn-white').addClass('_btn-blue').prop('disabled', false);
                             addThemeModal.find('input[name=theme_path]').val('');
                             addThemeModal.find('form')[0].reset();
                             addThemeModal.modal('hide');
-                            themeLeafHtml.find('a').attr('href', themeDetails.url_details);
-                            themeLeafHtml.find('img').attr('src', themeDetails.screenshot);
-                            
-                            if(themeDetails.devices.lenght) {
-                                themeDetails.devices.each(function(k, v){
-                                    viewModeItems = viewModeItems + '<li><i class="fa fa-' + v + '"></i></li>';
-                                });
-                                
-                                themeLeafHtml.find('.view-mode-list').html(viewModeItems);
-                            } else {
-                                themeLeafHtml.find('.view-mode-wrap').addClass('_dn');
-                            }
-                            themeLeafHtml.find('.theme-dataOverlay h3').html(themeDetails.name);
-                            themeLeafHtml.find('.theme-dataOverlay span').html(themeDetails.desc);
-                            
-                            $('#uploadedThemeTree').append(themeLeafHtml.html());
-                            tabYourThemes.click();
-                            
-                            $('html, body').animate({
-                                scrollTop: $('#uploadedThemeTree li:last-child').offset().top
-                            }, 1000);
                         }
                         
                         HELPERS.message.success(response.message);
@@ -2471,26 +2511,13 @@ var HELPERS = {
                 type: 'GET',
                 url: url,
                 success: function(response) {
-                    var data = response.data;
-                    that.fillModal(data);
+                    //var data = response.data;
+                    modal.find('.modal-body').html(response);
+                    //that.fillModal(data);
 
                     modal.modal('show');
                 }
             });
-        },
-        fillModal: function(data) {
-            var modal = $('#themeDetailsModal');
-            
-            modal.find('#themeAuthorAvatar').find('img').attr('src', data.author.avatar);
-            modal.find('#themeScreenshot').find('img').attr('src', data.screenshot);
-            modal.find('#themeDetailsHeader').find('.theme-by a').html(data.author.name);
-            modal.find('#themeDetailsHeader').find('.theme-date span').html(data.created_at);
-            modal.find('#themeDetailsHeader').find('#themeVersion').html(data.version);
-            modal.find('#themeDetailsHeader').find('#themeName').html(data.theme_name);
-            modal.find('#themeDesc').html(data.description);
-            modal.find('#themeAction').find('input[name=theme_id]').val(data.theme_id);
-            modal.find('#themePreviewBtn').attr('href', data.preview_url);
-            modal.find('#themeAction').find('#themePreviewBtn').attr('href', data.preview_url);
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

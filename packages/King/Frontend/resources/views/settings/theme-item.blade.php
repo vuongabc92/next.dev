@@ -1,7 +1,7 @@
 @if($themes->count())
     @foreach($themes as $theme)
         <li>
-            <a href="{{ route('front_theme_details', ['theme_id' => $theme->id]) }}" data-theme-details>
+            <a href="{{ route('front_theme_details', ['slug' => $theme->slug]) }}" data-theme-details>
             <div class="theme-leaf">
                 <img src="/{{ $theme->getThumbnail() }}" class="screenshot"/>
                 <div class="quick-info">

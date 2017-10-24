@@ -517,27 +517,40 @@ class SettingsController extends FrontController {
         return pong(['html' => view('frontend::settings.theme-item', ['themes' => $themes])->render(), 'is_next' => $nextPage->count()]);
     }
     
-    public function themeDetails($themeId) {
-        $theme       = Theme::find($themeId);
-        $userProfile = $theme->user->userProfile;
+    public function themeDetails($slug, Request $request) {
+        
+        $theme = Theme::where('slug', $slug)->first();
         
         if ( $theme !== null ) {
-            return pong(['data' => [
-                'theme_id'   => $theme->id,
-                'theme_name'  => $theme->name,
-                'screenshot'  => '/' . $theme->getScreenshot(),
-                'version'     => $theme->version,
-                'description' => $theme->description,
-                'created_at'  => $theme->createdAtFormat('M d, Y'),
-                'preview_url' => route('front_theme_preview', ['slug' => $theme->slug]),
-                'author'      => [
-                    'name'   => (empty($userProfile->first_name)) ? $theme->user->username : $userProfile->first_name . ' ' . $userProfile->last_name,
-                    'avatar' => asset($userProfile->avatar())
-                ]
-            ]]);
+            $userProfile = $theme->user->userProfile;
+            
+            if ($request->ajax()) {
+                return view('frontend::inc.popup-theme-details', [
+                    'theme'       => $theme,
+                    'userProfile' => $userProfile
+                ]);
+//                return pong(['data' => [
+//                    'theme_id'   => $theme->id,
+//                    'theme_name'  => $theme->name,
+//                    'screenshot'  => asset($theme->getScreenshot()),
+//                    'version'     => $theme->version,
+//                    'description' => $theme->description,
+//                    'created_at'  => $theme->createdAtFormat('M d, Y'),
+//                    'preview_url' => route('front_theme_preview', ['slug' => $theme->slug]),
+//                    'author'      => [
+//                        'name'   => (empty($userProfile->first_name)) ? $theme->user->username : $userProfile->first_name . ' ' . $userProfile->last_name,
+//                        'avatar' => asset($userProfile->avatar())
+//                    ]
+//                ]]);
+            } else {
+                return view('frontend::settings.theme-details', [
+                    'theme'       => $theme,
+                    'userProfile' => $userProfile
+                ]);
+            }
         }
         
-        return pong(['message' => _t('oops')], _error(), 403);
+        abort(404);
     }
     
     /**
@@ -591,6 +604,15 @@ class SettingsController extends FrontController {
                         $error = $this->checkThemeFilesCorrect($storagePath . '/' . $fileStr, $storagePath . '/' . $fileName);
                         
                         if ($error !== true) {
+                            
+                            if (file_exists($storagePath . '/' . $fileStr)) {
+                                File::deleteDirectory($storagePath . '/' . $fileStr);
+                            }
+                            
+                            if(File::exists($storagePath . '/' . $fileName)) {
+                                File::delete($storagePath . '/' . $fileName);
+                            }
+                            
                             return file_pong(['message' => $error], _error(), 403);
                         }
                         
