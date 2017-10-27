@@ -28,7 +28,7 @@
         </a>
     </li>
     <li class="nav-link-last">
-        <a href="{{ route('front_settings_theme') }}">
+        <a href="{{ route('front_settings_theme') }}" {{ check_route_name('front_settings_theme') ? 'class=active' : '' }}>
             <i class="fa fa-th"></i>
             <strong>{{ _t('setting.nav.theme') }}</strong>
             <span class="nav-link-help">{{ _t('setting.nav.theme_help') }}</span>

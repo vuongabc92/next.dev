@@ -191,7 +191,14 @@
     font-size: 30px;
     display: none;
 }
-
+.theme-details-wrap {
+    max-width: 890px;
+    padding: 0 15px;
+    margin: 50px auto;
+}
+.theme-details-inside {
+    padding-bottom: 30px;
+}
 /*@media screen and (max-width: 2059px) {
     .theme-tree {
         max-width: 1750px;

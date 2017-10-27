@@ -525,23 +525,10 @@ class SettingsController extends FrontController {
             $userProfile = $theme->user->userProfile;
             
             if ($request->ajax()) {
-                return view('frontend::inc.popup-theme-details', [
+                return view('frontend::inc.theme-details', [
                     'theme'       => $theme,
                     'userProfile' => $userProfile
                 ]);
-//                return pong(['data' => [
-//                    'theme_id'   => $theme->id,
-//                    'theme_name'  => $theme->name,
-//                    'screenshot'  => asset($theme->getScreenshot()),
-//                    'version'     => $theme->version,
-//                    'description' => $theme->description,
-//                    'created_at'  => $theme->createdAtFormat('M d, Y'),
-//                    'preview_url' => route('front_theme_preview', ['slug' => $theme->slug]),
-//                    'author'      => [
-//                        'name'   => (empty($userProfile->first_name)) ? $theme->user->username : $userProfile->first_name . ' ' . $userProfile->last_name,
-//                        'avatar' => asset($userProfile->avatar())
-//                    ]
-//                ]]);
             } else {
                 return view('frontend::settings.theme-details', [
                     'theme'       => $theme,

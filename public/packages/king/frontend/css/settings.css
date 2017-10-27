@@ -872,40 +872,7 @@ body {background-color:#f5f8fa;}
     text-transform: uppercase;
     color: #999;
 }
-.theme-details-wrap {
-    max-width: 890px;
-    padding: 0 15px;
-    margin: 50px auto;
-}
 
-.theme-details-wrap img.screenshot{
-    width: 100%;
-    float: left;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-ul.theme-devices {
-    right: 30px;
-    top: 30px;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-ul.theme-devices>li {
-    width: 34px;
-    height: 30px;
-    float: left;
-    display: inline-block;
-    color: #fff;
-    text-align: center;
-    line-height: 32px;
-    border-right: solid 1px #555;
-}
-ul.theme-devices>li:last-child {
-    border-right: none;
-}
 @media (min-width: 769px) {
     /* Timeline */
     .timeline:before {

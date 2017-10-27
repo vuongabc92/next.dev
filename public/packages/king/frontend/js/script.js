@@ -353,48 +353,49 @@ var HELPERS = {
     'use strict';
     
     var InstallTheme = function (el) {
-        var that = this;
-        $(el).on('submit', function(e){
-            
-            that.install;
-            e.preventDefault();
-        });
+        this.$element = $(el);
+        this.install;
     };
 
     InstallTheme.VERSION = '1.0';
 
     InstallTheme.prototype.install = function(e) {
         
-        var $this = $(this),
-            btn   = $this.find('button'),
-            cvUrl = $this.find('input[name=cv_url]').val();
+        this.$element.on('submit', function(e) {
             
-        $.ajax({
-            type: 'post',
-            url: $this.attr('action'),
-            data: $this.serialize(),
-            beforeSend: function() {
-                btn.loading();
-            },
-            success: function(response){
-                if (response.status === 'OK') {
-                    btn.loading('finish');
+            e.preventDefault();
+            
+            var $this = $(this),
+                btn   = $this.find('button'),
+                cvUrl = $this.find('input[name=cv_url]').val();
+            
+            $.ajax({
+                type: 'post',
+                url: $this.attr('action'),
+                data: $this.serialize(),
+                beforeSend: function() {
+                    btn.loading();
+                },
+                success: function(response){
+                    if (response.status === 'OK') {
+                        btn.loading('finish');
 
-                    var win = window.open(cvUrl, '_blank');
+                        var win = window.open(cvUrl, '_blank');
 
-                    if (win) {
-                        win.focus();
+                        if (win) {
+                            win.focus();
+                        } else {
+                            alert('Sorry for this inconvenience. Please allow popups to view your CV.');
+                        }
                     } else {
-                        alert('Sorry for this inconvenience. Please allow popups to view your CV.');
+                        btn.loading('stop');
                     }
-                } else {
+                },
+                error: function(xhr, status, error) {
                     btn.loading('stop');
+                    HELPERS.message.error($.parseJSON(xhr.responseText).message);
                 }
-            },
-            error: function(xhr, status, error) {
-                btn.loading('stop');
-                HELPERS.message.error($.parseJSON(xhr.responseText).message);
-            }
+            });
         });
     };
 
@@ -2386,41 +2387,7 @@ var HELPERS = {
 
     Plugin.prototype = {
         init: function() {
-        
-            this.element.on('submit', function(){
-                var btn   = $(this).find('button'),
-                    cvUrl = btn.parent('form').find('input[name=cv_url]').val();
-                
-                $.ajax({
-                    type: 'post',
-                    url: $(this).attr('action'),
-                    data: $(this).serialize(),
-                    beforeSend: function() {
-                        btn.loading();
-                    },
-                    success: function(response){
-                        if (response.status === 'OK') {
-                            btn.loading('finish');
-                            
-                            var win = window.open(cvUrl, '_blank');
-                            
-                            if (win) {
-                                win.focus();
-                            } else {
-                                alert('Sorry for this inconvenience. Please allow popups to view your CV.');
-                            }
-                        } else {
-                            btn.loading('stop');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        btn.loading('stop');
-                        HELPERS.message.error($.parseJSON(xhr.responseText).message);
-                    }
-                });
-                
-                return false;
-            });
+            this.element.installTheme();
         },
         destroy: function() {
             $.removeData(this.element[0], pluginName);

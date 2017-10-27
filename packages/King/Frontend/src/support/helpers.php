@@ -464,8 +464,8 @@ if ( ! function_exists('asset_img') ) {
     }
 }
 
-if ( ! function_exists('random_page_header_image')) {
-    function ramdon_user_banner() {
-        str_random($length);
+if ( ! function_exists('check_route_name')) {
+    function check_route_name($route_name) {
+        return request()->route()->getName() === $route_name;
     }
 }
