@@ -182,10 +182,12 @@ class ThemeCompiler extends Compiler {
         'EMAIL',
         'EXPECTED_JOB',
         'FIRST_NAME',
+        'FIRST_NAME_LETTER',
         'FULL_NAME',
         'GENDER',
         'HOBBIES',
         'LAST_NAME',
+        'LAST_NAME_LETTER',
         'MONTH_OF_BIRTH',
         'MARITAL_STATUS',
         'PHONE_NUMBER',
@@ -544,12 +546,30 @@ class ThemeCompiler extends Compiler {
     }
     
     /**
+     * Compile first name first letter
+     * 
+     * @return string 
+     */
+    protected function compileFirstNameLetter() {
+        return substr($this->resume->getFirstName(), 0, 1);
+    }
+    
+    /**
      * Compile last name
      * 
      * @return string 
      */
     protected function compileLastName() {
         return $this->resume->getLastName();
+    }
+    
+    /**
+     * Compile last name
+     * 
+     * @return string 
+     */
+    protected function compileLastNameLetter() {
+        return substr($this->resume->getLastName(), 0, 1);
     }
     
     /**
