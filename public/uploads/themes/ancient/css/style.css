@@ -293,4 +293,8 @@ footer>.personal-logo>span::before {
     div.body>.right {
         margin-top: 50px;
     }
+    .skills b i {
+        left: 0;
+    }
+    
 }

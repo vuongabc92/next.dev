@@ -275,7 +275,7 @@ return [
     'theme.validate.devicesin' => "CHEATING!!! We don't have those devices.",
     'theme.validate.expertise_idexi' => "You are trying to add an unexisted expertise. Cheating???",
     'theme.validate.moveziperror' => "So sorry for this inconvenience, please try one more time.",
-    'theme.validate.themeslugexisted' => "So sorry for this inconvenience, please try one more time.",
+    'theme.validate.themeslugexisted' => "The theme's name already existed, sorry for this inconvenience.",
     'theme.bar.your' => 'Your themes',
     'theme.bar.all' => 'All themes',
     'theme.bar.popular' => 'Popular themes',
