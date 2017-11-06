@@ -62,6 +62,13 @@ class ThemeCompiler extends Compiler {
     protected $foreachPatterm = '/foreach(.*)/';
     
     /**
+     * Array of opening and closing tags config regular echos.
+     *
+     * @var array
+     */
+    protected $configPatterm = '/config/';
+    
+    /**
      * Experience variables name
      * 
      * @var string 
@@ -272,12 +279,25 @@ class ThemeCompiler extends Compiler {
                 $method .= 'Foreach';
             }
             
+            if (preg_match($this->configPatterm, trim($matches[1]))) {
+                $method .= 'Config';
+            }
+            
             return $this->$method($matches);
         };
         
         return preg_replace_callback($pattern, $callback, $contents);
     }
     
+    protected function compileConfig($pregMatch) {
+        if (preg_match('/config/', $pregMatch[1], $matches)) {
+            $content = $matches[0];
+            
+            dd($content);
+        }
+    }
+
+
     /**
      * Compile foreach statement
      * 
@@ -287,7 +307,7 @@ class ThemeCompiler extends Compiler {
      */
     protected function compileForeach($pregMatch) {
         if (preg_match('/foreach\((.*?)\)/', $pregMatch[1], $matches)) {
-            
+            dd($pregMatch);
             $content = $matches[0];
             
             switch (strtolower(trim($matches[1]))) {
