@@ -35,7 +35,7 @@
                     {{ _t('theme.install') }}
                 </button>
             </form>
-            <a href="#" class="btn _btn _btn-gray" target="_blank" id="themePreviewBtn">{{ _t('theme.preview') }}</a>
+            <a href="{{ route('front_theme_preview', $theme->slug) }}" class="btn _btn _btn-gray" target="_blank" id="themePreviewBtn">{{ _t('theme.preview') }}</a>
         </div>
     </div>
     @endif

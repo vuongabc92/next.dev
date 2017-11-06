@@ -293,9 +293,16 @@ class ThemeCompiler extends Compiler {
     
     protected function compileConfig($pregMatch) {
         if (preg_match('/config/', $pregMatch[1], $matches)) {
-            $content = $matches[0];
             
-            dd($content);
+            $config = [];
+            
+            $config[] = preg_replace_callback('/\[\[(.*?)\]\]/s', function($matchess) {
+               
+                return trim($matchess[]);
+                
+            }, $pregMatch[2]);
+            
+            dd($config);
         }
     }
 
@@ -309,7 +316,6 @@ class ThemeCompiler extends Compiler {
      */
     protected function compileForeach($pregMatch) {
         if (preg_match('/foreach\((.*?)\)/', $pregMatch[1], $matches)) {
-            dd($pregMatch);
             $content = $matches[0];
             
             switch (strtolower(trim($matches[1]))) {
