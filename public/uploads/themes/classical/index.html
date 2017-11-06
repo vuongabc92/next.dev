@@ -27,7 +27,7 @@
                             <div class="personal-logo">
                                 <div class="personal-logo-inside">
                                     <div class="personal-logo-dotted">
-                                        LN
+                                        {{FIRST_NAME_LETTER}}{{LAST_NAME_LETTER}}
                                     </div>
                                 </div>
                             </div>
@@ -78,12 +78,44 @@
                                     <ul class="_fwfl _lsn history-list">
                                         {% foreach(experiences) %}
                                         <li>
-                                            <h4>[[POSITION]] <span class="separator">//</span> [[COMPANY_NAME]] <span class="time"><i class="fa fa-calendar"></i> [[TIME_LETTER]]</span></h4>
+                                            <h4><span class="exp-head">[[POSITION]] <span class="separator">//</span> [[COMPANY_NAME]]</span> <span class="time"><i class="fa fa-calendar"></i> [[TIME_LETTER]]</span></h4>
                                             <div>[[DESCRIPTION]]</div>
                                             <div class="exp-border"></div>
                                         </li>
                                         {% endforeach %}
                                     </ul>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="_fwfl content-wrap">
+                            <div class="title">
+                                <div class="_fwfl title-bg">
+                                    <h4>Education</h4>
+                                </div>
+                            </div>
+                            <div class="_fwfl content-box">
+                                <div class="exp-wrap">
+                                    <ul class="_fwfl _lsn history-list">
+                                        {% foreach(education) %}
+                                        <li>
+                                            <h4>[[SUBJECT]] <span class="separator">//</span> [[QUALIFICATION]] <span class="time"><i class="fa fa-calendar"></i> [[TIME_LETTER]]</span></h4>
+                                            <div>[[COLLEGE_NAME]]</div>
+                                            <div class="exp-border"></div>
+                                        </li>
+                                        {% endforeach %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="_fwfl content-wrap">
+                            <div class="title">
+                                <div class="_fwfl title-bg">
+                                    <h4>Interest</h4>
+                                </div>
+                            </div>
+                            <div class="_fwfl content-box">
+                                <div class="_fwfl hobbies">
+                                    {{HOBBIES}}
                                 </div>
                             </div>
                         </section>

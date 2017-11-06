@@ -1,0 +1,10 @@
+body {
+    background-color: #fff;
+}
+.wrapper {
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    margin: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}

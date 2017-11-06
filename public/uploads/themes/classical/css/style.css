@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700&subset=vietnamese');
 @import url('https://fonts.googleapis.com/css?family=Sacramento');
 
 /* Common Classes */
@@ -40,8 +40,12 @@ main {
 }
 .wrapper {
     width: 100%;
+    margin-top: 100px;
+    margin-bottom: 50px;
     float: left;
     background-color: #fcfcfc;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 .wrapper-inside {
     padding: 10px;
@@ -90,7 +94,8 @@ header {
     color: #eee;
     line-height: 90px;
     font-size: 30px;
-    font-family: 'Sacramento', cursive;;
+    font-family: 'Sacramento', cursive;
+    text-transform: uppercase;
 }
 .personal-info {
     text-align: center;
@@ -121,7 +126,7 @@ header {
 }
 .social-list:before {
     position: absolute;
-    width: 500px;
+    max-width: 500px;
     height: 2px;
     top: 13px;
     left: 50%;
@@ -165,7 +170,7 @@ header {
     margin-bottom: 0;
 }
 .content-wrap>.title {
-    width: 500px;
+    max-width: 500px;
     margin: auto;
     text-align: center;
 }
@@ -178,7 +183,7 @@ header {
     margin: 0;
     background-color: #fcfcfc;
     display: initial;
-    padding: 0px 5px;
+    padding: 0px 10px;
     text-transform: uppercase;
     font-weight: 700;
     line-height: 24px;
@@ -207,13 +212,14 @@ header {
     width: 100%;
     float: left;
     margin-top: 5px;
-    height: 6px;
-    background-color: #eae1d7;
+    height: 7px;
+    border: solid 1px #9c938a;
 }
 .skill-list>li>b>i {
     display: block;
-    height: 6px;
+    height: 5px;
     margin: auto;
+    background-color: #b7b0a9;
 }
 .skill-list>li>b>i.rate-1 {width: 20%;}
 .skill-list>li>b>i.rate-2 {width: 40%;}
@@ -221,29 +227,8 @@ header {
 .skill-list>li>b>i.rate-4 {width: 80%;}
 .skill-list>li>b>i.rate-5 {width: 100%;}
 
-.skill-list>li:nth-child(1)>b>i {background-color: #79c7de;}
-.skill-list>li:nth-child(2)>b>i {background-color: #a1d0ca;}
-.skill-list>li:nth-child(3)>b>i {background-color: #bfad63;}
-.skill-list>li:nth-child(4)>b>i {background-color: #ec94c7;}
-.skill-list>li:nth-child(5)>b>i {background-color: #cc91d6;}
-.skill-list>li:nth-child(6)>b>i {background-color: #deb18b;}
-.skill-list>li:nth-child(7)>b>i {background-color: #5eb986;}
-.skill-list>li:nth-child(8)>b>i {background-color: #5c70f5;}
-.skill-list>li:nth-child(9)>b>i {background-color: #cc8ebf;}
-.skill-list>li:nth-child(10)>b>i {background-color: #79c7de;}
-.skill-list>li:nth-child(11)>b>i {background-color: #a1d0ca;}
-.skill-list>li:nth-child(12)>b>i {background-color: #bfad63;}
-.skill-list>li:nth-child(13)>b>i {background-color: #e8c7da;}
-.skill-list>li:nth-child(14)>b>i {background-color: #ccb3d0;}
-.skill-list>li:nth-child(15)>b>i {background-color: #deb18b;}
-.skill-list>li:nth-child(16)>b>i {background-color: #5eb986;}
-.skill-list>li:nth-child(17)>b>i {background-color: #5c70f5;}
-.skill-list>li:nth-child(18)>b>i {background-color: #cc8ebf;}
-.skill-list>li:nth-child(19)>b>i {background-color: #79c7de;}
-.skill-list>li:nth-child(20)>b>i {background-color: #a1d0ca;}
-
 .exp-wrap {
-    width: 700px;
+    max-width: 700px;
     margin: auto;
 }
 .history-list {
@@ -275,4 +260,38 @@ header {
 }
 .history-list .separator {
     letter-spacing: -4px;
+}
+.hobbies {
+    padding: 20px 0;
+    text-align: center;
+}
+@media screen and (max-width: 1024px) {
+    main {
+        width: 100%;
+        float: left;
+    }
+    .wrapper {
+        margin: 0;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+    }
+}
+@media screen and (max-width: 480px) {
+    .wrapper-inside {
+        padding: 0;
+    }
+    .main-container {
+        border: none;
+    }
+    .personal-logo {
+        margin: 30px auto;
+    }
+    .personal-info h1 {
+        font-size: 36px;
+    }
+    .contact-info>li {
+        width: 100%;
+        float: left;
+        margin-bottom: 3px;
+    }
 }
