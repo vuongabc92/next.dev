@@ -107,7 +107,7 @@ return [
         'margin-left'    => 0,
         'binary'         => 'wkhtmltopdf\bin\wkhtmltopdf.exe',
         'page-size'      => 'A4',
-        'viewport-size'  => '1920x1080',
+        'viewport-size'  => '1366x768',
         'ignoreWarnings' => true,
         'commandOptions' => array(
             'useExec' => true,
@@ -115,7 +115,7 @@ return [
                 'LANG' => 'en_US.utf-8',
             ),
         )
-    ],
+    ],//More config from https://wkhtmltopdf.org/usage/wkhtmltopdf.txt
     'lazy_loading' => [
         'per_page' => 5
     ]

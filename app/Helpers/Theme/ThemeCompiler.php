@@ -2,6 +2,7 @@
 namespace App\Helpers\Theme;
 
 use Carbon\Carbon;
+use App\Helpers\Theme\Config;
 
 class ThemeCompiler extends Compiler {
     
@@ -206,6 +207,14 @@ class ThemeCompiler extends Compiler {
     ];
     
     /**
+     * Theme configuration
+     *
+     * @var array 
+     */
+    protected $configuration;
+    protected $configPdf;
+
+    /**
      * Compile the view at the given path.
      *
      * @param bool $isDownload Compile for download or preview.
@@ -232,6 +241,26 @@ class ThemeCompiler extends Compiler {
      */
     public function compileDownload() {
         return $this->compile($isDownload = true);
+    }
+    
+    /**
+     * Get theme configuration
+     * 
+     * @return array
+     */
+    public function getConfig() {
+        return $this->configuration;
+    }
+    
+    /**
+     * Get theme configuration
+     * 
+     * @return array
+     */
+    public function getConfigPdf() {
+        $config = new Config($this->configuration);
+        
+        return $config->getConfigPdf();
     }
     
     /**
@@ -291,21 +320,28 @@ class ThemeCompiler extends Compiler {
         return preg_replace_callback($pattern, $callback, $contents);
     }
     
+    /**
+     * Compile configuration
+     * 
+     * @param string $pregMatch Config raw
+     * 
+     * @param type $pregMatch
+     */
     protected function compileConfig($pregMatch) {
-        if (preg_match('/config/', $pregMatch[1], $matches)) {
-            
-            $config = [];
-            
-            $config[] = preg_replace_callback('/\[\[(.*?)\]\]/s', function($matchess) {
-               
-                return trim($matchess[]);
-                
-            }, $pregMatch[2]);
-            
-            dd($config);
+        $config    = [];
+        $configRaw = isset($pregMatch[2]) ? $pregMatch[2] : '';
+        $configTag = isset($pregMatch[1]) ? $pregMatch[1] : '';
+        
+        if (preg_match('/config/', $configTag)) {
+            preg_replace_callback('/\[\[(.*?)\]\]/s', function($matches) use (&$config) {
+                if (isset($matches[1])) {
+                    $config[] = trim($matches[1]);
+                }
+            }, $configRaw);
         }
+        
+        $this->configuration = $config;
     }
-
 
     /**
      * Compile foreach statement

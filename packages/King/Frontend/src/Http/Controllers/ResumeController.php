@@ -42,9 +42,9 @@ class ResumeController extends FrontController {
             }
         }
         
-        $resume     = $this->generateResumeData($userProfile->user_id);
-        $compiler   = new ThemeCompiler(new Filesystem, $resume, $themeName);
-        $contents   = $compiler->compile();
+        $resume   = $this->generateResumeData($userProfile->user_id);
+        $compiler = new ThemeCompiler(new Filesystem, $resume, $themeName);
+        $contents = $compiler->compile();
         
         if ( ! $contents) {
             abort(404);
@@ -96,6 +96,7 @@ class ResumeController extends FrontController {
         $resume      = $this->generateResumeData(user_id());
         $compiler    = new ThemeCompiler(new Filesystem, $resume, $slug);
         $contents    = $compiler->compileDownload();
+        dd($compiler->getConfigPdf());
         $wkhtmltopdf = config('frontend.wkhtmltopdf');
         $pdf         = new Pdf($wkhtmltopdf);
         $fileName    = 'cv_' . $resume->getFirstName() . $resume->getLastName() . '_' . date('dmy') . '.pdf';
