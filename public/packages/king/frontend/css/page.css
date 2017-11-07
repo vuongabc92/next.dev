@@ -36,7 +36,7 @@ handle italics with font-style: italic (no italics available for Black)
 .page-header {
     position: relative;
     padding-bottom: 34%;
-    margin-bottom: 70px;
+    margin-bottom: 50px;
     width: 100%;
     background-color: #e5e5e5;
     background-size: cover;
@@ -65,7 +65,6 @@ handle italics with font-style: italic (no italics available for Black)
     text-align: center;
 }
 .page-content {
-    margin-top: 50px;
     font-size: 20px;
 }
 .page-inside {

@@ -1,5 +1,14 @@
 body {background-color: #fff;}
+main {
+    margin: 0;
+}
 .wrapper {
     box-shadow: none;
     -webkit-box-shadow: none;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    margin-bottom: 0;
+}
+header {
+    padding-top: 40px;
 }

@@ -1,3 +1,9 @@
+{% config %}
+    [[ pdf_margin_top:0 ]]
+    [[ pdf_margin_right:0 ]]
+    [[ pdf_margin_bottom:0 ]]
+    [[ pdf_margin_left:0 ]]
+{% end_config %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,11 +12,6 @@
         <title>{{ FIRST_NAME }} {{ LAST_NAME }}</title>
         <link rel="stylesheet" href="{{ ASSET }}/css/app.css">
         <link rel="stylesheet" href="{{ ASSET }}/css/style.css">
-        <style>
-            body {
-                background-image: url('{{ ASSET }}/images/bg.png');
-            }
-        </style>
     </head>
 
     <body>
@@ -41,7 +42,6 @@
                                     <p class="time-content">[[ DESCRIPTION ]]</p>
                                 </div>
                             {% endforeach %}
-                            
                         </div>
                     </section>
                     <section class="content-row">

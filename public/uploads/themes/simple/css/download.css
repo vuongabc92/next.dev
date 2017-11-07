@@ -1,6 +1,8 @@
+body {
+    background-color: #fff;
+}
 main {
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 0;
 }
 .wrapper {
     box-shadow: none;

@@ -28,12 +28,11 @@
   -webkit-box-sizing: border-box;
 }
 body {
-    background-size: cover;
-    background-position: center center;
+    background-color: #d8778e;
     font-family: 'Roboto Mono', monospace;
 }
 main {
-    width: 1200px;
+    width: 1000px;
     margin: 100px auto;
 }
 .wrapper {
@@ -41,13 +40,15 @@ main {
     float: left;
     margin-bottom: 100px;
     background-color: #fff;
-    box-shadow: -30px 30px 80px rgba(0, 0, 0, 0.31);
-    -webkit-box-shadow: -30px 30px 80px rgba(0, 0, 0, 0.31);
+    box-shadow: -30px 30px 80px rgba(0, 0, 0, 0.38);
+    -webkit-box-shadow: -30px 30px 80px rgba(0, 0, 0, 0.38);
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
 }
 .wrapper .left {
-    width: 65%;
+    width: 63%;
     float: left;
-    padding: 80px;
+    padding: 80px 35px;
     border-right: solid 1px #ddd;
 }
 .header {
@@ -66,8 +67,8 @@ main {
     border-radius: 50%;
 }
 .name-job-address {
-    float: left;
-    margin-left: 35px;
+    height: 110px;
+    margin-left: 130px;
 }
 .name-job-address h1 {
     margin: 0;
@@ -141,9 +142,9 @@ main {
     color: #111;
 }
 .wrapper .right {
-    width: 35%;
+    width: 37%;
     float: right;
-    padding: 65px 40px 80px 40px;
+    padding: 65px 35px 80px 35px;
 }
 .details {
     width: 100%;
@@ -202,7 +203,6 @@ main {
 
 @media screen and (max-width: 1024px) {
     body {
-        background-image: none !important;
         background-color: #fff;
     }
     main {
@@ -213,12 +213,13 @@ main {
     .wrapper {
         margin-bottom: 0;
         box-shadow: none;
+        -webkit-box-shadow: none;
     }
     .wrapper .left {
-        padding: 50px;
+        padding: 50px 35px;
     }
     .wrapper .right {
-        padding: 35px 40px 80px 40px;
+        padding: 35px 35px 80px;
     }
 }
 
@@ -234,7 +235,7 @@ main {
         padding-bottom: 40px;
     }
     .wrapper .right {
-        padding: 0 50px;
+        padding: 0 35px;
     }
     .name-job-address h1 {
         font-size: 34px;
@@ -256,16 +257,21 @@ main {
         padding: 0 15px;
     }
     .avatar {
-        width: 100px;
-        height: 100px;
+        width: 90px;
+        height: 90px;
     }
     .name-job-address {
-        width: 100%;
-        margin-left: 0;
-        margin-top: 15px;
+        height: 90px;
+        margin-left: 100px;
     }
     .name-job-address h1 {
-        font-size: 26px;
+        font-size: 25px;
+    }
+    .name-job-address h3 {
+        margin: 6px 0 0 0;
+    }
+    .name-job-address p {
+        margin-top: 6px;
     }
     .header {
         margin-bottom: 25px;
