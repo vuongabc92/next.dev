@@ -6,6 +6,12 @@
 <title>{{ FIRST_NAME }} {{ LAST_NAME }}</title>
 <link rel="stylesheet" href="{{ ASSET }}/css/app.css">
 <link rel="stylesheet" href="{{ ASSET }}/css/style.css">
+<style>
+    ._bg-noise {
+        background-image: url('{{ASSET}}/images/noise-bg.png');
+        background-repeat: repeat;
+    }
+</style>
 </head>
 
 <body>
@@ -60,7 +66,7 @@
                                 </ul>
                             </div>
                         </section>
-                        <section class="_fwfl card">
+                        <section class="_fwfl card card-dek">
                             <h3 class="_fwfl">Education</h3>
                             <div class="_fwfl">
                                 <ul class="_fwfl _lsn time-line">
@@ -75,7 +81,7 @@
                                 </ul>
                             </div>
                         </section>
-                        <section class="_fwfl card">
+                        <section class="_fwfl card card-dek">
                             <h3 class="_fwfl">Interest</h3>
                             <div class="_fwfl">
                                 {{HOBBIES}}
@@ -115,6 +121,27 @@
                                 </li>
                                 {% endforeach %}
                             </ul>
+                        </div>
+                    </section>
+                    <section class="_fwfl card card-mb">
+                        <h3 class="_fwfl">Education</h3>
+                        <div class="_fwfl">
+                            <ul class="_fwfl _lsn time-line">
+                                {% foreach(education) %}
+                                <li>
+                                    <h4>[[SUBJECT]]</h4>
+                                    <i>[[TIME_LETTER]]</i>
+                                    <span>[[QUALIFICATION]]</span>
+                                    <div>[[COLLEGE_NAME]]</div>
+                                </li>
+                                {% endforeach %}
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="_fwfl card card-mb">
+                        <h3 class="_fwfl">Interest</h3>
+                        <div class="_fwfl">
+                            {{HOBBIES}}
                         </div>
                     </section>
                 </div>
