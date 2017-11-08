@@ -43,7 +43,7 @@ class Config {
             return $this->defaultConfig;
         }
         
-        return [];
+        return $this->defaultConfig;
     }
 }
     

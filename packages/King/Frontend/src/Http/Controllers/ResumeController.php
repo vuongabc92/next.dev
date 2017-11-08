@@ -98,7 +98,7 @@ class ResumeController extends FrontController {
     public function download($slug) {
 
         if (null === Theme::where('slug', $slug)->first()) {
-            throw new NotFoundHttpException;
+            abort(404);
         }
 
         $resume   = $this->generateResumeData(user_id());
@@ -110,7 +110,7 @@ class ResumeController extends FrontController {
         $pdf->addPage($contents);
         
         if ( ! $pdf->send($fileName)) {
-            throw new NotFoundHttpException;
+            abort(404);
         }
         
         exit();

@@ -192,6 +192,7 @@ div.body::before {
     padding-bottom: 5px;
     border-bottom: none;
 }
+.body>.right .card:nth-last-child(2),
 .body>.right .card:last-child {
     margin-bottom: 0;
     padding-bottom: 5px;
