@@ -28,11 +28,15 @@ class ResumeController extends FrontController {
      */
     public function index($slug) {
         
-        $userProfile = UserProfile::where('slug', $slug)->first();
+        $userProfile = UserProfile::where('slug', $slug)->where('publish', 1)->first();
         $themeName   = config('frontend.defaultThemeName');
         
+        if (auth()->check() && user()->userProfile->slug === $slug) {
+            $userProfile = user()->userProfile;
+        }
+        
         if (null === $userProfile) {
-            throw new NotFoundHttpException;
+            abort(404);
         }
         
         if ($userProfile->theme_id) {
@@ -50,8 +54,12 @@ class ResumeController extends FrontController {
             abort(404);
         }
         
-        $injectHtml = view('frontend::resume.html-injection', ['slug' => $themeName])->render();
-        $response   = str_replace('</body>', $injectHtml . '</body>', $contents );
+        if (auth()->check()) {
+            $injectHtml = view('frontend::resume.html-injection', ['slug' => $themeName])->render();
+            $response   = str_replace('</body>', $injectHtml . '</body>', $contents );
+        } else {
+            $response = $contents;
+        }
         
         return new Response($response);
     }
@@ -93,13 +101,11 @@ class ResumeController extends FrontController {
             throw new NotFoundHttpException;
         }
 
-        $resume      = $this->generateResumeData(user_id());
-        $compiler    = new ThemeCompiler(new Filesystem, $resume, $slug);
-        $contents    = $compiler->compileDownload();
-        dd($compiler->getConfigPdf());
-        $wkhtmltopdf = config('frontend.wkhtmltopdf');
-        $pdf         = new Pdf($wkhtmltopdf);
-        $fileName    = 'cv_' . $resume->getFirstName() . $resume->getLastName() . '_' . date('dmy') . '.pdf';
+        $resume   = $this->generateResumeData(user_id());
+        $compiler = new ThemeCompiler(new Filesystem, $resume, $slug);
+        $contents = $compiler->compileDownload();
+        $pdf      = new Pdf($compiler->getConfigPdf());
+        $fileName = 'cv_' . $resume->getFirstName() . $resume->getLastName() . '_' . date('dmy') . '.pdf';
         
         $pdf->addPage($contents);
         

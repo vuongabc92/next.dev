@@ -511,8 +511,8 @@ class SettingsController extends FrontController {
         $perPage  = config('frontend.lazy_loading.per_page');
         $page     = (int) $request->query('page');
         $skip     = $perPage * ($page - 1);
-        $themes   = Theme::skip($skip)->take($perPage)->get();
-        $nextPage = Theme::skip($skip + $perPage)->take(1)->get();
+        $themes   = Theme::where('activated', 1)->skip($skip)->take($perPage)->get();
+        $nextPage = Theme::where('activated', 1)->skip($skip + $perPage)->take(1)->get();
         
         return pong(['html' => view('frontend::settings.theme-item', ['themes' => $themes])->render(), 'is_next' => $nextPage->count()]);
     }

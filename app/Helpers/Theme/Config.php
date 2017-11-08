@@ -32,7 +32,15 @@ class Config {
                 }
             }
             
-            return $configPdf;
+            if (count($configPdf)) {
+                foreach($configPdf as $key => $one) {
+                    if(isset($this->defaultConfig[$key])) {
+                        $this->defaultConfig[$key] = $one;
+                    }
+                }
+            }
+            
+            return $this->defaultConfig;
         }
         
         return [];

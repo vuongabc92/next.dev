@@ -23,11 +23,13 @@ class IndexController extends FrontController {
         $perPage    = config('frontend.lazy_loading.per_page');
         $configSlug = config('backend.page.slug.home');
         $page       = Page::where('slug', $configSlug)->first();
-        $themes     = Theme::paginate($perPage);
+        $themes     = Theme::where('activated', 1)->paginate($perPage);
+        $themeCount = Theme::where('activated', 1)->skip(0)->take($perPage + 1)->count();
         
         return view('frontend::index.index', [
-            'themes' => $themes,
-            'page'   => $page
+            'themes'   => $themes,
+            'page'     => $page,
+            'isPaging' => $themeCount > $themes->count()
         ]);
     }
     

@@ -24,6 +24,7 @@
                 </ol>
             @endif
             
+            @if ($isPaging) 
             <div class="_fwfl text-center loadmore-wrap">
                 <div class="_fwfl">
                     <span class="loading-more">Loading more...</span>
@@ -36,6 +37,7 @@
                     @endif
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </div>

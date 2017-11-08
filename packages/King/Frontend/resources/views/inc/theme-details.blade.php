@@ -24,9 +24,10 @@
             @endif
         </ul>
     </div>
-    @if(auth()->check())
+    
     <div class="theme-details-meta">
         <div class="_fwfl theme-details-actions" id="themeAction">
+            @if(auth()->check())
             <form action="{{ route('front_theme_install') }}" method="post" id="installThemeForm">
                 {{ csrf_field() }}
                 <input type="hidden" name="theme_id" value="{{ $theme->id }}"/>
@@ -36,9 +37,12 @@
                 </button>
             </form>
             <a href="{{ route('front_theme_preview', $theme->slug) }}" class="btn _btn _btn-gray" target="_blank" id="themePreviewBtn">{{ _t('theme.preview') }}</a>
+            @else 
+                <a href="{{ route('front_login') }}" class="btn _btn _btn-blue-navy _mr10">{{ _t('theme.install') }}</a>
+                <a href="{{ route('front_login') }}" class="btn _btn _btn-gray">{{ _t('theme.preview') }}</a>
+            @endif
         </div>
     </div>
-    @endif
     <div class="theme-details-desc" id="themeDesc">{{ $theme->description }}</div>
 </div>
 <script>
