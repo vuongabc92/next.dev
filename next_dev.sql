@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.3.11
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2017 at 12:34 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.20
+-- Generation Time: Nov 09, 2017 at 01:27 AM
+-- Server version: 5.6.24
+-- PHP Version: 5.6.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `next.dev`
@@ -26,12 +26,12 @@ SET time_zone = "+00:00";
 -- Table structure for table `king_cities`
 --
 
-CREATE TABLE `king_cities` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `country_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_cities` (
+  `id` int(10) unsigned NOT NULL,
+  `country_id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_cities`
@@ -108,11 +108,11 @@ INSERT INTO `king_cities` (`id`, `country_id`, `name`, `type`) VALUES
 -- Table structure for table `king_countries`
 --
 
-CREATE TABLE `king_countries` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_countries` (
+  `id` int(10) unsigned NOT NULL,
   `country_code` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
   `country_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_countries`
@@ -372,12 +372,12 @@ INSERT INTO `king_countries` (`id`, `country_code`, `country_name`) VALUES
 -- Table structure for table `king_districts`
 --
 
-CREATE TABLE `king_districts` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `city_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_districts` (
+  `id` int(10) unsigned NOT NULL,
+  `city_id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=705 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_districts`
@@ -1088,15 +1088,15 @@ INSERT INTO `king_districts` (`id`, `city_id`, `name`, `type`) VALUES
 -- Table structure for table `king_education`
 --
 
-CREATE TABLE `king_education` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `qualification_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_education` (
+  `id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `qualification_id` int(10) unsigned NOT NULL,
   `college_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `subject` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_education`
@@ -1112,9 +1112,9 @@ INSERT INTO `king_education` (`id`, `user_id`, `qualification_id`, `college_name
 -- Table structure for table `king_employment_histories`
 --
 
-CREATE TABLE `king_employment_histories` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_employment_histories` (
+  `id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   `company_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `position` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `start_date` date NOT NULL,
@@ -1122,17 +1122,17 @@ CREATE TABLE `king_employment_histories` (
   `is_current` tinyint(1) NOT NULL DEFAULT '0',
   `company_website` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `achievement` text COLLATE utf8_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_employment_histories`
 --
 
 INSERT INTO `king_employment_histories` (`id`, `user_id`, `company_name`, `position`, `start_date`, `end_date`, `is_current`, `company_website`, `achievement`) VALUES
-(1, 1, 'Studio 60', 'PHP developer', '2016-04-04', '2016-04-04', 1, 'https://s60.co', 'Brief description of the position and the responsibilities you had in this post. Nullam pulvinar mattis.'),
-(2, 1, 'Ekino', 'PHP developer', '2015-11-11', '2016-04-04', 0, 'http://ekino.com', 'Brief description of the position and the responsibilities you had in this post. Nullam pulvinar mattis.'),
-(3, 1, 'Sutrix Group', 'PHP developer', '2014-05-05', '2015-11-11', 0, 'http://sutrixgroup.com', 'Brief description of the position and the responsibilities you had in this post. Nullam pulvinar mattis.'),
-(5, 1, 'Uniweb', 'Full Stack Developer', '2013-04-04', '2014-05-05', 0, 'http://uniweb.vn/', 'Brief description of the position and the responsibilities you had in this post. Nullam pulvinar mattis.'),
+(1, 1, 'Studio 60', 'PHP/Full-stack Developer', '2016-04-04', '2016-04-04', 1, 'https://s60.co', 'Team/Key member or full-stack developer. Work directly with a team in AU or client. Maintainance project that was pushed LIVE. Testing, fixing bug and support team. Report status to team leader and PM.'),
+(2, 1, 'Ekino', 'PHP/Full-stack Developer', '2015-11-11', '2016-04-04', 0, 'http://ekino.com', 'PHP/Full-stack developer. Converting design to HTML template and implement functions. Support tester, PM, report status to PM and manager of the root company.'),
+(3, 1, 'Sutrix Group', 'Senior PHP Developer', '2014-05-05', '2015-11-11', 0, 'http://sutrixgroup.com', 'Team/Key member or Full-stack developer. Working directly with teams in FR or client. Training and help the junior developer and team member. Self-training and learn from other developers.'),
+(5, 1, 'Uniweb', 'PHP Junior Developer', '2013-04-04', '2014-05-05', 0, 'http://uniweb.vn/', 'PHP/Full-stack developer. Convert PSD to HTML and implement functions. Testing, fix bug and report status to manager. Learn from the senior developer and self-training.'),
 (6, 12, 'Babe Bird School', 'Senior Teacher', '2012-01-01', '2012-01-01', 0, 'http://s60.co', 'So nice to talk about this. This is my first damn job babe. Love it!'),
 (7, 12, 'NaVi School', 'Chairman', '2014-10-10', '2014-10-10', 0, 'http://chairman.com', 'This is my achivement, please read it below babe hahaha uhuhu'),
 (8, 12, 'Mad world', 'Babe cry', '2009-10-10', '2012-04-04', 0, 'http://', 'So nice to talk about this. This is my first damn job babe. Love it!');
@@ -1143,10 +1143,10 @@ INSERT INTO `king_employment_histories` (`id`, `user_id`, `company_name`, `posit
 -- Table structure for table `king_expertises`
 --
 
-CREATE TABLE `king_expertises` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_expertises` (
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_expertises`
@@ -1229,10 +1229,10 @@ INSERT INTO `king_expertises` (`id`, `name`) VALUES
 -- Table structure for table `king_genders`
 --
 
-CREATE TABLE `king_genders` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_genders` (
+  `id` int(10) unsigned NOT NULL,
   `gender_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_genders`
@@ -1249,10 +1249,10 @@ INSERT INTO `king_genders` (`id`, `gender_name`) VALUES
 -- Table structure for table `king_marital_statuses`
 --
 
-CREATE TABLE `king_marital_statuses` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_marital_statuses` (
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_marital_statuses`
@@ -1269,7 +1269,7 @@ INSERT INTO `king_marital_statuses` (`id`, `name`) VALUES
 -- Table structure for table `king_migrations`
 --
 
-CREATE TABLE `king_migrations` (
+CREATE TABLE IF NOT EXISTS `king_migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -1300,10 +1300,35 @@ INSERT INTO `king_migrations` (`migration`, `batch`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `king_pages`
+--
+
+CREATE TABLE IF NOT EXISTS `king_pages` (
+  `id` int(11) NOT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `slug` varchar(250) DEFAULT NULL,
+  `content` longtext,
+  `banner` text
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `king_pages`
+--
+
+INSERT INTO `king_pages` (`id`, `name`, `slug`, `content`, `banner`) VALUES
+(1, 'SO GOOD', 'home', '', 'GCCUbWCAZS7a5zeu.jpg'),
+(2, 'Contact', 'contact', '<p>NeXt was created to help you make a CV less tough and more creative, beautiful.</p>\r\n<p>If there is anything we can help, please contact us at <a href="mailto:hello@next.com">hello@next.com</a></p>', 'rJs4GzQHpwX657uH.png'),
+(3, 'Developer', 'developer', '<p>Developer</p>', 'GCreTPqfeNCWT5Kx.jpg'),
+(4, 'Privacy', 'privacy', '<p>Privacy</p>', '7spy5QBbmEtZn6dc.png'),
+(5, 'Terms', 'terms', '<p>Terms</p>', '3n2wVPMT4jAkBF3u.jpg');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `king_password_resets`
 --
 
-CREATE TABLE `king_password_resets` (
+CREATE TABLE IF NOT EXISTS `king_password_resets` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -1315,7 +1340,8 @@ CREATE TABLE `king_password_resets` (
 
 INSERT INTO `king_password_resets` (`email`, `token`, `created_at`) VALUES
 ('vuongabc92@yopmail.com', '4c1f20ca07bcf14ee7197fded8d7f7290dd446d60243fa9d472b9f37fde13209', '2017-01-04 23:18:23'),
-('vuong.bui@s60.com.au', '10f7b9c53767f98fc1df721a6132317cba92383be00b44327ed5585d23c99184', '2017-06-15 01:58:37');
+('vuong.bui@s60.com.au', '10f7b9c53767f98fc1df721a6132317cba92383be00b44327ed5585d23c99184', '2017-06-15 01:58:37'),
+('master@yopmail.com', '2511da08704f3482a78b149450ff8d7b8249c7c464a3371dfa7431ad4fcdd2cd', '2017-10-18 01:17:13');
 
 -- --------------------------------------------------------
 
@@ -1323,9 +1349,9 @@ INSERT INTO `king_password_resets` (`email`, `token`, `created_at`) VALUES
 -- Table structure for table `king_projects`
 --
 
-CREATE TABLE `king_projects` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_projects` (
+  `id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `screenshot` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `link` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
@@ -1338,10 +1364,10 @@ CREATE TABLE `king_projects` (
 -- Table structure for table `king_qualification`
 --
 
-CREATE TABLE `king_qualification` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_qualification` (
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_qualification`
@@ -1359,13 +1385,34 @@ INSERT INTO `king_qualification` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `king_roles`
+--
+
+CREATE TABLE IF NOT EXISTS `king_roles` (
+  `id` int(11) NOT NULL,
+  `slug` varchar(250) DEFAULT NULL,
+  `name` varchar(250) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `king_roles`
+--
+
+INSERT INTO `king_roles` (`id`, `slug`, `name`) VALUES
+(1, 'admin', 'Admin'),
+(2, 'member', 'Member'),
+(3, 'customer', 'Customer');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `king_skills`
 --
 
-CREATE TABLE `king_skills` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_skills` (
+  `id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_skills`
@@ -1374,17 +1421,30 @@ CREATE TABLE `king_skills` (
 INSERT INTO `king_skills` (`id`, `name`) VALUES
 (3, 'PHP & MySQL'),
 (11, 'Wordpress CMS'),
-(12, 'HTML (5)'),
-(13, 'CSS (3)'),
-(15, 'CI Framework'),
-(20, 'Laravel'),
-(21, 'Symfony'),
 (22, 'Teacher'),
 (23, 'Swimming'),
 (24, 'Shopping'),
 (25, 'House selling'),
 (26, 'Travel around the world'),
-(27, 'Javascript (Jquery)');
+(28, 'This is nice'),
+(29, 'Thank you'),
+(30, 'I love you'),
+(31, 'Nice skill'),
+(32, 'This one'),
+(33, 'Hahaha'),
+(34, 'Aloha babaza'),
+(35, 'Clock war'),
+(37, 'Laravel 5'),
+(40, 'HTML & CSS'),
+(41, 'Javascript (Jquery)'),
+(42, 'Laravel Framework'),
+(43, 'Symfony 2 Framework'),
+(44, 'GIT & SVN'),
+(45, 'Bootstrap'),
+(46, 'Windows/Linux'),
+(48, 'Codeigniter Framework'),
+(49, 'AJAX Jquery'),
+(50, 'RESTful API');
 
 -- --------------------------------------------------------
 
@@ -1392,9 +1452,9 @@ INSERT INTO `king_skills` (`id`, `name`) VALUES
 -- Table structure for table `king_themes`
 --
 
-CREATE TABLE `king_themes` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_themes` (
+  `id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   `slug` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `version` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -1405,26 +1465,33 @@ CREATE TABLE `king_themes` (
   `activated` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_themes`
 --
 
 INSERT INTO `king_themes` (`id`, `user_id`, `slug`, `name`, `version`, `description`, `devices`, `expertises`, `tags`, `activated`, `created_at`, `updated_at`) VALUES
-(2, 1, 'twenty_seventeen', 'Twenty Seventeen', '', 'This is example description ^^!', '', '', '', 0, '2017-05-17 07:25:23', '2017-05-17 07:25:23'),
-(3, 1, 'simple', 'Simple', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-05-18 03:29:19', '2017-05-18 03:29:19'),
-(4, 1, 'quick', 'Quick', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-05-23 04:35:16', '2017-05-23 04:35:16'),
-(5, 1, 'hello', 'Hello', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-05-26 03:23:50', '2017-05-26 03:23:50'),
-(6, 1, 'dash', 'Dash', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-05-29 07:41:29', '2017-05-29 07:41:29'),
-(7, 1, 'black', 'Black', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-01 07:23:48', '2017-06-01 07:23:48'),
-(8, 1, 'Clean', 'Clean', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-06 06:46:26', '2017-06-06 06:46:26'),
-(9, 1, 'blue_dash', 'Blue Dash', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-07 04:39:47', '2017-06-07 04:39:47'),
-(10, 1, 'paparazzi', 'Paparazzi', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-08 04:36:12', '2017-06-08 04:36:12'),
-(12, 1, 'maria_rocco', 'Maria Rocco', '', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', '', '', 0, '2017-06-09 04:16:43', '2017-06-09 04:16:43'),
-(13, 1, 'nice_one', 'Nice one', '1.0', 'This is theme description, if it''s too short, go fuck yourself*', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', 'PHP, Designer', 0, '2017-06-26 01:27:21', '2017-06-26 01:27:21'),
-(14, 1, 'theme_name', 'Theme name', '1.0', 'This is theme description, if it''s too short, go fuck yourself*', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', 'abc, ddd, aaa', 0, '2017-06-26 01:28:24', '2017-06-26 01:28:24'),
-(15, 1, 'abc', 'abc', 'svsdv', 'This is theme description, if it''s too short, go fuck yourself*', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 0, '2017-06-26 01:30:29', '2017-06-26 01:30:29');
+(2, 1, 'twenty-seventeen', 'Twenty Seventeen', '1.0', 'This is theme description, if it''s too short, go fuck yourself*', 'a:2:{i:0;s:7:"desktop";i:1;s:6:"tablet";}', 'a:2:{i:0;s:1:"1";i:1;s:1:"2";}', 'Nice', 1, '2017-05-17 07:25:23', '2017-09-19 00:51:02'),
+(3, 1, 'simple', 'Simple', '1.0', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-05-18 03:29:19', '2017-09-19 00:54:33'),
+(4, 1, 'quick', 'Quick', '1.0', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', 'vkl, moaz, aloha', 1, '2017-05-23 04:35:16', '2017-11-08 06:44:56'),
+(5, 1, 'hello', 'Hello', '1.0', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-05-26 03:23:50', '2017-11-08 06:44:58'),
+(6, 1, 'dash', 'Dash', '1.0', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-05-29 07:41:29', '2017-11-08 06:45:00'),
+(7, 1, 'black', 'Black', '1.0', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-06-01 07:23:48', '2017-11-08 06:45:03'),
+(8, 1, 'clean', 'Clean', '1.0', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-06-06 06:46:26', '2017-11-08 06:45:05'),
+(9, 1, 'blue-dash', 'Blue Dash', '1.0', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-06-07 04:39:47', '2017-11-08 06:45:07'),
+(10, 1, 'paparazzi', 'Paparazzi', '1.0', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-06-08 04:36:12', '2017-11-08 06:45:09'),
+(12, 1, 'maria-rocco', 'Maria Rocco', '1.0', 'This is example description ^^!', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-06-09 04:16:43', '2017-09-11 02:19:58'),
+(13, 1, 'nice_one', 'Nice one', '1.0.1', 'You may also generate redirects to controller actions. To do so, pass the controller and action name to the action method. Remember, you do not need to specify the full namespace to the controller since Laravel''s RouteServiceProvider will automatically set the base controller namespace:', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', 'PHP, .NET, Love', 1, '2017-06-26 01:27:21', '2017-11-08 06:45:11'),
+(14, 1, 'theme_name', 'Theme name', '1.0', 'This is theme description, if it''s too short, go fuck yourself*', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:2:{i:0;s:1:"1";i:1;s:1:"2";}', 'abc, ddd, aaa', 1, '2017-06-26 01:28:24', '2017-11-08 06:45:13'),
+(16, 1, 'classical', 'Classical', '1.0', 'This is theme description, if it''s too short, go fuck yourself*', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', NULL, 1, '2017-09-01 03:27:43', '2017-11-08 06:45:15'),
+(17, 1, 'city', 'City', '', '', NULL, NULL, NULL, 1, NULL, '2017-11-08 06:45:18'),
+(18, 1, 'alibaba', 'alibaba', 'koko', 'lalala lalala lalala lalala lalala', '', 'a:0:{}', '', 1, '2017-10-23 22:34:42', '2017-11-08 06:45:20'),
+(19, 1, 'yellow', 'Yellow', '1.0', 'This is damn theme desc', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-11-06 07:28:59', '2017-11-08 06:45:24'),
+(20, 1, 'hexagon', 'Hexagon', '1.0', 'hexagonhexagonhexagonhexagonhexagonhexagon hexagonhexagonhexagonhexagonhexagonhexagonhexagonhexagonhexagonhexagon hexagonhexagonhexagonhexagonhexagonhexagonhexagonhexagonhexagonhexagon hexagonhexagonhexagonhexagonhexagonhexagonhexagonhexagonhexagonhexagon hexagonhexagonhexagonhexagon', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-11-08 06:48:51', '2017-11-08 06:50:02'),
+(21, 1, 'ancient', 'Ancient', '1.0', 'ancient ancient ancient ancientancient ancient ancient ancient ancient ancient ancient ancient ancient ancient ancient ancient ancient ancient ancient ancient ancient ancient ', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-11-08 06:55:00', '2017-11-08 07:00:26'),
+(22, 1, 'creative', 'Creative', '1.0', 'creative creative creative creative creative creative creative creative creative creative creative creative creative ', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-11-08 06:56:54', '2017-11-08 07:00:29'),
+(23, 1, 'mountain', 'Mountain', '1.0', 'kjs sdsnd sflsmsdl s   sjfsd fsdf sdf sdf dsf sdf ds fs df sdf sdf sf s fs  fs', 'a:3:{i:0;s:7:"desktop";i:1;s:6:"tablet";i:2;s:6:"mobile";}', 'a:0:{}', '', 1, '2017-11-08 06:59:49', '2017-11-08 07:00:37');
 
 -- --------------------------------------------------------
 
@@ -1432,30 +1499,35 @@ INSERT INTO `king_themes` (`id`, `user_id`, `slug`, `name`, `version`, `descript
 -- Table structure for table `king_users`
 --
 
-CREATE TABLE `king_users` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_users` (
+  `id` int(10) unsigned NOT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `username` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `activated` tinyint(1) DEFAULT '1',
   `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_users`
 --
 
-INSERT INTO `king_users` (`id`, `username`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'master', 'master@yopmail.com', '$2y$10$Rjn77JX8H4JZgXtuRv0qM..UennGPHSfPA9hIc.E3N2npEtXOB1JC', '3wygnIGMAA9XXYEXCh6mlFEjVQQLdQtVlxiycmU0LTZfHithn6rzngsxBnO3', '2016-05-22 21:06:32', '2017-06-26 02:30:29'),
-(2, 'vuongabc92', 'vuongabc92@yopmail.com', '$2y$10$HHO7Ukn9jf7jfsGwfvdyweaJdVb3SflH6pZeD0HUAZeCa01YQGXQu', 'pvQd33dYfn2NH0rNSVNQGW5YIPY8LWSuOUDK1xQ0jO6YF6jUaaQu5zHW3gf9', '2016-05-27 01:55:32', '2016-08-23 20:46:31'),
-(3, 'vuongabc921', 'vuongabc921@yopmail.com', '$2y$10$fl4087pf8VVtAV8KxhUOGeyQaKy3DNW/mlBzHFngCzoX9581DxRSK', 'fD1xsq2fuYdjjqpja2DreZ23rZk5f4Fz7bLE6rWsplUW5pTAsijhr5jjLO5b', '2016-05-27 02:06:17', '2016-05-27 02:13:24'),
-(4, 'vuong.bui', 'vuong.bui@s60.com.au', '$2y$10$/cW5LRQjk0wVkdnp6km9gekWN3O0MFuScps7oRYuHgX24EtGZ4xxe', 'XiPk7pAndIqUvYkJaKBVilcvkwYORLQZKctHnnic3JZoLlxaQsdCMgNc1Hfk', '2016-11-02 20:54:51', '2017-01-05 23:09:12'),
-(11, 'lienlien', 'lienlien@yopmail.com', '$2y$10$lp8PJYwocGews2n8WozfZeeSvpRWVMmPJXrSQ6mRAIPkHrlU47QTC', 's2vfz9pSC4WFpjKhjyBVSSMc2vwenHFwMAroRLTDWJH5VmdtXiDPvZlWRHpg', '2017-01-03 02:41:15', '2017-01-03 02:42:04'),
-(12, 'huonghuong', 'huong@yopmail.com', '$2y$10$e0/b4TDtyR3ZkRCYxLZvbelQOXVQBF6YPU9mxpL6m9fXL1vwNphFK', 'kZX57UHfvVotqfr6V3u7WjfaxFfzP6e7vbVsyDt6c3VIaip460QtQ3MuUX2L', '2017-01-05 23:09:41', '2017-05-31 20:57:46'),
-(13, 'pelienden', 'peden@yopmail.com', '$2y$10$Q/BZDC.Z.1shJ5gddkm/PefYzrec2sIpF0/wEowL6TvOGDrTCSEjy', 'vLltqDXUruVMfZIOf461MbI5OGpZBb57PEI7vjzgSF5wCQUcY0hw7zAmCfer', '2017-06-12 03:25:25', '2017-06-12 03:26:19'),
-(14, 'ilovevkiu', 'vkiu@yopmail.com', '$2y$10$QNs83c6U91U7WdW/5Ga/wO4VXRKy5MbjnyJvX3mGRxnNpx/OC1wQ2', '9Ns4qnNzk1E4WRFpCFFW3EVg4vzpOlXsu1CMsjHoEePh5N97YDOw0L73yBqq', '2017-06-12 03:26:50', '2017-06-12 03:26:58'),
-(15, '#asdf%^fsf._', 'asc4$@gmail.com', '$2y$10$fK2swhHgDv9DY65Ln/pU2OvQFiBW2iCvtioWsQq.geTBpcbn91l9C', 'w0S6rvxj0lUO5LGMZ9r4gJJaGSeXiZz4d6gOrNDsYkHxK6eA8QzOBqjqdxOp', '2017-06-21 20:22:09', '2017-06-21 20:23:11');
+INSERT INTO `king_users` (`id`, `role_id`, `username`, `email`, `password`, `activated`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 1, 'master', 'vuongabc92@gmail.com', '$2y$10$Rjn77JX8H4JZgXtuRv0qM..UennGPHSfPA9hIc.E3N2npEtXOB1JC', 1, 'vNBstgHCCqqkakoj3IHXcdqZsFExumFdKCcnQhtFv83SY0JhWbSKkYIJmRAG', '2016-05-22 21:06:32', '2017-11-08 07:44:19'),
+(2, 2, 'vuongabc92', 'vuongabc92@yopmail.com', '$2y$10$HHO7Ukn9jf7jfsGwfvdyweaJdVb3SflH6pZeD0HUAZeCa01YQGXQu', 1, 'pvQd33dYfn2NH0rNSVNQGW5YIPY8LWSuOUDK1xQ0jO6YF6jUaaQu5zHW3gf9', '2016-05-27 01:55:32', '2016-08-23 20:46:31'),
+(3, 2, 'vuongabc921', 'vuongabc921@yopmail.com', '$2y$10$fl4087pf8VVtAV8KxhUOGeyQaKy3DNW/mlBzHFngCzoX9581DxRSK', 1, 'fD1xsq2fuYdjjqpja2DreZ23rZk5f4Fz7bLE6rWsplUW5pTAsijhr5jjLO5b', '2016-05-27 02:06:17', '2017-11-08 06:44:24'),
+(4, 2, 'vuong.bui', 'vuong.bui@s60.com.au', '$2y$10$/cW5LRQjk0wVkdnp6km9gekWN3O0MFuScps7oRYuHgX24EtGZ4xxe', 1, 'XiPk7pAndIqUvYkJaKBVilcvkwYORLQZKctHnnic3JZoLlxaQsdCMgNc1Hfk', '2016-11-02 20:54:51', '2017-01-05 23:09:12'),
+(11, 2, 'lienlien', 'lienlien@yopmail.com', '$2y$10$lp8PJYwocGews2n8WozfZeeSvpRWVMmPJXrSQ6mRAIPkHrlU47QTC', 1, 's2vfz9pSC4WFpjKhjyBVSSMc2vwenHFwMAroRLTDWJH5VmdtXiDPvZlWRHpg', '2017-01-03 02:41:15', '2017-09-10 20:33:55'),
+(12, 2, 'huonghuong', 'huong@yopmail.com', '$2y$10$e0/b4TDtyR3ZkRCYxLZvbelQOXVQBF6YPU9mxpL6m9fXL1vwNphFK', 1, 'kZX57UHfvVotqfr6V3u7WjfaxFfzP6e7vbVsyDt6c3VIaip460QtQ3MuUX2L', '2017-01-05 23:09:41', '2017-05-31 20:57:46'),
+(13, 2, 'pelienden', 'peden@yopmail.com', '$2y$10$Q/BZDC.Z.1shJ5gddkm/PefYzrec2sIpF0/wEowL6TvOGDrTCSEjy', 1, 'vLltqDXUruVMfZIOf461MbI5OGpZBb57PEI7vjzgSF5wCQUcY0hw7zAmCfer', '2017-06-12 03:25:25', '2017-06-12 03:26:19'),
+(14, 2, 'ilovevkiu', 'vkiu@yopmail.com', '$2y$10$QNs83c6U91U7WdW/5Ga/wO4VXRKy5MbjnyJvX3mGRxnNpx/OC1wQ2', 1, '9Ns4qnNzk1E4WRFpCFFW3EVg4vzpOlXsu1CMsjHoEePh5N97YDOw0L73yBqq', '2017-06-12 03:26:50', '2017-06-12 03:26:58'),
+(32, 2, NULL, 'vuongdev92@gmail.com', NULL, 1, 'Zep6JjyrVxvOLGdj4wXxvg3UoI40JJDCyQGUdJWta1TDyHaAJzfsJzTcFgXQ', '2017-07-20 20:05:23', '2017-09-12 20:55:19'),
+(33, 2, 'vuong92', 'vuong@yopmail.com', '$2y$10$fhzSMklToKk3rD8aMD596.HaENIM/ixrqhbm98Y6CFyiAb5SqHLiK', 1, 'FLY6FGxKeWisNqixGOKEbSVhir2KIVrIMK4b7WZtgUxu4CmFtOYTXLVcXKdC', '2017-10-19 02:44:12', '2017-10-19 02:44:54'),
+(34, 2, 'pelien', 'pelien@yopmail.com', '$2y$10$0KlUfnagBMD/8TWQOCu.4.B/9lAqHY4dGpftlYs5F.xa6h0SMAAyO', 1, 'CO4FnJU4fBTAHLQWagU23g9xve8TkAcDAvZHXnrCfc0aUmcRHPBQxYNC6CDO', '2017-10-19 02:46:49', '2017-10-19 02:47:04'),
+(35, 2, NULL, 'vuongabc93@gmail.com', NULL, 1, 'NZOtlyTRmKYUj5f7YkobTeGBl67goDKef5pBhiT53pX81JyA57x3NXvOT7i3', '2017-10-19 03:09:46', '2017-10-22 22:52:56');
 
 -- --------------------------------------------------------
 
@@ -1463,12 +1535,12 @@ INSERT INTO `king_users` (`id`, `username`, `email`, `password`, `remember_token
 -- Table structure for table `king_user_profile`
 --
 
-CREATE TABLE `king_user_profile` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `theme_id` int(10) UNSIGNED DEFAULT NULL,
-  `marital_status_id` int(10) UNSIGNED DEFAULT NULL,
-  `expertise_id` int(10) UNSIGNED DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `king_user_profile` (
+  `id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `theme_id` int(10) unsigned DEFAULT NULL,
+  `marital_status_id` int(10) unsigned DEFAULT NULL,
+  `expertise_id` int(10) unsigned DEFAULT NULL,
   `slug` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `avatar_image` text COLLATE utf8_unicode_ci NOT NULL,
   `cover_image` text COLLATE utf8_unicode_ci NOT NULL,
@@ -1477,38 +1549,41 @@ CREATE TABLE `king_user_profile` (
   `day_of_birth` date DEFAULT NULL,
   `about_me` text COLLATE utf8_unicode_ci NOT NULL,
   `hobbies` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `country_id` int(10) UNSIGNED DEFAULT NULL,
-  `city_id` int(10) UNSIGNED DEFAULT NULL,
-  `district_id` int(10) UNSIGNED DEFAULT NULL,
-  `ward_id` int(10) UNSIGNED DEFAULT NULL,
+  `country_id` int(10) unsigned DEFAULT NULL,
+  `city_id` int(10) unsigned DEFAULT NULL,
+  `district_id` int(10) unsigned DEFAULT NULL,
+  `ward_id` int(10) unsigned DEFAULT NULL,
   `street_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `city_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `gender_id` int(10) UNSIGNED DEFAULT NULL,
+  `gender_id` int(10) unsigned DEFAULT NULL,
   `phone_number` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `website` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `social_network` text COLLATE utf8_unicode_ci NOT NULL,
   `expected_job` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `publish` tinyint(1) NOT NULL,
   `slug_updated_at` datetime DEFAULT NULL,
+  `use_cover_image` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_user_profile`
 --
 
-INSERT INTO `king_user_profile` (`id`, `user_id`, `theme_id`, `marital_status_id`, `expertise_id`, `slug`, `avatar_image`, `cover_image`, `first_name`, `last_name`, `day_of_birth`, `about_me`, `hobbies`, `country_id`, `city_id`, `district_id`, `ward_id`, `street_name`, `city_name`, `gender_id`, `phone_number`, `website`, `social_network`, `expected_job`, `publish`, `slug_updated_at`, `created_at`, `updated_at`) VALUES
-(1, 1, 10, 1, 40, 'babe', 'a:4:{s:8:"original";s:36:"avatar_aV52CjSyrJwRfk7j_Original.jpg";i:128;s:35:"avatar_3V9jMQrkCbZccqEY_128x128.jpg";i:256;s:35:"avatar_384fb43SXuFxcmnB_256x256.jpg";i:512;s:35:"avatar_u4RgZbRZAXxufRpd_512x512.jpg";}', 'a:4:{s:8:"original";s:35:"cover_8sED9xtjX5xwmnkv_Original.png";i:768;s:34:"cover_N8d69zrpE53k35ra_768x420.png";i:960;s:34:"cover_h5USGu9GAMz4JEKf_960x500.png";i:1200;s:35:"cover_kAZDNf3bBcW8CqA8_1200x500.png";}', 'King Of', 'Versailles', '1992-09-09', 'I heard that  Studio 60 was looking for a Senior PHP developer. I am a Senior PHP developer with strong skill and experience with a software-agency past, love to fintech and a passion for creating experiences that bring the value to people''s lives', 'Travel, Food, Music, Football, Swimming', 237, 1, 8, 6316, 'Dien Bien Phu', 'Ho Chi Minh', 1, '0908709876', 'http://s60.co', 'a:5:{s:8:"facebook";s:23:"facebook.com/vuongabc92";s:7:"twitter";s:22:"twitter.com/vuongabc92";s:9:"instagram";s:24:"instagram.com/vuongabc92";s:2:"vk";s:17:"vk.com/vuongabc92";s:11:"google-plus";s:26:"plus.google.com/vuongabc92";}', 'Senior PHP Developer', 1, '2017-06-26 09:29:18', '2016-05-22 21:10:49', '2017-06-26 02:29:18'),
-(2, 2, NULL, NULL, NULL, 'vuongabc92', 'a:1:{i:256;s:35:"avatar_zWdwcT9unbG7f96m_256x256.jpg";}', 'a:1:{i:960;s:34:"cover_DABzZc6bPjj7KXua_960x500.jpg";}', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, '2016-05-27 01:55:32', '2016-08-23 20:45:40'),
-(3, 3, NULL, NULL, NULL, 'vuongabc9211', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, '2016-05-27 02:06:17', '2016-05-27 02:06:17'),
-(4, 4, NULL, 1, NULL, 'vuong.bui', 'a:4:{s:8:"original";s:36:"avatar_cjX8bThQbs6uXPFj_Original.jpg";i:128;s:35:"avatar_cnhuGsWfBw9F9Wzd_128x128.jpg";i:256;s:35:"avatar_Gek34CytSRHx7hFD_256x256.jpg";i:512;s:35:"avatar_vfdTMVDcV8dAYHF5_512x512.jpg";}', 'a:4:{s:8:"original";s:35:"cover_kAZDNf3bBcW8CqA8_Original.jpg";i:768;s:34:"cover_3YE9BzRsj3wDHN8p_768x420.jpg";i:960;s:34:"cover_xbyqmHYH7pMVES3j_960x500.jpg";i:1200;s:35:"cover_8QE5tsrtzFrThAEE_1200x500.jpg";}', '', '', '1992-09-09', 'Google', 'Food, Film, Travel', NULL, NULL, NULL, NULL, '', '', 1, '', 'http://', '', '', 0, NULL, '2016-11-02 20:54:51', '2017-01-05 01:15:37'),
-(5, 1, NULL, 1, NULL, '', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, NULL, NULL),
-(7, 11, NULL, NULL, NULL, 'lienlien', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, '2017-01-03 02:41:15', '2017-01-03 02:41:15'),
-(8, 12, 6, 1, NULL, 'huongpham', 'a:4:{s:8:"original";s:36:"avatar_W3SdHh4N77nZRdT2_Original.jpg";i:128;s:35:"avatar_47z7RXXFwexZhGZ6_128x128.jpg";i:256;s:35:"avatar_qAkWZ5qWSAUYJcfb_256x256.jpg";i:512;s:35:"avatar_b3BeQMZ6h7KUEVht_512x512.jpg";}', '', '', '', '1995-09-05', 'My name is Hương Hương, I''m a pretty girl please fuck me up babe. My name is Hương Hương, I''m a pretty girl please fuck me up babe :'')', 'Travel, Seafood, Watch films', 237, 1, 8, 6316, '1 Dien Bien Phu', '', 2, '0908709876', 'http://s60.co', 'a:2:{s:9:"instagram";s:18:"instagram.com/koko";s:8:"facebook";s:47:"www.facebook.com/profile.php?id=100012861036197";}', 'university Teacher', 0, '2017-01-16 03:58:47', '2017-01-05 23:09:41', '2017-05-31 01:10:21'),
-(9, 13, NULL, NULL, NULL, 'pelienden', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, '2017-06-12 03:25:25', '2017-06-12 03:25:25'),
-(10, 14, NULL, NULL, NULL, 'ilovevkiu', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, '2017-06-12 03:26:50', '2017-06-12 03:26:50'),
-(11, 15, NULL, NULL, NULL, '#asdf%^fsf._', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, '2017-06-21 20:22:09', '2017-06-21 20:22:09');
+INSERT INTO `king_user_profile` (`id`, `user_id`, `theme_id`, `marital_status_id`, `expertise_id`, `slug`, `avatar_image`, `cover_image`, `first_name`, `last_name`, `day_of_birth`, `about_me`, `hobbies`, `country_id`, `city_id`, `district_id`, `ward_id`, `street_name`, `city_name`, `gender_id`, `phone_number`, `website`, `social_network`, `expected_job`, `publish`, `slug_updated_at`, `use_cover_image`, `created_at`, `updated_at`) VALUES
+(2, 2, NULL, NULL, NULL, 'vuongabc92', 'a:1:{i:256;s:35:"avatar_zWdwcT9unbG7f96m_256x256.jpg";}', 'a:1:{i:960;s:34:"cover_DABzZc6bPjj7KXua_960x500.jpg";}', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, 0, '2016-05-27 01:55:32', '2016-08-23 20:45:40'),
+(3, 3, NULL, NULL, NULL, 'vuongabc9211', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, 0, '2016-05-27 02:06:17', '2016-05-27 02:06:17'),
+(4, 4, NULL, 1, NULL, 'vuong.bui', 'a:4:{s:8:"original";s:36:"avatar_cjX8bThQbs6uXPFj_Original.jpg";i:128;s:35:"avatar_cnhuGsWfBw9F9Wzd_128x128.jpg";i:256;s:35:"avatar_Gek34CytSRHx7hFD_256x256.jpg";i:512;s:35:"avatar_vfdTMVDcV8dAYHF5_512x512.jpg";}', 'a:4:{s:8:"original";s:35:"cover_kAZDNf3bBcW8CqA8_Original.jpg";i:768;s:34:"cover_3YE9BzRsj3wDHN8p_768x420.jpg";i:960;s:34:"cover_xbyqmHYH7pMVES3j_960x500.jpg";i:1200;s:35:"cover_8QE5tsrtzFrThAEE_1200x500.jpg";}', '', '', '1992-09-09', 'Google', 'Food, Film, Travel', NULL, NULL, NULL, NULL, '', '', 1, '', 'http://', '', '', 0, NULL, 0, '2016-11-02 20:54:51', '2017-01-05 01:15:37'),
+(5, 1, 20, 1, 40, 'vuongbui', 'a:4:{s:8:"original";s:36:"avatar_7YKdurPQuTgzhNzN_Original.jpg";i:128;s:35:"avatar_CBpNGmdM424ZPxcJ_128x128.jpg";i:256;s:35:"avatar_JJhaZx5FcPVrRvka_256x256.jpg";i:512;s:35:"avatar_V8wkA99UMpRPNNEd_512x512.jpg";}', 'a:4:{s:8:"original";s:35:"cover_wgP8bbKUmvrVPGa6_Original.jpg";i:768;s:34:"cover_GRYwBa8ypTBVyCea_768x420.jpg";i:960;s:34:"cover_6Uh2JzzT7r5s4uwX_960x500.jpg";i:1220;s:35:"cover_Pvc5duQ8f96RS9Tg_1220x500.jpg";}', 'Vuong', 'Bui', '1992-09-09', 'Hallo, my name is Vuong, I''m 25 years old and I''m a senior developer (a little confidence). I love coding, I love to build things, creative/crazy things. I''m strong at independent working but I love teamwork, why? A great man like Steve Jobs will be nothing if he works alone.', 'Travel, Food, Music, Football, Swimming', 237, NULL, NULL, NULL, '453 Le Van Khuong', 'Ho Chi Minh', 1, '01664338026', 'http://comingsoon.co', 'a:5:{s:8:"facebook";s:23:"facebook.com/vuongabc92";s:7:"twitter";s:22:"twitter.com/vuongabc92";s:9:"instagram";s:24:"instagram.com/vuongabc92";s:6:"tumblr";s:16:"tumblr.com/vuong";s:8:"linkedin";s:23:"linkedin.com/vuongabc92";}', 'Senior PHP developer', 0, '2017-08-31 04:15:36', 0, NULL, '2017-11-08 17:18:04'),
+(7, 11, NULL, NULL, NULL, 'lienlien', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, 0, '2017-01-03 02:41:15', '2017-01-03 02:41:15'),
+(8, 12, 6, 1, NULL, 'huongpham', 'a:4:{s:8:"original";s:36:"avatar_W3SdHh4N77nZRdT2_Original.jpg";i:128;s:35:"avatar_47z7RXXFwexZhGZ6_128x128.jpg";i:256;s:35:"avatar_qAkWZ5qWSAUYJcfb_256x256.jpg";i:512;s:35:"avatar_b3BeQMZ6h7KUEVht_512x512.jpg";}', '', '', '', '1995-09-05', 'My name is Hương Hương, I''m a pretty girl please fuck me up babe. My name is Hương Hương, I''m a pretty girl please fuck me up babe :'')', 'Travel, Seafood, Watch films', 237, 1, 8, 6316, '1 Dien Bien Phu', '', 2, '0908709876', 'http://s60.co', 'a:2:{s:9:"instagram";s:18:"instagram.com/koko";s:8:"facebook";s:47:"www.facebook.com/profile.php?id=100012861036197";}', 'university Teacher', 0, '2017-01-16 03:58:47', 0, '2017-01-05 23:09:41', '2017-05-31 01:10:21'),
+(9, 13, NULL, NULL, NULL, 'pelienden', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, 0, '2017-06-12 03:25:25', '2017-06-12 03:25:25'),
+(10, 14, NULL, NULL, NULL, 'ilovevkiu', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, 0, '2017-06-12 03:26:50', '2017-06-12 03:26:50'),
+(22, 32, NULL, NULL, NULL, 'vuongdev92', 'a:4:{s:8:"original";s:36:"avatar_cjX8xThQbs6uXPFj_Original.jpg";i:128;s:35:"avatar_cnhuGsWfBw9F9Wzd_128x128.jpg";i:256;s:35:"avatar_Gek34CytSRHx7hFD_256x256.jpg";i:512;s:35:"avatar_vfdTMVDcV8dAYHF5_512x512.jpg";}', '', 'Vuong', 'Bui', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, 0, '2017-07-20 20:05:24', '2017-07-20 20:05:42'),
+(23, 33, NULL, NULL, NULL, 'vuong92', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, 0, '2017-10-19 02:44:12', '2017-10-19 02:44:12'),
+(24, 34, NULL, NULL, NULL, 'pelien', '', '', '', '', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, NULL, 0, '2017-10-19 02:46:49', '2017-10-19 02:46:49'),
+(25, 35, 5, NULL, NULL, 'vuongabc92H64x6R', 'a:3:{i:128;s:35:"avatar_vEdqgR5QvQaJgBdt_128x128.jpg";i:256;s:35:"avatar_5Z38RYQGJcJe4Krx_256x256.jpg";i:512;s:35:"avatar_BMtVXnJmZEFq77Tt_512x512.jpg";}', '', 'Vuong', 'Bui', NULL, '', '', NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', '', 0, '2017-10-19 10:10:08', 0, '2017-10-19 03:09:51', '2017-10-22 22:52:06');
 
 -- --------------------------------------------------------
 
@@ -1516,12 +1591,12 @@ INSERT INTO `king_user_profile` (`id`, `user_id`, `theme_id`, `marital_status_id
 -- Table structure for table `king_user_skills`
 --
 
-CREATE TABLE `king_user_skills` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `skill_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_user_skills` (
+  `id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `skill_id` int(10) unsigned NOT NULL,
   `votes` smallint(2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_user_skills`
@@ -1530,19 +1605,23 @@ CREATE TABLE `king_user_skills` (
 INSERT INTO `king_user_skills` (`id`, `user_id`, `skill_id`, `votes`) VALUES
 (13, 2, 11, NULL),
 (14, 2, 3, NULL),
-(28, 1, 11, 5),
-(30, 1, 3, 4),
-(31, 1, 12, 3),
-(32, 1, 13, 4),
-(34, 1, 15, 4),
-(39, 1, 20, 5),
-(40, 1, 21, 3),
 (41, 12, 22, 4),
 (42, 12, 23, 5),
 (43, 12, 24, 2),
 (44, 12, 25, 5),
 (45, 12, 26, 3),
-(46, 1, 27, 3);
+(51, 1, 3, 4),
+(52, 1, 40, 4),
+(53, 1, 41, 4),
+(54, 1, 11, 4),
+(55, 1, 42, 4),
+(56, 1, 43, 2),
+(57, 1, 44, 3),
+(58, 1, 45, 4),
+(59, 1, 46, 3),
+(61, 1, 48, 3),
+(62, 1, 49, 4),
+(63, 1, 50, 3);
 
 -- --------------------------------------------------------
 
@@ -1550,12 +1629,12 @@ INSERT INTO `king_user_skills` (`id`, `user_id`, `skill_id`, `votes`) VALUES
 -- Table structure for table `king_wards`
 --
 
-CREATE TABLE `king_wards` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `district_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `king_wards` (
+  `id` int(10) unsigned NOT NULL,
+  `district_id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12927 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `king_wards`
@@ -14499,8 +14578,7 @@ INSERT INTO `king_wards` (`id`, `district_id`, `name`, `type`) VALUES
 -- Indexes for table `king_cities`
 --
 ALTER TABLE `king_cities`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `cities_country_id_foreign` (`country_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `cities_country_id_foreign` (`country_id`);
 
 --
 -- Indexes for table `king_countries`
@@ -14512,23 +14590,19 @@ ALTER TABLE `king_countries`
 -- Indexes for table `king_districts`
 --
 ALTER TABLE `king_districts`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `districts_city_id_foreign` (`city_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `districts_city_id_foreign` (`city_id`);
 
 --
 -- Indexes for table `king_education`
 --
 ALTER TABLE `king_education`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `education_user_id_foreign` (`user_id`),
-  ADD KEY `education_qualification_id_foreign` (`qualification_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `education_user_id_foreign` (`user_id`), ADD KEY `education_qualification_id_foreign` (`qualification_id`);
 
 --
 -- Indexes for table `king_employment_histories`
 --
 ALTER TABLE `king_employment_histories`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `employment_histories_user_id_foreign` (`user_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `employment_histories_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `king_expertises`
@@ -14549,23 +14623,33 @@ ALTER TABLE `king_marital_statuses`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `king_pages`
+--
+ALTER TABLE `king_pages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `king_password_resets`
 --
 ALTER TABLE `king_password_resets`
-  ADD KEY `password_resets_email_index` (`email`),
-  ADD KEY `password_resets_token_index` (`token`);
+  ADD KEY `password_resets_email_index` (`email`), ADD KEY `password_resets_token_index` (`token`);
 
 --
 -- Indexes for table `king_projects`
 --
 ALTER TABLE `king_projects`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `king_qualification`
 --
 ALTER TABLE `king_qualification`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `king_roles`
+--
+ALTER TABLE `king_roles`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -14578,45 +14662,31 @@ ALTER TABLE `king_skills`
 -- Indexes for table `king_themes`
 --
 ALTER TABLE `king_themes`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `themes_user_id_foreign` (`user_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `themes_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `king_users`
 --
 ALTER TABLE `king_users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `users_email_unique` (`email`), ADD KEY `role_id` (`role_id`);
 
 --
 -- Indexes for table `king_user_profile`
 --
 ALTER TABLE `king_user_profile`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_profile_user_id_foreign` (`user_id`),
-  ADD KEY `user_profile_country_id_foreign` (`country_id`),
-  ADD KEY `user_profile_city_id_foreign` (`city_id`),
-  ADD KEY `user_profile_district_id_foreign` (`district_id`),
-  ADD KEY `user_profile_ward_id_foreign` (`ward_id`),
-  ADD KEY `user_profile_gender_id_foreign` (`gender_id`),
-  ADD KEY `marital_status_id` (`marital_status_id`),
-  ADD KEY `theme_id` (`theme_id`),
-  ADD KEY `expertise_id` (`expertise_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `user_profile_user_id_foreign` (`user_id`), ADD KEY `user_profile_country_id_foreign` (`country_id`), ADD KEY `user_profile_city_id_foreign` (`city_id`), ADD KEY `user_profile_district_id_foreign` (`district_id`), ADD KEY `user_profile_ward_id_foreign` (`ward_id`), ADD KEY `user_profile_gender_id_foreign` (`gender_id`), ADD KEY `marital_status_id` (`marital_status_id`), ADD KEY `theme_id` (`theme_id`), ADD KEY `expertise_id` (`expertise_id`);
 
 --
 -- Indexes for table `king_user_skills`
 --
 ALTER TABLE `king_user_skills`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_skills_user_id_foreign` (`user_id`),
-  ADD KEY `user_skills_skill_id_foreign` (`skill_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `user_skills_user_id_foreign` (`user_id`), ADD KEY `user_skills_skill_id_foreign` (`skill_id`);
 
 --
 -- Indexes for table `king_wards`
 --
 ALTER TABLE `king_wards`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `wards_district_id_foreign` (`district_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `wards_district_id_foreign` (`district_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -14626,82 +14696,92 @@ ALTER TABLE `king_wards`
 -- AUTO_INCREMENT for table `king_cities`
 --
 ALTER TABLE `king_cities`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT for table `king_countries`
 --
 ALTER TABLE `king_countries`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=247;
 --
 -- AUTO_INCREMENT for table `king_districts`
 --
 ALTER TABLE `king_districts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=705;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=705;
 --
 -- AUTO_INCREMENT for table `king_education`
 --
 ALTER TABLE `king_education`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `king_employment_histories`
 --
 ALTER TABLE `king_employment_histories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `king_expertises`
 --
 ALTER TABLE `king_expertises`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=70;
 --
 -- AUTO_INCREMENT for table `king_genders`
 --
 ALTER TABLE `king_genders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `king_marital_statuses`
 --
 ALTER TABLE `king_marital_statuses`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `king_pages`
+--
+ALTER TABLE `king_pages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `king_projects`
 --
 ALTER TABLE `king_projects`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `king_qualification`
 --
 ALTER TABLE `king_qualification`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `king_roles`
+--
+ALTER TABLE `king_roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `king_skills`
 --
 ALTER TABLE `king_skills`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=51;
 --
 -- AUTO_INCREMENT for table `king_themes`
 --
 ALTER TABLE `king_themes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `king_users`
 --
 ALTER TABLE `king_users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `king_user_profile`
 --
 ALTER TABLE `king_user_profile`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `king_user_skills`
 --
 ALTER TABLE `king_user_skills`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT for table `king_wards`
 --
 ALTER TABLE `king_wards`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12927;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12927;
 --
 -- Constraints for dumped tables
 --
@@ -14710,65 +14790,71 @@ ALTER TABLE `king_wards`
 -- Constraints for table `king_cities`
 --
 ALTER TABLE `king_cities`
-  ADD CONSTRAINT `cities_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `king_countries` (`id`) ON DELETE CASCADE;
+ADD CONSTRAINT `cities_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `king_countries` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `king_districts`
 --
 ALTER TABLE `king_districts`
-  ADD CONSTRAINT `districts_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `king_cities` (`id`) ON DELETE CASCADE;
+ADD CONSTRAINT `districts_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `king_cities` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `king_education`
 --
 ALTER TABLE `king_education`
-  ADD CONSTRAINT `education_qualification_id_foreign` FOREIGN KEY (`qualification_id`) REFERENCES `king_qualification` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `education_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
+ADD CONSTRAINT `education_qualification_id_foreign` FOREIGN KEY (`qualification_id`) REFERENCES `king_qualification` (`id`) ON DELETE CASCADE,
+ADD CONSTRAINT `education_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `king_employment_histories`
 --
 ALTER TABLE `king_employment_histories`
-  ADD CONSTRAINT `employment_histories_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
+ADD CONSTRAINT `employment_histories_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `king_projects`
 --
 ALTER TABLE `king_projects`
-  ADD CONSTRAINT `king_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `king_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `king_themes`
 --
 ALTER TABLE `king_themes`
-  ADD CONSTRAINT `themes_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
+ADD CONSTRAINT `themes_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `king_users`
+--
+ALTER TABLE `king_users`
+ADD CONSTRAINT `king_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `king_roles` (`id`);
 
 --
 -- Constraints for table `king_user_profile`
 --
 ALTER TABLE `king_user_profile`
-  ADD CONSTRAINT `king_user_profile_ibfk_1` FOREIGN KEY (`marital_status_id`) REFERENCES `king_marital_statuses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `king_user_profile_ibfk_2` FOREIGN KEY (`theme_id`) REFERENCES `king_themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `king_user_profile_ibfk_3` FOREIGN KEY (`expertise_id`) REFERENCES `king_expertises` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_profile_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `king_cities` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_profile_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `king_countries` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_profile_district_id_foreign` FOREIGN KEY (`district_id`) REFERENCES `king_districts` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_profile_gender_id_foreign` FOREIGN KEY (`gender_id`) REFERENCES `king_genders` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_profile_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_profile_ward_id_foreign` FOREIGN KEY (`ward_id`) REFERENCES `king_wards` (`id`) ON DELETE CASCADE;
+ADD CONSTRAINT `king_user_profile_ibfk_1` FOREIGN KEY (`marital_status_id`) REFERENCES `king_marital_statuses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `king_user_profile_ibfk_2` FOREIGN KEY (`theme_id`) REFERENCES `king_themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `king_user_profile_ibfk_3` FOREIGN KEY (`expertise_id`) REFERENCES `king_expertises` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `user_profile_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `king_cities` (`id`) ON DELETE CASCADE,
+ADD CONSTRAINT `user_profile_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `king_countries` (`id`) ON DELETE CASCADE,
+ADD CONSTRAINT `user_profile_district_id_foreign` FOREIGN KEY (`district_id`) REFERENCES `king_districts` (`id`) ON DELETE CASCADE,
+ADD CONSTRAINT `user_profile_gender_id_foreign` FOREIGN KEY (`gender_id`) REFERENCES `king_genders` (`id`) ON DELETE CASCADE,
+ADD CONSTRAINT `user_profile_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE,
+ADD CONSTRAINT `user_profile_ward_id_foreign` FOREIGN KEY (`ward_id`) REFERENCES `king_wards` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `king_user_skills`
 --
 ALTER TABLE `king_user_skills`
-  ADD CONSTRAINT `user_skills_skill_id_foreign` FOREIGN KEY (`skill_id`) REFERENCES `king_skills` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_skills_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
+ADD CONSTRAINT `user_skills_skill_id_foreign` FOREIGN KEY (`skill_id`) REFERENCES `king_skills` (`id`) ON DELETE CASCADE,
+ADD CONSTRAINT `user_skills_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `king_users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `king_wards`
 --
 ALTER TABLE `king_wards`
-  ADD CONSTRAINT `wards_district_id_foreign` FOREIGN KEY (`district_id`) REFERENCES `king_districts` (`id`) ON DELETE CASCADE;
+ADD CONSTRAINT `wards_district_id_foreign` FOREIGN KEY (`district_id`) REFERENCES `king_districts` (`id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
