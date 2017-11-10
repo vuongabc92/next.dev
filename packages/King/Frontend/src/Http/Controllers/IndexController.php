@@ -25,7 +25,7 @@ class IndexController extends FrontController {
         $page       = Page::where('slug', $configSlug)->first();
         $themes     = Theme::where('activated', 1)->paginate($perPage);
         $themeCount = Theme::where('activated', 1)->skip(0)->take($perPage + 1)->count();
-        
+         
         return view('frontend::index.index', [
             'themes'   => $themes,
             'page'     => $page,
